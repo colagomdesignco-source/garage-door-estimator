@@ -55,7 +55,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .ins-selector { display: none; background: #f9f9f7; border-radius: 12px; padding: 1rem; margin-bottom: 1.25rem; border: 1px solid #eee; }
 .ins-selector.visible { display: block; }
 .ins-title { font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 10px; }
-.ins-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ins-options { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
 .ins-card { border: 1px solid #e8e8e4; border-radius: 8px; padding: 10px 12px; cursor: pointer; background: #fff; }
 .ins-card:hover { border-color: #bbb; }
 .ins-card.selected { border: 2px solid #1a1a1a; background: #fafaf8; }
@@ -98,14 +98,20 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .photo-box { border-radius: 12px; overflow: hidden; border: 1px solid #eee; }
 .photo-box img { width: 100%; height: 160px; object-fit: cover; display: block; }
 .photo-box-label { font-size: 11px; color: #888; text-align: center; padding: 6px; background: #f9f9f7; }
-.price-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 1.5rem; }
-.price-card { border: 1px solid #e8e8e4; border-radius: 12px; padding: 1rem 0.75rem; text-align: center; }
-.price-card.recommended { border: 2px solid #1a1a1a; background: #fafaf8; }
-.price-tier { font-size: 11px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
-.price-card.recommended .price-tier { color: #1a1a1a; }
-.price-amount { font-size: 22px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px; }
-.price-desc { font-size: 11px; color: #888; line-height: 1.4; }
-.price-badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 99px; margin-top: 6px; background: #1a1a1a; color: #fff; }
+.price-cards { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; margin-bottom: 1.5rem; }
+.price-card { border: 1px solid #e8e8e4; border-radius: 12px; padding: 1.25rem 1rem; text-align: center; position: relative; background: #fff; }
+.price-card.recommended { border: 2px solid #378ADD; }
+.price-top-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #378ADD; color: #fff; font-size: 10px; font-weight: 700; padding: 3px 12px; border-radius: 99px; white-space: nowrap; }
+.price-emoji { font-size: 26px; display: block; margin-bottom: 8px; }
+.price-tier { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+.price-tier.eco { color: #3B6D11; }
+.price-tier.pop { color: #185FA5; }
+.price-tier.pre { color: #633806; }
+.price-badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 99px; background: #E6F1FB; color: #0C447C; margin-bottom: 8px; }
+.price-amount { font-size: 24px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px; }
+.price-desc { font-size: 11px; color: #888; line-height: 1.4; margin-bottom: 10px; }
+.price-features { text-align: left; font-size: 11px; color: #666; line-height: 1.9; }
+.price-check { color: #3B6D11; margin-right: 3px; }
 .summary-box { background: #f9f9f7; border-radius: 12px; padding: 1.25rem; border: 1px solid #eee; margin-bottom: 1.25rem; }
 .summary-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #eee; font-size: 13px; }
 .summary-row:last-child { border-bottom: none; }
@@ -270,6 +276,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
           <div class="ins-desc">Added insulation. Better energy efficiency and quieter operation.</div>
           <div class="ins-price">~$200–$400 more</div>
         </div>
+        <div class="ins-card" onclick="pickIns(this,'steelback')">
+          <div class="ins-label">Steelback (Best)</div>
+          <div class="ins-desc">Premium full steel insulation. Maximum durability, energy efficiency and quietness.</div>
+          <div class="ins-price">~$400–$800 more</div>
+        </div>
       </div>
     </div>
     <div class="nav-row"><button class="btn-back" onclick="go(3)">Back</button><button class="btn-next" id="n4" onclick="go(5)" disabled>Continue</button></div>
@@ -370,7 +381,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <div class="cta-box">
       <div class="cta-title">Ready to move forward?</div>
       <div class="cta-sub">Dustin will call you to schedule your free measurement visit.</div>
-      <a href="tel:+17079990323" class="cta-btn">Call (707) 999-0323</a>
+      <a href="tel:+19253168384" class="cta-btn">Call (925) 316-8384</a>
     </div>
 
     <div style="font-size:12px;color:#bbb;text-align:center;">*Estimates include door + standard installation. Final price confirmed after free measurement.</div>
@@ -409,6 +420,16 @@ const pricing = {
     '15x7':1480,'15x8':1780,'15x10':2550,'15x12':3050,'15x14':3450,
     '16x7':1400,'16x8':1630,'16x10':2550,'16x12':3050,'16x14':3450,
     '18x7':1900,'18x8':2150,'18x10':2950,'18x12':3600,'18x14':4150
+  },
+  steelback: {
+    '8x7':1200,'8x8':1450,'8x10':1750,'8x12':2050,'8x14':2450,
+    '9x7':1250,'9x8':1450,'9x10':1880,'9x12':2180,'9x14':2600,
+    '10x7':1450,'10x8':1630,'10x10':2030,'10x12':2380,'10x14':2750,
+    '12x7':1800,'12x8':2000,'12x10':2580,'12x12':3000,'12x14':3430,
+    '14x7':1830,'14x8':2200,'14x10':2700,'14x12':3150,'14x14':3580,
+    '15x7':1850,'15x8':2180,'15x10':2930,'15x12':3450,'15x14':3880,
+    '16x7':1850,'16x8':2180,'16x10':2930,'16x12':3450,'16x14':3880,
+    '18x7':2200,'18x8':2600,'18x10':3380,'18x12':3980,'18x14':4550
   }
 };
 
@@ -492,7 +513,7 @@ async function submitLead() {
   const fullName = firstName + ' ' + lastName;
   const baysMap = {'1':'Single car','2':'Double car','2doors':'Two separate doors'};
   const needMap = {replace:'Replace existing door',new:'New installation',repair:'Repair or service'};
-  const insMap = {noninsulated:'Non-Insulated',pvcinsulated:'PVC Insulated'};
+  const insMap = {noninsulated:'Non-Insulated',pvcinsulated:'PVC Insulated',steelback:'Steelback Insulated'};
 
   const notesFull = [
     'Service: ' + (needMap[state.need]||state.need),
@@ -539,7 +560,7 @@ async function submitLead() {
     showResults(fullName);
   } catch(e) {
     document.getElementById('loadingOverlay').classList.remove('visible');
-    alert('Something went wrong. Please call us directly at (707) 999-0323');
+    alert('Something went wrong. Please call us directly at (925) 316-8384');
   }
 
   document.getElementById('loadingOverlay').classList.remove('visible');
@@ -564,25 +585,38 @@ function showResults(name) {
   const pvcPrice = getPrice('pvcinsulated');
   const multiplier = state.bays === '2doors' ? 2 : 1;
 
+  const steelPrice = getPrice('steelback');
   const tiers = [
-    { label:'Economy', ins:'noninsulated', price: nonPrice, desc:'Non-insulated steel. Great value.', recommended: false },
-    { label:'Popular', ins:'pvcinsulated', price: pvcPrice, desc:'PVC insulated. Better efficiency.', recommended: true },
-    { label:'Premium', ins:'pvcinsulated', price: pvcPrice ? Math.round(pvcPrice * 1.1) : null, desc:'Top features + smart opener.', recommended: false }
+    { label:'Economy', ins:'noninsulated', price: nonPrice, desc:'Non-insulated steel. Great value, durable.', recommended: false },
+    { label:'Popular', ins:'pvcinsulated', price: pvcPrice, desc:'PVC insulated. Better efficiency & quieter.', recommended: true },
+    { label:'Premium', ins:'steelback', price: steelPrice, desc:'Steelback insulated. Maximum durability & performance.', recommended: false }
   ];
 
-  document.getElementById('priceCards').innerHTML = tiers.map(t => {
+  const tierConfig = [
+    { emoji:'🚪', tierClass:'eco', topBadge:null, badge:null,
+      features:['Durable steel construction','White & Almond colors','Installation included','Lifetime warranty'] },
+    { emoji:'🏠', tierClass:'pop', topBadge:'⭐ Most popular', badge:'Best value',
+      features:['Everything in Economy','PVC insulation layer','Lower energy bills','Quieter operation'] },
+    { emoji:'🏆', tierClass:'pre', topBadge:null, badge:null,
+      features:['Everything in Popular','Full steel back insulation','Maximum durability','Best energy efficiency'] }
+  ];
+  document.getElementById('priceCards').innerHTML = tiers.map((t,i) => {
     const p = t.price ? '$' + (t.price * multiplier).toLocaleString() : 'Quote on visit';
+    const cfg = tierConfig[i];
     return `<div class="price-card${t.recommended?' recommended':''}">
-      <div class="price-tier">${t.label}</div>
+      ${cfg.topBadge ? `<div class="price-top-badge">${cfg.topBadge}</div>` : ''}
+      <span class="price-emoji">${cfg.emoji}</span>
+      <div class="price-tier ${cfg.tierClass}">${t.label}</div>
+      ${cfg.badge ? `<span class="price-badge">${cfg.badge}</span>` : ''}
       <div class="price-amount">${p}</div>
       <div class="price-desc">${t.desc}</div>
-      ${t.recommended ? '<span class="price-badge">Best value</span>' : ''}
+      <div class="price-features">${cfg.features.map(f=>`<div><span class="price-check">✓</span>${f}</div>`).join('')}</div>
     </div>`;
   }).join('');
 
   const baysMap = {'1':'Single car','2':'Double car','2doors':'Two separate doors'};
   const needMap = {replace:'Replace existing',new:'New installation',repair:'Repair / service'};
-  const insMap = {noninsulated:'Non-Insulated',pvcinsulated:'PVC Insulated'};
+  const insMap = {noninsulated:'Non-Insulated',pvcinsulated:'PVC Insulated',steelback:'Steelback Insulated'};
   const rows = [
     ['Service', needMap[state.need]||'—'],
     ['Garage type', baysMap[state.bays]||'—'],
