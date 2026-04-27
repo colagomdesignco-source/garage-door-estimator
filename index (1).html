@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get a Free Estimate — Generational Garage Doors</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f9f9f7; min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1rem; }
+.estimator { max-width: 620px; width: 100%; background: #fff; border-radius: 16px; padding: 2rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.brand { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; }
+.brand-logo { width: 42px; height: 42px; background: #1a1a1a; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.brand-text { font-size: 15px; font-weight: 700; color: #1a1a1a; }
+.brand-sub { font-size: 12px; color: #999; }
+.progress-wrap { margin-bottom: 1.75rem; }
+.progress-bar { height: 2px; background: #f0f0ee; border-radius: 2px; }
+.progress-fill { height: 100%; background: #1a1a1a; border-radius: 2px; transition: width 0.4s ease; }
+.progress-label { font-size: 11px; color: #bbb; margin-top: 6px; }
+.step { display: none; }
+.step.active { display: block; }
+.step-title { font-size: 21px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px; }
+.step-sub { font-size: 14px; color: #888; margin-bottom: 1.5rem; line-height: 1.5; }
+.option-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+.option-card { background: #fff; border: 1px solid #e8e8e4; border-radius: 12px; padding: 1rem 0.75rem; cursor: pointer; text-align: center; transition: border-color 0.15s; }
+.option-card:hover { border-color: #bbb; }
+.option-card.selected { border: 2px solid #1a1a1a; background: #fafaf8; }
+.opt-icon { margin-bottom: 10px; display: flex; align-items: center; justify-content: center; }
+.opt-label { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+.opt-desc { font-size: 11px; color: #999; margin-top: 4px; line-height: 1.4; }
+.bay-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+.bay-card { background: #fff; border: 1px solid #e8e8e4; border-radius: 12px; padding: 1rem 0.75rem; cursor: pointer; text-align: center; transition: border-color 0.15s; }
+.bay-card:hover { border-color: #bbb; }
+.bay-card.selected { border: 2px solid #1a1a1a; background: #fafaf8; }
+.bay-card svg { width: 100%; height: 75px; display: block; margin: 0 auto 8px; }
+.bay-label { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+.bay-sub { font-size: 11px; color: #999; margin-top: 3px; }
+.size-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.25rem; }
+.size-group label { font-size: 13px; color: #555; font-weight: 500; display: block; margin-bottom: 6px; }
+.size-group select { width: 100%; padding: 10px 12px; border: 1px solid #e8e8e4; border-radius: 8px; font-size: 14px; background: #fff; color: #1a1a1a; outline: none; cursor: pointer; }
+.size-group select:focus { border-color: #1a1a1a; }
+.size-tip { background: #f9f9f7; border-radius: 10px; padding: 10px 14px; font-size: 12px; color: #888; margin-bottom: 1.25rem; border: 1px solid #eee; }
+.door-gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 1rem; }
+.door-card { background: #fff; border: 1px solid #e8e8e4; border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.15s; }
+.door-card:hover { border-color: #bbb; }
+.door-card.selected { border: 2px solid #1a1a1a; }
+.door-photo { width: 100%; height: 120px; object-fit: cover; display: block; background: #f0f0ee; }
+.door-info { padding: 10px 12px 12px; }
+.door-name { font-size: 13px; font-weight: 700; color: #1a1a1a; }
+.door-type { font-size: 11px; color: #888; margin-top: 2px; }
+.badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 99px; margin-top: 5px; }
+.badge-green { background: #edf7ee; color: #2d7a35; }
+.badge-blue { background: #e8f1fd; color: #1a5cb0; }
+.badge-amber { background: #fef3e2; color: #b45309; }
+.badge-gray { background: #f0f0ee; color: #555; }
+.ins-selector { display: none; background: #f9f9f7; border-radius: 12px; padding: 1rem; margin-bottom: 1.25rem; border: 1px solid #eee; }
+.ins-selector.visible { display: block; }
+.ins-title { font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 10px; }
+.ins-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ins-card { border: 1px solid #e8e8e4; border-radius: 8px; padding: 10px 12px; cursor: pointer; background: #fff; }
+.ins-card:hover { border-color: #bbb; }
+.ins-card.selected { border: 2px solid #1a1a1a; background: #fafaf8; }
+.ins-label { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+.ins-desc { font-size: 11px; color: #888; margin-top: 3px; }
+.ins-price { font-size: 11px; color: #555; margin-top: 4px; font-weight: 500; }
+
+/* LEAD GATE */
+.gate-box { background: #f9f9f7; border-radius: 14px; padding: 1.5rem; border: 1px solid #eee; margin-bottom: 1.25rem; }
+.gate-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.gate-lock { width: 32px; height: 32px; background: #1a1a1a; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.gate-title { font-size: 16px; font-weight: 700; color: #1a1a1a; }
+.gate-sub { font-size: 13px; color: #888; margin-bottom: 1.25rem; line-height: 1.5; }
+.gate-preview { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1.25rem; }
+.gate-preview-card { background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 12px; text-align: center; position: relative; overflow: hidden; }
+.gate-preview-card .blur-cover { position: absolute; inset: 0; background: rgba(255,255,255,0.85); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; }
+.gate-preview-card .blur-icon { font-size: 20px; }
+.gate-preview-label { font-size: 11px; color: #888; margin-bottom: 4px; }
+.gate-preview-value { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+.divider { height: 1px; background: #f0f0ee; margin: 1.25rem 0; }
+.form-group { margin-bottom: 1rem; }
+.form-group label { font-size: 13px; color: #555; font-weight: 500; display: block; margin-bottom: 6px; }
+.form-group input, .form-group textarea { width: 100%; padding: 10px 12px; border: 1px solid #e8e8e4; border-radius: 8px; font-size: 14px; outline: none; font-family: inherit; color: #1a1a1a; }
+.form-group input:focus, .form-group textarea:focus { border-color: #1a1a1a; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.form-group textarea { height: 70px; resize: vertical; }
+.nav-row { display: flex; gap: 8px; align-items: center; margin-top: 0.5rem; }
+.btn-back { background: none; border: 1px solid #e8e8e4; border-radius: 8px; padding: 10px 16px; font-size: 14px; color: #888; cursor: pointer; font-family: inherit; }
+.btn-back:hover { border-color: #bbb; }
+.btn-next { background: #1a1a1a; border: none; border-radius: 8px; padding: 11px 20px; font-size: 14px; color: #fff; cursor: pointer; font-weight: 600; flex: 1; font-family: inherit; transition: opacity 0.15s; }
+.btn-next:disabled { opacity: 0.2; cursor: not-allowed; }
+.btn-next:hover:not(:disabled) { opacity: 0.82; }
+.btn-skip { background: none; border: 1px solid #e8e8e4; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #aaa; cursor: pointer; font-family: inherit; white-space: nowrap; }
+
+/* RESULTS */
+.results-header { text-align: center; margin-bottom: 1.5rem; }
+.results-name { font-size: 18px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px; }
+.results-sub { font-size: 13px; color: #888; }
+.photo-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
+.photo-box { border-radius: 12px; overflow: hidden; border: 1px solid #eee; }
+.photo-box img { width: 100%; height: 160px; object-fit: cover; display: block; }
+.photo-box-label { font-size: 11px; color: #888; text-align: center; padding: 6px; background: #f9f9f7; }
+.price-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 1.5rem; }
+.price-card { border: 1px solid #e8e8e4; border-radius: 12px; padding: 1rem 0.75rem; text-align: center; }
+.price-card.recommended { border: 2px solid #1a1a1a; background: #fafaf8; }
+.price-tier { font-size: 11px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+.price-card.recommended .price-tier { color: #1a1a1a; }
+.price-amount { font-size: 22px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px; }
+.price-desc { font-size: 11px; color: #888; line-height: 1.4; }
+.price-badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 99px; margin-top: 6px; background: #1a1a1a; color: #fff; }
+.summary-box { background: #f9f9f7; border-radius: 12px; padding: 1.25rem; border: 1px solid #eee; margin-bottom: 1.25rem; }
+.summary-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #eee; font-size: 13px; }
+.summary-row:last-child { border-bottom: none; }
+.summary-row span:first-child { color: #888; }
+.summary-row span:last-child { font-weight: 500; color: #1a1a1a; text-align: right; max-width: 55%; }
+.cta-box { background: #1a1a1a; border-radius: 12px; padding: 1.25rem; text-align: center; margin-bottom: 1rem; }
+.cta-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.cta-sub { font-size: 12px; color: #aaa; margin-bottom: 1rem; }
+.cta-btn { display: inline-block; background: #fff; color: #1a1a1a; border: none; border-radius: 8px; padding: 10px 24px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; text-decoration: none; }
+.upload-area { border: 1.5px dashed #d4d4d0; border-radius: 12px; padding: 1.5rem; text-align: center; cursor: pointer; background: #fafaf8; margin-bottom: 1rem; }
+.upload-area:hover { border-color: #999; }
+.upload-preview { margin-bottom: 1rem; }
+.upload-preview img { width: 100%; border-radius: 12px; max-height: 180px; object-fit: cover; }
+.error-msg { background: #fff5f5; border: 1px solid #fcc; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #c00; margin-bottom: 1rem; display: none; }
+.loading-overlay { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.9); z-index: 999; align-items: center; justify-content: center; flex-direction: column; gap: 12px; }
+.loading-overlay.visible { display: flex; }
+.spinner { width: 32px; height: 32px; border: 2px solid #eee; border-top-color: #1a1a1a; border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-size: 14px; color: #888; }
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text">Submitting your request...</div>
+</div>
+
+<div class="estimator">
+  <div class="brand">
+    <div class="brand-logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 10.5L12 3L21 10.5V21H15V15H9V21H3V10.5Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
+    </div>
+    <div>
+      <div class="brand-text">Generational Garage Doors</div>
+      <div class="brand-sub">Free instant estimate — no obligation</div>
+    </div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progress" style="width:14%"></div></div>
+    <div class="progress-label" id="progressLabel">Step 1 of 6</div>
+  </div>
+
+  <!-- STEP 1: Service -->
+  <div id="step1" class="step active">
+    <div class="step-title">What can we help you with?</div>
+    <div class="step-sub">Select the service that best fits your situation.</div>
+    <div class="option-grid">
+      <div class="option-card" onclick="pick(this,'need','replace')">
+        <div class="opt-icon"><svg width="38" height="38" viewBox="0 0 40 40" fill="none"><rect x="4" y="16" width="32" height="20" rx="1" stroke="#1a1a1a" stroke-width="1.5" fill="none"/><path d="M4 16L20 6L36 16" stroke="#1a1a1a" stroke-width="1.5" stroke-linejoin="round" fill="none"/><rect x="10" y="22" width="20" height="8" rx="0.5" stroke="#1a1a1a" stroke-width="1.5" fill="none"/><path d="M17 26L20 23L23 26" stroke="#888" stroke-width="1.2" fill="none"/><line x1="20" y1="23" x2="20" y2="30" stroke="#888" stroke-width="1.2"/></svg></div>
+        <div class="opt-label">Replace my door</div>
+        <div class="opt-desc">Swap out an existing door</div>
+      </div>
+      <div class="option-card" onclick="pick(this,'need','new')">
+        <div class="opt-icon"><svg width="38" height="38" viewBox="0 0 40 40" fill="none"><rect x="4" y="16" width="32" height="20" rx="1" stroke="#1a1a1a" stroke-width="1.5" fill="none"/><path d="M4 16L20 6L36 16" stroke="#1a1a1a" stroke-width="1.5" stroke-linejoin="round" fill="none"/><line x1="20" y1="21" x2="20" y2="31" stroke="#1a1a1a" stroke-width="1.5"/><line x1="15" y1="26" x2="25" y2="26" stroke="#1a1a1a" stroke-width="1.5"/></svg></div>
+        <div class="opt-label">New installation</div>
+        <div class="opt-desc">Installing for the first time</div>
+      </div>
+      <div class="option-card" onclick="pick(this,'need','repair')">
+        <div class="opt-icon"><svg width="38" height="38" viewBox="0 0 40 40" fill="none"><rect x="4" y="16" width="32" height="20" rx="1" stroke="#1a1a1a" stroke-width="1.5" fill="none"/><path d="M4 16L20 6L36 16" stroke="#1a1a1a" stroke-width="1.5" stroke-linejoin="round" fill="none"/><rect x="10" y="22" width="20" height="8" rx="0.5" stroke="#aaa" stroke-width="1" fill="none" stroke-dasharray="2,2"/><circle cx="28" cy="19" r="4" stroke="#888" stroke-width="1.2" fill="none"/><line x1="25.5" y1="16.5" x2="30.5" y2="21.5" stroke="#888" stroke-width="1.2"/></svg></div>
+        <div class="opt-label">Repair or service</div>
+        <div class="opt-desc">Fix a broken door</div>
+      </div>
+    </div>
+    <div class="nav-row"><button class="btn-next" id="n1" onclick="go(2)" disabled>Continue</button></div>
+  </div>
+
+  <!-- STEP 2: Garage type -->
+  <div id="step2" class="step">
+    <div class="step-title">What does your garage look like?</div>
+    <div class="step-sub">Pick the option that best matches your home.</div>
+    <div class="bay-grid">
+      <div class="bay-card" onclick="pick(this,'bays','1')">
+        <svg viewBox="0 0 110 80"><polygon points="55,6 104,32 6,32" fill="none" stroke="#aaa" stroke-width="1.2" stroke-linejoin="round"/><rect x="6" y="32" width="98" height="42" fill="none" stroke="#aaa" stroke-width="1.2"/><rect x="22" y="40" width="66" height="28" rx="1" fill="none" stroke="#1a1a1a" stroke-width="1.8"/><line x1="55" y1="40" x2="55" y2="68" stroke="#bbb" stroke-width="0.8" stroke-dasharray="2,2"/><line x1="22" y1="54" x2="88" y2="54" stroke="#bbb" stroke-width="0.8" stroke-dasharray="2,2"/><circle cx="85" cy="54" r="2.5" fill="#bbb"/></svg>
+        <div class="bay-label">Single car</div>
+        <div class="bay-sub">One opening, one door</div>
+      </div>
+      <div class="bay-card" onclick="pick(this,'bays','2')">
+        <svg viewBox="0 0 110 80"><polygon points="55,6 106,32 4,32" fill="none" stroke="#aaa" stroke-width="1.2" stroke-linejoin="round"/><rect x="4" y="32" width="102" height="42" fill="none" stroke="#aaa" stroke-width="1.2"/><rect x="6" y="40" width="98" height="28" rx="1" fill="none" stroke="#1a1a1a" stroke-width="1.8"/><line x1="55" y1="40" x2="55" y2="68" stroke="#bbb" stroke-width="0.8" stroke-dasharray="2,2"/><line x1="6" y1="54" x2="104" y2="54" stroke="#bbb" stroke-width="0.8" stroke-dasharray="2,2"/><circle cx="101" cy="54" r="2.5" fill="#bbb"/></svg>
+        <div class="bay-label">Double car</div>
+        <div class="bay-sub">Two cars, one wide door</div>
+      </div>
+      <div class="bay-card" onclick="pick(this,'bays','2doors')">
+        <svg viewBox="0 0 110 80"><polygon points="55,6 106,32 4,32" fill="none" stroke="#aaa" stroke-width="1.2" stroke-linejoin="round"/><rect x="4" y="32" width="102" height="42" fill="none" stroke="#aaa" stroke-width="1.2"/><rect x="6" y="40" width="44" height="28" rx="1" fill="none" stroke="#1a1a1a" stroke-width="1.8"/><line x1="28" y1="40" x2="28" y2="68" stroke="#bbb" stroke-width="0.8" stroke-dasharray="2,2"/><circle cx="47" cy="54" r="2.5" fill="#bbb"/><rect x="60" y="40" width="44" height="28" rx="1" fill="none" stroke="#1a1a1a" stroke-width="1.8"/><line x1="82" y1="40" x2="82" y2="68" stroke="#bbb" stroke-width="0.8" stroke-dasharray="2,2"/><circle cx="101" cy="54" r="2.5" fill="#bbb"/></svg>
+        <div class="bay-label">Two separate doors</div>
+        <div class="bay-sub">Two openings, two doors</div>
+      </div>
+    </div>
+    <div class="nav-row"><button class="btn-back" onclick="go(1)">Back</button><button class="btn-next" id="n2" onclick="go(3)" disabled>Continue</button></div>
+  </div>
+
+  <!-- STEP 3: Size -->
+  <div id="step3" class="step">
+    <div class="step-title">What size is your opening?</div>
+    <div class="step-sub">Select width and height — or skip and we'll measure for free.</div>
+    <div class="size-grid">
+      <div class="size-group"><label>Width</label>
+        <select id="width" onchange="sizeChanged()">
+          <option value="">Select width</option>
+          <option value="8">8 ft</option><option value="9">9 ft</option><option value="10">10 ft</option>
+          <option value="12">12 ft</option><option value="14">14 ft</option><option value="15">15 ft</option>
+          <option value="16">16 ft</option><option value="18">18 ft</option><option value="20">20 ft</option>
+        </select>
+      </div>
+      <div class="size-group"><label>Height</label>
+        <select id="height" onchange="sizeChanged()">
+          <option value="">Select height</option>
+          <option value="7">7 ft</option><option value="8">8 ft</option><option value="10">10 ft</option>
+          <option value="12">12 ft</option><option value="14">14 ft</option>
+        </select>
+      </div>
+    </div>
+    <div class="size-tip">Standard single is 9×7 ft, double is 16×7 ft. Not sure? We measure for free!</div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="go(2)">Back</button>
+      <button class="btn-next" id="n3" onclick="go(4)" disabled>Continue</button>
+      <button class="btn-skip" onclick="state.width=null;state.height=null;go(4)">Skip — measure for me</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: Door style -->
+  <div id="step4" class="step">
+    <div class="step-title">Choose your door style</div>
+    <div class="step-sub">Pick a style, then choose insulation. All are CHI Overhead quality.</div>
+    <div class="door-gallery">
+      <div class="door-card" onclick="pickStyle(this,'raised')" id="ds-raised">
+        <img class="door-photo" src="Raised panel.webp" onerror="this.style.background='#e8e8e8'" alt="Raised Panel">
+        <div class="door-info"><div class="door-name">Raised Panel</div><div class="door-type">Classic ribbed — most popular</div><span class="badge badge-green">Most popular</span></div>
+      </div>
+      <div class="door-card" onclick="pickStyle(this,'flush')" id="ds-flush">
+        <img class="door-photo" src="Skyline Flush.webp" onerror="this.style.background='#e8e8e8'" alt="Skyline Flush">
+        <div class="door-info"><div class="door-name">Skyline Flush</div><div class="door-type">Smooth flat panels — modern look</div><span class="badge badge-blue">Modern</span></div>
+      </div>
+      <div class="door-card" onclick="pickStyle(this,'shaker')" id="ds-shaker">
+        <img class="door-photo" src="Stamped shaker.webp" onerror="this.style.background='#e8e8e8'" alt="Stamped Shaker">
+        <div class="door-info"><div class="door-name">Stamped Shaker</div><div class="door-type">Farmhouse deep recessed panels</div><span class="badge badge-amber">Trending</span></div>
+      </div>
+      <div class="door-card" onclick="pickStyle(this,'carriage')" id="ds-carriage">
+        <img class="door-photo" src="Overlay carriage house.webp" onerror="this.style.background='#e8e8e8'" alt="Carriage House">
+        <div class="door-info"><div class="door-name">Carriage House</div><div class="door-type">Classic style with overlays</div><span class="badge badge-gray">Premium</span></div>
+      </div>
+      <div class="door-card" onclick="pickStyle(this,'shoreline')" id="ds-shoreline">
+        <img class="door-photo" src="Shoreline.jpg" onerror="this.style.background='#e8e8e8'" alt="Shoreline">
+        <div class="door-info"><div class="door-name">Shoreline</div><div class="door-type">Horizontal ribbed — coastal style</div><span class="badge badge-blue">Contemporary</span></div>
+      </div>
+      <div class="door-card" onclick="pickStyle(this,'planks')" id="ds-planks">
+        <img class="door-photo" src="Planks.webp" onerror="this.style.background='#e8e8e8'" alt="Planks">
+        <div class="door-info"><div class="door-name">Planks / Wood Look</div><div class="door-type">Faux wood in Oak or Walnut</div><span class="badge badge-amber">Wood look</span></div>
+      </div>
+    </div>
+    <div class="ins-selector" id="insSelector">
+      <div class="ins-title" id="insTitle">Choose your insulation level</div>
+      <div class="ins-options">
+        <div class="ins-card" onclick="pickIns(this,'noninsulated')">
+          <div class="ins-label">Non-Insulated</div>
+          <div class="ins-desc">Standard steel. Great for mild climates or detached garages.</div>
+          <div class="ins-price">Lower starting price</div>
+        </div>
+        <div class="ins-card" onclick="pickIns(this,'pvcinsulated')">
+          <div class="ins-label">PVC Insulated</div>
+          <div class="ins-desc">Added insulation. Better energy efficiency and quieter operation.</div>
+          <div class="ins-price">~$200–$400 more</div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-row"><button class="btn-back" onclick="go(3)">Back</button><button class="btn-next" id="n4" onclick="go(5)" disabled>Continue</button></div>
+  </div>
+
+  <!-- STEP 5: Photo upload (optional) -->
+  <div id="step5" class="step">
+    <div class="step-title">Upload a photo of your home</div>
+    <div class="step-sub">Optional — but we'll use it to show you exactly how your door looks on your home after you submit your info!</div>
+    <div class="upload-area" onclick="document.getElementById('photoInput').click()">
+      <svg width="32" height="32" viewBox="0 0 36 36" fill="none" style="margin:0 auto 8px;display:block;"><rect x="2" y="8" width="32" height="22" rx="3" stroke="#bbb" stroke-width="1.5" fill="none"/><circle cx="18" cy="19" r="6" stroke="#bbb" stroke-width="1.5" fill="none"/><circle cx="18" cy="19" r="2" fill="#bbb"/><rect x="13" y="4" width="10" height="5" rx="1.5" stroke="#bbb" stroke-width="1.2" fill="none"/></svg>
+      <div style="font-size:14px;font-weight:600;color:#555;">Tap to upload a photo of your home</div>
+      <div style="font-size:12px;color:#aaa;margin-top:4px;">JPG or PNG — you'll see results after submitting your info</div>
+    </div>
+    <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="handlePhoto(this)">
+    <div id="photoPreview" style="display:none">
+      <div class="upload-preview"><img id="previewImg" src="" alt="Your home"></div>
+      <div style="font-size:12px;color:#2d7a35;text-align:center;margin-bottom:1rem;font-weight:500;">Photo uploaded — you'll see it alongside your door after submitting!</div>
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="go(4)">Back</button>
+      <button class="btn-next" onclick="go(6)">Continue</button>
+    </div>
+  </div>
+
+  <!-- STEP 6: Lead gate — info form -->
+  <div id="step6" class="step">
+    <div class="step-title">Almost there!</div>
+    <div class="step-sub">Enter your info below to unlock your price estimate and see your door on your home.</div>
+
+    <div class="gate-box">
+      <div class="gate-header">
+        <div class="gate-lock">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="1.5" fill="none"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="gate-title">Your personalized estimate is ready</div>
+      </div>
+      <div class="gate-sub">Submit your contact info to instantly unlock your price range and door preview.</div>
+      <div class="gate-preview">
+        <div class="gate-preview-card">
+          <div class="gate-preview-label">Estimated price</div>
+          <div class="gate-preview-value">$X,XXX – $X,XXX</div>
+          <div class="blur-cover"><div class="blur-icon">🔒</div></div>
+        </div>
+        <div class="gate-preview-card">
+          <div class="gate-preview-label">Your door preview</div>
+          <div class="gate-preview-value">Ready to view</div>
+          <div class="blur-cover"><div class="blur-icon">🔒</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="error-msg" id="errorMsg">Please fill in your name and phone number to continue.</div>
+
+    <div class="form-row">
+      <div class="form-group"><label>First name *</label><input type="text" id="firstName" placeholder="John"></div>
+      <div class="form-group"><label>Last name *</label><input type="text" id="lastName" placeholder="Smith"></div>
+    </div>
+    <div class="form-group"><label>Phone number *</label><input type="tel" id="phone" placeholder="(707) 555-1234"></div>
+    <div class="form-group"><label>Email address</label><input type="email" id="email" placeholder="john@example.com"></div>
+    <div class="form-group"><label>Home address</label><input type="text" id="address" placeholder="123 Main St, Livermore CA"></div>
+    <div class="form-group"><label>Questions or notes</label><textarea id="notes" placeholder="Anything else we should know?"></textarea></div>
+
+    <div style="font-size:11px;color:#bbb;margin-bottom:1rem;">By submitting, you agree to be contacted by Generational Garage Doors. We never share your info.</div>
+
+    <div class="nav-row">
+      <button class="btn-back" onclick="go(5)">Back</button>
+      <button class="btn-next" onclick="submitLead()">Unlock my estimate</button>
+    </div>
+  </div>
+
+  <!-- RESULTS PAGE -->
+  <div id="stepResults" class="step">
+    <div class="results-header">
+      <div class="results-name" id="resultsName">Here's your estimate!</div>
+      <div class="results-sub">Dustin will call within 2 hours to confirm your free measurement visit.</div>
+    </div>
+
+    <!-- Photo comparison -->
+    <div id="photoCompare" style="display:none" class="photo-compare">
+      <div class="photo-box">
+        <img id="yourHomePhoto" src="" alt="Your home">
+        <div class="photo-box-label">Your home today</div>
+      </div>
+      <div class="photo-box">
+        <img id="doorStylePhoto" src="" alt="Selected door style">
+        <div class="photo-box-label" id="doorStyleLabel">Your selected door</div>
+      </div>
+    </div>
+
+    <!-- Price tiers -->
+    <div class="price-cards" id="priceCards"></div>
+
+    <!-- Summary -->
+    <div class="summary-box" id="summaryBox"></div>
+
+    <!-- CTA -->
+    <div class="cta-box">
+      <div class="cta-title">Ready to move forward?</div>
+      <div class="cta-sub">Dustin will call you to schedule your free measurement visit.</div>
+      <a href="tel:+19253168384" class="cta-btn">Call (925) 316-8384</a>
+    </div>
+
+    <div style="font-size:12px;color:#bbb;text-align:center;">*Estimates include door + standard installation. Final price confirmed after free measurement.</div>
+  </div>
+
+</div>
+
+<script>
+
+
+
+
+const state = { need:null, bays:null, width:null, height:null, style:null, insulation:null, photoDataUrl:null };
+
+const styleNames = { raised:'Raised Panel', flush:'Skyline Flush', shaker:'Stamped Shaker', carriage:'Carriage House', shoreline:'Shoreline', planks:'Planks / Wood Look' };
+const stylePhotos = { raised:'Raised panel.webp', flush:'Skyline Flush.webp', shaker:'Stamped shaker.webp', carriage:'Overlay carriage house.webp', shoreline:'Shoreline.jpg', planks:'Planks.webp' };
+
+const pricing = {
+  noninsulated: {
+    '8x7':800,'8x8':900,'8x10':1250,'8x12':1350,'8x14':1650,
+    '9x7':830,'9x8':950,'9x10':1330,'9x12':1400,'9x14':1730,
+    '10x7':900,'10x8':1050,'10x10':1430,'10x12':1680,'10x14':1930,
+    '12x7':1030,'12x8':1150,'12x10':1480,'12x12':1750,'12x14':2050,
+    '14x7':1080,'14x8':1280,'14x10':1730,'14x12':2030,'14x14':2280,
+    '15x7':1100,'15x8':1300,'15x10':1930,'15x12':2300,'15x14':2580,
+    '16x7':1080,'16x8':1250,'16x10':1930,'16x12':2300,'16x14':2580,
+    '18x7':1300,'18x8':1500,'18x10':2130,'18x12':2550,'18x14':2930,
+    '20x7':1830,'20x8':2450,'20x10':2850,'20x12':3350,'20x14':3950
+  },
+  pvcinsulated: {
+    '8x7':1030,'8x8':1150,'8x10':1580,'8x12':1730,'8x14':2100,
+    '9x7':1100,'9x8':1230,'9x10':1700,'9x12':1880,'9x14':2280,
+    '10x7':1200,'10x8':1350,'10x10':1830,'10x12':2180,'10x14':2530,
+    '12x7':1350,'12x8':1530,'12x10':1950,'12x12':2350,'12x14':2730,
+    '14x7':1480,'14x8':1700,'14x10':2280,'14x12':2700,'14x14':3100,
+    '15x7':1480,'15x8':1780,'15x10':2550,'15x12':3050,'15x14':3450,
+    '16x7':1400,'16x8':1630,'16x10':2550,'16x12':3050,'16x14':3450,
+    '18x7':1900,'18x8':2150,'18x10':2950,'18x12':3600,'18x14':4150
+  }
+};
+
+function pick(el, key, val) {
+  el.closest('.option-grid,.bay-grid').querySelectorAll('.option-card,.bay-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  state[key] = val;
+  const btn = document.getElementById('n' + currentStep());
+  if(btn) btn.disabled = false;
+}
+
+function pickStyle(el, styleId) {
+  document.querySelectorAll('.door-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.style = styleId;
+  state.insulation = null;
+  document.getElementById('insSelector').classList.add('visible');
+  document.getElementById('insTitle').textContent = 'Choose insulation for ' + styleNames[styleId];
+  document.querySelectorAll('.ins-card').forEach(c=>c.classList.remove('selected'));
+  document.getElementById('n4').disabled = true;
+}
+
+function pickIns(el, ins) {
+  document.querySelectorAll('.ins-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.insulation = ins;
+  document.getElementById('n4').disabled = false;
+}
+
+function sizeChanged() {
+  const w = document.getElementById('width').value;
+  const h = document.getElementById('height').value;
+  if(w && h) { state.width = w; state.height = h; document.getElementById('n3').disabled = false; }
+}
+
+function currentStep() {
+  for(let i=1;i<=6;i++) { const s=document.getElementById('step'+i); if(s&&s.classList.contains('active')) return i; }
+  return 1;
+}
+
+function go(n) {
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('step'+n).classList.add('active');
+  const pct = Math.round(n/6*100);
+  document.getElementById('progress').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = 'Step ' + n + ' of 6';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function handlePhoto(input) {
+  if(!input.files||!input.files[0]) return;
+  const r = new FileReader();
+  r.onload = e => {
+    state.photoDataUrl = e.target.result;
+    document.getElementById('previewImg').src = e.target.result;
+    document.getElementById('photoPreview').style.display = 'block';
+  };
+  r.readAsDataURL(input.files[0]);
+}
+
+function getPrice(ins) {
+  if(!state.width||!state.height) return null;
+  const key = state.width + 'x' + state.height;
+  return (pricing[ins]||{})[key] || null;
+}
+
+async function submitLead() {
+  const firstName = document.getElementById('firstName').value.trim();
+  const lastName = document.getElementById('lastName').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const address = document.getElementById('address').value.trim();
+  const notes = document.getElementById('notes').value.trim();
+
+  if(!firstName || !lastName || !phone) {
+    document.getElementById('errorMsg').style.display = 'block';
+    return;
+  }
+  document.getElementById('errorMsg').style.display = 'none';
+
+  const fullName = firstName + ' ' + lastName;
+  const baysMap = {'1':'Single car','2':'Double car','2doors':'Two separate doors'};
+  const needMap = {replace:'Replace existing door',new:'New installation',repair:'Repair or service'};
+  const insMap = {noninsulated:'Non-Insulated',pvcinsulated:'PVC Insulated'};
+
+  const notesFull = [
+    'Service: ' + (needMap[state.need]||state.need),
+    'Garage type: ' + (baysMap[state.bays]||state.bays),
+    'Size: ' + (state.width&&state.height ? state.width+'x'+state.height+' ft' : 'Unknown — needs measurement'),
+    'Door style: ' + (styleNames[state.style]||'Not selected'),
+    'Insulation: ' + (insMap[state.insulation]||'Not selected'),
+    notes ? 'Notes: '+notes : ''
+  ].filter(Boolean).join('\n');
+
+  const fields = {
+    'Full Name': fullName,
+    'Phone': phone,
+    'Email': email,
+    'Street Address': address,
+    'Status': 'Needs Scheduling',
+    'Lead Source': 'Website Estimator',
+    'Service Needed': styleNames[state.style] || 'Garage Door',
+    'Notes': notesFull
+  };
+
+  document.getElementById('loadingOverlay').classList.add('visible');
+
+  const WEBHOOK_URL = 'https://hook.us2.make.com/egj41lnwxxb31x5dvilchpt8dr2qjxau';
+
+  try {
+    const resp = await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        fullName, phone, email, address,
+        service: needMap[state.need] || '',
+        garageType: baysMap[state.bays] || '',
+        size: state.width && state.height ? state.width + 'x' + state.height + ' ft' : 'Needs measurement',
+        doorStyle: styleNames[state.style] || '',
+        insulation: state.insulation || '',
+        notes: notesFull,
+        leadSource: 'Website Estimator'
+      })
+    });
+
+    if(!resp.ok) throw new Error('Webhook error');
+
+    showResults(fullName);
+  } catch(e) {
+    document.getElementById('loadingOverlay').classList.remove('visible');
+    alert('Something went wrong. Please call us directly at (925) 316-8384');
+  }
+
+  document.getElementById('loadingOverlay').classList.remove('visible');
+}
+
+function showResults(name) {
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('stepResults').classList.add('active');
+  document.getElementById('progress').style.width = '100%';
+  document.getElementById('progressLabel').textContent = 'Complete';
+
+  document.getElementById('resultsName').textContent = 'Here\'s your estimate, ' + name.split(' ')[0] + '!';
+
+  if(state.photoDataUrl) {
+    document.getElementById('yourHomePhoto').src = state.photoDataUrl;
+    document.getElementById('doorStylePhoto').src = stylePhotos[state.style] || '';
+    document.getElementById('doorStyleLabel').textContent = styleNames[state.style] || 'Selected style';
+    document.getElementById('photoCompare').style.display = 'grid';
+  }
+
+  const nonPrice = getPrice('noninsulated');
+  const pvcPrice = getPrice('pvcinsulated');
+  const multiplier = state.bays === '2doors' ? 2 : 1;
+
+  const tiers = [
+    { label:'Economy', ins:'noninsulated', price: nonPrice, desc:'Non-insulated steel. Great value.', recommended: false },
+    { label:'Popular', ins:'pvcinsulated', price: pvcPrice, desc:'PVC insulated. Better efficiency.', recommended: true },
+    { label:'Premium', ins:'pvcinsulated', price: pvcPrice ? Math.round(pvcPrice * 1.1) : null, desc:'Top features + smart opener.', recommended: false }
+  ];
+
+  document.getElementById('priceCards').innerHTML = tiers.map(t => {
+    const p = t.price ? '$' + (t.price * multiplier).toLocaleString() : 'Quote on visit';
+    return `<div class="price-card${t.recommended?' recommended':''}">
+      <div class="price-tier">${t.label}</div>
+      <div class="price-amount">${p}</div>
+      <div class="price-desc">${t.desc}</div>
+      ${t.recommended ? '<span class="price-badge">Best value</span>' : ''}
+    </div>`;
+  }).join('');
+
+  const baysMap = {'1':'Single car','2':'Double car','2doors':'Two separate doors'};
+  const needMap = {replace:'Replace existing',new:'New installation',repair:'Repair / service'};
+  const insMap = {noninsulated:'Non-Insulated',pvcinsulated:'PVC Insulated'};
+  const rows = [
+    ['Service', needMap[state.need]||'—'],
+    ['Garage type', baysMap[state.bays]||'—'],
+    ['Door size', state.width&&state.height ? state.width+' ft × '+state.height+' ft' : 'Free measurement included'],
+    ['Style', styleNames[state.style]||'—'],
+    ['Insulation', insMap[state.insulation]||'—'],
+    ['Installation', 'Included in all prices'],
+  ];
+  document.getElementById('summaryBox').innerHTML = rows.map(([l,v])=>
+    `<div class="summary-row"><span>${l}</span><span>${v}</span></div>`).join('');
+
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
