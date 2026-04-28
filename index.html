@@ -291,7 +291,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   <!-- STEP 4: Door Visualizer -->
   <div id="step4" class="step">
     <div class="step-title">See it on your home</div>
-    <div class="step-sub">Pick a sample home or upload your own photo to see your door in action!</div>
+    <div class="step-sub">Pick the home that looks most like yours to see your door in action!</div>
 
     <!-- Sample home thumbnails -->
     <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:8px;">Sample homes</div>
@@ -319,15 +319,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
       <canvas id="vizCanvas" style="display:block;width:100%;height:auto;"></canvas>
     </div>
     <div style="font-size:11px;color:#888;text-align:center;margin-bottom:1rem;" id="vizHint">Select a home above to preview your door</div>
-
-    <!-- Upload own photo -->
-    <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:8px;">Or upload your own home photo</div>
-    <div style="border:1.5px dashed #d4d4d0;border-radius:10px;padding:1rem;text-align:center;cursor:pointer;background:#fafaf8;margin-bottom:1rem;" onclick="document.getElementById('photoInput').click()">
-      <svg width="24" height="24" viewBox="0 0 36 36" fill="none" style="margin:0 auto 6px;display:block;"><rect x="2" y="8" width="32" height="22" rx="3" stroke="#bbb" stroke-width="1.5" fill="none"/><circle cx="18" cy="19" r="6" stroke="#bbb" stroke-width="1.5" fill="none"/><circle cx="18" cy="19" r="2" fill="#bbb"/></svg>
-      <div style="font-size:13px;color:#888;">Tap to upload your home photo</div>
-    </div>
-    <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="handleOwnPhoto(this)">
-    <button style="background:#f0f0ee;color:#1a1a1a;border:none;border-radius:8px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;width:100%;margin-bottom:1rem;" onclick="saveVizPreview()">💾 Save my door preview</button>
 
     <div class="nav-row"><button class="btn-back" onclick="go(3)">Back</button><button class="btn-next" onclick="go(5)">Continue</button></div>
   </div>
@@ -576,10 +567,10 @@ function startOver() {
 
 // ─── Visualizer ───
 const sampleHomes = [
-  { file:'home1.jpg', label:'Stucco', door:{x:0.19,y:0.34,w:0.62,h:0.24} },
-  { file:'home2.jpg', label:'Craftsman', door:{x:0.09,y:0.42,w:0.82,h:0.28} },
-  { file:'home3.jpg', label:'Stone accent', door:{x:0.08,y:0.36,w:0.84,h:0.36} },
-  { file:'home4.jpg', label:'Single car', door:{x:0.14,y:0.32,w:0.68,h:0.42} },
+  { file:'home1.jpg', label:'Stucco', door:{x:0.19,y:0.42,w:0.62,h:0.22} },
+  { file:'home2.jpg', label:'Craftsman', door:{x:0.12,y:0.46,w:0.76,h:0.26} },
+  { file:'home3.jpg', label:'Stone accent', door:{x:0.09,y:0.42,w:0.82,h:0.32} },
+  { file:'home4.jpg', label:'Single car', door:{x:0.15,y:0.42,w:0.65,h:0.28} },
 ];
 
 const colorMap = {
