@@ -40,50 +40,47 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .bay-sub { font-size: 11px; color: #999; margin-top: 3px; }
 
 /* Door style gallery */
-.door-gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 1rem; }
-.door-card { background: #fff; border: 1px solid #e8e8e4; border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.15s; position: relative; }
+.door-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.25rem; }
+.door-card { background: #fff; border: 1px solid #e8e8e4; border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.15s; }
 .door-card:hover { border-color: #bbb; }
 .door-card.selected { border: 2px solid #1a1a1a; }
-.door-card.custom-door { opacity: 0.9; }
-.door-photo { width: 100%; height: 120px; object-fit: cover; display: block; background: #f0f0ee; }
-.door-info { padding: 10px 12px 12px; }
-.door-name { font-size: 13px; font-weight: 700; color: #1a1a1a; }
-.door-type { font-size: 11px; color: #888; margin-top: 2px; }
+.door-photo { width: 100%; height: 100px; object-fit: cover; display: block; background: #f0f0ee; }
+.door-info { padding: 8px 10px 10px; }
+.door-name { font-size: 12px; font-weight: 700; color: #1a1a1a; }
+.door-type { font-size: 10px; color: #888; margin-top: 2px; }
 .badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 99px; margin-top: 5px; }
 .badge-green { background: #edf7ee; color: #2d7a35; }
 .badge-blue { background: #e8f1fd; color: #1a5cb0; }
-.badge-purple { background: #f0eeff; color: #5b3ec8; }
-.badge-gray { background: #f0f0ee; color: #555; }
+.badge-amber { background: #fef3e2; color: #854F0B; }
+
+/* Color picker */
+.color-section { margin-bottom: 1.25rem; }
+.color-label { font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 8px; }
+.color-options { display: flex; gap: 8px; }
+.color-chip { border: 2px solid #e8e8e4; border-radius: 10px; padding: 8px 14px; cursor: pointer; font-size: 12px; font-weight: 600; color: #555; display: flex; align-items: center; gap: 6px; transition: all 0.15s; background: #fff; }
+.color-chip:hover { border-color: #bbb; }
+.color-chip.selected { border-color: #1a1a1a; background: #fafaf8; color: #1a1a1a; }
+.color-dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid #ddd; flex-shrink: 0; }
+.dot-white { background: #fff; }
+.dot-almond { background: #f5e6c8; }
 
 /* Insulation cards */
-.ins-selector { display: none; border-radius: 12px; padding: 1rem 0 0; margin-bottom: 1.25rem; }
+.ins-selector { display: none; margin-bottom: 1.25rem; }
 .ins-selector.visible { display: block; }
+.ins-note { font-size: 11px; color: #888; background: #f9f9f7; border-radius: 8px; padding: 8px 12px; margin-bottom: 10px; border: 1px solid #eee; }
 .ins-title { font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 10px; }
 .ins-options { display: grid; gap: 8px; }
-.ins-options.two-col { grid-template-columns: 1fr 1fr 1fr; }
+.ins-options.three-col { grid-template-columns: 1fr 1fr 1fr; }
 .ins-options.one-col { grid-template-columns: 1fr; }
-.ins-card { border: 2px solid #e8e8e4; border-radius: 12px; padding: 14px 12px; cursor: pointer; background: #fff; text-align: center; transition: all 0.15s; user-select: none; }
+.ins-card { border: 2px solid #e8e8e4; border-radius: 12px; padding: 14px 12px; cursor: pointer; background: #fff; text-align: center; transition: all 0.15s; }
 .ins-card:hover { transform: translateY(-2px); border-color: #bbb; box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
 .ins-card.selected.eco { border-color: #639922; background: #edf7ee; }
 .ins-card.selected.pvc { border-color: #185FA5; background: #e8f1fd; }
 .ins-card.selected.steel { border-color: #854F0B; background: #fef3e2; }
-.ins-emoji { font-size: 22px; display: block; margin-bottom: 6px; }
-.ins-label { font-size: 12px; font-weight: 700; color: #1a1a1a; margin-bottom: 3px; }
+.ins-emoji { font-size: 20px; display: block; margin-bottom: 5px; }
+.ins-label { font-size: 12px; font-weight: 700; color: #1a1a1a; margin-bottom: 2px; }
 .ins-desc { font-size: 10px; color: #888; line-height: 1.4; }
-.ins-price { font-size: 10px; font-weight: 600; margin-top: 4px; color: #888; }
-.ins-card.selected.eco .ins-price { color: #3B6D11; }
-.ins-card.selected.pvc .ins-price { color: #185FA5; }
-.ins-card.selected.steel .ins-price { color: #854F0B; }
-.ins-only-note { font-size: 11px; color: #888; background: #f9f9f7; border-radius: 8px; padding: 8px 12px; margin-bottom: 10px; border: 1px solid #eee; }
-
-/* Custom door page */
-.custom-door-box { background: linear-gradient(135deg, #1a1a1a 0%, #333 100%); border-radius: 14px; padding: 1.5rem; margin-bottom: 1.25rem; color: #fff; text-align: center; }
-.custom-door-emoji { font-size: 36px; margin-bottom: 10px; }
-.custom-door-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
-.custom-door-desc { font-size: 13px; color: #ccc; line-height: 1.6; }
-.custom-options-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 1.25rem; }
-.custom-option-pill { background: #f9f9f7; border: 1px solid #eee; border-radius: 8px; padding: 8px 6px; text-align: center; font-size: 11px; color: #555; }
-.custom-option-pill .pill-emoji { font-size: 16px; display: block; margin-bottom: 3px; }
+.ins-price { font-size: 10px; font-weight: 600; margin-top: 4px; color: #999; }
 
 /* Gate box */
 .gate-box { background: #f9f9f7; border-radius: 14px; padding: 1.5rem; border: 1px solid #eee; margin-bottom: 1.25rem; }
@@ -100,11 +97,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 /* Form */
 .form-group { margin-bottom: 1rem; }
 .form-group label { font-size: 13px; color: #555; font-weight: 500; display: block; margin-bottom: 6px; }
-.form-group input, .form-group textarea { width: 100%; padding: 10px 12px; border: 1px solid #e8e8e4; border-radius: 8px; font-size: 14px; outline: none; font-family: inherit; color: #1a1a1a; }
-.form-group input:focus, .form-group textarea:focus { border-color: #1a1a1a; }
+.form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px 12px; border: 1px solid #e8e8e4; border-radius: 8px; font-size: 14px; outline: none; font-family: inherit; color: #1a1a1a; background: #fff; }
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: #1a1a1a; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .form-group textarea { height: 70px; resize: vertical; }
-.divider { height: 1px; background: #f0f0ee; margin: 1.25rem 0; }
+.optional-tag { font-size: 10px; color: #bbb; font-weight: 400; margin-left: 4px; }
 
 /* Nav */
 .nav-row { display: flex; gap: 8px; align-items: center; margin-top: 0.5rem; }
@@ -117,17 +114,22 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 /* Photo upload */
 .upload-area { border: 1.5px dashed #d4d4d0; border-radius: 12px; padding: 1.5rem; text-align: center; cursor: pointer; background: #fafaf8; margin-bottom: 1rem; }
 .upload-area:hover { border-color: #999; }
-.upload-preview img { width: 100%; border-radius: 12px; max-height: 180px; object-fit: cover; margin-bottom: 8px; }
+
+/* Composer */
+.composer-wrap { position: relative; width: 100%; border-radius: 12px; overflow: hidden; background: #111; margin-bottom: 0.75rem; user-select: none; touch-action: none; }
+.composer-wrap canvas { display: block; width: 100%; height: auto; border-radius: 12px; cursor: move; }
+.composer-hint { font-size: 11px; color: #666; text-align: center; margin-bottom: 0.75rem; background: #f9f9f7; border-radius: 8px; padding: 8px 12px; border: 1px solid #eee; }
+.composer-controls { display: flex; gap: 10px; margin-bottom: 1rem; align-items: center; }
+.composer-controls label { font-size: 12px; color: #555; white-space: nowrap; font-weight: 500; }
+.composer-controls input[type=range] { flex: 1; accent-color: #1a1a1a; }
+.btn-save { background: #f0f0ee; color: #1a1a1a; border: none; border-radius: 8px; padding: 10px 16px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; width: 100%; margin-bottom: 1rem; }
+.btn-save:hover { background: #e4e4e0; }
 
 /* Results */
 .results-header { text-align: center; margin-bottom: 1.5rem; }
-.photo-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.5rem; }
-.photo-box { border-radius: 12px; overflow: hidden; border: 1px solid #eee; }
-.photo-box img { width: 100%; height: 150px; object-fit: cover; display: block; }
-.photo-box-label { font-size: 11px; color: #888; text-align: center; padding: 6px; background: #f9f9f7; }
-
-/* Price cards */
-.price-cards { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; margin-bottom: 1.5rem; }
+.price-cards { display: grid; gap: 10px; margin-bottom: 1.5rem; }
+.price-cards.three { grid-template-columns: repeat(3, minmax(0,1fr)); }
+.price-cards.one { grid-template-columns: 1fr; max-width: 280px; margin-left: auto; margin-right: auto; }
 .price-card { border: 1px solid #e8e8e4; border-radius: 12px; padding: 1.25rem 1rem; text-align: center; position: relative; background: #fff; }
 .price-card.recommended { border: 2px solid #378ADD; }
 .price-top-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #378ADD; color: #fff; font-size: 10px; font-weight: 700; padding: 3px 12px; border-radius: 99px; white-space: nowrap; }
@@ -136,8 +138,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .price-tier.eco { color: #3B6D11; }
 .price-tier.pop { color: #185FA5; }
 .price-tier.pre { color: #633806; }
-.price-badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 99px; background: #E6F1FB; color: #0C447C; margin-bottom: 8px; }
-.price-range { font-size: 13px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px; }
+.price-range { font-size: 14px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px; }
 .price-note { font-size: 10px; color: #aaa; margin-bottom: 10px; }
 .price-features { text-align: left; font-size: 11px; color: #666; line-height: 1.9; }
 .price-check { color: #3B6D11; margin-right: 3px; }
@@ -150,14 +151,13 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .cta-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 4px; }
 .cta-sub { font-size: 12px; color: #aaa; margin-bottom: 1rem; line-height: 1.5; }
 .cta-btn { display: inline-block; background: #fff; color: #1a1a1a; border: none; border-radius: 8px; padding: 10px 24px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; text-decoration: none; }
-.success-wrap { text-align: center; padding: 2rem 0; }
-.success-circle { width: 56px; height: 56px; border-radius: 50%; background: #edf7ee; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; }
-.next-steps-box { background: #f9f9f7; border-radius: 12px; padding: 1.25rem 1.5rem; text-align: left; margin: 1.25rem 0; border: 1px solid #eee; }
+
 .loading-overlay { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.9); z-index: 999; align-items: center; justify-content: center; flex-direction: column; gap: 12px; }
 .loading-overlay.visible { display: flex; }
 .spinner { width: 32px; height: 32px; border: 2px solid #eee; border-top-color: #1a1a1a; border-radius: 50%; animation: spin 0.7s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .error-msg { background: #fff5f5; border: 1px solid #fcc; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #c00; margin-bottom: 1rem; display: none; }
+.divider { height: 1px; background: #f0f0ee; margin: 1.25rem 0; }
 </style>
 </head>
 <body>
@@ -190,18 +190,15 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <div class="option-grid">
       <div class="option-card" onclick="pick(this,'need','replace')">
         <div class="opt-icon"><svg width="38" height="38" viewBox="0 0 40 40" fill="none"><rect x="4" y="16" width="32" height="20" rx="1" stroke="#1a1a1a" stroke-width="1.5" fill="none"/><path d="M4 16L20 6L36 16" stroke="#1a1a1a" stroke-width="1.5" stroke-linejoin="round" fill="none"/><rect x="10" y="22" width="20" height="8" rx="0.5" stroke="#1a1a1a" stroke-width="1.5" fill="none"/><path d="M17 26L20 23L23 26" stroke="#888" stroke-width="1.2" fill="none"/><line x1="20" y1="23" x2="20" y2="30" stroke="#888" stroke-width="1.2"/></svg></div>
-        <div class="opt-label">Replace my door</div>
-        <div class="opt-desc">Swap out an existing door</div>
+        <div class="opt-label">Replace my door</div><div class="opt-desc">Swap out an existing door</div>
       </div>
       <div class="option-card" onclick="pick(this,'need','new')">
         <div class="opt-icon"><svg width="38" height="38" viewBox="0 0 40 40" fill="none"><rect x="4" y="16" width="32" height="20" rx="1" stroke="#1a1a1a" stroke-width="1.5" fill="none"/><path d="M4 16L20 6L36 16" stroke="#1a1a1a" stroke-width="1.5" stroke-linejoin="round" fill="none"/><line x1="20" y1="21" x2="20" y2="31" stroke="#1a1a1a" stroke-width="1.5"/><line x1="15" y1="26" x2="25" y2="26" stroke="#1a1a1a" stroke-width="1.5"/></svg></div>
-        <div class="opt-label">New installation</div>
-        <div class="opt-desc">Installing for the first time</div>
+        <div class="opt-label">New installation</div><div class="opt-desc">Installing for the first time</div>
       </div>
       <div class="option-card" onclick="pick(this,'need','repair')">
         <div class="opt-icon"><svg width="38" height="38" viewBox="0 0 40 40" fill="none"><rect x="4" y="16" width="32" height="20" rx="1" stroke="#1a1a1a" stroke-width="1.5" fill="none"/><path d="M4 16L20 6L36 16" stroke="#1a1a1a" stroke-width="1.5" stroke-linejoin="round" fill="none"/><rect x="10" y="22" width="20" height="8" rx="0.5" stroke="#aaa" stroke-width="1" fill="none" stroke-dasharray="2,2"/><circle cx="28" cy="19" r="4" stroke="#888" stroke-width="1.2" fill="none"/></svg></div>
-        <div class="opt-label">Repair or service</div>
-        <div class="opt-desc">Fix a broken door</div>
+        <div class="opt-label">Repair or service</div><div class="opt-desc">Fix a broken door</div>
       </div>
     </div>
     <div class="nav-row"><button class="btn-next" id="n1" onclick="go(2)" disabled>Continue</button></div>
@@ -214,33 +211,31 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <div class="bay-grid">
       <div class="bay-card" onclick="pick(this,'bays','single')">
         <svg viewBox="0 0 110 80"><polygon points="55,6 104,32 6,32" fill="none" stroke="#aaa" stroke-width="1.2" stroke-linejoin="round"/><rect x="6" y="32" width="98" height="42" fill="none" stroke="#aaa" stroke-width="1.2"/><rect x="22" y="40" width="66" height="28" rx="1" fill="none" stroke="#1a1a1a" stroke-width="1.8"/><line x1="55" y1="40" x2="55" y2="68" stroke="#bbb" stroke-width="0.8" stroke-dasharray="2,2"/><line x1="22" y1="54" x2="88" y2="54" stroke="#bbb" stroke-width="0.8" stroke-dasharray="2,2"/><circle cx="85" cy="54" r="2.5" fill="#bbb"/></svg>
-        <div class="bay-label">Single car</div>
-        <div class="bay-sub">One opening, one door</div>
+        <div class="bay-label">Single car</div><div class="bay-sub">One door</div>
       </div>
       <div class="bay-card" onclick="pick(this,'bays','double')">
         <svg viewBox="0 0 110 80"><polygon points="55,6 106,32 4,32" fill="none" stroke="#aaa" stroke-width="1.2" stroke-linejoin="round"/><rect x="4" y="32" width="102" height="42" fill="none" stroke="#aaa" stroke-width="1.2"/><rect x="6" y="40" width="98" height="28" rx="1" fill="none" stroke="#1a1a1a" stroke-width="1.8"/><line x1="55" y1="40" x2="55" y2="68" stroke="#bbb" stroke-width="0.8" stroke-dasharray="2,2"/><line x1="6" y1="54" x2="104" y2="54" stroke="#bbb" stroke-width="0.8" stroke-dasharray="2,2"/><circle cx="101" cy="54" r="2.5" fill="#bbb"/></svg>
-        <div class="bay-label">Double car</div>
-        <div class="bay-sub">Two cars, one wide door</div>
+        <div class="bay-label">Double car</div><div class="bay-sub">One wide door</div>
       </div>
       <div class="bay-card" onclick="pick(this,'bays','twodoors')">
         <svg viewBox="0 0 110 80"><polygon points="55,6 106,32 4,32" fill="none" stroke="#aaa" stroke-width="1.2" stroke-linejoin="round"/><rect x="4" y="32" width="102" height="42" fill="none" stroke="#aaa" stroke-width="1.2"/><rect x="6" y="40" width="44" height="28" rx="1" fill="none" stroke="#1a1a1a" stroke-width="1.8"/><line x1="28" y1="40" x2="28" y2="68" stroke="#bbb" stroke-width="0.8" stroke-dasharray="2,2"/><circle cx="47" cy="54" r="2.5" fill="#bbb"/><rect x="60" y="40" width="44" height="28" rx="1" fill="none" stroke="#1a1a1a" stroke-width="1.8"/><line x1="82" y1="40" x2="82" y2="68" stroke="#bbb" stroke-width="0.8" stroke-dasharray="2,2"/><circle cx="101" cy="54" r="2.5" fill="#bbb"/></svg>
-        <div class="bay-label">Two separate doors</div>
-        <div class="bay-sub">Two openings, two doors</div>
+        <div class="bay-label">Two doors</div><div class="bay-sub">Two openings</div>
       </div>
     </div>
     <div class="nav-row"><button class="btn-back" onclick="go(1)">Back</button><button class="btn-next" id="n2" onclick="go(3)" disabled>Continue</button></div>
   </div>
 
-  <!-- STEP 3: Door style -->
+  <!-- STEP 3: Door style + color + insulation -->
   <div id="step3" class="step">
     <div class="step-title">Choose your door style</div>
-    <div class="step-sub">In-stock doors ship fast. Custom doors are fully personalized — we'll walk you through the options.</div>
+    <div class="step-sub">All in-stock doors are ready to ship fast.</div>
+
     <div class="door-gallery">
       <div class="door-card" onclick="pickStyle(this,'raised')">
         <img class="door-photo" src="Raised Panel.webp" onerror="this.style.background='#e8e8e8'" alt="Raised Panel">
         <div class="door-info">
           <div class="door-name">Raised Panel</div>
-          <div class="door-type">Classic ribbed — most popular</div>
+          <div class="door-type">Classic ribbed</div>
           <span class="badge badge-green">✓ In stock</span>
         </div>
       </div>
@@ -248,66 +243,48 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
         <img class="door-photo" src="Skyline Flush" onerror="this.style.background='#e8e8e8'" alt="Skyline Flush">
         <div class="door-info">
           <div class="door-name">Skyline Flush</div>
-          <div class="door-type">Smooth & modern — Steelback only</div>
+          <div class="door-type">Smooth & modern</div>
           <span class="badge badge-blue">✓ In stock</span>
         </div>
       </div>
-      <div class="door-card custom-door" onclick="pickStyle(this,'shaker')">
-        <img class="door-photo" src="Stamped shaker.webp" onerror="this.style.background='#e8e8e8'" alt="Stamped Shaker">
+      <div class="door-card" onclick="pickStyle(this,'carriage')">
+        <img class="door-photo" src="Stamped carriage house.webp" onerror="this.style.background='#e8e8e8'" alt="Carriage Stamp">
         <div class="door-info">
-          <div class="door-name">Stamped Shaker</div>
-          <div class="door-type">Farmhouse deep panels</div>
-          <span class="badge badge-purple">🎨 Custom order</span>
-        </div>
-      </div>
-      <div class="door-card custom-door" onclick="pickStyle(this,'carriage')">
-        <img class="door-photo" src="Stamped carriage house.webp" onerror="this.style.background='#e8e8e8'" alt="Carriage House">
-        <div class="door-info">
-          <div class="door-name">Carriage House</div>
-          <div class="door-type">Classic decorative overlays</div>
-          <span class="badge badge-purple">🎨 Custom order</span>
-        </div>
-      </div>
-      <div class="door-card custom-door" onclick="pickStyle(this,'shoreline')">
-        <img class="door-photo" src="Shoreline.jpg" onerror="this.style.background='#e8e8e8'" alt="Shoreline">
-        <div class="door-info">
-          <div class="door-name">Shoreline</div>
-          <div class="door-type">Horizontal coastal style</div>
-          <span class="badge badge-purple">🎨 Custom order</span>
-        </div>
-      </div>
-      <div class="door-card custom-door" onclick="pickStyle(this,'planks')">
-        <img class="door-photo" src="Planks.webp" onerror="this.style.background='#e8e8e8'" alt="Planks">
-        <div class="door-info">
-          <div class="door-name">Planks / Wood Look</div>
-          <div class="door-type">Faux wood Oak or Walnut</div>
-          <span class="badge badge-purple">🎨 Custom order</span>
+          <div class="door-name">Carriage Stamp</div>
+          <div class="door-type">Classic overlay</div>
+          <span class="badge badge-amber">✓ In stock</span>
         </div>
       </div>
     </div>
 
-    <!-- Insulation selector for in-stock doors -->
+    <!-- Color picker (shown after style selected) -->
+    <div class="color-section" id="colorSection" style="display:none;">
+      <div class="color-label">Color preference</div>
+      <div class="color-options" id="colorOptions"></div>
+    </div>
+
+    <!-- Insulation selector -->
     <div class="ins-selector" id="insSelector">
-      <div class="ins-only-note" id="insOnlyNote" style="display:none;"></div>
-      <div class="ins-title" id="insTitle">Choose your insulation level</div>
-      <div class="ins-options two-col" id="insOptions">
-        <div class="ins-card eco" onclick="pickIns(this,'noninsulated','eco')" id="ins-eco">
+      <div class="ins-note" id="insNote" style="display:none;"></div>
+      <div class="ins-title">Choose your insulation level</div>
+      <div class="ins-options three-col" id="insOptions">
+        <div class="ins-card eco" onclick="pickIns(this,'noninsulated')" id="ins-eco">
           <span class="ins-emoji">🚪</span>
           <div class="ins-label">Non-Insulated</div>
-          <div class="ins-desc">Standard steel. Great for detached or mild climate garages.</div>
-          <div class="ins-price">Best price</div>
+          <div class="ins-desc">Standard steel. Great for detached garages.</div>
+          <div class="ins-price">Lowest price</div>
         </div>
-        <div class="ins-card pvc" onclick="pickIns(this,'pvcinsulated','pvc')" id="ins-pvc">
+        <div class="ins-card pvc" onclick="pickIns(this,'pvcinsulated')" id="ins-pvc">
           <span class="ins-emoji">🏠</span>
           <div class="ins-label">PVC Insulated</div>
-          <div class="ins-desc">Better efficiency & quieter. Most popular for attached garages.</div>
-          <div class="ins-price">~$300–$700 more</div>
+          <div class="ins-desc">Better efficiency & quieter. Most popular.</div>
+          <div class="ins-price">Mid range</div>
         </div>
-        <div class="ins-card steel" onclick="pickIns(this,'steelback','steel')" id="ins-steel">
+        <div class="ins-card steel" onclick="pickIns(this,'steelback')" id="ins-steel">
           <span class="ins-emoji">🏆</span>
           <div class="ins-label">Steelback</div>
-          <div class="ins-desc">Premium full steel insulation. Max durability & efficiency.</div>
-          <div class="ins-price">~$600–$1,500 more</div>
+          <div class="ins-desc">Max durability & energy efficiency.</div>
+          <div class="ins-price">Premium</div>
         </div>
       </div>
     </div>
@@ -315,62 +292,32 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <div class="nav-row"><button class="btn-back" onclick="go(2)">Back</button><button class="btn-next" id="n3" onclick="go(4)" disabled>Continue</button></div>
   </div>
 
-  <!-- STEP 3B: Custom door consultation -->
-  <div id="step3b" class="step">
-    <div class="custom-door-box">
-      <div class="custom-door-emoji">🎨</div>
-      <div class="custom-door-title">This is a custom door!</div>
-      <div class="custom-door-desc">Custom doors are fully personalized with 40+ combinations of styles, colors, glass inserts, hardware, and insulation. Because there are so many options, we need to meet with you to get the right fit and exact pricing.</div>
-    </div>
-    <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:10px;">What you'll get to choose from:</div>
-    <div class="custom-options-grid">
-      <div class="custom-option-pill"><span class="pill-emoji">🎨</span>40+ colors</div>
-      <div class="custom-option-pill"><span class="pill-emoji">🪟</span>Glass inserts</div>
-      <div class="custom-option-pill"><span class="pill-emoji">🔩</span>Hardware styles</div>
-      <div class="custom-option-pill"><span class="pill-emoji">📐</span>Custom sizes</div>
-      <div class="custom-option-pill"><span class="pill-emoji">🏠</span>Insulation options</div>
-      <div class="custom-option-pill"><span class="pill-emoji">✨</span>Wood grain finishes</div>
-    </div>
-    <div style="background:#f9f9f7;border-radius:12px;padding:1rem;border:1px solid #eee;margin-bottom:1.25rem;">
-      <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:6px;">Free in-home consultation</div>
-      <div style="font-size:12px;color:#888;line-height:1.6;">We'll come to your home, measure the opening, show you samples, and give you an exact quote — no pressure, no commitment. Most consultations take 30–45 minutes.</div>
-    </div>
-    <div class="nav-row"><button class="btn-back" onclick="go(3)">Back</button><button class="btn-next" onclick="go(4b)">Schedule my free consultation</button></div>
-  </div>
-
   <!-- STEP 4: Photo upload -->
   <div id="step4" class="step">
     <div class="step-title">See it on your home</div>
-    <div class="step-sub">Upload a photo of your home — we'll show you how your door looks during our visit. Completely optional!</div>
-    <div class="upload-area" onclick="document.getElementById('photoInput').click()">
+    <div class="step-sub">Upload a photo and drag the door over your garage opening. Totally optional!</div>
+
+    <div class="upload-area" id="uploadArea" onclick="document.getElementById('photoInput').click()">
       <svg width="32" height="32" viewBox="0 0 36 36" fill="none" style="margin:0 auto 8px;display:block;"><rect x="2" y="8" width="32" height="22" rx="3" stroke="#bbb" stroke-width="1.5" fill="none"/><circle cx="18" cy="19" r="6" stroke="#bbb" stroke-width="1.5" fill="none"/><circle cx="18" cy="19" r="2" fill="#bbb"/><rect x="13" y="4" width="10" height="5" rx="1.5" stroke="#bbb" stroke-width="1.2" fill="none"/></svg>
       <div style="font-size:14px;font-weight:600;color:#555;">Tap to upload a photo of your home</div>
-      <div style="font-size:12px;color:#aaa;margin-top:4px;">JPG or PNG — revealed after you submit your info</div>
+      <div style="font-size:12px;color:#aaa;margin-top:4px;">Optional — drag the door over your garage!</div>
     </div>
     <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="handlePhoto(this)">
-    <div id="photoPreview" style="display:none">
-      <div class="upload-preview"><img id="previewImg" src="" alt="Your home"></div>
-      <div style="font-size:12px;color:#2d7a35;text-align:center;margin-bottom:1rem;font-weight:500;">✓ Photo uploaded — you'll see it with your estimate!</div>
-    </div>
-    <div class="nav-row"><button class="btn-back" onclick="go(3)">Back</button><button class="btn-next" onclick="go(5)">Continue</button></div>
-  </div>
 
-  <!-- STEP 4B: Custom door lead form -->
-  <div id="step4b" class="step">
-    <div class="step-title">Book your free consultation</div>
-    <div class="step-sub">Tell us a bit about yourself and Dustin will reach out to schedule your free in-home visit.</div>
-    <div class="error-msg" id="errorMsg2">Please enter your name and phone number.</div>
-    <div class="form-row">
-      <div class="form-group"><label>First name *</label><input type="text" id="firstName2" placeholder="John"></div>
-      <div class="form-group"><label>Last name *</label><input type="text" id="lastName2" placeholder="Smith"></div>
+    <div id="composerSection" style="display:none;">
+      <div class="composer-wrap">
+        <canvas id="composerCanvas"></canvas>
+      </div>
+      <div class="composer-hint">👆 Drag the door to position it over your garage · Slider to resize</div>
+      <div class="composer-controls">
+        <label>Door size</label>
+        <input type="range" id="doorSizeSlider" min="5" max="95" value="35" oninput="redrawCanvas()">
+        <span id="sizeLabel" style="font-size:12px;color:#888;min-width:30px;">35%</span>
+      </div>
+      <button class="btn-save" onclick="savePreview()">💾 Save my door preview</button>
     </div>
-    <div class="form-group"><label>Phone number *</label><input type="tel" id="phone2" placeholder="(925) 555-1234"></div>
-    <div class="form-group"><label>Email address</label><input type="email" id="email2" placeholder="john@example.com"></div>
-    <div class="form-group"><label>Home address</label><input type="text" id="address2" placeholder="123 Main St, Livermore CA"></div>
-    <div class="form-group"><label>Which style interested you?</label><input type="text" id="styleNote" placeholder="e.g. Stamped Shaker in dark bronze" readonly></div>
-    <div class="form-group"><label>Questions or notes</label><textarea id="notes2" placeholder="Any questions or details about your project..."></textarea></div>
-    <div style="font-size:11px;color:#bbb;margin-bottom:1rem;">By submitting, you agree to be contacted by Generational Garage Doors.</div>
-    <div class="nav-row"><button class="btn-back" onclick="go(3b)">Back</button><button class="btn-next" onclick="submitCustomLead()">Send my consultation request</button></div>
+
+    <div class="nav-row"><button class="btn-back" onclick="go(3)">Back</button><button class="btn-next" onclick="go(5)">Continue</button></div>
   </div>
 
   <!-- STEP 5: Lead gate -->
@@ -382,18 +329,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
         <div class="gate-lock"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="1.5" fill="none"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
         <div class="gate-title">Your estimate is ready to unlock</div>
       </div>
-      <div class="gate-sub">Submit your info to instantly see your price range and door preview.</div>
+      <div class="gate-sub">Submit your info to instantly see your price range.</div>
       <div class="gate-preview">
-        <div class="gate-preview-card">
-          <div class="gate-preview-label">Estimated range</div>
-          <div class="gate-preview-value">$X,XXX – $X,XXX</div>
-          <div class="blur-cover">🔒</div>
-        </div>
-        <div class="gate-preview-card">
-          <div class="gate-preview-label">Door preview</div>
-          <div class="gate-preview-value">Ready to view</div>
-          <div class="blur-cover">🔒</div>
-        </div>
+        <div class="gate-preview-card"><div class="gate-preview-label">Estimated range</div><div class="gate-preview-value">$X,XXX – $X,XXX</div><div class="blur-cover">🔒</div></div>
+        <div class="gate-preview-card"><div class="gate-preview-label">Installation</div><div class="gate-preview-value">Included</div><div class="blur-cover">🔒</div></div>
       </div>
     </div>
     <div class="error-msg" id="errorMsg">Please enter your name and phone number.</div>
@@ -404,6 +343,29 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <div class="form-group"><label>Phone number *</label><input type="tel" id="phone" placeholder="(925) 555-1234"></div>
     <div class="form-group"><label>Email address</label><input type="email" id="email" placeholder="john@example.com"></div>
     <div class="form-group"><label>Home address</label><input type="text" id="address" placeholder="123 Main St, Livermore CA"></div>
+    <div class="form-group">
+      <label>Door size <span class="optional-tag">(optional — for a more precise range)</span></label>
+      <select id="doorSize">
+        <option value="">Skip — show me the full range</option>
+        <option value="8x7">8 wide × 7 tall</option>
+        <option value="8x8">8 wide × 8 tall</option>
+        <option value="9x7">9 wide × 7 tall</option>
+        <option value="9x8">9 wide × 8 tall</option>
+        <option value="10x7">10 wide × 7 tall</option>
+        <option value="10x8">10 wide × 8 tall</option>
+        <option value="12x7">12 wide × 7 tall</option>
+        <option value="12x8">12 wide × 8 tall</option>
+        <option value="14x7">14 wide × 7 tall</option>
+        <option value="14x8">14 wide × 8 tall</option>
+        <option value="15x7">15 wide × 7 tall</option>
+        <option value="15x8">15 wide × 8 tall</option>
+        <option value="16x7">16 wide × 7 tall</option>
+        <option value="16x8">16 wide × 8 tall</option>
+        <option value="18x7">18 wide × 7 tall</option>
+        <option value="18x8">18 wide × 8 tall</option>
+        <option value="other">Not sure / Other size</option>
+      </select>
+    </div>
     <div class="form-group"><label>Questions or notes</label><textarea id="notes" placeholder="Anything else we should know?"></textarea></div>
     <div style="font-size:11px;color:#bbb;margin-bottom:1rem;">By submitting, you agree to be contacted by Generational Garage Doors. We never share your info.</div>
     <div class="nav-row"><button class="btn-back" onclick="go(4)">Back</button><button class="btn-next" onclick="submitLead()">Unlock my estimate →</button></div>
@@ -413,13 +375,15 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   <div id="stepResults" class="step">
     <div class="results-header">
       <div style="font-size:20px;font-weight:700;color:#1a1a1a;margin-bottom:4px;" id="resultsName">Here's your estimate!</div>
-      <div style="font-size:13px;color:#888;">Dustin will reach out soon to answer questions and schedule your free measurement visit.</div>
+      <div style="font-size:13px;color:#888;">Dustin will reach out soon to confirm your free measurement visit.</div>
     </div>
-    <div id="photoCompare" style="display:none" class="photo-compare">
-      <div class="photo-box"><img id="yourHomePhoto" src="" alt="Your home"><div class="photo-box-label">Your home today</div></div>
-      <div class="photo-box"><img id="doorStylePhoto" src="" alt="Selected door"><div class="photo-box-label" id="doorStyleLabel">Your selected style</div></div>
+
+    <div id="resultsPreviewWrap" style="display:none;margin-bottom:1.5rem;">
+      <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:8px;">Your door preview 🏠</div>
+      <canvas id="resultsCanvas" style="width:100%;border-radius:12px;display:block;"></canvas>
     </div>
-    <div class="price-cards" id="priceCards"></div>
+
+    <div class="price-cards three" id="priceCards"></div>
     <div class="summary-box" id="summaryBox"></div>
     <div class="cta-box">
       <div class="cta-title">We'll be in touch soon! 👋</div>
@@ -428,296 +392,375 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     </div>
     <div style="font-size:11px;color:#bbb;text-align:center;">*Price ranges based on standard installation. Exact price confirmed after free in-home measurement.</div>
   </div>
-
-  <!-- CUSTOM DONE -->
-  <div id="stepCustomDone" class="step">
-    <div class="success-wrap">
-      <div class="success-circle"><svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M6 13L11 18L20 8" stroke="#2d7a35" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div style="font-size:20px;font-weight:700;color:#1a1a1a;margin-bottom:8px;">Consultation request sent!</div>
-      <div style="font-size:14px;color:#888;margin-bottom:1.5rem;line-height:1.7;">Dustin will call you within 2 hours during business hours to schedule your free in-home consultation.</div>
-      <div class="next-steps-box">
-        <div style="font-size:11px;color:#bbb;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;">What happens next</div>
-        <div style="font-size:14px;color:#555;line-height:2.1;">
-          <div>📞 &nbsp;Dustin calls to schedule your visit</div>
-          <div>🏠 &nbsp;Free in-home consultation (30–45 min)</div>
-          <div>🎨 &nbsp;See samples, choose your options</div>
-          <div>💰 &nbsp;Exact quote — no surprises</div>
-        </div>
-      </div>
-      <div style="font-size:13px;color:#aaa;">Questions? <a href="tel:+19253168384" style="color:#1a1a1a;font-weight:600;">(925) 316-8384</a></div>
-    </div>
-  </div>
 </div>
 
 <script>
 const WEBHOOK = 'https://hook.us2.make.com/egj41lnwxxb31x5dvilchpt8dr2qjxau';
-const state = { need:null, bays:null, style:null, insulation:null, photoDataUrl:null };
 
-// Price ranges by garage type and insulation (Customer Price, from Airtable)
-const ranges = {
-  noninsulated: { single:[1140,3030], double:[1610,4670], twodoors:[2280,6060] },
-  pvcinsulated: { single:[1500,4020], double:[2160,6730], twodoors:[3000,8040] },
-  steelback:    { single:[1720,4800], double:[2640,7620], twodoors:[3440,9240] }
+const state = {
+  need: null, bays: null, style: null, color: null,
+  insulation: null, photoDataUrl: null, compositeDataUrl: null
 };
 
-const styleNames = { raised:'Raised Panel', flush:'Skyline Flush', shaker:'Stamped Shaker', carriage:'Carriage House', shoreline:'Shoreline', planks:'Planks / Wood Look' };
-const stylePhotos = { raised:'Raised Panel.webp', flush:'Skyline Flush', shaker:'Stamped shaker.webp', carriage:'Stamped carriage house.webp', shoreline:'Shoreline.jpg', planks:'Planks.webp' };
-const customStyles = ['shaker','carriage','shoreline','planks'];
+// ─── Price ranges from pricebook (min/max Customer Price per insulation) ───
+// Raised Panel: White & Almond, all sizes
+const prices = {
+  raised: {
+    noninsulated: { min: 1140, max: 4670 },
+    pvcinsulated: { min: 1500, max: 8760 },
+    steelback:    { min: 1720, max: 7620 }
+  },
+  flush: {
+    // Skyline Flush — Steelback only, ranges TBD from second sheet
+    steelback: { min: 1720, max: 4800 }
+  },
+  carriage: {
+    // Carriage Stamp: White only
+    noninsulated: { min: 1320, max: 5300 },
+    pvcinsulated: { min: 1690, max: 7400 },
+    steelback:    { min: 1820, max: 7400 }
+  }
+};
+
+// Colors available per style
+const styleColors = {
+  raised:   ['White', 'Almond'],
+  flush:    ['White'],
+  carriage: ['White']
+};
+
+const styleNames = { raised:'Raised Panel', flush:'Skyline Flush', carriage:'Carriage Stamp' };
+const overlayImages = {
+  raised:   'overlay-raised-panel.png',
+  flush:    'overlay-skyline-flush.png',
+  carriage: 'overlay-carriage-house.png'
+};
+const stylePhotos = {
+  raised:   'Raised Panel.webp',
+  flush:    'Skyline Flush',
+  carriage: 'Stamped carriage house.webp'
+};
+
+// ─── Canvas composer ───
+let bgImg = null, doorImg = null;
+let doorX = 0, doorY = 0;
+let isDragging = false, dragOffX = 0, dragOffY = 0;
+let cW = 800, cH = 600;
 
 function pick(el, key, val) {
-  el.closest('.option-grid,.bay-grid').querySelectorAll('.option-card,.bay-card').forEach(c=>c.classList.remove('selected'));
+  el.closest('.option-grid,.bay-grid').querySelectorAll('.option-card,.bay-card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
   state[key] = val;
   const btn = document.getElementById('n' + currentStep());
-  if(btn) btn.disabled = false;
+  if (btn) btn.disabled = false;
 }
 
 function pickStyle(el, styleId) {
-  document.querySelectorAll('.door-card').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('.door-card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
   state.style = styleId;
+  state.color = null;
   state.insulation = null;
-
-  if(customStyles.includes(styleId)) {
-    // Custom door — skip insulation, go to consultation flow
-    document.getElementById('insSelector').classList.remove('visible');
-    document.getElementById('n3').disabled = false;
-    document.getElementById('styleNote').value = styleNames[styleId];
-    return;
-  }
-
-  // In-stock door — show insulation
-  document.getElementById('insSelector').classList.add('visible');
+  document.querySelectorAll('.ins-card').forEach(c => c.classList.remove('selected'));
   document.getElementById('n3').disabled = true;
-  document.querySelectorAll('.ins-card').forEach(c=>c.classList.remove('selected'));
 
-  const note = document.getElementById('insOnlyNote');
-  const opts = document.getElementById('insOptions');
+  // Show color picker
+  const colors = styleColors[styleId];
+  const colorSection = document.getElementById('colorSection');
+  const colorOptions = document.getElementById('colorOptions');
+  colorOptions.innerHTML = '';
+  colors.forEach(c => {
+    const chip = document.createElement('div');
+    chip.className = 'color-chip';
+    chip.innerHTML = `<div class="color-dot ${c === 'White' ? 'dot-white' : 'dot-almond'}"></div>${c}`;
+    chip.onclick = () => {
+      document.querySelectorAll('.color-chip').forEach(ch => ch.classList.remove('selected'));
+      chip.classList.add('selected');
+      state.color = c;
+    };
+    colorOptions.appendChild(chip);
+  });
 
-  if(styleId === 'flush') {
-    // Skyline Flush = Steelback only
-    note.style.display = 'block';
-    note.textContent = 'ℹ️ Skyline Flush is only available in Steelback insulation for maximum performance.';
+  // Auto-select if only one color
+  if (colors.length === 1) {
+    colorOptions.firstChild.classList.add('selected');
+    state.color = colors[0];
+  }
+  colorSection.style.display = 'block';
+
+  // Show insulation
+  const insSelector = document.getElementById('insSelector');
+  const insNote = document.getElementById('insNote');
+  const insOptions = document.getElementById('insOptions');
+
+  insSelector.classList.add('visible');
+
+  if (styleId === 'flush') {
+    insNote.style.display = 'block';
+    insNote.textContent = 'ℹ️ Skyline Flush is only available in Steelback insulation.';
     document.getElementById('ins-eco').style.display = 'none';
     document.getElementById('ins-pvc').style.display = 'none';
     document.getElementById('ins-steel').style.display = '';
-    opts.className = 'ins-options one-col';
+    insOptions.className = 'ins-options one-col';
+    // Auto-select steelback
+    pickIns(document.getElementById('ins-steel'), 'steelback');
   } else {
-    note.style.display = 'none';
+    insNote.style.display = 'none';
     document.getElementById('ins-eco').style.display = '';
     document.getElementById('ins-pvc').style.display = '';
     document.getElementById('ins-steel').style.display = '';
-    opts.className = 'ins-options two-col';
+    insOptions.className = 'ins-options three-col';
   }
 }
 
-function pickIns(el, ins, colorClass) {
-  document.querySelectorAll('.ins-card').forEach(c=>c.classList.remove('selected'));
+function pickIns(el, ins) {
+  document.querySelectorAll('.ins-card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
   state.insulation = ins;
-  document.getElementById('n3').disabled = false;
+  if (state.style) document.getElementById('n3').disabled = false;
 }
 
 function currentStep() {
-  const steps = ['step1','step2','step3','step3b','step4','step4b','step5','stepResults','stepCustomDone'];
-  for(let s of steps) { const el = document.getElementById(s); if(el&&el.classList.contains('active')) return s.replace('step',''); }
+  const steps = ['step1','step2','step3','step4','step5'];
+  for (let s of steps) {
+    const el = document.getElementById(s);
+    if (el && el.classList.contains('active')) return s.replace('step','');
+  }
   return '1';
 }
 
-function go(n) {
-  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
-  const id = String(n);
-  const el = document.getElementById('step' + id) || document.getElementById('stepResults') ;
-  if(id === 'Results') document.getElementById('stepResults').classList.add('active');
-  else if(document.getElementById('step'+id)) document.getElementById('step'+id).classList.add('active');
-
-  // Progress
-  const stepMap = {'1':14,'2':28,'3':42,'3b':42,'4':70,'4b':70,'5':85,'Results':100,'CustomDone':100};
-  const pct = stepMap[id] || 14;
-  document.getElementById('progress').style.width = pct + '%';
-
-  // If going to step 3, check if custom style
-  if(id === '3' && customStyles.includes(state.style)) {
-    document.getElementById('n3').disabled = false;
-  }
-
-  window.scrollTo({top:0, behavior:'smooth'});
-}
-
-// Override go for special cases
-const origGo = go;
 window.go = function(n) {
   const id = String(n);
-  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
-
-  let target = 'step' + id;
-  if(id === '4' && customStyles.includes(state.style)) target = 'step3b'; // redirect custom to consultation
-  if(id === 'Results') target = 'stepResults';
-  if(id === 'CustomDone') target = 'stepCustomDone';
-
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  const target = id === 'Results' ? 'stepResults' : 'step' + id;
   const el = document.getElementById(target);
-  if(el) el.classList.add('active');
-
-  const stepMap = {'1':14,'2':28,'3':42,'3b':42,'4':56,'4b':70,'5':85,'Results':100,'CustomDone':100};
+  if (el) el.classList.add('active');
+  const stepMap = {'1':14,'2':28,'3':42,'4':60,'5':80,'Results':100};
   document.getElementById('progress').style.width = (stepMap[id]||14) + '%';
   window.scrollTo({top:0, behavior:'smooth'});
 };
 
+// ─── Photo / Composer ───
 function handlePhoto(input) {
-  if(!input.files||!input.files[0]) return;
-  const r = new FileReader();
-  r.onload = e => {
+  if (!input.files || !input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
     state.photoDataUrl = e.target.result;
-    document.getElementById('previewImg').src = e.target.result;
-    document.getElementById('photoPreview').style.display = 'block';
+    document.getElementById('uploadArea').style.display = 'none';
+    document.getElementById('composerSection').style.display = 'block';
+    initComposer(e.target.result);
   };
-  r.readAsDataURL(input.files[0]);
+  reader.readAsDataURL(input.files[0]);
 }
 
-function getPriceRange(ins) {
-  const bays = state.bays || 'single';
-  return ranges[ins] ? ranges[ins][bays] : null;
+function initComposer(photoSrc) {
+  const canvas = document.getElementById('composerCanvas');
+  bgImg = new Image();
+  bgImg.onload = () => {
+    cW = bgImg.width; cH = bgImg.height;
+    canvas.width = cW; canvas.height = cH;
+    loadDoorImg(overlayImages[state.style], stylePhotos[state.style]);
+  };
+  bgImg.src = photoSrc;
+
+  canvas.addEventListener('mousedown', e => startDrag(e.clientX, e.clientY, canvas));
+  canvas.addEventListener('mousemove', e => moveDrag(e.clientX, e.clientY, canvas));
+  canvas.addEventListener('mouseup', () => isDragging = false);
+  canvas.addEventListener('mouseleave', () => isDragging = false);
+  canvas.addEventListener('touchstart', e => { e.preventDefault(); startDrag(e.touches[0].clientX, e.touches[0].clientY, canvas); }, {passive:false});
+  canvas.addEventListener('touchmove', e => { e.preventDefault(); moveDrag(e.touches[0].clientX, e.touches[0].clientY, canvas); }, {passive:false});
+  canvas.addEventListener('touchend', () => isDragging = false);
 }
 
-function formatRange(ins) {
-  const r = getPriceRange(ins);
-  if(!r) return 'Quote on visit';
-  return '$' + r[0].toLocaleString() + ' – $' + r[1].toLocaleString();
+function loadDoorImg(primary, fallback) {
+  doorImg = new Image();
+  doorImg.crossOrigin = 'anonymous';
+  doorImg.onload = () => {
+    const scale = parseInt(document.getElementById('doorSizeSlider').value) / 100;
+    const dW = cW * scale;
+    doorX = (cW - dW) / 2;
+    doorY = cH * 0.45;
+    redrawCanvas();
+  };
+  doorImg.onerror = () => { if (fallback) { doorImg.src = fallback; } };
+  doorImg.src = primary;
 }
 
+function getDoorDims() {
+  if (!doorImg) return {w:0,h:0};
+  const scale = parseInt(document.getElementById('doorSizeSlider').value) / 100;
+  const w = cW * scale;
+  const h = doorImg.height * (w / doorImg.width);
+  return {w, h};
+}
+
+function redrawCanvas() {
+  const canvas = document.getElementById('composerCanvas');
+  const ctx = canvas.getContext('2d');
+  document.getElementById('sizeLabel').textContent = document.getElementById('doorSizeSlider').value + '%';
+  if (!bgImg) return;
+  ctx.clearRect(0,0,cW,cH);
+  ctx.drawImage(bgImg,0,0,cW,cH);
+  if (doorImg && doorImg.complete && doorImg.naturalWidth > 0) {
+    const {w,h} = getDoorDims();
+    ctx.drawImage(doorImg, doorX, doorY, w, h);
+    ctx.strokeStyle = 'rgba(255,255,255,0.75)';
+    ctx.lineWidth = Math.max(2, cW*0.003);
+    ctx.setLineDash([8,5]);
+    ctx.strokeRect(doorX, doorY, w, h);
+    ctx.setLineDash([]);
+  }
+}
+
+function toCanvasXY(clientX, clientY, canvas) {
+  const r = canvas.getBoundingClientRect();
+  return { x: (clientX-r.left)*(cW/r.width), y: (clientY-r.top)*(cH/r.height) };
+}
+
+function hitsDoor(cx, cy) {
+  const {w,h} = getDoorDims();
+  return cx >= doorX && cx <= doorX+w && cy >= doorY && cy <= doorY+h;
+}
+
+function startDrag(clientX, clientY, canvas) {
+  const p = toCanvasXY(clientX, clientY, canvas);
+  if (hitsDoor(p.x,p.y)) { isDragging=true; dragOffX=p.x-doorX; dragOffY=p.y-doorY; }
+}
+
+function moveDrag(clientX, clientY, canvas) {
+  if (!isDragging) return;
+  const p = toCanvasXY(clientX, clientY, canvas);
+  doorX = p.x - dragOffX; doorY = p.y - dragOffY;
+  redrawCanvas();
+}
+
+function savePreview() {
+  const tmp = document.createElement('canvas');
+  tmp.width = cW; tmp.height = cH;
+  const ctx = tmp.getContext('2d');
+  ctx.drawImage(bgImg,0,0,cW,cH);
+  if (doorImg) { const {w,h}=getDoorDims(); ctx.drawImage(doorImg,doorX,doorY,w,h); }
+  state.compositeDataUrl = tmp.toDataURL('image/jpeg',0.92);
+  const a = document.createElement('a');
+  a.href = state.compositeDataUrl; a.download='my-door-preview.jpg'; a.click();
+}
+
+// ─── Pricing ───
+function getRange() {
+  const stylePrices = prices[state.style];
+  if (!stylePrices) return null;
+  return stylePrices[state.insulation] || null;
+}
+
+function formatRange(r) {
+  if (!r) return 'Quote on visit';
+  return '$' + r.min.toLocaleString() + ' – $' + r.max.toLocaleString();
+}
+
+// ─── Results ───
 function showResults(name) {
-  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
   document.getElementById('stepResults').classList.add('active');
   document.getElementById('progress').style.width = '100%';
   document.getElementById('progressLabel').textContent = 'Complete';
-
   document.getElementById('resultsName').textContent = "Here's your estimate, " + name.split(' ')[0] + "!";
 
-  if(state.photoDataUrl) {
-    document.getElementById('yourHomePhoto').src = state.photoDataUrl;
-    document.getElementById('doorStylePhoto').src = stylePhotos[state.style] || '';
-    document.getElementById('doorStyleLabel').textContent = styleNames[state.style] || 'Your selected style';
-    document.getElementById('photoCompare').style.display = 'grid';
+  // Show composite on results
+  const previewSrc = state.compositeDataUrl || state.photoDataUrl;
+  if (previewSrc) {
+    const rc = document.getElementById('resultsCanvas');
+    const img = new Image();
+    img.onload = () => { rc.width=img.width; rc.height=img.height; rc.getContext('2d').drawImage(img,0,0); };
+    img.src = previewSrc;
+    document.getElementById('resultsPreviewWrap').style.display = 'block';
   }
 
-  // Price cards - only show relevant insulation tiers
   const isFlush = state.style === 'flush';
-  const tierConfig = isFlush ? [
-    { label:'Skyline Flush', ins:'steelback', emoji:'🏆', tierClass:'pre', topBadge:'Your selection', badge:null,
-      features:['Premium Steelback insulation','Maximum energy efficiency','Quietest operation','Modern flat panel look','White & Almond colors'] }
+  const tiers = isFlush ? [
+    { label:'Skyline Flush', ins:'steelback', emoji:'🏆', cls:'pre',
+      badge:'Steelback included',
+      features:['Premium Steelback insulation','Maximum energy efficiency','Smooth modern flat panel','White color'] }
   ] : [
-    { label:'Economy', ins:'noninsulated', emoji:'🚪', tierClass:'eco', topBadge:null, badge:null,
-      features:['Durable steel construction','White & Almond colors','Standard installation included','Great for detached garages'] },
-    { label:'Popular', ins:'pvcinsulated', emoji:'🏠', tierClass:'pop', topBadge:'⭐ Most popular', badge:'Best value',
+    { label:'Economy', ins:'noninsulated', emoji:'🚪', cls:'eco', badge:null,
+      features:['Durable steel construction','Standard installation included','Great for detached garages'] },
+    { label:'Popular', ins:'pvcinsulated', emoji:'🏠', cls:'pop', badge:'⭐ Most popular',
       features:['Everything in Economy','PVC insulation layer','Lower energy bills','Quieter operation'] },
-    { label:'Premium', ins:'steelback', emoji:'🏆', tierClass:'pre', topBadge:null, badge:null,
+    { label:'Premium', ins:'steelback', emoji:'🏆', cls:'pre', badge:null,
       features:['Everything in Popular','Full Steelback insulation','Maximum durability','Best energy efficiency'] }
   ];
 
-  document.getElementById('priceCards').innerHTML = tierConfig.map((t,i) => {
-    const isRec = t.topBadge && t.topBadge.includes('Most popular');
-    return `<div class="price-card${isRec?' recommended':''}">
-      ${t.topBadge ? `<div class="price-top-badge">${t.topBadge}</div>` : ''}
+  const pc = document.getElementById('priceCards');
+  pc.className = isFlush ? 'price-cards one' : 'price-cards three';
+  pc.innerHTML = tiers.map(t => {
+    const r = prices[state.style]?.[t.ins];
+    const rec = t.badge && t.badge.includes('Most popular');
+    return `<div class="price-card${rec?' recommended':''}">
+      ${t.badge ? `<div class="price-top-badge">${t.badge}</div>` : ''}
       <span class="price-emoji">${t.emoji}</span>
-      <div class="price-tier ${t.tierClass}">${t.label}</div>
-      ${t.badge ? `<span class="price-badge">${t.badge}</span>` : ''}
-      <div class="price-range">${formatRange(t.ins)}</div>
-      <div class="price-note">installed, all sizes</div>
+      <div class="price-tier ${t.cls}">${t.label}</div>
+      <div class="price-range">${formatRange(r)}</div>
+      <div class="price-note">installed · all in</div>
       <div class="price-features">${t.features.map(f=>`<div><span class="price-check">✓</span>${f}</div>`).join('')}</div>
     </div>`;
   }).join('');
 
   const baysMap = {single:'Single car',double:'Double car',twodoors:'Two separate doors'};
   const needMap = {replace:'Replace existing',new:'New installation',repair:'Repair / service'};
-  const insMap = {noninsulated:'Non-Insulated',pvcinsulated:'PVC Insulated',steelback:'Steelback Insulated'};
-  const rows = [
+  const insMap = {noninsulated:'Non-Insulated',pvcinsulated:'PVC Insulated',steelback:'Steelback'};
+  const sizeVal = document.getElementById('doorSize').value;
+
+  document.getElementById('summaryBox').innerHTML = [
     ['Service', needMap[state.need]||'—'],
     ['Garage', baysMap[state.bays]||'—'],
     ['Door style', styleNames[state.style]||'—'],
+    ['Color', state.color||'—'],
     ['Insulation', insMap[state.insulation]||'—'],
+    ['Size', sizeVal && sizeVal !== 'other' ? sizeVal + ' ft' : (sizeVal === 'other' ? 'Non-standard / TBD' : 'Not provided')],
     ['Installation', 'Included in all prices'],
     ['Measurement visit', 'Free — no obligation'],
-  ];
-  document.getElementById('summaryBox').innerHTML = rows.map(([l,v])=>
-    `<div class="summary-row"><span>${l}</span><span>${v}</span></div>`).join('');
+  ].map(([l,v]) => `<div class="summary-row"><span>${l}</span><span>${v}</span></div>`).join('');
 
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
+// ─── Submit ───
 async function submitLead() {
-  const firstName = document.getElementById('firstName').value.trim();
-  const lastName = document.getElementById('lastName').value.trim();
+  const fn = document.getElementById('firstName').value.trim();
+  const ln = document.getElementById('lastName').value.trim();
   const phone = document.getElementById('phone').value.trim();
   const email = document.getElementById('email').value.trim();
   const address = document.getElementById('address').value.trim();
   const notes = document.getElementById('notes').value.trim();
-  if(!firstName||!phone) { document.getElementById('errorMsg').style.display='block'; return; }
-  document.getElementById('errorMsg').style.display='none';
+  const sizeVal = document.getElementById('doorSize').value;
+
+  if (!fn || !phone) { document.getElementById('errorMsg').style.display='block'; return; }
+  document.getElementById('errorMsg').style.display = 'none';
   document.getElementById('loadingOverlay').classList.add('visible');
 
-  const baysMap = {single:'Single car',double:'Double car',twodoors:'Two separate doors'};
-  const needMap = {replace:'Replace existing door',new:'New installation',repair:'Repair or service'};
-  const insMap = {noninsulated:'Non-Insulated',pvcinsulated:'PVC Insulated',steelback:'Steelback Insulated'};
-  const range = getPriceRange(state.insulation);
-  const rangeStr = range ? '$'+range[0].toLocaleString()+' – $'+range[1].toLocaleString() : 'TBD';
+  const insMap = {noninsulated:'Non-Insulated',pvcinsulated:'PVC Insulated',steelback:'Steelback'};
+  const r = getRange();
+  const rangeStr = r ? '$'+r.min.toLocaleString()+' – $'+r.max.toLocaleString() : 'TBD';
 
   try {
     await fetch(WEBHOOK, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
+      method: 'POST', headers: {'Content-Type':'application/json'},
       body: JSON.stringify({
-        fullName: firstName+' '+lastName, phone, email, address,
-        service: needMap[state.need]||'',
-        garageType: baysMap[state.bays]||'',
+        fullName: fn+' '+ln, phone, email, address,
+        service: {replace:'Replace existing door',new:'New installation',repair:'Repair or service'}[state.need]||'',
+        garageType: {single:'Single car',double:'Double car',twodoors:'Two separate doors'}[state.bays]||'',
         doorStyle: styleNames[state.style]||'',
+        color: state.color||'',
         insulation: insMap[state.insulation]||'',
+        doorSize: sizeVal && sizeVal !== 'other' ? sizeVal+' ft' : (sizeVal==='other'?'Non-standard':'Not provided'),
         estimatedRange: rangeStr,
-        notes, leadSource:'Website Estimator'
+        notes, leadSource: 'Website Estimator'
       })
     });
-    showResults(firstName+' '+lastName);
+    showResults(fn+' '+ln);
   } catch(e) {
     alert('Something went wrong. Please call us at (925) 316-8384');
   }
   document.getElementById('loadingOverlay').classList.remove('visible');
-}
-
-async function submitCustomLead() {
-  const firstName = document.getElementById('firstName2').value.trim();
-  const lastName = document.getElementById('lastName2').value.trim();
-  const phone = document.getElementById('phone2').value.trim();
-  const email = document.getElementById('email2').value.trim();
-  const address = document.getElementById('address2').value.trim();
-  const notes = document.getElementById('notes2').value.trim();
-  if(!firstName||!phone) { document.getElementById('errorMsg2').style.display='block'; return; }
-  document.getElementById('errorMsg2').style.display='none';
-  document.getElementById('loadingOverlay').classList.add('visible');
-
-  const baysMap = {single:'Single car',double:'Double car',twodoors:'Two separate doors'};
-  const needMap = {replace:'Replace existing door',new:'New installation',repair:'Repair or service'};
-
-  try {
-    await fetch(WEBHOOK, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        fullName: firstName+' '+lastName, phone, email, address,
-        service: needMap[state.need]||'',
-        garageType: baysMap[state.bays]||'',
-        doorStyle: styleNames[state.style]||'',
-        insulation: 'Custom — consultation needed',
-        estimatedRange: 'Custom order — requires consultation',
-        notes, leadSource:'Website Estimator — Custom Door'
-      })
-    });
-    document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
-    document.getElementById('stepCustomDone').classList.add('active');
-    document.getElementById('progress').style.width='100%';
-  } catch(e) {
-    alert('Something went wrong. Please call us at (925) 316-8384');
-  }
-  document.getElementById('loadingOverlay').classList.remove('visible');
-  window.scrollTo({top:0,behavior:'smooth'});
 }
 </script>
 </body>
