@@ -145,7 +145,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .cta-sub { font-size: 12px; color: #aaa; margin-bottom: 1rem; line-height: 1.5; }
 .cta-btn { display: inline-block; background: #fff; color: #1a1a1a; border: none; border-radius: 8px; padding: 10px 24px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; text-decoration: none; }
 
-.loading-overlay { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.9); z-index: 999; align-items: center; justify-content: center; flex-direction: column; gap: 12px; }
+.btn-start-over { background: none; border: none; font-size: 11px; color: #bbb; cursor: pointer; font-family: inherit; padding: 4px 8px; border-radius: 6px; }
+.btn-start-over:hover { color: #888; background: #f5f5f3; }
+
 .loading-overlay.visible { display: flex; }
 .spinner { width: 32px; height: 32px; border: 2px solid #eee; border-top-color: #1a1a1a; border-radius: 50%; animation: spin 0.7s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -165,10 +167,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <div class="brand-logo">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 10.5L12 3L21 10.5V21H15V15H9V21H3V10.5Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
     </div>
-    <div>
+    <div style="flex:1;">
       <div class="brand-text">Generational Garage Doors</div>
       <div class="brand-sub">Free instant estimate — no obligation</div>
     </div>
+    <button class="btn-start-over" onclick="startOver()" id="startOverBtn" style="display:none;">↺ Start over</button>
   </div>
 
   <div class="progress-wrap">
@@ -548,9 +551,28 @@ window.go = function(n) {
   if (el) el.classList.add('active');
   const stepMap = {'1':14,'2':28,'3':42,'4':60,'5':80,'Results':100};
   document.getElementById('progress').style.width = (stepMap[id]||14) + '%';
+  document.getElementById('startOverBtn').style.display = id === '1' ? 'none' : 'inline-block';
   window.scrollTo({top:0, behavior:'smooth'});
   if(id === '4') setTimeout(() => selectSampleHome(0), 100);
 };
+
+function startOver() {
+  // Reset all state
+  state.need = null; state.bays = null; state.style = null;
+  state.color = null; state.insulation = null;
+  state.photoDataUrl = null; state.compositeDataUrl = null;
+  // Reset UI selections
+  document.querySelectorAll('.option-card,.bay-card,.door-card,.ins-card,.color-chip').forEach(el => el.classList.remove('selected'));
+  document.querySelectorAll('.btn-next[id]').forEach(btn => btn.disabled = true);
+  document.getElementById('insSelector').classList.remove('visible');
+  document.getElementById('colorSection').style.display = 'none';
+  // Reset form fields
+  ['firstName','lastName','phone','email','address','notes'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = '';
+  });
+  document.getElementById('doorSize').value = '';
+  go(1);
+}
 
 // ─── Visualizer ───
 const sampleHomes = [
