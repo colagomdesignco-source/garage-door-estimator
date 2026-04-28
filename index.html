@@ -554,10 +554,10 @@ window.go = function(n) {
 
 // ─── Visualizer ───
 const sampleHomes = [
-  { file:'home1.jpg', label:'Stucco', door:{x:0.12,y:0.38,w:0.76,h:0.42} },
-  { file:'home2.jpg', label:'Craftsman', door:{x:0.09,y:0.40,w:0.82,h:0.42} },
-  { file:'home3.jpg', label:'Stone accent', door:{x:0.08,y:0.33,w:0.84,h:0.50} },
-  { file:'home4.jpg', label:'Modern', door:{x:0.10,y:0.32,w:0.80,h:0.48} },
+  { file:'home1.jpg', label:'Stucco', door:{x:0.13,y:0.52,w:0.74,h:0.32} },
+  { file:'home2.jpg', label:'Craftsman', door:{x:0.10,y:0.55,w:0.80,h:0.30} },
+  { file:'home3.jpg', label:'Stone accent', door:{x:0.09,y:0.45,w:0.82,h:0.38} },
+  { file:'home4.jpg', label:'Modern', door:{x:0.12,y:0.42,w:0.76,h:0.35} },
 ];
 
 const colorMap = {
@@ -626,18 +626,45 @@ function adjBright(hex, amt) {
 }
 
 function drawRaisedPanelDoor(ctx, x, y, w, h, color) {
-  const rows=4, cols=2, m=w*0.015, sw=w/cols, sh=h/rows;
+  const rows=4, cols=2, m=w*0.012, sw=w/cols, sh=h/rows;
+  // Main door face
   ctx.fillStyle = color;
   ctx.fillRect(x,y,w,h);
-  for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) {
-    const px=x+c*sw+m*2, py=y+r*sh+m*2, pw=sw-m*4, ph=sh-m*4, dep=Math.max(3,w*0.006);
-    ctx.fillStyle = adjBright(color,-8); ctx.fillRect(px,py,pw,ph);
-    ctx.fillStyle = adjBright(color,20); ctx.fillRect(px,py,pw,dep); ctx.fillRect(px,py,dep,ph);
-    ctx.fillStyle = adjBright(color,-25); ctx.fillRect(px,py+ph-dep,pw,dep); ctx.fillRect(px+pw-dep,py,dep,ph);
-    ctx.fillStyle = adjBright(color,5); ctx.fillRect(px+dep,py+dep,pw-dep*2,ph-dep*2);
+  // Subtle shadow on right and bottom edges for depth
+  const grad = ctx.createLinearGradient(x,y,x+w,y);
+  grad.addColorStop(0, 'rgba(0,0,0,0.04)');
+  grad.addColorStop(1, 'rgba(0,0,0,0.12)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(x,y,w,h);
+  // Horizontal panel seams
+  for(let r=1;r<rows;r++){
+    ctx.beginPath();ctx.moveTo(x+w*0.01,y+r*sh);ctx.lineTo(x+w*0.99,y+r*sh);
+    ctx.strokeStyle='rgba(0,0,0,0.18)';ctx.lineWidth=Math.max(1.5,h*0.004);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(x+w*0.01,y+r*sh+1.5);ctx.lineTo(x+w*0.99,y+r*sh+1.5);
+    ctx.strokeStyle='rgba(255,255,255,0.25)';ctx.lineWidth=1;ctx.stroke();
   }
-  for(let r=1;r<rows;r++){ctx.beginPath();ctx.moveTo(x,y+r*sh);ctx.lineTo(x+w,y+r*sh);ctx.strokeStyle=adjBright(color,-20);ctx.lineWidth=1;ctx.stroke();}
-  ctx.strokeStyle=adjBright(color,-35);ctx.lineWidth=2;ctx.strokeRect(x+1,y+1,w-2,h-2);
+  // Raised panels
+  for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) {
+    const px=x+c*sw+m*2.5, py=y+r*sh+m*2, pw=sw-m*5, ph=sh-m*4;
+    const dep=Math.max(2.5,w*0.004);
+    // Panel recess
+    ctx.fillStyle=adjBright(color,-6); ctx.fillRect(px,py,pw,ph);
+    // Top highlight
+    ctx.fillStyle=adjBright(color,18); ctx.fillRect(px,py,pw,dep);
+    // Left highlight
+    ctx.fillStyle=adjBright(color,12); ctx.fillRect(px,py+dep,dep,ph-dep);
+    // Bottom shadow
+    ctx.fillStyle=adjBright(color,-22); ctx.fillRect(px,py+ph-dep,pw,dep);
+    // Right shadow
+    ctx.fillStyle=adjBright(color,-18); ctx.fillRect(px+pw-dep,py+dep,dep,ph-dep*2);
+    // Panel face
+    ctx.fillStyle=adjBright(color,3); ctx.fillRect(px+dep,py+dep,pw-dep*2,ph-dep*2);
+  }
+  // Outer door frame
+  ctx.strokeStyle=adjBright(color,-28);ctx.lineWidth=Math.max(2,w*0.004);ctx.strokeRect(x+1,y+1,w-2,h-2);
+  // Center vertical divider line
+  ctx.beginPath();ctx.moveTo(x+w/2,y+h*0.02);ctx.lineTo(x+w/2,y+h*0.98);
+  ctx.strokeStyle=adjBright(color,-20);ctx.lineWidth=Math.max(1.5,w*0.003);ctx.stroke();
 }
 
 function drawFlushDoor(ctx, x, y, w, h, color) {
