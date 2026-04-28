@@ -63,6 +63,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .color-dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid #ddd; flex-shrink: 0; }
 .dot-white { background: #fff; }
 .dot-almond { background: #f5e6c8; }
+.dot-black { background: #1a1a1a; }
 
 /* Insulation cards */
 .ins-selector { display: none; margin-bottom: 1.25rem; }
@@ -425,7 +426,7 @@ const prices = {
 // Colors available per style
 const styleColors = {
   raised:   ['White', 'Almond'],
-  flush:    ['White'],
+  flush:    ['White', 'Black'],
   carriage: ['White']
 };
 
@@ -472,7 +473,8 @@ function pickStyle(el, styleId) {
   colors.forEach(c => {
     const chip = document.createElement('div');
     chip.className = 'color-chip';
-    chip.innerHTML = `<div class="color-dot ${c === 'White' ? 'dot-white' : 'dot-almond'}"></div>${c}`;
+    const dotClass = c === 'White' ? 'dot-white' : c === 'Almond' ? 'dot-almond' : 'dot-black';
+    chip.innerHTML = `<div class="color-dot ${dotClass}"></div>${c}`;
     chip.onclick = () => {
       document.querySelectorAll('.color-chip').forEach(ch => ch.classList.remove('selected'));
       chip.classList.add('selected');
@@ -481,12 +483,20 @@ function pickStyle(el, styleId) {
     colorOptions.appendChild(chip);
   });
 
-  // Auto-select if only one color
+  // Auto-select if only one color, otherwise require selection
   if (colors.length === 1) {
     colorOptions.firstChild.classList.add('selected');
     state.color = colors[0];
   }
   colorSection.style.display = 'block';
+
+  // Update chip onclick to also check if n3 should enable
+  colorOptions.querySelectorAll('.color-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      if (state.style && state.insulation) document.getElementById('n3').disabled = false;
+      else if (state.style === 'flush') document.getElementById('n3').disabled = false;
+    });
+  });
 
   // Show insulation
   const insSelector = document.getElementById('insSelector');
