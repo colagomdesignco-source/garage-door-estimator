@@ -870,6 +870,8 @@ function pickInsertStyle(el, val) {
   state.insertStyle = val;
   drawGlassViz();
 }
+
+function pickAddonGlass(el, val) {
   el.closest('.option-grid').querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
   state.addGlass = val;
