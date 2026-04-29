@@ -1001,8 +1001,8 @@ function drawHouseScene() {
   // Porch light above door
   drawLight2(ctx, fdX+fdW/2, fdY-18);
 
-  // ── Windows on garage section left wall ──
-  drawWindow2(ctx, hX+14, hY+hH*0.10, 55, 48);
+  // ── Small window far left above garage ──
+  drawWindow2(ctx, hX+10, hY+hH*0.05, 50, 42);
 
   // ── Bushes / landscaping ──
   drawBush2(ctx, gX-20, H*0.695, 22);
@@ -1017,10 +1017,6 @@ function drawHouseScene() {
     ctx.beginPath(); ctx.arc(eX+eW*0.12+i*14, H*0.700, 5, 0, Math.PI*2); ctx.fill();
     ctx.fillStyle='#5a8040'; ctx.fillRect(eX+eW*0.12+i*14-1,H*0.705,2,8);
   }
-
-  // House number
-  ctx.fillStyle='#888'; ctx.font='bold 13px Arial'; ctx.textAlign='center';
-  ctx.fillText('YOUR HOME', fdX+fdW/2, fdY-30);
 
   // Summary text
   const sN={raised:'Raised Panel',flush:'Skyline Flush',carriage:'Carriage Stamp'};
