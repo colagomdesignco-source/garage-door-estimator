@@ -505,6 +505,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
       </div>
     </div>
     <div class="error-msg" id="errorMsg">Please enter your name and phone number.</div>
+    <!-- Honeypot — hidden from humans, bots will fill this in -->
+    <div style="position:absolute;left:-9999px;top:-9999px;opacity:0;height:0;overflow:hidden;" aria-hidden="true">
+      <input type="text" id="hp_website" name="website" tabindex="-1" autocomplete="off">
+      <input type="text" id="hp_company" name="company" tabindex="-1" autocomplete="off">
+    </div>
     <div class="form-row">
       <div class="form-group"><label>First name *</label><input type="text" id="firstName" placeholder="John"></div>
       <div class="form-group"><label>Last name *</label><input type="text" id="lastName" placeholder="Smith"></div>
@@ -1421,7 +1426,39 @@ function showResults(name) {
 }
 
 // ─── Submit ───
+// ─── Spam protection ───
+const _formLoadTime = Date.now();
+let _lastSubmitTime = 0;
+let _submitCount = 0;
+
 async function submitLead() {
+  // 1. Honeypot check — bots fill hidden fields
+  const hp1 = document.getElementById('hp_website').value;
+  const hp2 = document.getElementById('hp_company').value;
+  if (hp1 || hp2) {
+    // Silently fake success — don't let bot know it was blocked
+    showResults('there');
+    return;
+  }
+
+  // 2. Minimum time check — humans take at least 8 seconds to fill a form
+  const timeOnForm = Date.now() - _formLoadTime;
+  if (timeOnForm < 8000) {
+    showResults('there');
+    return;
+  }
+
+  // 3. Rate limit — max 2 submissions per session
+  _submitCount++;
+  if (_submitCount > 2) {
+    showResults('there');
+    return;
+  }
+
+  // 4. Cooldown — prevent double-clicks (5 second cooldown)
+  const now = Date.now();
+  if (now - _lastSubmitTime < 5000) return;
+  _lastSubmitTime = now;
   const fn = document.getElementById('firstName').value.trim();
   const ln = document.getElementById('lastName').value.trim();
   const phone = document.getElementById('phone').value.trim();
@@ -1464,6 +1501,7 @@ async function submitLead() {
     await fetch(WEBHOOK, {
       method: 'POST', headers: {'Content-Type':'application/json'},
       body: JSON.stringify({
+        subject: `New Lead — ${fn} ${ln} — ${({replace:'Door Replace',new:'New Install',repair:'Repair'}[state.need]||'Estimate')}`,
         fullName: fn+' '+ln, phone, email, address,
         service: {replace:'Replace existing door',new:'New installation',repair:'Repair or service'}[state.need]||'',
         repairType: state.repairType||'',
