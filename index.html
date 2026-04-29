@@ -872,62 +872,157 @@ const colorMap = {
 function drawHouseScene() {
   const canvas = document.getElementById('vizCanvas');
   if (!canvas) return;
-  const W=800, H=500;
+  const W=800, H=480;
   canvas.width=W; canvas.height=H;
   const ctx=canvas.getContext('2d');
-  // Sky
-  const sky=ctx.createLinearGradient(0,0,0,H*0.72);
-  sky.addColorStop(0,'#c8dff0'); sky.addColorStop(1,'#deeaf5');
-  ctx.fillStyle=sky; ctx.fillRect(0,0,W,H*0.72);
-  // Ground
-  const gnd=ctx.createLinearGradient(0,H*0.72,0,H);
-  gnd.addColorStop(0,'#8aab7a'); gnd.addColorStop(1,'#6e8f5e');
-  ctx.fillStyle=gnd; ctx.fillRect(0,H*0.72,W,H*0.28);
-  // Driveway
-  ctx.fillStyle='#c8c0b0';
+
+  // Sky gradient
+  const sky=ctx.createLinearGradient(0,0,0,H*0.68);
+  sky.addColorStop(0,'#87CEEB'); sky.addColorStop(0.6,'#c8dff0'); sky.addColorStop(1,'#deeaf5');
+  ctx.fillStyle=sky; ctx.fillRect(0,0,W,H*0.68);
+
+  // Distant tree line
+  ctx.fillStyle='#6a9458';
+  for(let i=0;i<12;i++){
+    const tx=i*(W/11), th=40+Math.sin(i*1.7)*15;
+    ctx.beginPath(); ctx.moveTo(tx,H*0.68); ctx.lineTo(tx-18,H*0.68-th); ctx.lineTo(tx+18,H*0.68-th); ctx.closePath(); ctx.fill();
+  }
+
+  // Ground / lawn
+  const gnd=ctx.createLinearGradient(0,H*0.68,0,H);
+  gnd.addColorStop(0,'#7a9e6a'); gnd.addColorStop(1,'#5a7e4a');
+  ctx.fillStyle=gnd; ctx.fillRect(0,H*0.68,W,H*0.32);
+
+  // Driveway — left side leading to garage
+  ctx.fillStyle='#b8b4a8';
   ctx.beginPath();
-  ctx.moveTo(W*0.24,H*0.72); ctx.lineTo(W*0.76,H*0.72);
-  ctx.lineTo(W*0.88,H); ctx.lineTo(W*0.12,H);
+  ctx.moveTo(W*0.05,H*0.68); ctx.lineTo(W*0.48,H*0.68);
+  ctx.lineTo(W*0.58,H); ctx.lineTo(0,H);
   ctx.closePath(); ctx.fill();
-  ctx.strokeStyle='#b8b0a0'; ctx.lineWidth=1.5; ctx.setLineDash([18,14]);
-  ctx.beginPath(); ctx.moveTo(W*0.5,H*0.72); ctx.lineTo(W*0.5,H); ctx.stroke();
+  // Driveway texture lines
+  ctx.strokeStyle='#a8a49a'; ctx.lineWidth=1; ctx.setLineDash([20,18]);
+  ctx.beginPath(); ctx.moveTo(W*0.15,H*0.68); ctx.lineTo(W*0.08,H); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(W*0.30,H*0.68); ctx.lineTo(W*0.22,H); ctx.stroke();
   ctx.setLineDash([]);
-  // House body
-  const hX=W*0.10, hY=H*0.26, hW=W*0.80, hH=H*0.47;
-  ctx.fillStyle='#e8e0d0'; ctx.fillRect(hX,hY,hW,hH);
-  const wg=ctx.createLinearGradient(hX,hY,hX+hW,hY);
-  wg.addColorStop(0,'rgba(0,0,0,0.05)'); wg.addColorStop(1,'rgba(0,0,0,0.08)');
+
+  // Walkway to front door — right side
+  ctx.fillStyle='#c4bfb4';
+  ctx.beginPath();
+  ctx.moveTo(W*0.68,H*0.68); ctx.lineTo(W*0.78,H*0.68);
+  ctx.lineTo(W*0.82,H*0.82); ctx.lineTo(W*0.64,H*0.82);
+  ctx.closePath(); ctx.fill();
+
+  // ── House body ──
+  // Main house — full width ranch style
+  const hX=W*0.04, hY=H*0.20, hW=W*0.92, hH=H*0.50;
+  ctx.fillStyle='#e2d8c8'; ctx.fillRect(hX,hY,hW,hH);
+
+  // Wall texture / shadow gradient
+  const wg=ctx.createLinearGradient(hX,hY,hX,hY+hH);
+  wg.addColorStop(0,'rgba(255,255,255,0.08)'); wg.addColorStop(1,'rgba(0,0,0,0.12)');
   ctx.fillStyle=wg; ctx.fillRect(hX,hY,hW,hH);
-  // Roof
-  ctx.fillStyle='#4a3a2a';
-  ctx.beginPath(); ctx.moveTo(hX-25,hY+10); ctx.lineTo(W*0.5,H*0.04); ctx.lineTo(hX+hW+25,hY+10); ctx.closePath(); ctx.fill();
-  ctx.fillStyle='rgba(0,0,0,0.18)';
-  ctx.beginPath(); ctx.moveTo(W*0.5,H*0.04); ctx.lineTo(hX+hW+25,hY+10); ctx.lineTo(W*0.5,hY+10); ctx.closePath(); ctx.fill();
-  ctx.strokeStyle='#3a2a1a'; ctx.lineWidth=3;
-  ctx.beginPath(); ctx.moveTo(hX-25,hY+10); ctx.lineTo(hX+hW+25,hY+10); ctx.stroke();
-  ctx.fillStyle='#d0c8bc'; ctx.fillRect(hX-25,hY+10,hW+50,10);
-  // Side windows
-  drawWindow2(ctx,hX+14,hY+hH*0.12,65,55);
-  drawWindow2(ctx,hX+hW-79,hY+hH*0.12,65,55);
-  // Garage trim
-  const gX=hX+hW*0.06, gY=hY+hH*0.36, gW=hW*0.88, gH=hH*0.60;
-  ctx.fillStyle='#c0b8a8'; ctx.fillRect(gX-10,gY-10,gW+20,gH+10);
-  // Draw door
+
+  // Vertical siding lines
+  ctx.strokeStyle='rgba(0,0,0,0.04)'; ctx.lineWidth=1;
+  for(let i=0;i<20;i++){
+    ctx.beginPath(); ctx.moveTo(hX+i*(hW/20),hY); ctx.lineTo(hX+i*(hW/20),hY+hH); ctx.stroke();
+  }
+
+  // ── Roof ──
+  // Main roof
+  ctx.fillStyle='#3d3228';
+  ctx.beginPath();
+  ctx.moveTo(hX-30,hY+12);
+  ctx.lineTo(W*0.50,H*0.02);
+  ctx.lineTo(hX+hW+30,hY+12);
+  ctx.closePath(); ctx.fill();
+
+  // Right side smaller roof section (over entry)
+  ctx.fillStyle='#352b22';
+  ctx.beginPath();
+  ctx.moveTo(W*0.60,hY+12);
+  ctx.lineTo(W*0.73,hY-30);
+  ctx.lineTo(W*0.86,hY+12);
+  ctx.closePath(); ctx.fill();
+
+  // Roof shadow underside
+  ctx.fillStyle='rgba(0,0,0,0.20)';
+  ctx.beginPath(); ctx.moveTo(W*0.50,H*0.02); ctx.lineTo(hX+hW+30,hY+12); ctx.lineTo(W*0.50,hY+12); ctx.closePath(); ctx.fill();
+
+  // Fascia / soffit
+  ctx.fillStyle='#d0c8bc'; ctx.fillRect(hX-30,hY+10,hW+60,14);
+
+  // ── Garage section (LEFT 55% of house) ──
+  const gX=hX+hW*0.04, gY=hY+hH*0.32, gW=hW*0.52, gH=hH*0.65;
+
+  // Garage header / lintel
+  ctx.fillStyle='#c8c0b0'; ctx.fillRect(gX-8,gY-14,gW+16,14);
+
+  // Garage surround
+  ctx.fillStyle='#b8b0a0'; ctx.fillRect(gX-8,gY-14,8,gH+14); ctx.fillRect(gX+gW,gY-14,8,gH+14);
+
+  // Draw the garage door
   const color=colorMap[state.color]||'#f5f5f0';
   const style=state.style||'raised';
   if(style==='flush') drawFlushDoor(ctx,gX,gY,gW,gH,color);
   else if(style==='carriage') drawCarriageDoor(ctx,gX,gY,gW,gH,color);
   else drawRaisedPanelDoor(ctx,gX,gY,gW,gH,color);
-  // Front door
-  const fdX=hX+hW*0.84, fdY=hY+hH*0.50;
-  ctx.fillStyle='#6a3a1a'; ctx.fillRect(fdX,fdY,36,hH*0.46);
-  ctx.fillStyle='#4a2a0a'; ctx.fillRect(fdX+10,fdY+8,16,18); ctx.fillRect(fdX+10,fdY+32,16,18);
-  ctx.beginPath(); ctx.arc(fdX+30,fdY+hH*0.23,3,0,Math.PI*2); ctx.fillStyle='#c8a040'; ctx.fill();
-  // Lights
-  drawLight2(ctx,gX+4,gY-14); drawLight2(ctx,gX+gW-4,gY-14);
-  // Bushes
-  drawBush2(ctx,hX+8,H*0.705,26); drawBush2(ctx,hX+hW*0.84-18,H*0.705,24); drawBush2(ctx,hX+hW+10,H*0.705,26);
-  // Summary
+
+  // Garage light fixtures (both sides)
+  drawLight2(ctx, gX-2, gY-28);
+  drawLight2(ctx, gX+gW+2, gY-28);
+
+  // ── Entry section (RIGHT side) ──
+  const eX=hX+hW*0.62, eY=hY, eW=hW*0.32, eH=hH;
+
+  // Entry wall slightly different color
+  ctx.fillStyle='#d8d0c0'; ctx.fillRect(eX,eY,eW,eH);
+  const ewg=ctx.createLinearGradient(eX,eY,eX,eY+eH);
+  ewg.addColorStop(0,'rgba(255,255,255,0.05)'); ewg.addColorStop(1,'rgba(0,0,0,0.10)');
+  ctx.fillStyle=ewg; ctx.fillRect(eX,eY,eW,eH);
+
+  // Entry windows (two tall windows flanking door)
+  drawWindow2(ctx, eX+eW*0.05, eY+eH*0.15, eW*0.20, eH*0.38);
+  drawWindow2(ctx, eX+eW*0.75, eY+eH*0.15, eW*0.20, eH*0.38);
+
+  // Front door — centered in entry section, no overlap
+  const fdW=52, fdH=eH*0.52;
+  const fdX=eX+eW/2-fdW/2, fdY=eY+eH*0.46;
+  // Door frame
+  ctx.fillStyle='#8a6a4a'; ctx.fillRect(fdX-6,fdY-6,fdW+12,fdH+6);
+  // Door body
+  ctx.fillStyle='#5a3a1a'; ctx.fillRect(fdX,fdY,fdW,fdH);
+  // Door panels
+  ctx.fillStyle='#4a2a0a';
+  ctx.fillRect(fdX+6,fdY+8,fdW-12,fdH*0.38);
+  ctx.fillRect(fdX+6,fdY+fdH*0.45,fdW-12,fdH*0.42);
+  // Door handle
+  ctx.beginPath(); ctx.arc(fdX+fdW-10,fdY+fdH/2,4,0,Math.PI*2); ctx.fillStyle='#d4a840'; ctx.fill();
+  // Porch light above door
+  drawLight2(ctx, fdX+fdW/2, fdY-18);
+
+  // ── Windows on garage section left wall ──
+  drawWindow2(ctx, hX+14, hY+hH*0.10, 55, 48);
+
+  // ── Bushes / landscaping ──
+  drawBush2(ctx, gX-20, H*0.695, 22);
+  drawBush2(ctx, gX+gW+20, H*0.695, 24);
+  drawBush2(ctx, fdX-20, H*0.695, 20);
+  drawBush2(ctx, fdX+fdW+20, H*0.695, 20);
+  drawBush2(ctx, hX+hW+12, H*0.695, 18);
+
+  // Small flowers near entry
+  for(let i=0;i<4;i++){
+    ctx.fillStyle=['#e05050','#e08030','#e0d030','#d060c0'][i];
+    ctx.beginPath(); ctx.arc(eX+eW*0.12+i*14, H*0.700, 5, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle='#5a8040'; ctx.fillRect(eX+eW*0.12+i*14-1,H*0.705,2,8);
+  }
+
+  // House number
+  ctx.fillStyle='#888'; ctx.font='bold 13px Arial'; ctx.textAlign='center';
+  ctx.fillText('YOUR HOME', fdX+fdW/2, fdY-30);
+
+  // Summary text
   const sN={raised:'Raised Panel',flush:'Skyline Flush',carriage:'Carriage Stamp'};
   const iN={noninsulated:'Non-Insulated',pvcinsulated:'PVC Insulated',steelback:'Steelback'};
   const el=document.getElementById('vizSummary');
