@@ -197,7 +197,157 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
         <div class="opt-label">Repair or service</div><div class="opt-desc">Fix a broken door</div>
       </div>
     </div>
-    <div class="nav-row"><button class="btn-next" id="n1" onclick="go(2)" disabled>Continue</button></div>
+    <div class="nav-row"><button class="btn-next" id="n1" onclick="goFromStep1()" disabled>Continue</button></div>
+  </div>
+
+  <!-- STEP REPAIR: What needs fixing -->
+  <div id="stepRepair" class="step">
+    <div class="step-title">What needs fixing?</div>
+    <div class="step-sub">Select the service you need and we'll give you a price range right away.</div>
+    <div class="option-grid" style="grid-template-columns:repeat(2,1fr);">
+      <div class="option-card" onclick="pickRepair(this,'spring')">
+        <div class="opt-icon"><svg width="38" height="38" viewBox="0 0 40 40" fill="none"><path d="M10 12 Q15 8 20 12 Q25 16 30 12" stroke="#1a1a1a" stroke-width="1.8" fill="none"/><path d="M10 18 Q15 14 20 18 Q25 22 30 18" stroke="#1a1a1a" stroke-width="1.8" fill="none"/><path d="M10 24 Q15 20 20 24 Q25 28 30 24" stroke="#1a1a1a" stroke-width="1.8" fill="none"/></svg></div>
+        <div class="opt-label">Spring replacement</div><div class="opt-desc">Broken or worn springs</div>
+      </div>
+      <div class="option-card" onclick="pickRepair(this,'opener')">
+        <div class="opt-icon"><svg width="38" height="38" viewBox="0 0 40 40" fill="none"><rect x="8" y="14" width="24" height="16" rx="2" stroke="#1a1a1a" stroke-width="1.5" fill="none"/><circle cx="20" cy="22" r="4" stroke="#1a1a1a" stroke-width="1.5" fill="none"/><line x1="20" y1="8" x2="20" y2="14" stroke="#1a1a1a" stroke-width="1.5"/><line x1="16" y1="9" x2="18" y2="13" stroke="#888" stroke-width="1.2"/><line x1="24" y1="9" x2="22" y2="13" stroke="#888" stroke-width="1.2"/></svg></div>
+        <div class="opt-label">Opener / Motor</div><div class="opt-desc">Repair or replace opener</div>
+      </div>
+      <div class="option-card" onclick="pickRepair(this,'glass')">
+        <div class="opt-icon"><svg width="38" height="38" viewBox="0 0 40 40" fill="none"><rect x="6" y="14" width="28" height="16" rx="1" stroke="#1a1a1a" stroke-width="1.5" fill="none"/><line x1="6" y1="22" x2="34" y2="22" stroke="#aaa" stroke-width="1"/><line x1="20" y1="14" x2="20" y2="30" stroke="#aaa" stroke-width="1"/><path d="M8 16 L14 22 L8 28" stroke="#bbb" stroke-width="1.2" fill="none" stroke-dasharray="2,2"/></svg></div>
+        <div class="opt-label">Glass pane</div><div class="opt-desc">Cracked or broken glass</div>
+      </div>
+      <div class="option-card" onclick="pickRepair(this,'other')">
+        <div class="opt-icon"><svg width="38" height="38" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="12" stroke="#1a1a1a" stroke-width="1.5" fill="none"/><line x1="20" y1="13" x2="20" y2="21" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/><circle cx="20" cy="26" r="1.5" fill="#1a1a1a"/></svg></div>
+        <div class="opt-label">Other / Not sure</div><div class="opt-desc">Inspection & diagnosis</div>
+      </div>
+    </div>
+    <div class="nav-row"><button class="btn-back" onclick="go(1)">Back</button><button class="btn-next" id="nRepair" onclick="goFromRepair()" disabled>Continue</button></div>
+  </div>
+
+  <!-- STEP SPRING: Spring details -->
+  <div id="stepSpring" class="step">
+    <div class="step-title">Spring replacement</div>
+    <div class="step-sub">Select your garage type and spring size for an accurate quote.</div>
+    <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:8px;">Garage type</div>
+    <div class="bay-grid" style="grid-template-columns:1fr 1fr;margin-bottom:1.25rem;">
+      <div class="bay-card" onclick="pickSpring(this,'size','single')">
+        <svg viewBox="0 0 110 80"><polygon points="55,6 104,32 6,32" fill="none" stroke="#aaa" stroke-width="1.2" stroke-linejoin="round"/><rect x="6" y="32" width="98" height="42" fill="none" stroke="#aaa" stroke-width="1.2"/><rect x="22" y="40" width="66" height="28" rx="1" fill="none" stroke="#1a1a1a" stroke-width="1.8"/></svg>
+        <div class="bay-label">Single car</div><div class="bay-sub">1 spring</div>
+      </div>
+      <div class="bay-card" onclick="pickSpring(this,'size','double')">
+        <svg viewBox="0 0 110 80"><polygon points="55,6 106,32 4,32" fill="none" stroke="#aaa" stroke-width="1.2" stroke-linejoin="round"/><rect x="4" y="32" width="102" height="42" fill="none" stroke="#aaa" stroke-width="1.2"/><rect x="6" y="40" width="98" height="28" rx="1" fill="none" stroke="#1a1a1a" stroke-width="1.8"/></svg>
+        <div class="bay-label">Double car</div><div class="bay-sub">2 springs</div>
+      </div>
+    </div>
+    <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:8px;">Spring type</div>
+    <div class="option-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:1.25rem;">
+      <div class="option-card" onclick="pickSpring(this,'duty','standard')">
+        <div class="opt-label">Standard</div><div class="opt-desc">Wire up to .243</div>
+      </div>
+      <div class="option-card" onclick="pickSpring(this,'duty','heavy')">
+        <div class="opt-label">Heavy Duty</div><div class="opt-desc">Wire .250–.262</div>
+      </div>
+      <div class="option-card" onclick="pickSpring(this,'duty','custom')">
+        <div class="opt-label">Not sure / Custom</div><div class="opt-desc">Wire over .262</div>
+      </div>
+    </div>
+    <div style="background:#f9f9f7;border-radius:10px;padding:10px 14px;border:1px solid #eee;font-size:12px;color:#888;margin-bottom:1.25rem;">
+      ✓ All spring services include a complimentary safety inspection of cables, drums & rollers · 3-year parts warranty · 1-year labor warranty
+    </div>
+    <div class="nav-row"><button class="btn-back" onclick="go('Repair')">Back</button><button class="btn-next" id="nSpring" onclick="go(5)" disabled>See my estimate →</button></div>
+  </div>
+
+  <!-- STEP OPENER: LiftMaster options -->
+  <div id="stepOpener" class="step">
+    <div class="step-title">Opener replacement</div>
+    <div class="step-sub">Choose the opener that fits your needs and budget.</div>
+    <div style="display:grid;gap:10px;margin-bottom:1.25rem;" id="openerCards">
+      <div class="option-card" style="text-align:left;padding:14px 16px;" onclick="pickOpener(this,'chain7')">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <div class="opt-label">Chain Drive — 7ft rail</div>
+          <div style="font-size:14px;font-weight:700;color:#1a1a1a;">$800</div>
+        </div>
+        <div class="opt-desc">2420L Series · Reliable & affordable · Standard height garage</div>
+      </div>
+      <div class="option-card" style="text-align:left;padding:14px 16px;" onclick="pickOpener(this,'chain8')">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <div class="opt-label">Chain Drive — 8ft rail</div>
+          <div style="font-size:14px;font-weight:700;color:#1a1a1a;">$875</div>
+        </div>
+        <div class="opt-desc">2420L Series · For 8ft tall garage doors</div>
+      </div>
+      <div class="option-card" style="text-align:left;padding:14px 16px;position:relative;" onclick="pickOpener(this,'belt7')">
+        <div style="position:absolute;top:-10px;right:12px;background:#378ADD;color:#fff;font-size:10px;font-weight:700;padding:2px 10px;border-radius:99px;">⭐ Most popular</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <div class="opt-label">Belt Drive — 7ft rail</div>
+          <div style="font-size:14px;font-weight:700;color:#1a1a1a;">$850</div>
+        </div>
+        <div class="opt-desc">6580L Series · Quieter operation · Great for attached garages</div>
+      </div>
+      <div class="option-card" style="text-align:left;padding:14px 16px;" onclick="pickOpener(this,'belt8')">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <div class="opt-label">Belt Drive — 8ft rail</div>
+          <div style="font-size:14px;font-weight:700;color:#1a1a1a;">$925</div>
+        </div>
+        <div class="opt-desc">6580L Series · Quieter · For 8ft tall garage doors</div>
+      </div>
+      <div class="option-card" style="text-align:left;padding:14px 16px;" onclick="pickOpener(this,'hend7')">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <div class="opt-label">High-End Belt — 7ft rail</div>
+          <div style="font-size:14px;font-weight:700;color:#1a1a1a;">$950</div>
+        </div>
+        <div class="opt-desc">6690L Series · Premium performance · WiFi & battery backup</div>
+      </div>
+      <div class="option-card" style="text-align:left;padding:14px 16px;" onclick="pickOpener(this,'ibeam7')">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <div class="opt-label">I-Beam Heavy Duty — 7ft</div>
+          <div style="font-size:14px;font-weight:700;color:#1a1a1a;">$1,610</div>
+        </div>
+        <div class="opt-desc">4690L Series · Commercial-grade · For heavy doors</div>
+      </div>
+      <div class="option-card" style="text-align:left;padding:14px 16px;" onclick="pickOpener(this,'jackshaft')">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <div class="opt-label">Jack Shaft</div>
+          <div style="font-size:14px;font-weight:700;color:#1a1a1a;">$1,500</div>
+        </div>
+        <div class="opt-desc">98022 · Wall-mounted · Great for low ceilings</div>
+      </div>
+    </div>
+    <div class="nav-row"><button class="btn-back" onclick="go('Repair')">Back</button><button class="btn-next" id="nOpener" onclick="go(5)" disabled>See my estimate →</button></div>
+  </div>
+
+  <!-- STEP GLASS: Glass pane options -->
+  <div id="stepGlass" class="step">
+    <div class="step-title">Glass pane replacement</div>
+    <div class="step-sub">Select your glass thickness and type. Pricing is per pane.</div>
+    <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:8px;" id="glassTypeLabel">Glass thickness</div>
+    <div class="option-grid" style="grid-template-columns:1fr 1fr;margin-bottom:1.25rem;">
+      <div class="option-card" onclick="pickGlassThickness(this,'nonins')">
+        <div class="opt-label">1/8" Non-Insulated</div><div class="opt-desc">Standard single pane</div>
+      </div>
+      <div class="option-card" onclick="pickGlassThickness(this,'ins')">
+        <div class="opt-label">1/2" Insulated</div><div class="opt-desc">Energy efficient double pane</div>
+      </div>
+    </div>
+    <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:8px;">Panel size</div>
+    <div class="option-grid" style="grid-template-columns:1fr 1fr;margin-bottom:1.25rem;" id="glassSizeOptions">
+      <div class="option-card" onclick="pickGlassSize(this,'long')">
+        <div class="opt-label">Long Panel</div><div class="opt-desc">Standard raised panel doors</div>
+      </div>
+      <div class="option-card" onclick="pickGlassSize(this,'oversized')" id="oversizedOption">
+        <div class="opt-label">Oversized</div><div class="opt-desc">Skyline Flush doors</div>
+      </div>
+    </div>
+    <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:8px;">Glass type</div>
+    <div class="option-grid" style="grid-template-columns:repeat(2,1fr);margin-bottom:1.25rem;">
+      <div class="option-card" onclick="pickGlassType(this,'clear')"><div class="opt-label">Clear</div></div>
+      <div class="option-card" onclick="pickGlassType(this,'obscure')"><div class="opt-label">Obscure</div></div>
+      <div class="option-card" onclick="pickGlassType(this,'tinted')"><div class="opt-label">Tinted</div></div>
+      <div class="option-card" onclick="pickGlassType(this,'frosted')"><div class="opt-label">Frosted</div></div>
+    </div>
+    <div id="glassPricePreview" style="display:none;background:#f9f9f7;border-radius:10px;padding:12px 16px;border:1px solid #eee;font-size:13px;margin-bottom:1.25rem;text-align:center;"></div>
+    <div class="nav-row"><button class="btn-back" id="glassBackBtn" onclick="go('Repair')">Back</button><button class="btn-next" id="nGlass" onclick="go(5)" disabled>See my estimate →</button></div>
   </div>
 
   <!-- STEP 2: Garage type -->
@@ -285,40 +435,33 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
       </div>
     </div>
 
-    <div class="nav-row"><button class="btn-back" onclick="go(2)">Back</button><button class="btn-next" id="n3" onclick="go(4)" disabled>Continue</button></div>
+    <!-- Glass add-on (optional, shown after insulation picked) -->
+    <div id="glassAddon" style="display:none;margin-bottom:1.25rem;">
+      <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:4px;">Add glass inserts? <span style="font-size:11px;font-weight:400;color:#bbb;">(optional)</span></div>
+      <div style="font-size:12px;color:#888;margin-bottom:10px;">Pricing is per pane · installed</div>
+      <div class="option-grid" style="grid-template-columns:1fr 1fr;margin-bottom:8px;">
+        <div class="option-card" onclick="pickAddonGlass(this,'none')">
+          <div class="opt-label">No glass</div><div class="opt-desc">Standard door, no inserts</div>
+        </div>
+        <div class="option-card" onclick="pickAddonGlass(this,'yes')">
+          <div class="opt-label">Add glass inserts</div><div class="opt-desc">Choose type on next step</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-row"><button class="btn-back" onclick="go(2)">Back</button><button class="btn-next" id="n3" onclick="goFromStep3()" disabled>Continue</button></div>
   </div>
 
-  <!-- STEP 4: Door Visualizer -->
+  <!-- STEP 4: Door Visual -->
   <div id="step4" class="step">
-    <div class="step-title">See it on your home</div>
-    <div class="step-sub">Pick the home that looks most like yours to see your door in action!</div>
+    <div class="step-title">Your door preview ✨</div>
+    <div class="step-sub">Here's how your selected door and color will look!</div>
 
-    <!-- Sample home thumbnails -->
-    <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:8px;">Sample homes</div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1rem;" id="homeThumbs">
-      <div class="home-thumb selected" data-home="0" onclick="selectSampleHome(0)">
-        <img src="home1.jpg" onerror="this.parentElement.style.background='#ddd'" alt="Home 1">
-        <div class="thumb-label">Stucco</div>
-      </div>
-      <div class="home-thumb" data-home="1" onclick="selectSampleHome(1)">
-        <img src="home2.jpg" onerror="this.parentElement.style.background='#ddd'" alt="Home 2">
-        <div class="thumb-label">Craftsman</div>
-      </div>
-      <div class="home-thumb" data-home="2" onclick="selectSampleHome(2)">
-        <img src="home3.jpg" onerror="this.parentElement.style.background='#ddd'" alt="Home 3">
-        <div class="thumb-label">Stone accent</div>
-      </div>
-      <div class="home-thumb" data-home="3" onclick="selectSampleHome(3)">
-        <img src="home4.jpg" onerror="this.parentElement.style.background='#ddd'" alt="Home 4">
-        <div class="thumb-label">Modern</div>
-      </div>
-    </div>
-
-    <!-- Visualizer canvas -->
-    <div style="border-radius:12px;overflow:hidden;border:1px solid #e8e8e4;margin-bottom:0.75rem;background:#f0f0ee;">
+    <div style="border-radius:16px;overflow:hidden;border:1px solid #e8e8e4;margin-bottom:1rem;background:linear-gradient(180deg,#d6e4f0 0%,#b8cfe0 40%,#8aab7a 40%,#7a9e6a 100%);">
       <canvas id="vizCanvas" style="display:block;width:100%;height:auto;"></canvas>
     </div>
-    <div style="font-size:11px;color:#888;text-align:center;margin-bottom:1rem;" id="vizHint">Select a home above to preview your door</div>
+
+    <div id="vizSummary" style="background:#f9f9f7;border-radius:10px;padding:12px 16px;margin-bottom:1.25rem;border:1px solid #eee;font-size:13px;color:#555;text-align:center;line-height:1.6;"></div>
 
     <div class="nav-row"><button class="btn-back" onclick="go(3)">Back</button><button class="btn-next" onclick="go(5)">Continue</button></div>
   </div>
@@ -508,6 +651,7 @@ function pickStyle(el, styleId) {
     insOptions.className = 'ins-options one-col';
     // Auto-select steelback
     pickIns(document.getElementById('ins-steel'), 'steelback');
+    document.getElementById('glassAddon').style.display = 'block';
   } else {
     insNote.style.display = 'none';
     document.getElementById('ins-eco').style.display = '';
@@ -522,11 +666,13 @@ function pickIns(el, ins) {
   el.classList.add('selected');
   state.insulation = ins;
   if (state.style) document.getElementById('n3').disabled = false;
+  // Show glass add-on option
+  document.getElementById('glassAddon').style.display = 'block';
   refreshViz();
 }
 
 function currentStep() {
-  const steps = ['step1','step2','step3','step4','step5'];
+  const steps = ['step1','step2','step3','step4','step5','stepRepair','stepSpring','stepOpener','stepGlass'];
   for (let s of steps) {
     const el = document.getElementById(s);
     if (el && el.classList.contains('active')) return s.replace('step','');
@@ -537,27 +683,179 @@ function currentStep() {
 window.go = function(n) {
   const id = String(n);
   document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-  const target = id === 'Results' ? 'stepResults' : 'step' + id;
+  const targets = {
+    'Results':'stepResults','Repair':'stepRepair','Spring':'stepSpring',
+    'Opener':'stepOpener','Glass':'stepGlass'
+  };
+  const target = targets[id] || ('step' + id);
   const el = document.getElementById(target);
   if (el) el.classList.add('active');
-  const stepMap = {'1':14,'2':28,'3':42,'4':60,'5':80,'Results':100};
+  const stepMap = {'1':14,'2':28,'3':42,'4':60,'5':80,'Repair':30,'Spring':60,'Opener':60,'Glass':60,'Results':100};
   document.getElementById('progress').style.width = (stepMap[id]||14) + '%';
   document.getElementById('startOverBtn').style.display = id === '1' ? 'none' : 'inline-block';
   window.scrollTo({top:0, behavior:'smooth'});
-  if(id === '4') setTimeout(() => selectSampleHome(0), 100);
+  if(id === '4') setTimeout(() => drawHouseScene(), 100);
+};
+
+// ─── Routing functions ───
+function goFromStep1() {
+  if(state.need === 'repair') go('Repair');
+  else go(2);
+}
+
+function goFromRepair() {
+  if(state.repairType === 'spring') go('Spring');
+  else if(state.repairType === 'opener') go('Opener');
+  else if(state.repairType === 'glass') {
+    document.getElementById('glassBackBtn').onclick = () => go('Repair');
+    // For repair glass — show both panel sizes
+    document.getElementById('oversizedOption').style.display = '';
+    go('Glass');
+  }
+  else go(5); // other — just collect lead
+}
+
+function goFromStep3() {
+  if(state.addGlass === 'yes') {
+    // Pre-set glass options based on door style
+    document.getElementById('glassBackBtn').onclick = () => go(3);
+    if(state.style === 'flush') {
+      document.getElementById('oversizedOption').style.display = '';
+      // Auto-select oversized for Skyline Flush
+      document.querySelectorAll('#glassSizeOptions .option-card').forEach(c => c.classList.remove('selected'));
+      document.querySelectorAll('#glassSizeOptions .option-card')[1].classList.add('selected');
+      state.glassSize = 'oversized';
+    } else {
+      document.getElementById('oversizedOption').style.display = 'none';
+      document.querySelectorAll('#glassSizeOptions .option-card').forEach(c => c.classList.remove('selected'));
+      document.querySelectorAll('#glassSizeOptions .option-card')[0].classList.add('selected');
+      state.glassSize = 'long';
+    }
+    go('Glass');
+  } else {
+    go(4);
+  }
+}
+
+// ─── Repair pickers ───
+function pickRepair(el, type) {
+  el.closest('.option-grid').querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.repairType = type;
+  document.getElementById('nRepair').disabled = false;
+}
+
+// ─── Spring pickers ───
+function pickSpring(el, key, val) {
+  const grid = el.closest('.option-grid,.bay-grid');
+  grid.querySelectorAll('.option-card,.bay-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state['spring_'+key] = val;
+  // Enable continue if both size and duty selected
+  if(state.spring_size && state.spring_duty) {
+    document.getElementById('nSpring').disabled = false;
+  }
+  updateSpringNote();
+}
+
+function updateSpringNote() {
+  // No price preview needed — handled in results
+}
+
+// ─── Opener picker ───
+function pickOpener(el, model) {
+  document.querySelectorAll('#openerCards .option-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.openerModel = model;
+  document.getElementById('nOpener').disabled = false;
+}
+
+// ─── Glass pickers ───
+function pickGlassThickness(el, val) {
+  el.closest('.option-grid').querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.glassThickness = val;
+  updateGlassPrice();
+}
+
+function pickGlassSize(el, val) {
+  el.closest('.option-grid').querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.glassSize = val;
+  updateGlassPrice();
+}
+
+function pickGlassType(el, val) {
+  el.closest('.option-grid').querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.glassType = val;
+  updateGlassPrice();
+}
+
+function pickAddonGlass(el, val) {
+  el.closest('.option-grid').querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.addGlass = val;
+  document.getElementById('n3').disabled = false;
+}
+
+// Glass pricing table (per pane, with 20% markup)
+const glassPrices = {
+  nonins: { long: { clear:128.40, obscure:142.20, tinted:158.40, frosted:240.60 }, oversized: { clear:142.20, obscure:161.40, tinted:182.40, frosted:243.00 } },
+  ins:    { long: { clear:166.20, obscure:192.60, tinted:207.00, frosted:259.80 }, oversized: { clear:190.80, obscure:211.20, tinted:242.40, frosted:297.60 } }
+};
+
+function updateGlassPrice() {
+  const { glassThickness, glassSize, glassType } = state;
+  const preview = document.getElementById('glassPricePreview');
+  if(!glassThickness || !glassSize || !glassType) { preview.style.display='none'; return; }
+  const price = glassPrices[glassThickness]?.[glassSize]?.[glassType];
+  if(!price) { preview.style.display='none'; return; }
+  const thick = glassThickness === 'nonins' ? '1/8" Non-Insulated' : '1/2" Insulated';
+  const size = glassSize === 'long' ? 'Long Panel' : 'Oversized';
+  const type = glassType.charAt(0).toUpperCase() + glassType.slice(1);
+  preview.style.display = 'block';
+  preview.innerHTML = `<strong>$${price.toFixed(2)} per pane</strong> · ${thick} ${size} ${type} glass · Includes installation`;
+  document.getElementById('nGlass').disabled = false;
+}
+
+// ─── Spring pricing ───
+const springPrices = {
+  single: { standard: 299, heavy: 349, custom: null },
+  double: { standard: 399, heavy: 429, custom: null }
+};
+
+function getSpringPrice() {
+  const size = state.spring_size, duty = state.spring_duty;
+  if(!size || !duty) return null;
+  return springPrices[size]?.[duty] || null;
+}
+
+// ─── Opener pricing ───
+const openerPrices = {
+  chain7:1610, chain8:875, belt7:850, belt8:925,
+  hend7:950, ibeam7:1610, jackshaft:1500
+};
+
+const openerNames = {
+  chain7:'Chain Drive 7ft (2420L)', chain8:'Chain Drive 8ft (2420L)',
+  belt7:'Belt Drive 7ft (6580L)', belt8:'Belt Drive 8ft (6580L)',
+  hend7:'High-End Belt 7ft (6690L)', ibeam7:'I-Beam Heavy Duty 7ft (4690L)',
+  jackshaft:'Jack Shaft (98022)'
 };
 
 function startOver() {
-  // Reset all state
   state.need = null; state.bays = null; state.style = null;
   state.color = null; state.insulation = null;
   state.photoDataUrl = null; state.compositeDataUrl = null;
-  // Reset UI selections
+  state.repairType = null; state.spring_size = null; state.spring_duty = null;
+  state.openerModel = null; state.glassThickness = null; state.glassSize = null;
+  state.glassType = null; state.addGlass = null;
   document.querySelectorAll('.option-card,.bay-card,.door-card,.ins-card,.color-chip').forEach(el => el.classList.remove('selected'));
   document.querySelectorAll('.btn-next[id]').forEach(btn => btn.disabled = true);
   document.getElementById('insSelector').classList.remove('visible');
   document.getElementById('colorSection').style.display = 'none';
-  // Reset form fields
+  document.getElementById('glassAddon').style.display = 'none';
   ['firstName','lastName','phone','email','address','notes'].forEach(id => {
     const el = document.getElementById(id); if(el) el.value = '';
   });
@@ -565,71 +863,105 @@ function startOver() {
   go(1);
 }
 
-// ─── Visualizer ───
-const sampleHomes = [
-  { file:'home1.jpg', label:'Stucco', door:{x:0.19,y:0.42,w:0.62,h:0.22} },
-  { file:'home2.jpg', label:'Craftsman', door:{x:0.12,y:0.46,w:0.76,h:0.26} },
-  { file:'home3.jpg', label:'Stone accent', door:{x:0.09,y:0.42,w:0.82,h:0.32} },
-  { file:'home4.jpg', label:'Single car', door:{x:0.15,y:0.42,w:0.65,h:0.28} },
-];
-
+// ─── House Silhouette Visualizer ───
 const colorMap = {
   'White':'#f5f5f0','Almond':'#e8d5b0','Black':'#222222',
   'Sandstone':'#c4b49a','Brown':'#5c3d2e','Gray':'#8a8a8a'
 };
 
-let vizBgImg = null;
-let vizCurrentHome = 0;
-let vizCurrentSrc = null;
-
-function selectSampleHome(i) {
-  vizCurrentHome = i;
-  document.querySelectorAll('.home-thumb').forEach((t,j) => t.classList.toggle('selected', j===i));
-  loadVizHome(sampleHomes[i].file, sampleHomes[i].door);
-}
-
-function loadVizHome(src, doorCoords) {
-  vizCurrentSrc = { src, doorCoords };
+function drawHouseScene() {
   const canvas = document.getElementById('vizCanvas');
-  vizBgImg = new Image();
-  vizBgImg.onload = () => {
-    canvas.width = vizBgImg.width;
-    canvas.height = vizBgImg.height;
-    drawViz();
-  };
-  vizBgImg.onerror = () => {
-    canvas.width = 800; canvas.height = 500;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#e0e0e0';
-    ctx.fillRect(0,0,800,500);
-    ctx.fillStyle = '#aaa';
-    ctx.font = '18px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('Photo loading...', 400, 250);
-    if (doorCoords) drawVizDoor(ctx, 800, 500, doorCoords);
-  };
-  vizBgImg.src = src;
+  if (!canvas) return;
+  const W=800, H=500;
+  canvas.width=W; canvas.height=H;
+  const ctx=canvas.getContext('2d');
+  // Sky
+  const sky=ctx.createLinearGradient(0,0,0,H*0.72);
+  sky.addColorStop(0,'#c8dff0'); sky.addColorStop(1,'#deeaf5');
+  ctx.fillStyle=sky; ctx.fillRect(0,0,W,H*0.72);
+  // Ground
+  const gnd=ctx.createLinearGradient(0,H*0.72,0,H);
+  gnd.addColorStop(0,'#8aab7a'); gnd.addColorStop(1,'#6e8f5e');
+  ctx.fillStyle=gnd; ctx.fillRect(0,H*0.72,W,H*0.28);
+  // Driveway
+  ctx.fillStyle='#c8c0b0';
+  ctx.beginPath();
+  ctx.moveTo(W*0.24,H*0.72); ctx.lineTo(W*0.76,H*0.72);
+  ctx.lineTo(W*0.88,H); ctx.lineTo(W*0.12,H);
+  ctx.closePath(); ctx.fill();
+  ctx.strokeStyle='#b8b0a0'; ctx.lineWidth=1.5; ctx.setLineDash([18,14]);
+  ctx.beginPath(); ctx.moveTo(W*0.5,H*0.72); ctx.lineTo(W*0.5,H); ctx.stroke();
+  ctx.setLineDash([]);
+  // House body
+  const hX=W*0.10, hY=H*0.26, hW=W*0.80, hH=H*0.47;
+  ctx.fillStyle='#e8e0d0'; ctx.fillRect(hX,hY,hW,hH);
+  const wg=ctx.createLinearGradient(hX,hY,hX+hW,hY);
+  wg.addColorStop(0,'rgba(0,0,0,0.05)'); wg.addColorStop(1,'rgba(0,0,0,0.08)');
+  ctx.fillStyle=wg; ctx.fillRect(hX,hY,hW,hH);
+  // Roof
+  ctx.fillStyle='#4a3a2a';
+  ctx.beginPath(); ctx.moveTo(hX-25,hY+10); ctx.lineTo(W*0.5,H*0.04); ctx.lineTo(hX+hW+25,hY+10); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='rgba(0,0,0,0.18)';
+  ctx.beginPath(); ctx.moveTo(W*0.5,H*0.04); ctx.lineTo(hX+hW+25,hY+10); ctx.lineTo(W*0.5,hY+10); ctx.closePath(); ctx.fill();
+  ctx.strokeStyle='#3a2a1a'; ctx.lineWidth=3;
+  ctx.beginPath(); ctx.moveTo(hX-25,hY+10); ctx.lineTo(hX+hW+25,hY+10); ctx.stroke();
+  ctx.fillStyle='#d0c8bc'; ctx.fillRect(hX-25,hY+10,hW+50,10);
+  // Side windows
+  drawWindow2(ctx,hX+14,hY+hH*0.12,65,55);
+  drawWindow2(ctx,hX+hW-79,hY+hH*0.12,65,55);
+  // Garage trim
+  const gX=hX+hW*0.06, gY=hY+hH*0.36, gW=hW*0.88, gH=hH*0.60;
+  ctx.fillStyle='#c0b8a8'; ctx.fillRect(gX-10,gY-10,gW+20,gH+10);
+  // Draw door
+  const color=colorMap[state.color]||'#f5f5f0';
+  const style=state.style||'raised';
+  if(style==='flush') drawFlushDoor(ctx,gX,gY,gW,gH,color);
+  else if(style==='carriage') drawCarriageDoor(ctx,gX,gY,gW,gH,color);
+  else drawRaisedPanelDoor(ctx,gX,gY,gW,gH,color);
+  // Front door
+  const fdX=hX+hW*0.84, fdY=hY+hH*0.50;
+  ctx.fillStyle='#6a3a1a'; ctx.fillRect(fdX,fdY,36,hH*0.46);
+  ctx.fillStyle='#4a2a0a'; ctx.fillRect(fdX+10,fdY+8,16,18); ctx.fillRect(fdX+10,fdY+32,16,18);
+  ctx.beginPath(); ctx.arc(fdX+30,fdY+hH*0.23,3,0,Math.PI*2); ctx.fillStyle='#c8a040'; ctx.fill();
+  // Lights
+  drawLight2(ctx,gX+4,gY-14); drawLight2(ctx,gX+gW-4,gY-14);
+  // Bushes
+  drawBush2(ctx,hX+8,H*0.705,26); drawBush2(ctx,hX+hW*0.84-18,H*0.705,24); drawBush2(ctx,hX+hW+10,H*0.705,26);
+  // Summary
+  const sN={raised:'Raised Panel',flush:'Skyline Flush',carriage:'Carriage Stamp'};
+  const iN={noninsulated:'Non-Insulated',pvcinsulated:'PVC Insulated',steelback:'Steelback'};
+  const el=document.getElementById('vizSummary');
+  if(el) el.innerHTML=`<strong>${sN[state.style]||'Raised Panel'}</strong> · <strong>${state.color||'White'}</strong>${state.insulation?' · '+iN[state.insulation]:''}`;
+  state.compositeDataUrl=canvas.toDataURL('image/jpeg',0.92);
 }
 
-function drawViz() {
-  const canvas = document.getElementById('vizCanvas');
-  const ctx = canvas.getContext('2d');
-  const W = canvas.width, H = canvas.height;
-  ctx.clearRect(0,0,W,H);
-  if (vizBgImg) ctx.drawImage(vizBgImg,0,0,W,H);
-  if (vizCurrentSrc && vizCurrentSrc.doorCoords) {
-    drawVizDoor(ctx, W, H, vizCurrentSrc.doorCoords);
-  }
-  state.compositeDataUrl = canvas.toDataURL('image/jpeg',0.9);
+function drawWindow2(ctx,x,y,w,h) {
+  ctx.fillStyle='#b8d4e8'; ctx.fillRect(x,y,w,h);
+  ctx.strokeStyle='#d4ccc0'; ctx.lineWidth=4; ctx.strokeRect(x,y,w,h);
+  ctx.lineWidth=1.5; ctx.strokeStyle='#c8c0b4';
+  ctx.beginPath(); ctx.moveTo(x+w/2,y); ctx.lineTo(x+w/2,y+h); ctx.moveTo(x,y+h/2); ctx.lineTo(x+w,y+h/2); ctx.stroke();
+  ctx.fillStyle='rgba(255,255,255,0.22)'; ctx.fillRect(x+4,y+4,w/2-8,h/2-8);
 }
 
-function drawVizDoor(ctx, W, H, d) {
-  const x = d.x * W, y = d.y * H, w = d.w * W, h = d.h * H;
-  const color = colorMap[state.color] || '#f5f5f0';
-  const style = state.style || 'raised';
-  if (style === 'flush') drawFlushDoor(ctx, x, y, w, h, color);
-  else if (style === 'carriage') drawCarriageDoor(ctx, x, y, w, h, color);
-  else drawRaisedPanelDoor(ctx, x, y, w, h, color);
+function drawBush2(ctx,x,y,r) {
+  ctx.fillStyle='#4a7030';
+  ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(x+r*0.6,y-r*0.3,r*0.75,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(x-r*0.5,y-r*0.2,r*0.65,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#5a8040';
+  ctx.beginPath(); ctx.arc(x,y-r*0.3,r*0.6,0,Math.PI*2); ctx.fill();
+}
+
+function drawLight2(ctx,x,y) {
+  ctx.fillStyle='#888'; ctx.fillRect(x-3,y,6,10);
+  ctx.fillStyle='rgba(255,220,100,0.9)'; ctx.beginPath(); ctx.arc(x,y,5,0,Math.PI*2); ctx.fill();
+}
+
+function selectSampleHome() {}
+function handleOwnPhoto() {}
+function saveVizPreview() {
+  drawHouseScene();
+  const a=document.createElement('a'); a.href=state.compositeDataUrl; a.download='my-door-preview.jpg'; a.click();
 }
 
 function adjBright(hex, amt) {
@@ -701,30 +1033,7 @@ function drawCarriageDoor(ctx, x, y, w, h, color) {
   ctx.strokeStyle=adjBright(color,-35);ctx.lineWidth=2;ctx.strokeRect(x+1,y+1,w-2,h-2);
 }
 
-function handleOwnPhoto(input) {
-  if(!input.files||!input.files[0]) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    state.photoDataUrl = e.target.result;
-    document.querySelectorAll('.home-thumb').forEach(t=>t.classList.remove('selected'));
-    vizCurrentSrc = { src: e.target.result, doorCoords: {x:0.1,y:0.35,w:0.8,h:0.48} };
-    loadVizHome(e.target.result, vizCurrentSrc.doorCoords);
-  };
-  reader.readAsDataURL(input.files[0]);
-}
-
-function saveVizPreview() {
-  drawViz();
-  const canvas = document.getElementById('vizCanvas');
-  state.compositeDataUrl = canvas.toDataURL('image/jpeg',0.92);
-  const a = document.createElement('a');
-  a.href = state.compositeDataUrl; a.download='my-door-preview.jpg'; a.click();
-}
-
-// Redraw viz whenever color/style changes
-function refreshViz() {
-  if(vizCurrentSrc) drawViz();
-}
+function refreshViz() { drawHouseScene(); }
 
 // ─── Pricing ───
 function getRange() {
@@ -756,51 +1065,91 @@ function showResults(name) {
     document.getElementById('resultsPreviewWrap').style.display = 'block';
   }
 
-  const isFlush = state.style === 'flush';
-  const tiers = isFlush ? [
-    { label:'Skyline Flush', ins:'steelback', emoji:'🏆', cls:'pre',
-      badge:'Steelback included',
-      features:['Premium Steelback insulation','Maximum energy efficiency','Smooth modern flat panel','White color'] }
-  ] : [
-    { label:'Economy', ins:'noninsulated', emoji:'🚪', cls:'eco', badge:null,
-      features:['Durable steel construction','Standard installation included','Great for detached garages'] },
-    { label:'Popular', ins:'pvcinsulated', emoji:'🏠', cls:'pop', badge:'⭐ Most popular',
-      features:['Everything in Economy','PVC insulation layer','Lower energy bills','Quieter operation'] },
-    { label:'Premium', ins:'steelback', emoji:'🏆', cls:'pre', badge:null,
-      features:['Everything in Popular','Full Steelback insulation','Maximum durability','Best energy efficiency'] }
-  ];
-
   const pc = document.getElementById('priceCards');
-  pc.className = isFlush ? 'price-cards one' : 'price-cards three';
-  pc.innerHTML = tiers.map(t => {
-    const r = prices[state.style]?.[t.ins];
-    const rec = t.badge && t.badge.includes('Most popular');
-    return `<div class="price-card${rec?' recommended':''}">
-      ${t.badge ? `<div class="price-top-badge">${t.badge}</div>` : ''}
-      <span class="price-emoji">${t.emoji}</span>
-      <div class="price-tier ${t.cls}">${t.label}</div>
-      <div class="price-range">${formatRange(r)}</div>
-      <div class="price-note">installed · all in</div>
-      <div class="price-features">${t.features.map(f=>`<div><span class="price-check">✓</span>${f}</div>`).join('')}</div>
-    </div>`;
-  }).join('');
-
   const baysMap = {single:'Single car',double:'Double car',twodoors:'Two separate doors'};
   const needMap = {replace:'Replace existing',new:'New installation',repair:'Repair / service'};
   const insMap = {noninsulated:'Non-Insulated',pvcinsulated:'PVC Insulated',steelback:'Steelback'};
   const sizeVal = document.getElementById('doorSize').value;
+  let summaryRows = [];
 
-  document.getElementById('summaryBox').innerHTML = [
-    ['Service', needMap[state.need]||'—'],
-    ['Garage', baysMap[state.bays]||'—'],
-    ['Door style', styleNames[state.style]||'—'],
-    ['Color', state.color||'—'],
-    ['Insulation', insMap[state.insulation]||'—'],
-    ['Size', sizeVal && sizeVal !== 'other' ? sizeVal + ' ft' : (sizeVal === 'other' ? 'Non-standard / TBD' : 'Not provided')],
-    ['Installation', 'Included in all prices'],
-    ['Measurement visit', 'Free — no obligation'],
-  ].map(([l,v]) => `<div class="summary-row"><span>${l}</span><span>${v}</span></div>`).join('');
+  if(state.need === 'repair') {
+    // ── Repair results ──
+    if(state.repairType === 'spring') {
+      const price = getSpringPrice();
+      const sizeLabel = state.spring_size === 'single' ? 'Single car' : 'Double car';
+      const dutyLabel = state.spring_duty === 'custom' ? 'Custom (inspection required)' : state.spring_duty === 'heavy' ? 'Heavy Duty' : 'Standard';
+      pc.className = 'price-cards one';
+      if(state.spring_duty === 'custom') {
+        pc.innerHTML = `<div class="price-card"><span class="price-emoji">🔧</span><div class="price-tier eco">Custom Spring</div><div class="price-range">Quote on inspection</div><div class="price-note">Dustin will assess on-site</div><div class="price-features"><div><span class="price-check">✓</span>Custom-manufactured to spec</div><div><span class="price-check">✓</span>3-year parts warranty</div><div><span class="price-check">✓</span>Free safety inspection included</div></div></div>`;
+      } else {
+        pc.innerHTML = `<div class="price-card recommended"><div class="price-top-badge">Your selection</div><span class="price-emoji">🔧</span><div class="price-tier eco">Spring Replacement</div><div class="price-range">$${price.toLocaleString()}</div><div class="price-note">installed · all in</div><div class="price-features"><div><span class="price-check">✓</span>${sizeLabel} · ${dutyLabel}</div><div><span class="price-check">✓</span>3-year parts warranty</div><div><span class="price-check">✓</span>1-year labor warranty</div><div><span class="price-check">✓</span>Free safety inspection of cables, drums & rollers</div></div></div>`;
+      }
+      summaryRows = [['Service','Spring Replacement'],['Garage',sizeLabel],['Spring type',dutyLabel],['Price',state.spring_duty==='custom'?'Quote on inspection':'$'+price],['Warranty','3yr parts · 1yr labor']];
+    } else if(state.repairType === 'opener') {
+      const price = openerPrices[state.openerModel] || 0;
+      const name2 = openerNames[state.openerModel] || 'Opener';
+      pc.className = 'price-cards one';
+      pc.innerHTML = `<div class="price-card recommended"><div class="price-top-badge">Your selection</div><span class="price-emoji">⚡</span><div class="price-tier pop">Opener Replacement</div><div class="price-range">$${price.toLocaleString()}</div><div class="price-note">installed · all in</div><div class="price-features"><div><span class="price-check">✓</span>${name2}</div><div><span class="price-check">✓</span>Professional installation</div><div><span class="price-check">✓</span>LiftMaster — industry leading brand</div></div></div>`;
+      summaryRows = [['Service','Opener Replacement'],['Model',name2],['Price','$'+price.toLocaleString()],['Installation','Included']];
+    } else if(state.repairType === 'glass') {
+      const price = glassPrices[state.glassThickness]?.[state.glassSize]?.[state.glassType];
+      const thick = state.glassThickness==='nonins'?'1/8" Non-Insulated':'1/2" Insulated';
+      const size = state.glassSize==='long'?'Long Panel':'Oversized';
+      const type = state.glassType ? state.glassType.charAt(0).toUpperCase()+state.glassType.slice(1) : '';
+      pc.className = 'price-cards one';
+      pc.innerHTML = `<div class="price-card recommended"><div class="price-top-badge">Per pane</div><span class="price-emoji">🪟</span><div class="price-tier pop">Glass Pane Replacement</div><div class="price-range">$${price?.toFixed(2)||'TBD'}</div><div class="price-note">per pane · installed</div><div class="price-features"><div><span class="price-check">✓</span>${thick} · ${size} · ${type}</div><div><span class="price-check">✓</span>Professional installation</div><div><span class="price-check">✓</span>Final price based on number of panes</div></div></div>`;
+      summaryRows = [['Service','Glass Pane Replacement'],['Glass type',`${thick} · ${size} · ${type}`],['Price per pane',price?'$'+price.toFixed(2):'TBD'],['Installation','Included']];
+    } else {
+      // Other repair
+      pc.className = 'price-cards one';
+      pc.innerHTML = `<div class="price-card"><span class="price-emoji">🔍</span><div class="price-tier eco">Diagnosis & Repair</div><div class="price-range">Quote on visit</div><div class="price-note">Free inspection</div><div class="price-features"><div><span class="price-check">✓</span>Full door system inspection</div><div><span class="price-check">✓</span>Dustin will diagnose and quote on-site</div></div></div>`;
+      summaryRows = [['Service','Repair / Diagnosis'],['Approach','Free inspection & quote']];
+    }
+  } else {
+    // ── Door replacement/new install results ──
+    const isFlush = state.style === 'flush';
+    const tiers = isFlush ? [
+      { label:'Skyline Flush', ins:'steelback', emoji:'🏆', cls:'pre', badge:'Steelback included',
+        features:['Premium Steelback insulation','Maximum energy efficiency','Smooth modern flat panel','White or Black color'] }
+    ] : [
+      { label:'Economy', ins:'noninsulated', emoji:'🚪', cls:'eco', badge:null, features:['Durable steel construction','Standard installation included','Great for detached garages'] },
+      { label:'Popular', ins:'pvcinsulated', emoji:'🏠', cls:'pop', badge:'⭐ Most popular', features:['Everything in Economy','PVC insulation layer','Lower energy bills','Quieter operation'] },
+      { label:'Premium', ins:'steelback', emoji:'🏆', cls:'pre', badge:null, features:['Everything in Popular','Full Steelback insulation','Maximum durability','Best energy efficiency'] }
+    ];
+    pc.className = isFlush ? 'price-cards one' : 'price-cards three';
+    pc.innerHTML = tiers.map(t => {
+      const r = prices[state.style]?.[t.ins];
+      const rec = t.badge && t.badge.includes('Most popular');
+      return `<div class="price-card${rec?' recommended':''}">
+        ${t.badge?`<div class="price-top-badge">${t.badge}</div>`:''}
+        <span class="price-emoji">${t.emoji}</span>
+        <div class="price-tier ${t.cls}">${t.label}</div>
+        <div class="price-range">${formatRange(r)}</div>
+        <div class="price-note">installed · all in</div>
+        <div class="price-features">${t.features.map(f=>`<div><span class="price-check">✓</span>${f}</div>`).join('')}</div>
+      </div>`;
+    }).join('');
 
+    // Glass add-on note on results
+    if(state.addGlass === 'yes' && state.glassType) {
+      const gp = glassPrices[state.glassThickness]?.[state.glassSize]?.[state.glassType];
+      const glassNote = gp ? `<div style="background:#edf7ee;border-radius:10px;padding:10px 14px;margin-bottom:1rem;font-size:13px;color:#2d7a35;text-align:center;">🪟 Glass inserts: +$${gp.toFixed(2)} per pane installed</div>` : '';
+      document.getElementById('priceCardsWrap').insertAdjacentHTML('afterend', glassNote);
+    }
+
+    summaryRows = [
+      ['Service', needMap[state.need]||'—'],
+      ['Garage', baysMap[state.bays]||'—'],
+      ['Door style', styleNames[state.style]||'—'],
+      ['Color', state.color||'—'],
+      ['Insulation', insMap[state.insulation]||'—'],
+      ['Size', sizeVal && sizeVal !== 'other' ? sizeVal+' ft' : (sizeVal==='other'?'Non-standard / TBD':'Not provided')],
+      ['Installation', 'Included in all prices'],
+      ['Measurement visit', 'Free — no obligation'],
+    ];
+  }
+
+  document.getElementById('summaryBox').innerHTML = summaryRows.map(([l,v]) => `<div class="summary-row"><span>${l}</span><span>${v}</span></div>`).join('');
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -819,8 +1168,30 @@ async function submitLead() {
   document.getElementById('loadingOverlay').classList.add('visible');
 
   const insMap = {noninsulated:'Non-Insulated',pvcinsulated:'PVC Insulated',steelback:'Steelback'};
-  const r = getRange();
-  const rangeStr = r ? '$'+r.min.toLocaleString()+' – $'+r.max.toLocaleString() : 'TBD';
+
+  // Build service/price details for webhook
+  let serviceDetail = '', estimatedRange = '';
+  if(state.need === 'repair') {
+    if(state.repairType === 'spring') {
+      const p = getSpringPrice();
+      serviceDetail = `Spring Replacement — ${state.spring_size==='single'?'Single':'Double'} car — ${state.spring_duty==='custom'?'Custom':state.spring_duty==='heavy'?'Heavy Duty':'Standard'}`;
+      estimatedRange = p ? '$'+p : 'Custom quote on inspection';
+    } else if(state.repairType === 'opener') {
+      serviceDetail = `Opener Replacement — ${openerNames[state.openerModel]||''}`;
+      estimatedRange = '$'+(openerPrices[state.openerModel]||'TBD');
+    } else if(state.repairType === 'glass') {
+      const p = glassPrices[state.glassThickness]?.[state.glassSize]?.[state.glassType];
+      serviceDetail = `Glass Pane — ${state.glassThickness==='nonins'?'1/8" Non-Insulated':'1/2" Insulated'} ${state.glassSize==='long'?'Long Panel':'Oversized'} ${state.glassType}`;
+      estimatedRange = p ? '$'+p.toFixed(2)+' per pane' : 'TBD';
+    } else {
+      serviceDetail = 'Repair / Diagnosis';
+      estimatedRange = 'Quote on inspection';
+    }
+  } else {
+    const r = getRange();
+    serviceDetail = `${styleNames[state.style]||''} — ${state.color||''} — ${insMap[state.insulation]||''}`;
+    estimatedRange = r ? '$'+r.min.toLocaleString()+' – $'+r.max.toLocaleString() : 'TBD';
+  }
 
   try {
     await fetch(WEBHOOK, {
@@ -828,12 +1199,15 @@ async function submitLead() {
       body: JSON.stringify({
         fullName: fn+' '+ln, phone, email, address,
         service: {replace:'Replace existing door',new:'New installation',repair:'Repair or service'}[state.need]||'',
+        repairType: state.repairType||'',
         garageType: {single:'Single car',double:'Double car',twodoors:'Two separate doors'}[state.bays]||'',
         doorStyle: styleNames[state.style]||'',
         color: state.color||'',
         insulation: insMap[state.insulation]||'',
+        glassAddon: state.addGlass==='yes' ? `${state.glassThickness} ${state.glassSize} ${state.glassType}` : 'None',
         doorSize: sizeVal && sizeVal !== 'other' ? sizeVal+' ft' : (sizeVal==='other'?'Non-standard':'Not provided'),
-        estimatedRange: rangeStr,
+        serviceDetail,
+        estimatedRange,
         notes, leadSource: 'Website Estimator'
       })
     });
