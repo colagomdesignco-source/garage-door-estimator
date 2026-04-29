@@ -319,15 +319,18 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 
   <!-- STEP GLASS: Glass pane options -->
   <div id="stepGlass" class="step">
-    <div class="step-title">Glass pane replacement</div>
-    <div class="step-sub">Select your glass thickness and type. Pricing is per pane.</div>
+    <div class="step-title">Glass pane options</div>
+    <div class="step-sub">Pricing is per pane · installed</div>
 
-    <!-- Live door preview -->
-    <div style="border-radius:14px;overflow:hidden;border:1px solid #e8e8e4;margin-bottom:1rem;background:linear-gradient(180deg,#87CEEB 0%,#c8dff0 40%,#7a9e6a 40%,#5a7e4a 100%);">
-      <canvas id="glassVizCanvas" style="display:block;width:100%;height:auto;"></canvas>
+    <!-- Sticky live preview -->
+    <div style="position:sticky;top:0;z-index:10;background:#fff;padding-bottom:8px;">
+      <div style="border-radius:12px;overflow:hidden;border:1px solid #e8e8e4;background:#e8edf2;">
+        <canvas id="glassVizCanvas" style="display:block;width:100%;height:auto;"></canvas>
+      </div>
+      <div id="glassVizSummary" style="background:#f9f9f7;border-radius:8px;padding:8px 14px;margin-top:6px;border:1px solid #eee;font-size:12px;color:#555;text-align:center;"></div>
     </div>
-    <div id="glassVizSummary" style="background:#f9f9f7;border-radius:10px;padding:10px 14px;margin-bottom:1.25rem;border:1px solid #eee;font-size:13px;color:#555;text-align:center;"></div>
-    <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:8px;" id="glassTypeLabel">Glass thickness</div>
+
+    <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin:14px 0 8px;" id="glassTypeLabel">Glass thickness</div>
     <div class="option-grid" style="grid-template-columns:1fr 1fr;margin-bottom:1.25rem;">
       <div class="option-card" onclick="pickGlassThickness(this,'nonins')">
         <div class="opt-label">1/8" Non-Insulated</div><div class="opt-desc">Standard single pane</div>
@@ -336,6 +339,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
         <div class="opt-label">1/2" Insulated</div><div class="opt-desc">Energy efficient double pane</div>
       </div>
     </div>
+
     <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:8px;">Panel size</div>
     <div class="option-grid" style="grid-template-columns:1fr 1fr;margin-bottom:1.25rem;" id="glassSizeOptions">
       <div class="option-card" onclick="pickGlassSize(this,'long')">
@@ -345,13 +349,26 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
         <div class="opt-label">Oversized</div><div class="opt-desc">Skyline Flush doors</div>
       </div>
     </div>
+
     <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:8px;">Glass type</div>
     <div class="option-grid" style="grid-template-columns:repeat(2,1fr);margin-bottom:1.25rem;">
-      <div class="option-card" onclick="pickGlassType(this,'clear')"><div class="opt-label">Clear</div></div>
-      <div class="option-card" onclick="pickGlassType(this,'obscure')"><div class="opt-label">Obscure</div></div>
-      <div class="option-card" onclick="pickGlassType(this,'tinted')"><div class="opt-label">Tinted</div></div>
-      <div class="option-card" onclick="pickGlassType(this,'frosted')"><div class="opt-label">Frosted</div></div>
+      <div class="option-card" onclick="pickGlassType(this,'clear')"><div class="opt-label">Clear</div><div class="opt-desc">Full visibility</div></div>
+      <div class="option-card" onclick="pickGlassType(this,'obscure')"><div class="opt-label">Obscure</div><div class="opt-desc">Blurred privacy</div></div>
+      <div class="option-card" onclick="pickGlassType(this,'tinted')"><div class="opt-label">Tinted</div><div class="opt-desc">Reduced glare</div></div>
+      <div class="option-card" onclick="pickGlassType(this,'frosted')"><div class="opt-label">Frosted</div><div class="opt-desc">Full privacy</div></div>
     </div>
+
+    <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:8px;">Window insert style <span style="font-size:11px;font-weight:400;color:#bbb;">(optional)</span></div>
+    <div class="option-grid" style="grid-template-columns:repeat(2,1fr);margin-bottom:1.25rem;">
+      <div class="option-card" onclick="pickInsertStyle(this,'none')"><div class="opt-label">No insert</div><div class="opt-desc">Plain glass</div></div>
+      <div class="option-card" onclick="pickInsertStyle(this,'cascade')"><div class="opt-label">Cascade</div><div class="opt-desc">Grid pattern</div></div>
+      <div class="option-card" onclick="pickInsertStyle(this,'prairie')"><div class="opt-label">Prairie</div><div class="opt-desc">Border grid</div></div>
+      <div class="option-card" onclick="pickInsertStyle(this,'sherwood')"><div class="opt-label">Sherwood</div><div class="opt-desc">Arched top</div></div>
+      <div class="option-card" onclick="pickInsertStyle(this,'waterton')"><div class="opt-label">Waterton</div><div class="opt-desc">Diamond pattern</div></div>
+      <div class="option-card" onclick="pickInsertStyle(this,'stockton')"><div class="opt-label">Stockton</div><div class="opt-desc">Rectangle grid</div></div>
+      <div class="option-card" onclick="pickInsertStyle(this,'sunburst')"><div class="opt-label">Sunburst</div><div class="opt-desc">Fan pattern</div></div>
+    </div>
+
     <div id="glassPricePreview" style="display:none;background:#f9f9f7;border-radius:10px;padding:12px 16px;border:1px solid #eee;font-size:13px;margin-bottom:1.25rem;text-align:center;"></div>
     <div class="nav-row"><button class="btn-back" id="glassBackBtn" onclick="go('Repair')">Back</button><button class="btn-next" id="nGlass" onclick="go(5)" disabled>See my estimate →</button></div>
   </div>
@@ -802,7 +819,57 @@ function pickGlassType(el, val) {
   drawGlassViz();
 }
 
-function pickAddonGlass(el, val) {
+function drawInsertPattern(ctx, x, y, w, h, style) {
+  ctx.strokeStyle='rgba(80,80,80,0.6)'; ctx.lineWidth=1.2;
+  if(style==='cascade') {
+    // 3x2 grid
+    for(let c=1;c<3;c++){ctx.beginPath();ctx.moveTo(x+c*w/3,y);ctx.lineTo(x+c*w/3,y+h);ctx.stroke();}
+    ctx.beginPath();ctx.moveTo(x,y+h/2);ctx.lineTo(x+w,y+h/2);ctx.stroke();
+  } else if(style==='prairie') {
+    // Border grid
+    const m=w*0.15;
+    ctx.strokeRect(x+m,y+m*0.6,w-m*2,h-m*1.2);
+    ctx.beginPath();ctx.moveTo(x+m,y+h/2);ctx.lineTo(x+m*0.3,y+h/2);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(x+w-m,y+h/2);ctx.lineTo(x+w-m*0.3,y+h/2);ctx.stroke();
+  } else if(style==='sherwood') {
+    // Arched top
+    ctx.beginPath();
+    ctx.moveTo(x+w*0.1,y+h*0.5);
+    ctx.lineTo(x+w*0.1,y+h*0.9);
+    ctx.lineTo(x+w*0.9,y+h*0.9);
+    ctx.lineTo(x+w*0.9,y+h*0.5);
+    ctx.arc(x+w/2,y+h*0.5,w*0.4,0,Math.PI,true);
+    ctx.stroke();
+    ctx.beginPath();ctx.moveTo(x+w/2-w*0.15,y+h*0.5);ctx.lineTo(x+w/2-w*0.15,y+h*0.9);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(x+w/2+w*0.15,y+h*0.5);ctx.lineTo(x+w/2+w*0.15,y+h*0.9);ctx.stroke();
+  } else if(style==='waterton') {
+    // Diamond
+    ctx.beginPath();
+    ctx.moveTo(x+w/2,y+h*0.1);ctx.lineTo(x+w*0.85,y+h/2);
+    ctx.lineTo(x+w/2,y+h*0.9);ctx.lineTo(x+w*0.15,y+h/2);
+    ctx.closePath();ctx.stroke();
+  } else if(style==='stockton') {
+    // 4-pane grid
+    ctx.beginPath();ctx.moveTo(x+w/2,y);ctx.lineTo(x+w/2,y+h);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(x,y+h/2);ctx.lineTo(x+w,y+h/2);ctx.stroke();
+  } else if(style==='sunburst') {
+    // Fan/sunburst from bottom center
+    const cx2=x+w/2, cy2=y+h*0.95, r=h*0.85;
+    for(let a=0;a<=10;a++){
+      const angle=-Math.PI+(a/10)*Math.PI;
+      ctx.beginPath();ctx.moveTo(cx2,cy2);
+      ctx.lineTo(cx2+Math.cos(angle)*r,cy2+Math.sin(angle)*r);ctx.stroke();
+    }
+    ctx.beginPath();ctx.arc(cx2,cy2,r,Math.PI,0);ctx.stroke();
+  }
+}
+
+function pickInsertStyle(el, val) {
+  el.closest('.option-grid').querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.insertStyle = val;
+  drawGlassViz();
+}
   el.closest('.option-grid').querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
   state.addGlass = val;
@@ -1199,29 +1266,37 @@ function drawGlassViz() {
     };
     const gc = glassColors[state.glassType] || 'rgba(180,220,255,0.45)';
     const topRowH = gH/4;
-    const panelW = (gW - gW*0.04) / 2;
+    const panelW = (gW*0.96) / 2;
     const panelMargin = gW*0.02;
-    // Draw glass inserts in top row panels
+
     for(let c=0;c<2;c++) {
       const px = gX + c*(panelW+panelMargin) + panelMargin;
       const insetX = px + panelW*0.08;
       const insetW = panelW*0.84;
-      const insetY = gY + topRowH*0.15;
-      const insetH = topRowH*0.65;
+      const insetY = gY + topRowH*0.12;
+      const insetH = topRowH*0.70;
+
+      // Glass fill
       ctx.fillStyle=gc; ctx.fillRect(insetX,insetY,insetW,insetH);
-      ctx.strokeStyle='rgba(150,180,200,0.8)'; ctx.lineWidth=1.5;
+
+      // Draw insert pattern
+      drawInsertPattern(ctx, insetX, insetY, insetW, insetH, state.insertStyle||'none');
+
+      // Glass frame
+      ctx.strokeStyle='rgba(100,140,170,0.7)'; ctx.lineWidth=1.5;
       ctx.strokeRect(insetX,insetY,insetW,insetH);
       // Reflection
-      ctx.fillStyle='rgba(255,255,255,0.20)';
-      ctx.fillRect(insetX+3,insetY+3,insetW*0.35,insetH*0.4);
+      ctx.fillStyle='rgba(255,255,255,0.18)';
+      ctx.fillRect(insetX+3,insetY+3,insetW*0.3,insetH*0.35);
     }
   }
 
   // Update summary
-  const glassLabel = state.glassType ? state.glassType.charAt(0).toUpperCase()+state.glassType.slice(1)+' glass' : 'Select glass type below';
+  const glassLabel = state.glassType ? state.glassType.charAt(0).toUpperCase()+state.glassType.slice(1)+' glass' : 'Select options below';
+  const insertLabel = state.insertStyle && state.insertStyle !== 'none' ? ` · ${state.insertStyle.charAt(0).toUpperCase()+state.insertStyle.slice(1)} insert` : '';
   const el=document.getElementById('glassVizSummary');
   if(el) el.innerHTML = state.glassType
-    ? `🪟 <strong>${glassLabel}</strong> · ${state.glassThickness==='ins'?'1/2" Insulated':'1/8" Non-Insulated'} · ${state.glassSize==='oversized'?'Oversized':'Long Panel'}`
+    ? `🪟 <strong>${glassLabel}${insertLabel}</strong> · ${state.glassThickness==='ins'?'1/2" Insulated':'1/8" Non-Insulated'} · ${state.glassSize==='oversized'?'Oversized':'Long Panel'}`
     : `<span style="color:#bbb;">Select your options below to preview</span>`;
 }
 
