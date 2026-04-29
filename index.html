@@ -321,6 +321,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   <div id="stepGlass" class="step">
     <div class="step-title">Glass pane replacement</div>
     <div class="step-sub">Select your glass thickness and type. Pricing is per pane.</div>
+
+    <!-- Live door preview -->
+    <div style="border-radius:14px;overflow:hidden;border:1px solid #e8e8e4;margin-bottom:1rem;background:linear-gradient(180deg,#87CEEB 0%,#c8dff0 40%,#7a9e6a 40%,#5a7e4a 100%);">
+      <canvas id="glassVizCanvas" style="display:block;width:100%;height:auto;"></canvas>
+    </div>
+    <div id="glassVizSummary" style="background:#f9f9f7;border-radius:10px;padding:10px 14px;margin-bottom:1.25rem;border:1px solid #eee;font-size:13px;color:#555;text-align:center;"></div>
     <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:8px;" id="glassTypeLabel">Glass thickness</div>
     <div class="option-grid" style="grid-template-columns:1fr 1fr;margin-bottom:1.25rem;">
       <div class="option-card" onclick="pickGlassThickness(this,'nonins')">
@@ -695,6 +701,7 @@ window.go = function(n) {
   document.getElementById('startOverBtn').style.display = id === '1' ? 'none' : 'inline-block';
   window.scrollTo({top:0, behavior:'smooth'});
   if(id === '4') setTimeout(() => drawHouseScene(), 100);
+  if(id === 'Glass') setTimeout(() => drawGlassViz(), 100);
 };
 
 // ─── Routing functions ───
@@ -776,6 +783,7 @@ function pickGlassThickness(el, val) {
   el.classList.add('selected');
   state.glassThickness = val;
   updateGlassPrice();
+  drawGlassViz();
 }
 
 function pickGlassSize(el, val) {
@@ -783,6 +791,7 @@ function pickGlassSize(el, val) {
   el.classList.add('selected');
   state.glassSize = val;
   updateGlassPrice();
+  drawGlassViz();
 }
 
 function pickGlassType(el, val) {
@@ -790,6 +799,7 @@ function pickGlassType(el, val) {
   el.classList.add('selected');
   state.glassType = val;
   updateGlassPrice();
+  drawGlassViz();
 }
 
 function pickAddonGlass(el, val) {
@@ -1048,7 +1058,9 @@ function drawLight2(ctx,x,y) {
   ctx.fillStyle='rgba(255,220,100,0.9)'; ctx.beginPath(); ctx.arc(x,y,5,0,Math.PI*2); ctx.fill();
 }
 
-function selectSampleHome() {}
+function refreshViz() { drawHouseScene(); }
+
+function refreshGlassViz() { drawGlassViz(); }
 function handleOwnPhoto() {}
 function saveVizPreview() {
   drawHouseScene();
@@ -1124,7 +1136,94 @@ function drawCarriageDoor(ctx, x, y, w, h, color) {
   ctx.strokeStyle=adjBright(color,-35);ctx.lineWidth=2;ctx.strokeRect(x+1,y+1,w-2,h-2);
 }
 
-function refreshViz() { drawHouseScene(); }
+function drawGlassViz() {
+  const canvas = document.getElementById('glassVizCanvas');
+  if (!canvas) return;
+  const W=800, H=360;
+  canvas.width=W; canvas.height=H;
+  const ctx=canvas.getContext('2d');
+
+  // Sky
+  const sky=ctx.createLinearGradient(0,0,0,H*0.60);
+  sky.addColorStop(0,'#87CEEB'); sky.addColorStop(1,'#c8dff0');
+  ctx.fillStyle=sky; ctx.fillRect(0,0,W,H*0.60);
+
+  // Ground
+  const gnd=ctx.createLinearGradient(0,H*0.60,0,H);
+  gnd.addColorStop(0,'#7a9e6a'); gnd.addColorStop(1,'#5a7e4a');
+  ctx.fillStyle=gnd; ctx.fillRect(0,H*0.60,W,H*0.40);
+
+  // Driveway
+  ctx.fillStyle='#b8b4a8';
+  ctx.beginPath();
+  ctx.moveTo(W*0.15,H*0.60); ctx.lineTo(W*0.85,H*0.60);
+  ctx.lineTo(W*0.95,H); ctx.lineTo(W*0.05,H);
+  ctx.closePath(); ctx.fill();
+
+  // House body
+  const hX=W*0.08, hY=H*0.12, hW=W*0.84, hH=H*0.50;
+  ctx.fillStyle='#e2d8c8'; ctx.fillRect(hX,hY,hW,hH);
+
+  // Roof
+  ctx.fillStyle='#3d3228';
+  ctx.beginPath();
+  ctx.moveTo(hX-20,hY+10); ctx.lineTo(W*0.50,H*0.02); ctx.lineTo(hX+hW+20,hY+10);
+  ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#d0c8bc'; ctx.fillRect(hX-20,hY+10,hW+40,10);
+
+  // Garage trim
+  const gX=hX+hW*0.08, gY=hY+hH*0.28, gW=hW*0.84, gH=hH*0.70;
+  ctx.fillStyle='#c0b8a8'; ctx.fillRect(gX-8,gY-10,gW+16,10);
+  ctx.fillStyle='#b8b0a0';
+  ctx.fillRect(gX-8,gY-10,8,gH+10);
+  ctx.fillRect(gX+gW,gY-10,8,gH+10);
+
+  // Draw door with glass
+  const color=colorMap[state.color]||'#f5f5f0';
+  const style=state.style||'raised';
+  if(style==='flush') drawFlushDoor(ctx,gX,gY,gW,gH,color);
+  else if(style==='carriage') drawCarriageDoor(ctx,gX,gY,gW,gH,color);
+  else drawRaisedPanelDoor(ctx,gX,gY,gW,gH,color);
+
+  // Lights
+  drawLight2(ctx,gX+4,gY-18); drawLight2(ctx,gX+gW-4,gY-18);
+
+  // Bushes
+  drawBush2(ctx,gX-18,H*0.615,20); drawBush2(ctx,gX+gW+18,H*0.615,20);
+
+  // Glass preview overlay on top row of door
+  if(state.glassType) {
+    const glassColors = {
+      clear:'rgba(180,220,255,0.45)', obscure:'rgba(160,180,200,0.55)',
+      tinted:'rgba(80,120,80,0.40)', frosted:'rgba(220,220,220,0.65)'
+    };
+    const gc = glassColors[state.glassType] || 'rgba(180,220,255,0.45)';
+    const topRowH = gH/4;
+    const panelW = (gW - gW*0.04) / 2;
+    const panelMargin = gW*0.02;
+    // Draw glass inserts in top row panels
+    for(let c=0;c<2;c++) {
+      const px = gX + c*(panelW+panelMargin) + panelMargin;
+      const insetX = px + panelW*0.08;
+      const insetW = panelW*0.84;
+      const insetY = gY + topRowH*0.15;
+      const insetH = topRowH*0.65;
+      ctx.fillStyle=gc; ctx.fillRect(insetX,insetY,insetW,insetH);
+      ctx.strokeStyle='rgba(150,180,200,0.8)'; ctx.lineWidth=1.5;
+      ctx.strokeRect(insetX,insetY,insetW,insetH);
+      // Reflection
+      ctx.fillStyle='rgba(255,255,255,0.20)';
+      ctx.fillRect(insetX+3,insetY+3,insetW*0.35,insetH*0.4);
+    }
+  }
+
+  // Update summary
+  const glassLabel = state.glassType ? state.glassType.charAt(0).toUpperCase()+state.glassType.slice(1)+' glass' : 'Select glass type below';
+  const el=document.getElementById('glassVizSummary');
+  if(el) el.innerHTML = state.glassType
+    ? `🪟 <strong>${glassLabel}</strong> · ${state.glassThickness==='ins'?'1/2" Insulated':'1/8" Non-Insulated'} · ${state.glassSize==='oversized'?'Oversized':'Long Panel'}`
+    : `<span style="color:#bbb;">Select your options below to preview</span>`;
+}
 
 // ─── Pricing ───
 function getRange() {
