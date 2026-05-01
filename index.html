@@ -75,11 +75,13 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 .preview-placeholder svg{width:48px;height:48px;stroke:var(--tan);margin-bottom:8px;}
 .glass-overlay{display:none;}
 /* Glass effects applied via CSS filter on the door image */
-.preview-door-img.glass-tinted{filter:brightness(0.55) saturate(0.7);}
-.preview-door-img.glass-frosted{filter:brightness(1.05) saturate(0.4) contrast(0.85);}
-.preview-door-img.glass-obscure{filter:blur(1.5px) brightness(0.95);}
-.preview-door-img.glass-rain{filter:brightness(0.92) saturate(0.8) contrast(1.05);}
-.preview-door-img.glass-poly{filter:brightness(1.02) saturate(0.85) hue-rotate(5deg);}
+.preview-door-img.glass-tinted{filter:sepia(30%) saturate(0.8) brightness(0.55);}
+.preview-door-img.glass-frosted{filter:sepia(30%) saturate(0.8) brightness(1.05) contrast(0.85);}
+.preview-door-img.glass-obscure{filter:sepia(30%) saturate(0.8) blur(1.5px) brightness(0.95);}
+.preview-door-img.glass-rain{filter:sepia(30%) saturate(0.8) brightness(0.92) contrast(1.05);}
+.preview-door-img.glass-poly{filter:sepia(30%) saturate(0.8) brightness(1.02) hue-rotate(5deg);}
+/* Almond tint — applied when showing b64 white image for almond color */
+.preview-door-img.almond-color{filter:sepia(30%) saturate(0.85) brightness(0.97) hue-rotate(3deg);}
 /* GLASS */
 .glass-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
 .glass-card{background:var(--white);border:2px solid var(--tan);border-radius:10px;padding:14px 12px;cursor:pointer;text-align:center;transition:all 0.2s;}
@@ -785,7 +787,8 @@ const styleColors = {
 const photoMap = {
   'raised-long':{
     almond:{
-      'none':'Raised long panel almond no insert frosted .jpg',
+      'none':'__b64_raised-long-white__',
+      'none-clear':'Raised long panel almond no insert frosted .jpg',
       'none-frosted':'Raised long panel almond no insert frosted .jpg',
       'none-obscure':'Raised Long Panel Almond no insert Obscure glass .jpg',
       'none-rain':'Raised Long Panel Almond no insert Rain .jpg',
@@ -800,7 +803,7 @@ const photoMap = {
       'sunburst':'Raised Long Panel Almond 2 piece sunburst .jpg',
       'arch-stockton':'Raised Long Panel Almond 2 piece arched stockton .jpg',
       'arch-madison':'Raised long Panel Almond 2 piece arched madison .jpg',
-      'default':'Raised long panel- almond.png',
+      'default':'__b64_raised-long-white__',
     },
     white:{
       'none':'__b64_raised-long-white__',
@@ -820,8 +823,8 @@ const photoMap = {
   },
   'raised-short':{
     almond:{
-      'none':'Raised short panel almond no window inserts .jpg',
-      'none-clear':'Raised panel short windows almond.png',
+      'none':'__b64_raised-short-white__',
+      'none-clear':'Raised short panel almond no window inserts .jpg',
       'none-frosted':'Raised panel short windows almond.png',
       'none-obscure':'Raised panel short windows almond.png',
       'none-rain':'Raised panel short windows almond.png',
@@ -833,7 +836,7 @@ const photoMap = {
       'stockton':'Raised short panel almond stockton .jpg',
       'waterton':'Raised short panel almond waterton .jpg',
       'sunburst':'Raised short panel almond 4 piece sunburst .jpg',
-      'default':'Raised panel short almond.png',
+      'default':'__b64_raised-short-white__',
     },
     white:{
       'none':'__b64_raised-short-white__',
@@ -891,6 +894,15 @@ function resolveImg(style, color, insertKey) {
   }
   return file ? BASE + encodeURIComponent(file) : null;
 }
+function isUsingB64White(style, color, insertKey) {
+  // Returns true when we're showing the embedded white b64 image for an almond door
+  const map = photoMap[style];
+  if (!map) return false;
+  const colorMap = map[color];
+  if (!colorMap) return false;
+  const file = colorMap[insertKey] || colorMap['none'] || colorMap['default'];
+  return file && file.startsWith('__b64_');
+}
 
 function getInsertKey() {
   const insert = state.insertStyle;
@@ -904,13 +916,19 @@ function getInsertKey() {
 
 function updatePreview(imgId, insertId, overlayId, phId) {
   if (!state.doorStyle) return;
-  const src = resolveImg(state.doorStyle, state.doorColor, getInsertKey());
+  const insertKey = getInsertKey();
+  const src = resolveImg(state.doorStyle, state.doorColor, insertKey);
   const img = document.getElementById(imgId);
   const ph  = phId ? document.getElementById(phId) : null;
   if (img && src) {
     img.src = src;
     img.style.display = 'block';
     if (ph) ph.style.display = 'none';
+    // Apply almond tint if we're using b64 white image for an almond door
+    img.classList.remove('almond-color');
+    if (state.doorColor === 'almond' && isUsingB64White(state.doorStyle, state.doorColor, insertKey)) {
+      img.classList.add('almond-color');
+    }
     applyGlassFilter(img);
   }
   const ins = document.getElementById(insertId);
@@ -922,7 +940,6 @@ function updatePreview(imgId, insertId, overlayId, phId) {
       ins.style.display = 'none';
     }
   }
-  // Overlays disabled — using CSS filter instead
 }
 
 function refreshAllPreviews() {
@@ -1024,10 +1041,28 @@ function selectGlassType(el, type) {
 }
 function applyGlassFilter(imgEl) {
   if (!imgEl) return;
-  imgEl.classList.remove('glass-tinted','glass-frosted','glass-obscure','glass-rain','glass-poly');
-  if (state.glassAdd && state.glassTypeName && state.glassTypeName !== 'clear') {
-    imgEl.classList.add('glass-' + state.glassTypeName);
+  const isAlmond = imgEl.classList.contains('almond-color');
+  const almondBase = 'sepia(30%) saturate(0.85) brightness(0.97) hue-rotate(3deg)';
+  const glassFilters = {
+    tinted: 'brightness(0.55) saturate(0.7)',
+    frosted: 'brightness(1.05) saturate(0.4) contrast(0.85)',
+    obscure: 'blur(1.5px) brightness(0.95)',
+    rain: 'brightness(0.92) saturate(0.8) contrast(1.05)',
+    poly: 'brightness(1.02) saturate(0.85) hue-rotate(5deg)',
+  };
+  const glass = (state.glassAdd && state.glassTypeName && state.glassTypeName !== 'clear')
+    ? glassFilters[state.glassTypeName] || '' : '';
+  if (isAlmond && glass) {
+    imgEl.style.filter = almondBase + ' ' + glass;
+  } else if (isAlmond) {
+    imgEl.style.filter = almondBase;
+  } else if (glass) {
+    imgEl.style.filter = glass;
+  } else {
+    imgEl.style.filter = '';
   }
+  // Remove class-based filters since we use inline style now
+  imgEl.classList.remove('glass-tinted','glass-frosted','glass-obscure','glass-rain','glass-poly');
 }
 
 function selectInsert(el, insertId, file) {
