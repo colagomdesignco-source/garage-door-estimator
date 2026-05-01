@@ -1247,6 +1247,15 @@ function selectGlassAdd(el, val){
   el.parentElement.querySelectorAll('.card').forEach(c=>c.classList.remove('selected'));
   el.classList.add('selected');
   state.glassAdd = val;
+  // Reset insert and glass selections when toggling off
+  if(!val){
+    state.insertStyle   = 'none';
+    state.insertFile    = '';
+    state.glassTypeName = 'clear';
+    state.glassType     = '';
+  }
+  updateDoorPreview();
+  updateGlassOverlay();
 }
 
 function nextFromStyle(){
