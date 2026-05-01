@@ -842,68 +842,123 @@ const styleColors = {
   'carriage-long': [{id:'white',label:'White',hex:'#f5f5f0',img:'Carriage House long panel white.png'}],
 };
 
-// ─── PHOTO LOOKUP MAP ────────────────────────────────────────────────────────
-// Maps style + color + insert → exact filename in the GitHub repo
-// For almond raised panels, we use the FULL door photo (no overlay needed)
-// For white / carriage / skyline, we use base + insert overlay
+// ─── COMPLETE PHOTO LOOKUP MAP ───────────────────────────────────────────────
+// Every style + color + insert combo → exact filename hosted in the GitHub repo
+// ALL previews use direct photo swap — no overlay system
 const photoMap = {
+
   'raised-long': {
     almond: {
-      'none-clear':         'Raised_long_panel_almond_no_insert_frosted_.jpg',
-      'none-frosted':       'Raised_long_panel_almond_no_insert_frosted_.jpg',
-      'none-obscure':       'Raised_Long_Panel_Almond_no_insert_Obscure_glass_.jpg',
-      'none-rain':          'Raised_Long_Panel_Almond_no_insert_Rain_.jpg',
-      'none-tinted':        'Raised_long_panel_almond_no_insert_tinted_.jpg',
-      'none-poly':          'Raised_long_panel_almond_no_insert_polycarbonate_.jpg',
-      'cascade':            'Raised_Long_Panel_Almond_Cascade.jpg',
-      'prairie':            'Raised_Long_Panel_almond_Praire.jpg',
-      'sherwood':           'Raised_long_Panel_Almond_Sherwood_.jpg',
-      'stockton':           'raised_Long_Panel_Almond_Stockton_.jpg',
-      'madison':            'Raised_Long_Panel_Almond_Madison_.jpg',
-      'waterton':           'Raised_Long_Panel_Almond_Waterton_.jpg',
-      'sunburst':           'Raised_Long_Panel_Almond_2_piece_sunburst_.jpg',
-      'arch-stockton':      'Raised_Long_Panel_Almond_2_piece_arched_stockton_.jpg',
-      'arch-madison':       'Raised_long_Panel_Almond_2_piece_arched_madison.jpg',
+      // No-insert variants by glass type
+      'none':           'Raised_long_panel_almond_no_insert_frosted_.jpg', // clear default
+      'none-clear':     'Raised_long_panel_almond_no_insert_frosted_.jpg',
+      'none-frosted':   'Raised_long_panel_almond_no_insert_frosted_.jpg',
+      'none-obscure':   'Raised_Long_Panel_Almond_no_insert_Obscure_glass_.jpg',
+      'none-rain':      'Raised_Long_Panel_Almond_no_insert_Rain_.jpg',
+      'none-tinted':    'Raised_long_panel_almond_no_insert_tinted_.jpg',
+      'none-poly':      'Raised_long_panel_almond_no_insert_polycarbonate_.jpg',
+      // Window insert styles (glass type not differentiated — one photo per insert)
+      'cascade':        'Raised_Long_Panel_Almond_Cascade.jpg',
+      'prairie':        'Raised_Long_Panel_almond_Praire.jpg',
+      'sherwood':       'Raised_long_Panel_Almond_Sherwood_.jpg',
+      'stockton':       'raised_Long_Panel_Almond_Stockton_.jpg',
+      'madison':        'Raised_Long_Panel_Almond_Madison_.jpg',
+      'waterton':       'Raised_Long_Panel_Almond_Waterton_.jpg',
+      'sunburst':       'Raised_Long_Panel_Almond_2_piece_sunburst_.jpg',
+      'arch-stockton':  'Raised_Long_Panel_Almond_2_piece_arched_stockton_.jpg',
+      'arch-madison':   'Raised_long_Panel_Almond_2_piece_arched_madison.jpg',
+    },
+    white: {
+      // White raised long — use base image (no per-insert photos yet)
+      'none':           'Raised lomg panel white.png',
+      'default':        'Raised lomg panel white.png',
     }
   },
+
   'raised-short': {
     almond: {
-      'sunburst':           'Raised_short_panel_almond_4_piece_sunburst_.jpg',
+      'none':           'Raised_short_panel_almond_no_window_inserts_.jpg',
+      'none-clear':     'Raised_short_panel_almond_no_window_inserts_.jpg',
+      'none-frosted':   'Raised_short_panel_almond_no_window_inserts_.jpg',
+      'none-obscure':   'Raised_short_panel_almond_no_window_inserts_.jpg',
+      'none-rain':      'Raised_short_panel_almond_no_window_inserts_.jpg',
+      'none-tinted':    'Raised_short_panel_almond_no_window_inserts_.jpg',
+      'none-poly':      'Raised_short_panel_almond_no_window_inserts_.jpg',
+      'cascade':        'Raised_short_panel_almond_cascade_.jpg',
+      'prairie':        'Raised_short_panel_almond_praire_.jpg',
+      'sherwood':       'Raised_short_panel_almond_sherwood_.jpg',
+      'stockton':       'Raised_short_panel_almond_stockton_.jpg',
+      'waterton':       'Raised_short_panel_almond_waterton_.jpg',
+      'sunburst':       'Raised_short_panel_almond_4_piece_sunburst_.jpg',
+      'sunburst-8':     'raised_short_panel_almond_8_piece_sunburst_.jpg',
+      // fallback for inserts without dedicated short-panel photo
+      'default':        'Raised_short_panel_almond_no_window_inserts_.jpg',
+    },
+    white: {
+      'none':           'Raised short panel white.png',
+      'default':        'Raised short panel white.png',
     }
   },
+
+  'skyline': {
+    white: {
+      'none':           'Skyline_flush_white_windows_no_inserts_.jpg',
+      'none-clear':     'Skyline_flush_white_windows_no_inserts_.jpg',
+      'none-frosted':   'Skyline_flush_white_windows_no_inserts_.jpg',
+      'none-obscure':   'Skyline_flush_white_windows_no_inserts_.jpg',
+      'none-rain':      'Skyline_flush_white_windows_no_inserts_.jpg',
+      'none-tinted':    'Skyline_flush_white_windows_no_inserts_.jpg',
+      'none-poly':      'Skyline_flush_white_windows_no_inserts_.jpg',
+      'cascade':        'Skyline_flush_white_cascade_inserts_.jpg',
+      // other inserts fall back to no-insert
+      'default':        'Skyline_flush_white_windows_no_inserts_.jpg',
+    },
+    black: {
+      'none':           'Skyline Flush Black.png',
+      'default':        'Skyline Flush Black.png',
+    }
+  },
+
   'carriage-long': {
     white: {
-      'none':               'Carriage_stamp_long_panel_windows_no_inserts_white_.jpg',
+      'none':           'Carriage_stamp_long_panel_windows_no_inserts_white_.jpg',
+      'default':        'Carriage_stamp_long_panel_windows_no_inserts_white_.jpg',
     }
   },
+
   'carriage-short': {
     white: {
-      'none':               'Carriage_stamp_short_panel_white_windows_no_inserts_.jpg',
+      'none':           'Carriage_stamp_short_panel_white_windows_no_inserts_.jpg',
+      'default':        'Carriage_stamp_short_panel_white_windows_no_inserts_.jpg',
     }
   },
 };
 
-// Get the best full-door photo for current selections (almond raised panels)
+// Get the best photo for current style + color + insert + glass selection
 function getFullDoorPhoto() {
-  const style = state.doorStyle;
-  const color = state.doorColor;
-  const insert = state.insertStyle || 'none';
-  const glass  = state.glassType  || 'clear';
+  const style  = state.doorStyle;
+  const color  = state.doorColor;
+  const insert = state.insertStyle  || 'none';
+  const glass  = state.glassTypeName || 'clear';
 
   const styleMap = photoMap[style];
   if (!styleMap) return null;
   const colorMap = styleMap[color];
   if (!colorMap) return null;
 
-  // Try exact insert match first
-  if (colorMap[insert]) return BASE + colorMap[insert];
-  // Try insert + glass combo (for no-insert variants)
-  const glassKey = insert + '-' + glass;
+  // 1. Exact insert match (e.g. 'cascade', 'sherwood')
+  if (insert !== 'none' && colorMap[insert]) return BASE + colorMap[insert];
+
+  // 2. No-insert + glass type combo (e.g. 'none-frosted')
+  const glassKey = 'none-' + glass;
   if (colorMap[glassKey]) return BASE + colorMap[glassKey];
-  // Try no-insert clear fallback
-  if (colorMap['none-clear']) return BASE + colorMap['none-clear'];
-  // Try bare 'none'
+
+  // 3. Plain no-insert
   if (colorMap['none']) return BASE + colorMap['none'];
+
+  // 4. Generic default
+  if (colorMap['default']) return BASE + colorMap['default'];
+
   return null;
 }
 
@@ -1005,65 +1060,25 @@ function renderColorSwatches(styleId){
 }
 
 function updateDoorPreview(){
-  const style = state.doorStyle;
-  const color = state.doorColor;
+  const photo = getFullDoorPhoto();
+  const imgSrc = photo || (BASE + encodeURIComponent((styleColors[state.doorStyle]||[]).find(c=>c.id===state.doorColor)?.img || ''));
 
-  // Check if we have a full combined photo for this selection
-  const fullPhoto = getFullDoorPhoto();
-
-  // For almond raised panels: show the full combined photo, hide insert overlay
-  const useFullPhoto = fullPhoto && (color === 'almond') && (style === 'raised-long' || style === 'raised-short');
-
-  if (useFullPhoto) {
-    // Show combined photo, no overlay needed
-    ['preview-door-img','preview-door-img2','success-door-img'].forEach(id=>{
-      const el = document.getElementById(id);
-      if(el){ el.src = fullPhoto; el.style.display='block'; el.style.filter=''; }
-    });
-    ['preview-insert-img','preview-insert-img2','success-insert-img'].forEach(id=>{
-      const el = document.getElementById(id);
-      if(el){ el.style.display='none'; }
-    });
-  } else {
-    // Use base door image + overlay approach
-    const colors = styleColors[style] || [];
-    const chosen = colors.find(c=>c.id===color) || colors[0];
-    if(!chosen) return;
-
-    ['preview-door-img','preview-door-img2','success-door-img'].forEach(id=>{
-      const el = document.getElementById(id);
-      if(el){ el.src = BASE + encodeURIComponent(chosen.img); el.style.display='block'; }
-    });
-    updateInsertPreview();
-  }
-
+  ['preview-door-img','preview-door-img2','success-door-img'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el && imgSrc){ el.src = imgSrc; el.style.display='block'; el.style.filter=''; }
+  });
+  // Always hide overlay — all combos use full door photos now
+  ['preview-insert-img','preview-insert-img2','success-insert-img'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.style.display='none';
+  });
   const ph = document.getElementById('preview-placeholder');
   if(ph) ph.style.display='none';
 }
 
 function updateInsertPreview(){
-  const style = state.doorStyle;
-  const color = state.doorColor;
-
-  // For almond raised panels, the insert is baked into the full photo — updateDoorPreview handles it
-  if(color === 'almond' && (style === 'raised-long' || style === 'raised-short')){
-    updateDoorPreview();
-    return;
-  }
-
-  // Otherwise use overlay
-  const file = state.insertFile;
-  ['preview-insert-img','preview-insert-img2','success-insert-img'].forEach(id=>{
-    const el = document.getElementById(id);
-    if(!el) return;
-    if(file){
-      el.src = BASE + encodeURIComponent(file);
-      el.style.display='block';
-      el.style.filter = state.glassType || '';
-    } else {
-      el.style.display='none';
-    }
-  });
+  // All previews now handled by updateDoorPreview via photo map
+  updateDoorPreview();
 }
 
 function selectIns(el, val){
@@ -1089,35 +1104,17 @@ function nextFromStyle(){
 function selectGlassType(el, type, filterVal){
   document.querySelectorAll('.glass-card').forEach(c=>c.classList.remove('selected'));
   el.classList.add('selected');
-  state.glassType = filterVal;
+  state.glassType     = filterVal;
   state.glassTypeName = type;
-
-  const color = state.doorColor;
-  const style = state.doorStyle;
-  if(color === 'almond' && (style === 'raised-long' || style === 'raised-short')){
-    updateDoorPreview(); // swaps to correct no-insert glass photo
-  } else {
-    updateInsertPreview();
-  }
+  updateDoorPreview();
 }
 
 function selectInsert(el, name, file){
   document.querySelectorAll('.insert-card').forEach(c=>c.classList.remove('selected'));
   el.classList.add('selected');
-  state.insertFile = file;
-  state.insertStyle = name; // store key for photo map lookup
-
-  // For almond raised panels, swap to the full combined photo
-  const color = state.doorColor;
-  const style = state.doorStyle;
-  if(color === 'almond' && (style === 'raised-long' || style === 'raised-short')){
-    updateDoorPreview();
-  } else {
-    updateInsertPreview();
-  }
-
-  const si = document.getElementById('success-insert-img');
-  if(si){ si.style.display = file ? 'block':'none'; }
+  state.insertFile  = file;
+  state.insertStyle = name;
+  updateDoorPreview();
 }
 
 function contactBack(){
