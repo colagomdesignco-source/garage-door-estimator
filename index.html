@@ -97,6 +97,55 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 .preview-placeholder{text-align:center;color:var(--gray);}
 .preview-placeholder svg{width:48px;height:48px;stroke:var(--tan);margin-bottom:8px;}
 
+/* Glass overlay — covers ONLY the window region at top of door */
+.glass-overlay{
+  position:absolute;
+  /* These percentages target the window strip only:
+     top ~4% from top of image, height ~16% of total image,
+     horizontally centered matching the door width within contain */
+  top:4%;
+  left:5%;
+  right:5%;
+  height:16%;
+  pointer-events:none;
+  display:none;
+  border-radius:2px;
+  z-index:10;
+}
+.glass-overlay.active{display:block;}
+
+/* Glass type visual effects */
+.glass-overlay.frosted{
+  background:rgba(220,230,225,0.45);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+}
+.glass-overlay.obscure{
+  background:rgba(200,210,205,0.5);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+}
+.glass-overlay.rain{
+  background: repeating-linear-gradient(
+    170deg,
+    rgba(180,200,190,0.15) 0px,
+    rgba(180,200,190,0.08) 2px,
+    transparent 2px,
+    transparent 6px
+  );
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+}
+.glass-overlay.tinted{
+  background:rgba(30,50,40,0.55);
+}
+.glass-overlay.poly{
+  background:rgba(210,225,215,0.3);
+  backdrop-filter:blur(1px);
+  -webkit-backdrop-filter:blur(1px);
+}
+.glass-overlay.clear{display:none!important;}
+
 /* GLASS OPTIONS */
 .glass-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
 .glass-card{background:var(--white);border:2px solid var(--tan);border-radius:10px;padding:14px 12px;cursor:pointer;text-align:center;transition:all 0.2s;}
@@ -519,6 +568,7 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
         </div>
         <img id="preview-door-img" class="preview-door-img" src="" alt="" style="display:none;"/>
         <img id="preview-insert-img" class="preview-insert-img" src="" alt="" style="display:none;"/>
+        <div id="glass-overlay-1" class="glass-overlay"></div>
         <div id="preview-glass-overlay" class="preview-glass-overlay" style="display:none;"></div>
       </div>
     </div>
@@ -632,6 +682,7 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
       <div class="preview-door" id="preview-door-wrap2">
         <img id="preview-door-img2" class="preview-door-img" src="" alt=""/>
         <img id="preview-insert-img2" class="preview-insert-img" src="" alt="" style="display:none;"/>
+        <div id="glass-overlay-2" class="glass-overlay"></div>
         <div id="preview-glass-overlay2" class="preview-glass-overlay" style="display:none;"></div>
       </div>
     </div>
@@ -801,6 +852,7 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
       <div class="preview-door">
         <img id="success-door-img" class="preview-door-img" src="" alt=""/>
         <img id="success-insert-img" class="preview-insert-img" src="" alt="" style="display:none;"/>
+        <div id="glass-overlay-3" class="glass-overlay"></div>
       </div>
     </div>
   </div>
@@ -1160,13 +1212,14 @@ function updateDoorPreview(){
     const el = document.getElementById(id);
     if(el && imgSrc){ el.src = imgSrc; el.style.display='block'; el.style.filter=''; }
   });
-  // Always hide overlay — all combos use full door photos now
+  // Always hide img overlay — all combos use full door photos now
   ['preview-insert-img','preview-insert-img2','success-insert-img'].forEach(id=>{
     const el = document.getElementById(id);
     if(el) el.style.display='none';
   });
   const ph = document.getElementById('preview-placeholder');
   if(ph) ph.style.display='none';
+  updateGlassOverlay();
 }
 
 function updateInsertPreview(){
@@ -1200,6 +1253,51 @@ function selectGlassType(el, type, filterVal){
   state.glassType     = filterVal;
   state.glassTypeName = type;
   updateDoorPreview();
+  updateGlassOverlay();
+}
+
+function updateGlassOverlay(){
+  const type = state.glassTypeName || 'clear';
+  const hasWindow = state.insertStyle && state.insertStyle !== 'none';
+  const hasGlass  = state.glassAdd;
+
+  // Only show overlay when windows are selected and glass type is not clear
+  const showOverlay = (hasWindow || hasGlass) && type !== 'clear';
+
+  // Map glass type name to CSS class
+  const classMap = {
+    'frosted':       'frosted',
+    'obscure':       'obscure',
+    'rain':          'rain',
+    'tinted':        'tinted',
+    'polycarbonate': 'poly',
+    'poly':          'poly',
+    'clear':         'clear',
+  };
+  const glassClass = classMap[type] || 'clear';
+
+  // Adjust overlay position based on door style
+  const style = state.doorStyle || '';
+  let top = '4%', height = '16%', left = '5%', right = '5%';
+  if(style === 'raised-short' || style === 'carriage-short'){
+    top = '3%'; height = '14%';
+  } else if(style === 'skyline'){
+    top = '5%'; height = '18%';
+  }
+
+  ['glass-overlay-1','glass-overlay-2','glass-overlay-3'].forEach(id => {
+    const el = document.getElementById(id);
+    if(!el) return;
+    // Reset classes
+    el.className = 'glass-overlay';
+    el.style.top    = top;
+    el.style.height = height;
+    el.style.left   = left;
+    el.style.right  = right;
+    if(showOverlay && glassClass !== 'clear'){
+      el.classList.add('active', glassClass);
+    }
+  });
 }
 
 function selectInsert(el, name, file){
@@ -1208,6 +1306,7 @@ function selectInsert(el, name, file){
   state.insertFile  = file;
   state.insertStyle = name;
   updateDoorPreview();
+  updateGlassOverlay();
 }
 
 function contactBack(){
