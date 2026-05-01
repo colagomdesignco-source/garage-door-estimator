@@ -81,7 +81,7 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 .preview-door-img.glass-rain{filter:sepia(30%) saturate(0.8) brightness(0.92) contrast(1.05);}
 .preview-door-img.glass-poly{filter:sepia(30%) saturate(0.8) brightness(1.02) hue-rotate(5deg);}
 /* Almond tint — applied when showing b64 white image for almond color */
-.preview-door-img.almond-color{filter:sepia(30%) saturate(0.85) brightness(0.97) hue-rotate(3deg);}
+.preview-door-img.almond-color{filter:sepia(45%) saturate(1.1) brightness(0.93) hue-rotate(-5deg);}
 /* GLASS */
 .glass-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
 .glass-card{background:var(--white);border:2px solid var(--tan);border-radius:10px;padding:14px 12px;cursor:pointer;text-align:center;transition:all 0.2s;}
@@ -1042,16 +1042,25 @@ function selectGlassType(el, type) {
 function applyGlassFilter(imgEl) {
   if (!imgEl) return;
   const isAlmond = imgEl.classList.contains('almond-color');
-  const almondBase = 'sepia(30%) saturate(0.85) brightness(0.97) hue-rotate(3deg)';
+  const almondBase = 'sepia(45%) saturate(1.1) brightness(0.93) hue-rotate(-5deg)';
+
+  // CSS glass filters are ONLY applied when the image is a b64 embedded white image.
+  // Repo photos already have the glass effect baked in — never add a filter on top.
+  const usingB64 = imgEl.classList.contains('almond-color') || 
+                   (imgEl.src && imgEl.src.startsWith('data:'));
+  
   const glassFilters = {
-    tinted: 'brightness(0.55) saturate(0.7)',
-    frosted: 'brightness(1.05) saturate(0.4) contrast(0.85)',
-    obscure: 'blur(1.5px) brightness(0.95)',
-    rain: 'brightness(0.92) saturate(0.8) contrast(1.05)',
-    poly: 'brightness(1.02) saturate(0.85) hue-rotate(5deg)',
+    tinted:  'brightness(0.58) saturate(0.65)',
+    frosted: 'brightness(1.04) saturate(0.35) contrast(0.88)',
+    obscure: 'blur(1.5px) brightness(0.96)',
+    rain:    'brightness(0.93) saturate(0.75) contrast(1.04)',
+    poly:    'brightness(1.01) saturate(0.82) hue-rotate(4deg)',
   };
-  const glass = (state.glassAdd && state.glassTypeName && state.glassTypeName !== 'clear')
+
+  // Only apply glass filter if we're on a b64 image (no glass in photo)
+  const glass = (usingB64 && state.glassAdd && state.glassTypeName && state.glassTypeName !== 'clear')
     ? glassFilters[state.glassTypeName] || '' : '';
+
   if (isAlmond && glass) {
     imgEl.style.filter = almondBase + ' ' + glass;
   } else if (isAlmond) {
@@ -1061,7 +1070,6 @@ function applyGlassFilter(imgEl) {
   } else {
     imgEl.style.filter = '';
   }
-  // Remove class-based filters since we use inline style now
   imgEl.classList.remove('glass-tinted','glass-frosted','glass-obscure','glass-rain','glass-poly');
 }
 
