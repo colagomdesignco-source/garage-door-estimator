@@ -1015,13 +1015,13 @@ const photoMap = {
     },
     black: {
       'none':          'Skyline Flush Black.png',
-      'none-clear':    'Skyline Flush Black.png',
-      'none-frosted':  'Raised long panel almond no insert frosted .jpg',
-      'none-obscure':  'Raised Long Panel Almond no insert Obscure glass .jpg',
-      'none-rain':     'Raised Long Panel Almond no insert Rain .jpg',
-      'none-tinted':   'Raised long panel almond no insert tinted .jpg',
-      'none-poly':     'Raised long panel almond no insert polycarbonate .jpg',
-      'cascade':       'Raised Long Panel Almond Cascade.jpg',
+      'none-clear':    'Skyline flush white windows no inserts .jpg',
+      'none-frosted':  'Skyline flush white windows no inserts .jpg',
+      'none-obscure':  'Skyline flush white windows no inserts .jpg',
+      'none-rain':     'Skyline flush white windows no inserts .jpg',
+      'none-tinted':   'Skyline flush white windows no inserts .jpg',
+      'none-poly':     'Skyline flush white windows no inserts .jpg',
+      'cascade':       'Skyline flush white cascade inserts .jpg',
       'prairie':       'Raised Long Panel almond Praire.jpg',
       'sherwood':      'Raised long Panel Almond Sherwood .jpg',
       'stockton':      'raised Long Panel Almond Stockton .jpg',
@@ -1083,26 +1083,36 @@ const photoMap = {
 function getFullDoorPhoto() {
   const style  = state.doorStyle;
   const color  = state.doorColor;
-  const insert = state.insertStyle  || 'none';
   const glass  = state.glassTypeName || 'clear';
+  const insert = state.insertStyle  || 'none';
 
   const styleMap = photoMap[style];
   if (!styleMap) return null;
   const colorMap = styleMap[color];
   if (!colorMap) return null;
 
-  // 1. Exact insert match (e.g. 'cascade', 'sherwood')
-  if (insert !== 'none' && colorMap[insert]) return BASE + colorMap[insert];
+  if (state.glassAdd) {
+    // Client has chosen to add glass — show windowed door
 
-  // 2. No-insert + glass type combo (e.g. 'none-frosted')
-  const glassKey = 'none-' + glass;
-  if (colorMap[glassKey]) return BASE + colorMap[glassKey];
+    // 1. Specific insert style selected (e.g. 'cascade', 'sherwood')
+    if (insert !== 'none' && colorMap[insert]) return BASE + colorMap[insert];
 
-  // 3. Plain no-insert
-  if (colorMap['none']) return BASE + colorMap['none'];
+    // 2. No insert but specific glass type (e.g. 'none-frosted')
+    if (insert === 'none' && glass !== 'clear') {
+      const glassKey = 'none-' + glass;
+      if (colorMap[glassKey]) return BASE + colorMap[glassKey];
+    }
 
-  // 4. Generic default
+    // 3. Default windowed version of THIS door (clear/plain windows)
+    if (colorMap['none-clear']) return BASE + colorMap['none-clear'];
+    if (colorMap['none'])       return BASE + colorMap['none'];
+  }
+
+  // No glass selected — always show plain door, no windows
   if (colorMap['default']) return BASE + colorMap['default'];
+
+  // Final fallback to no-window version
+  if (colorMap['none']) return BASE + colorMap['none'];
 
   return null;
 }
@@ -1261,8 +1271,8 @@ function updateGlassOverlay(){
   const hasWindow = state.insertStyle && state.insertStyle !== 'none';
   const hasGlass  = state.glassAdd;
 
-  // Only show overlay when windows are selected and glass type is not clear
-  const showOverlay = (hasWindow || hasGlass) && type !== 'clear';
+  // Only show overlay when client has chosen to add glass AND type is not clear
+  const showOverlay = state.glassAdd && (hasWindow || hasGlass) && type !== 'clear';
 
   // Map glass type name to CSS class
   const classMap = {
