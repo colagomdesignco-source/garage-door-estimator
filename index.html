@@ -1,1527 +1,1053 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Get a Free Estimate — Generational Garage Doors</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f9f9f7; min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1rem; }
-.estimator { max-width: 620px; width: 100%; background: #fff; border-radius: 16px; padding: 2rem; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
-.brand { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; }
-.brand-logo { width: 42px; height: 42px; background: #1a1a1a; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.brand-text { font-size: 15px; font-weight: 700; color: #1a1a1a; }
-.brand-sub { font-size: 12px; color: #999; }
-.progress-wrap { margin-bottom: 1.75rem; }
-.progress-bar { height: 2px; background: #f0f0ee; border-radius: 2px; }
-.progress-fill { height: 100%; background: #1a1a1a; border-radius: 2px; transition: width 0.4s ease; }
-.progress-label { font-size: 11px; color: #bbb; margin-top: 6px; }
-.step { display: none; }
-.step.active { display: block; }
-.step-title { font-size: 21px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px; }
-.step-sub { font-size: 14px; color: #888; margin-bottom: 1.5rem; line-height: 1.5; }
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#faf8f5;
+  --charcoal:#1a1a1a;
+  --red:#c0392b;
+  --red-dark:#a93226;
+  --tan:#e8e0d4;
+  --gray:#6b6b6b;
+  --light:#f0ece6;
+  --white:#ffffff;
+  --shadow:0 4px 24px rgba(0,0,0,0.08);
+  --radius:12px;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--charcoal);min-height:100vh;}
 
-/* Option cards */
-.option-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
-.option-card { background: #fff; border: 1px solid #e8e8e4; border-radius: 12px; padding: 1rem 0.75rem; cursor: pointer; text-align: center; transition: border-color 0.15s; }
-.option-card:hover { border-color: #bbb; }
-.option-card.selected { border: 2px solid #1a1a1a; background: #fafaf8; }
-.opt-icon { margin-bottom: 10px; display: flex; align-items: center; justify-content: center; }
-.opt-label { font-size: 13px; font-weight: 600; color: #1a1a1a; }
-.opt-desc { font-size: 11px; color: #999; margin-top: 4px; line-height: 1.4; }
+/* SENDING OVERLAY */
+#sending-overlay{display:none;position:fixed;inset:0;background:rgba(255,255,255,0.95);z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:16px;}
+#sending-overlay.active{display:flex;}
+.spinner{width:40px;height:40px;border:3px solid var(--tan);border-top-color:var(--red);border-radius:50%;animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-/* Bay cards */
-.bay-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
-.bay-card { background: #fff; border: 1px solid #e8e8e4; border-radius: 12px; padding: 1rem 0.75rem; cursor: pointer; text-align: center; transition: border-color 0.15s; }
-.bay-card:hover { border-color: #bbb; }
-.bay-card.selected { border: 2px solid #1a1a1a; background: #fafaf8; }
-.bay-card svg { width: 100%; height: 75px; display: block; margin: 0 auto 8px; }
-.bay-label { font-size: 13px; font-weight: 600; color: #1a1a1a; }
-.bay-sub { font-size: 11px; color: #999; margin-top: 3px; }
+/* HEADER */
+header{background:var(--white);border-bottom:1px solid var(--tan);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo{font-family:'Playfair Display',serif;font-size:18px;font-weight:600;color:var(--charcoal);letter-spacing:-0.3px;}
+.logo span{color:var(--red);}
+.restart-btn{background:none;border:1px solid var(--tan);color:var(--gray);padding:6px 14px;border-radius:20px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.restart-btn:hover{border-color:var(--charcoal);color:var(--charcoal);}
 
-/* Door style gallery */
-.door-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.25rem; }
-.door-card { background: #fff; border: 1px solid #e8e8e4; border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.15s; }
-.door-card:hover { border-color: #bbb; }
-.door-card.selected { border: 2px solid #1a1a1a; }
-.door-photo { width: 100%; height: 100px; object-fit: cover; display: block; background: #f0f0ee; }
-.door-info { padding: 8px 10px 10px; }
-.door-name { font-size: 12px; font-weight: 700; color: #1a1a1a; }
-.door-type { font-size: 10px; color: #888; margin-top: 2px; }
-.badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 99px; margin-top: 5px; }
-.badge-green { background: #edf7ee; color: #2d7a35; }
-.badge-blue { background: #e8f1fd; color: #1a5cb0; }
-.badge-amber { background: #fef3e2; color: #854F0B; }
+/* PROGRESS */
+.progress-wrap{background:var(--white);padding:12px 24px;border-bottom:1px solid var(--tan);}
+.progress-bar{height:3px;background:var(--tan);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--red);border-radius:2px;transition:width 0.4s ease;}
+.progress-label{font-size:11px;color:var(--gray);margin-top:6px;text-transform:uppercase;letter-spacing:0.8px;}
 
-/* Color picker */
-.color-section { margin-bottom: 1.25rem; }
-.color-label { font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 8px; }
-.color-options { display: flex; gap: 8px; }
-.color-chip { border: 2px solid #e8e8e4; border-radius: 10px; padding: 8px 14px; cursor: pointer; font-size: 12px; font-weight: 600; color: #555; display: flex; align-items: center; gap: 6px; transition: all 0.15s; background: #fff; }
-.color-chip:hover { border-color: #bbb; }
-.color-chip.selected { border-color: #1a1a1a; background: #fafaf8; color: #1a1a1a; }
-.color-dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid #ddd; flex-shrink: 0; }
-.dot-white { background: #fff; }
-.dot-almond { background: #f5e6c8; }
+/* MAIN */
+main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 
-/* Insulation cards */
-.ins-selector { display: none; margin-bottom: 1.25rem; }
-.ins-selector.visible { display: block; }
-.ins-note { font-size: 11px; color: #888; background: #f9f9f7; border-radius: 8px; padding: 8px 12px; margin-bottom: 10px; border: 1px solid #eee; }
-.ins-title { font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 10px; }
-.ins-options { display: grid; gap: 8px; }
-.ins-options.three-col { grid-template-columns: 1fr 1fr 1fr; }
-.ins-options.one-col { grid-template-columns: 1fr; }
-.ins-card { border: 2px solid #e8e8e4; border-radius: 12px; padding: 14px 12px; cursor: pointer; background: #fff; text-align: center; transition: all 0.15s; }
-.ins-card:hover { transform: translateY(-2px); border-color: #bbb; box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
-.ins-card.selected.eco { border-color: #639922; background: #edf7ee; }
-.ins-card.selected.pvc { border-color: #185FA5; background: #e8f1fd; }
-.ins-card.selected.steel { border-color: #854F0B; background: #fef3e2; }
-.ins-emoji { font-size: 20px; display: block; margin-bottom: 5px; }
-.ins-label { font-size: 12px; font-weight: 700; color: #1a1a1a; margin-bottom: 2px; }
-.ins-desc { font-size: 10px; color: #888; line-height: 1.4; }
-.ins-price { font-size: 10px; font-weight: 600; margin-top: 4px; color: #999; }
+/* STEP */
+.step{display:none;animation:fadeIn 0.3s ease;}
+.step.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-/* Gate box */
-.gate-box { background: #f9f9f7; border-radius: 14px; padding: 1.5rem; border: 1px solid #eee; margin-bottom: 1.25rem; }
-.gate-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
-.gate-lock { width: 32px; height: 32px; background: #1a1a1a; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.gate-title { font-size: 16px; font-weight: 700; color: #1a1a1a; }
-.gate-sub { font-size: 13px; color: #888; margin-bottom: 1.25rem; line-height: 1.5; }
-.gate-preview { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1.25rem; }
-.gate-preview-card { background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 12px; text-align: center; position: relative; overflow: hidden; }
-.blur-cover { position: absolute; inset: 0; background: rgba(255,255,255,0.85); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; font-size: 20px; }
-.gate-preview-label { font-size: 11px; color: #888; margin-bottom: 4px; }
-.gate-preview-value { font-size: 13px; font-weight: 600; color: #1a1a1a; }
+.step-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:500;margin-bottom:6px;line-height:1.2;}
+.step-sub{color:var(--gray);font-size:14px;margin-bottom:28px;}
 
-/* Form */
-.form-group { margin-bottom: 1rem; }
-.form-group label { font-size: 13px; color: #555; font-weight: 500; display: block; margin-bottom: 6px; }
-.form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px 12px; border: 1px solid #e8e8e4; border-radius: 8px; font-size: 14px; outline: none; font-family: inherit; color: #1a1a1a; background: #fff; }
-.form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: #1a1a1a; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.form-group textarea { height: 70px; resize: vertical; }
-.optional-tag { font-size: 10px; color: #bbb; font-weight: 400; margin-left: 4px; }
+/* CARDS */
+.card-grid{display:grid;gap:12px;}
+.card-grid.cols2{grid-template-columns:1fr 1fr;}
+.card-grid.cols3{grid-template-columns:1fr 1fr 1fr;}
 
-/* Nav */
-.nav-row { display: flex; gap: 8px; align-items: center; margin-top: 0.5rem; }
-.btn-back { background: none; border: 1px solid #e8e8e4; border-radius: 8px; padding: 10px 16px; font-size: 14px; color: #888; cursor: pointer; font-family: inherit; }
-.btn-back:hover { border-color: #bbb; }
-.btn-next { background: #1a1a1a; border: none; border-radius: 8px; padding: 11px 20px; font-size: 14px; color: #fff; cursor: pointer; font-weight: 600; flex: 1; font-family: inherit; transition: opacity 0.15s; }
-.btn-next:disabled { opacity: 0.2; cursor: not-allowed; }
-.btn-next:hover:not(:disabled) { opacity: 0.82; }
+.card{background:var(--white);border:2px solid var(--tan);border-radius:var(--radius);padding:18px 20px;cursor:pointer;transition:all 0.2s;position:relative;}
+.card:hover{border-color:#c8bfb3;box-shadow:var(--shadow);}
+.card.selected{border-color:var(--red);background:#fdf5f4;}
+.card-title{font-weight:600;font-size:15px;margin-bottom:3px;}
+.card-sub{font-size:13px;color:var(--gray);}
+.card-price{font-size:18px;font-weight:600;color:var(--charcoal);margin-bottom:2px;}
+.card-badge{position:absolute;top:12px;right:12px;background:var(--red);color:white;font-size:10px;padding:3px 8px;border-radius:10px;font-weight:600;}
+.card-check{position:absolute;top:12px;right:12px;width:22px;height:22px;border-radius:50%;background:var(--red);display:none;align-items:center;justify-content:center;}
+.card-check svg{width:12px;height:12px;stroke:white;stroke-width:3;}
+.card.selected .card-check{display:flex;}
 
-/* Visualizer */
-.home-thumb { border: 2px solid #e8e8e4; border-radius: 8px; overflow: hidden; cursor: pointer; aspect-ratio: 4/3; background: #f0f0ee; position: relative; }
-.home-thumb:hover { border-color: #bbb; }
-.home-thumb.selected { border-color: #1a1a1a; }
-.home-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.home-thumb .thumb-label { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.5); color: #fff; font-size: 9px; padding: 2px 5px; text-align: center; }
+/* DOOR STYLE SELECTOR */
+.door-selector{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.door-card{background:var(--white);border:2px solid var(--tan);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all 0.2s;}
+.door-card:hover{border-color:#c8bfb3;box-shadow:var(--shadow);}
+.door-card.selected{border-color:var(--red);}
+.door-thumb{width:100%;aspect-ratio:2/1;object-fit:cover;display:block;background:#f5f5f5;}
+.door-info{padding:12px 14px;}
+.door-name{font-weight:600;font-size:14px;}
+.door-desc{font-size:12px;color:var(--gray);margin-top:2px;}
+.door-stock{font-size:11px;color:#27ae60;font-weight:500;margin-top:4px;}
 
-/* Results */
-.results-header { text-align: center; margin-bottom: 1.5rem; }
-.price-cards { display: grid; gap: 10px; margin-bottom: 1.5rem; }
-.price-cards.three { grid-template-columns: repeat(3, minmax(0,1fr)); }
-.price-cards.one { grid-template-columns: 1fr; max-width: 280px; margin-left: auto; margin-right: auto; }
-.price-card { border: 1px solid #e8e8e4; border-radius: 12px; padding: 1.25rem 1rem; text-align: center; position: relative; background: #fff; }
-.price-card.recommended { border: 2px solid #378ADD; }
-.price-top-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #378ADD; color: #fff; font-size: 10px; font-weight: 700; padding: 3px 12px; border-radius: 99px; white-space: nowrap; }
-.price-emoji { font-size: 24px; display: block; margin-bottom: 8px; }
-.price-tier { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
-.price-tier.eco { color: #3B6D11; }
-.price-tier.pop { color: #185FA5; }
-.price-tier.pre { color: #633806; }
-.price-range { font-size: 14px; font-weight: 700; color: #1a1a1a; margin-bottom: 4px; }
-.price-note { font-size: 10px; color: #aaa; margin-bottom: 10px; }
-.price-features { text-align: left; font-size: 11px; color: #666; line-height: 1.9; }
-.price-check { color: #3B6D11; margin-right: 3px; }
-.summary-box { background: #f9f9f7; border-radius: 12px; padding: 1.25rem; border: 1px solid #eee; margin-bottom: 1.25rem; }
-.summary-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #eee; font-size: 13px; }
-.summary-row:last-child { border-bottom: none; }
-.summary-row span:first-child { color: #888; }
-.summary-row span:last-child { font-weight: 500; color: #1a1a1a; text-align: right; max-width: 55%; }
-.cta-box { background: #1a1a1a; border-radius: 12px; padding: 1.25rem; text-align: center; margin-bottom: 1rem; }
-.cta-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 4px; }
-.cta-sub { font-size: 12px; color: #aaa; margin-bottom: 1rem; line-height: 1.5; }
-.cta-btn { display: inline-block; background: #fff; color: #1a1a1a; border: none; border-radius: 8px; padding: 10px 24px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; text-decoration: none; }
+/* COLOR SWATCHES */
+.color-section{margin-bottom:24px;}
+.section-label{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--gray);margin-bottom:10px;}
+.swatches{display:flex;gap:10px;flex-wrap:wrap;}
+.swatch{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;}
+.swatch-circle{width:44px;height:44px;border-radius:50%;border:3px solid transparent;transition:all 0.2s;}
+.swatch.selected .swatch-circle{border-color:var(--red);box-shadow:0 0 0 2px white,0 0 0 4px var(--red);}
+.swatch-label{font-size:11px;color:var(--gray);text-align:center;}
 
-.btn-start-over { background: none; border: none; font-size: 11px; color: #bbb; cursor: pointer; font-family: inherit; padding: 4px 8px; border-radius: 6px; }
-.btn-start-over:hover { color: #888; background: #f5f5f3; }
+/* LIVE PREVIEW */
+.preview-section{background:var(--white);border:1px solid var(--tan);border-radius:var(--radius);overflow:hidden;margin-bottom:24px;}
+.preview-label{padding:12px 16px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--gray);border-bottom:1px solid var(--tan);}
+.preview-window{position:relative;width:100%;aspect-ratio:2.2/1;background:#e8e4de;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.preview-door{position:relative;width:85%;max-width:420px;}
+.preview-door-img{width:100%;display:block;border-radius:4px;box-shadow:0 8px 32px rgba(0,0,0,0.2);}
+.preview-insert-img{position:absolute;top:0;left:0;width:100%;pointer-events:none;}
+.preview-glass-overlay{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;border-radius:4px;}
+.preview-placeholder{text-align:center;color:var(--gray);}
+.preview-placeholder svg{width:48px;height:48px;stroke:var(--tan);margin-bottom:8px;}
 
-.loading-overlay { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.92); z-index: 999; align-items: center; justify-content: center; flex-direction: column; gap: 12px; }
-.loading-overlay.visible { display: flex; }
-.spinner { width: 32px; height: 32px; border: 2px solid #eee; border-top-color: #1a1a1a; border-radius: 50%; animation: spin 0.7s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.error-msg { background: #fff5f5; border: 1px solid #fcc; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #c00; margin-bottom: 1rem; display: none; }
-.divider { height: 1px; background: #f0f0ee; margin: 1.25rem 0; }
+/* GLASS OPTIONS */
+.glass-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
+.glass-card{background:var(--white);border:2px solid var(--tan);border-radius:10px;padding:14px 12px;cursor:pointer;text-align:center;transition:all 0.2s;}
+.glass-card:hover{border-color:#c8bfb3;}
+.glass-card.selected{border-color:var(--red);background:#fdf5f4;}
+.glass-icon{width:48px;height:32px;border-radius:4px;margin:0 auto 8px;border:1px solid var(--tan);}
+.glass-name{font-size:13px;font-weight:600;}
+.glass-desc{font-size:11px;color:var(--gray);margin-top:2px;}
+
+/* INSERT GRID */
+.insert-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px;}
+.insert-card{background:var(--white);border:2px solid var(--tan);border-radius:10px;overflow:hidden;cursor:pointer;transition:all 0.2s;}
+.insert-card:hover{border-color:#c8bfb3;}
+.insert-card.selected{border-color:var(--red);}
+.insert-thumb{width:100%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;padding:10px;}
+.insert-thumb img{width:100%;height:auto;max-height:70px;object-fit:contain;}
+.insert-name{padding:8px 10px;font-size:12px;font-weight:600;text-align:center;}
+
+/* FORM */
+.form-group{margin-bottom:16px;}
+.form-label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--charcoal);}
+.form-input{width:100%;padding:12px 14px;border:2px solid var(--tan);border-radius:8px;font-size:15px;font-family:'DM Sans',sans-serif;background:var(--white);color:var(--charcoal);transition:border-color 0.2s;outline:none;}
+.form-input:focus{border-color:var(--red);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.form-select{width:100%;padding:12px 14px;border:2px solid var(--tan);border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif;background:var(--white);color:var(--charcoal);outline:none;appearance:none;cursor:pointer;}
+
+/* ESTIMATE BOX */
+.estimate-box{background:var(--charcoal);color:white;border-radius:var(--radius);padding:28px;margin-bottom:20px;text-align:center;}
+.estimate-range{font-family:'Playfair Display',serif;font-size:38px;font-weight:500;margin:8px 0;}
+.estimate-note{font-size:13px;opacity:0.6;margin-top:6px;}
+.estimate-includes{display:flex;justify-content:center;gap:24px;margin-top:16px;}
+.estimate-item{font-size:13px;opacity:0.8;}
+.estimate-item span{display:block;font-weight:600;font-size:15px;opacity:1;}
+.locked-box{background:var(--white);border:2px solid var(--tan);border-radius:var(--radius);padding:24px;margin-bottom:20px;text-align:center;}
+.locked-icon{font-size:32px;margin-bottom:8px;}
+.locked-title{font-weight:600;font-size:16px;margin-bottom:4px;}
+.locked-sub{font-size:13px;color:var(--gray);}
+
+/* BUTTONS */
+.btn{display:block;width:100%;padding:16px;border:none;border-radius:10px;font-size:16px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.2s;text-align:center;}
+.btn-primary{background:var(--red);color:white;}
+.btn-primary:hover{background:var(--red-dark);transform:translateY(-1px);box-shadow:0 4px 16px rgba(192,57,43,0.3);}
+.btn-secondary{background:transparent;border:2px solid var(--tan);color:var(--charcoal);margin-bottom:12px;}
+.btn-secondary:hover{border-color:var(--charcoal);}
+.btn-row{display:flex;gap:12px;margin-top:24px;}
+.btn-row .btn{flex:1;}
+.btn-back{flex:0 0 auto;width:auto;padding:16px 20px;background:none;border:2px solid var(--tan);color:var(--gray);border-radius:10px;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;}
+.btn-back:hover{border-color:var(--charcoal);color:var(--charcoal);}
+
+/* SUCCESS */
+.success-header{text-align:center;padding:32px 0 24px;}
+.success-icon{width:64px;height:64px;background:#eafaf1;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+.success-icon svg{width:32px;height:32px;stroke:#27ae60;stroke-width:2.5;}
+.call-box{background:var(--white);border:1px solid var(--tan);border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:16px;}
+.call-box a{color:var(--red);font-size:20px;font-weight:700;text-decoration:none;display:block;margin-top:6px;}
+
+/* SPRING/OPENER SPECIFIC */
+.repair-options{display:grid;gap:12px;}
+.price-list{display:grid;gap:10px;}
+
+/* TOGGLE */
+.toggle-row{display:flex;gap:8px;margin-bottom:16px;}
+.toggle-btn{flex:1;padding:10px;border:2px solid var(--tan);border-radius:8px;background:white;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.toggle-btn.active{border-color:var(--red);background:#fdf5f4;color:var(--red);}
+
+/* INSULATION */
+.insulation-grid{display:grid;gap:10px;margin-bottom:20px;}
+.ins-card{background:var(--white);border:2px solid var(--tan);border-radius:var(--radius);padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:all 0.2s;}
+.ins-card:hover{border-color:#c8bfb3;}
+.ins-card.selected{border-color:var(--red);background:#fdf5f4;}
+.ins-icon{font-size:24px;}
+.ins-info{flex:1;}
+.ins-name{font-weight:600;font-size:15px;}
+.ins-desc{font-size:13px;color:var(--gray);margin-top:2px;}
+.ins-tag{font-size:11px;font-weight:600;color:var(--gray);background:var(--light);padding:3px 8px;border-radius:10px;}
+
+/* ICON CARDS */
+.icon-card{text-align:center;padding:24px 16px 20px;}
+.icon-wrap{width:52px;height:52px;background:var(--light);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;}
+.icon-wrap svg{width:26px;height:26px;color:var(--charcoal);}
+.icon-card .card-title{font-size:14px;}
+.icon-card .card-sub{font-size:12px;}
+.icon-wrap.garage-icon{width:90px;height:76px;background:none;border-radius:0;}
+.icon-wrap.garage-icon svg{width:90px;height:76px;}
+
+@media(max-width:480px){
+  .door-selector{grid-template-columns:1fr;}
+  .glass-grid{grid-template-columns:repeat(2,1fr);}
+  .form-row{grid-template-columns:1fr;}
+  .card-grid.cols3{grid-template-columns:1fr;}
+}
 </style>
 </head>
 <body>
 
-<div class="loading-overlay" id="loadingOverlay">
+<div id="sending-overlay">
   <div class="spinner"></div>
-  <div style="font-size:14px;color:#888;">Sending your request...</div>
+  <p style="color:var(--gray);font-size:14px;">Sending your request...</p>
 </div>
 
-<div class="estimator">
-  <div class="brand">
-    <div class="brand-logo">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 10.5L12 3L21 10.5V21H15V15H9V21H3V10.5Z" stroke="white" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg>
+<header>
+  <div class="logo">Generational <span>Garage Doors</span></div>
+  <button class="restart-btn" onclick="restart()">↺ Start over</button>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:20%"></div></div>
+  <div class="progress-label" id="progress-label">Step 1 of 5</div>
+</div>
+
+<main>
+
+<!-- STEP 1: Service Type -->
+<div class="step active" id="step-1">
+  <div class="step-title">What can we help you with?</div>
+  <div class="step-sub">Select the service that best fits your situation.</div>
+  <div class="card-grid cols3">
+    <div class="card icon-card" onclick="selectService('replace')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/><rect x="9" y="15" width="6" height="6"/><line x1="5" y1="21" x2="19" y2="21"/><line x1="7" y1="12" x2="7" y2="16"/><line x1="17" y1="12" x2="17" y2="16"/></svg>
+      </div>
+      <div class="card-title">Replace my door</div>
+      <div class="card-sub">Swap out an existing door</div>
     </div>
-    <div style="flex:1;">
-      <div class="brand-text">Generational Garage Doors</div>
-      <div class="brand-sub">Free instant estimate — no obligation</div>
+    <div class="card icon-card" onclick="selectService('new')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/><line x1="5" y1="21" x2="19" y2="21"/><circle cx="12" cy="10" r="1" fill="currentColor"/><line x1="12" y1="7" x2="12" y2="13"/><line x1="9" y1="10" x2="15" y2="10"/></svg>
+      </div>
+      <div class="card-title">New installation</div>
+      <div class="card-sub">Installing for the first time</div>
     </div>
-    <button class="btn-start-over" onclick="startOver()" id="startOverBtn" style="display:none;">↺ Start over</button>
+    <div class="card icon-card" onclick="selectService('repair')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+      </div>
+      <div class="card-title">Repair or service</div>
+      <div class="card-sub">Fix a broken door</div>
+    </div>
+  </div>
+  <div class="btn-row" style="margin-top:24px;">
+    <button class="btn btn-primary" onclick="goStep(2)">Continue</button>
+  </div>
+</div>
+
+<!-- STEP 2a: Repair type (if repair) -->
+<div class="step" id="step-2-repair">
+  <div class="step-title">What needs fixing?</div>
+  <div class="step-sub">Select the service and we'll give you a price range right away.</div>
+  <div class="card-grid">
+    <div class="card" onclick="selectRepair('spring')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="card-title">Spring replacement</div>
+      <div class="card-sub">Broken or worn springs</div>
+    </div>
+    <div class="card" onclick="selectRepair('opener')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="card-title">Opener / Motor</div>
+      <div class="card-sub">Repair or replace opener</div>
+    </div>
+    <div class="card" onclick="selectRepair('glass')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="card-title">Glass pane</div>
+      <div class="card-sub">Cracked or broken glass</div>
+    </div>
+    <div class="card" onclick="selectRepair('other')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="card-title">Other / Not sure</div>
+      <div class="card-sub">Inspection & diagnosis</div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn-back" onclick="goStep(1)">← Back</button>
+    <button class="btn btn-primary" onclick="goRepairDetail()">Continue</button>
+  </div>
+</div>
+
+<!-- STEP 3a: Spring -->
+<div class="step" id="step-spring">
+  <div class="step-title">Spring replacement</div>
+  <div class="step-sub">Select your garage type and spring size for an accurate quote.</div>
+  <div class="section-label" style="margin-bottom:10px;">Garage type</div>
+  <div class="card-grid cols2" style="margin-bottom:20px;">
+    <div class="card" onclick="selectOpt(this,'springGarage','single')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="card-title">Single car</div><div class="card-sub">1 spring</div>
+    </div>
+    <div class="card" onclick="selectOpt(this,'springGarage','double')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="card-title">Double car</div><div class="card-sub">2 springs</div>
+    </div>
+  </div>
+  <div class="section-label" style="margin-bottom:10px;">Spring type</div>
+  <div class="card-grid" style="margin-bottom:20px;">
+    <div class="card" onclick="selectOpt(this,'springType','standard')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="card-title">Standard</div><div class="card-sub">My door opens normally / average weight</div>
+    </div>
+    <div class="card" onclick="selectOpt(this,'springType','heavy')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="card-title">Heavy Duty</div><div class="card-sub">My door is large or feels heavy</div>
+    </div>
+    <div class="card" onclick="selectOpt(this,'springType','inspection')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="card-title">Schedule free inspection</div><div class="card-sub">Not sure? Dustin will assess on-site</div>
+    </div>
+  </div>
+  <p style="font-size:12px;color:var(--gray);margin-bottom:20px;">✓ All spring services include a complimentary safety inspection of cables, drums & rollers · 3-year parts warranty · 1-year labor warranty</p>
+  <div class="btn-row">
+    <button class="btn-back" onclick="goStep('2-repair')">← Back</button>
+    <button class="btn btn-primary" onclick="goStep('contact')">See my estimate →</button>
+  </div>
+</div>
+
+<!-- STEP 3b: Opener -->
+<div class="step" id="step-opener">
+  <div class="step-title">Opener replacement</div>
+  <div class="step-sub">Choose the opener that fits your needs and budget.</div>
+  <div class="price-list" style="margin-bottom:20px;">
+    <div class="card" onclick="selectOpt(this,'opener','chain7')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="card-price">$800</div><div class="card-title">Chain Drive — 7ft rail</div>
+      <div class="card-sub">2420L Series · Reliable & affordable · Standard height garage</div>
+    </div>
+    <div class="card" onclick="selectOpt(this,'opener','chain8')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="card-price">$875</div><div class="card-title">Chain Drive — 8ft rail</div>
+      <div class="card-sub">2420L Series · For 8ft tall garage doors</div>
+    </div>
+    <div class="card" onclick="selectOpt(this,'opener','belt7')">
+      <div class="card-badge">⭐ Most popular</div>
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="card-price">$850</div><div class="card-title">Belt Drive — 7ft rail</div>
+      <div class="card-sub">6580L Series · Quieter operation · Great for attached garages</div>
+    </div>
+    <div class="card" onclick="selectOpt(this,'opener','belt8')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="card-price">$925</div><div class="card-title">Belt Drive — 8ft rail</div>
+      <div class="card-sub">6580L Series · Quieter · For 8ft tall garage doors</div>
+    </div>
+    <div class="card" onclick="selectOpt(this,'opener','belt-hi')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="card-price">$950</div><div class="card-title">High-End Belt — 7ft rail</div>
+      <div class="card-sub">6690L Series · Premium performance · WiFi & battery backup</div>
+    </div>
+    <div class="card" onclick="selectOpt(this,'opener','ibeam')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="card-price">$1,610</div><div class="card-title">I-Beam Heavy Duty — 7ft</div>
+      <div class="card-sub">4690L Series · Commercial-grade · For heavy doors</div>
+    </div>
+    <div class="card" onclick="selectOpt(this,'opener','jackshaft')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="card-price">$1,500</div><div class="card-title">Jack Shaft</div>
+      <div class="card-sub">98022 · Wall-mounted · Great for low ceilings</div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn-back" onclick="goStep('2-repair')">← Back</button>
+    <button class="btn btn-primary" onclick="goStep('contact')">See my estimate →</button>
+  </div>
+</div>
+
+<!-- STEP 3c: Glass pane repair -->
+<div class="step" id="step-glass-repair">
+  <div class="step-title">Glass pane options</div>
+  <div class="step-sub">Pricing is per pane · installed</div>
+  <div class="section-label" style="margin-bottom:10px;">Glass thickness</div>
+  <div class="card-grid cols2" style="margin-bottom:20px;">
+    <div class="card" onclick="selectOpt(this,'glassThick','standard')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="card-title">1/8" Non-Insulated</div><div class="card-sub">Standard single pane</div>
+    </div>
+    <div class="card" onclick="selectOpt(this,'glassThick','insulated')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="card-title">1/2" Insulated</div><div class="card-sub">Energy efficient double pane</div>
+    </div>
+  </div>
+  <div class="section-label" style="margin-bottom:10px;">Panel size</div>
+  <div class="card-grid cols2" style="margin-bottom:20px;">
+    <div class="card" onclick="selectOpt(this,'glassPanel','long')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="card-title">Long Panel</div><div class="card-sub">Standard raised panel doors</div>
+    </div>
+    <div class="card" onclick="selectOpt(this,'glassPanel','oversized')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="card-title">Oversized</div><div class="card-sub">Skyline Flush doors</div>
+    </div>
+  </div>
+  <div class="section-label" style="margin-bottom:10px;">Glass type</div>
+  <div class="card-grid cols2" style="margin-bottom:20px;">
+    <div class="card" onclick="selectOpt(this,'glassType','clear')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Clear</div><div class="card-sub">Full visibility</div></div>
+    <div class="card" onclick="selectOpt(this,'glassType','obscure')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Obscure</div><div class="card-sub">Blurred privacy</div></div>
+    <div class="card" onclick="selectOpt(this,'glassType','tinted')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Tinted</div><div class="card-sub">Reduced glare</div></div>
+    <div class="card" onclick="selectOpt(this,'glassType','frosted')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Frosted</div><div class="card-sub">Full privacy</div></div>
+    <div class="card" onclick="selectOpt(this,'glassType','rain')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Rain</div><div class="card-sub">Textured privacy</div></div>
+    <div class="card" onclick="selectOpt(this,'glassType','poly')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Polycarbonate</div><div class="card-sub">Impact resistant</div></div>
+  </div>
+  <div class="section-label" style="margin-bottom:10px;">Window insert style (optional)</div>
+  <div class="card-grid cols2" style="margin-bottom:20px;">
+    <div class="card" onclick="selectOpt(this,'insertStyle','none')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">No insert</div><div class="card-sub">Plain glass</div></div>
+    <div class="card" onclick="selectOpt(this,'insertStyle','cascade')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Cascade</div></div>
+    <div class="card" onclick="selectOpt(this,'insertStyle','prairie')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Prairie</div></div>
+    <div class="card" onclick="selectOpt(this,'insertStyle','sherwood')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Sherwood</div></div>
+    <div class="card" onclick="selectOpt(this,'insertStyle','waterton')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Waterton</div></div>
+    <div class="card" onclick="selectOpt(this,'insertStyle','stockton')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Stockton</div></div>
+    <div class="card" onclick="selectOpt(this,'insertStyle','sunburst')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Sunburst</div></div>
+  </div>
+  <div class="btn-row">
+    <button class="btn-back" onclick="goStep('2-repair')">← Back</button>
+    <button class="btn btn-primary" onclick="goStep('contact')">See my estimate →</button>
+  </div>
+</div>
+
+<!-- STEP 2b: Garage count (replace/new) -->
+<div class="step" id="step-2-door">
+  <div class="step-title">What does your garage look like?</div>
+  <div class="step-sub">This helps us give you an accurate price range right away.</div>
+  <div class="card-grid cols3">
+
+    <div class="card icon-card" onclick="selectOpt(this,'garageCount','single')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="icon-wrap garage-icon">
+        <svg viewBox="0 0 80 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Roof -->
+          <polyline points="10,35 40,8 70,35" stroke="#333" stroke-width="2.5" stroke-linejoin="round" fill="none"/>
+          <!-- Walls -->
+          <rect x="16" y="35" width="48" height="28" stroke="#333" stroke-width="2.5" fill="none"/>
+          <!-- Single door -->
+          <rect x="22" y="40" width="36" height="20" stroke="#333" stroke-width="2" fill="none"/>
+          <!-- Door panels -->
+          <line x1="22" y1="50" x2="58" y2="50" stroke="#333" stroke-width="1.5"/>
+          <line x1="40" y1="40" x2="40" y2="60" stroke="#333" stroke-width="1" stroke-dasharray="3,2"/>
+          <!-- Handle -->
+          <circle cx="54" cy="50" r="1.5" fill="#333"/>
+        </svg>
+      </div>
+      <div class="card-title">Single car</div>
+      <div class="card-sub">One door</div>
+    </div>
+
+    <div class="card icon-card" onclick="selectOpt(this,'garageCount','double')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="icon-wrap garage-icon">
+        <svg viewBox="0 0 80 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Roof -->
+          <polyline points="4,35 40,8 76,35" stroke="#333" stroke-width="2.5" stroke-linejoin="round" fill="none"/>
+          <!-- Walls -->
+          <rect x="8" y="35" width="64" height="28" stroke="#333" stroke-width="2.5" fill="none"/>
+          <!-- Wide single door -->
+          <rect x="13" y="40" width="54" height="20" stroke="#333" stroke-width="2" fill="none"/>
+          <!-- Door panels -->
+          <line x1="13" y1="50" x2="67" y2="50" stroke="#333" stroke-width="1.5"/>
+          <line x1="31" y1="40" x2="31" y2="60" stroke="#333" stroke-width="1" stroke-dasharray="3,2"/>
+          <line x1="49" y1="40" x2="49" y2="60" stroke="#333" stroke-width="1" stroke-dasharray="3,2"/>
+          <!-- Handle -->
+          <circle cx="63" cy="50" r="1.5" fill="#333"/>
+        </svg>
+      </div>
+      <div class="card-title">Double car</div>
+      <div class="card-sub">One wide door</div>
+    </div>
+
+    <div class="card icon-card" onclick="selectOpt(this,'garageCount','two')">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="icon-wrap garage-icon">
+        <svg viewBox="0 0 80 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Roof -->
+          <polyline points="4,35 40,8 76,35" stroke="#333" stroke-width="2.5" stroke-linejoin="round" fill="none"/>
+          <!-- Walls -->
+          <rect x="8" y="35" width="64" height="28" stroke="#333" stroke-width="2.5" fill="none"/>
+          <!-- Left door -->
+          <rect x="12" y="40" width="26" height="20" stroke="#333" stroke-width="2" fill="none"/>
+          <line x1="12" y1="50" x2="38" y2="50" stroke="#333" stroke-width="1.5"/>
+          <circle cx="35" cy="50" r="1.5" fill="#333"/>
+          <!-- Right door -->
+          <rect x="42" y="40" width="26" height="20" stroke="#333" stroke-width="2" fill="none"/>
+          <line x1="42" y1="50" x2="68" y2="50" stroke="#333" stroke-width="1.5"/>
+          <circle cx="65" cy="50" r="1.5" fill="#333"/>
+        </svg>
+      </div>
+      <div class="card-title">Two doors</div>
+      <div class="card-sub">Two openings</div>
+    </div>
+
+  </div>
+  <div class="btn-row">
+    <button class="btn-back" onclick="goStep(1)">← Back</button>
+    <button class="btn btn-primary" onclick="goStep(3)">Continue</button>
+  </div>
+</div>
+
+<!-- STEP 3: Door Style + Color + Live Preview -->
+<div class="step" id="step-3">
+  <div class="step-title">Choose your door style</div>
+  <div class="step-sub">All in-stock doors are ready to ship fast.</div>
+
+  <!-- LIVE PREVIEW -->
+  <div class="preview-section">
+    <div class="preview-label">Live preview</div>
+    <div class="preview-window">
+      <div class="preview-door" id="preview-door-wrap">
+        <div class="preview-placeholder" id="preview-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
+          <p style="font-size:13px;">Select a style below</p>
+        </div>
+        <img id="preview-door-img" class="preview-door-img" src="" alt="" style="display:none;"/>
+        <img id="preview-insert-img" class="preview-insert-img" src="" alt="" style="display:none;"/>
+        <div id="preview-glass-overlay" class="preview-glass-overlay" style="display:none;"></div>
+      </div>
+    </div>
   </div>
 
-  <div class="progress-wrap">
-    <div class="progress-bar"><div class="progress-fill" id="progress" style="width:14%"></div></div>
-    <div class="progress-label" id="progressLabel">Step 1 of 5</div>
+  <!-- STYLE SELECTOR -->
+  <div class="section-label" style="margin-bottom:12px;">Door style</div>
+  <div class="door-selector" id="door-style-grid">
+
+    <div class="door-card" onclick="selectDoorStyle(this,'raised-short','Raised Short Panel','Raised short panel white.png','Raised panel short almond.png')">
+      <img class="door-thumb" src="https://colagomdesignco-source.github.io/garage-door-estimator/Raised short panel white.png" alt="Raised Short Panel"/>
+      <div class="door-info">
+        <div class="door-name">Raised Short Panel</div>
+        <div class="door-desc">Classic ribbed · 4 columns</div>
+        <div class="door-stock">✓ In stock</div>
+      </div>
+    </div>
+
+    <div class="door-card" onclick="selectDoorStyle(this,'raised-long','Raised Long Panel','Raised lomg panel white.png','Raised long panel- almond.png')">
+      <img class="door-thumb" src="https://colagomdesignco-source.github.io/garage-door-estimator/Raised lomg panel white.png" alt="Raised Long Panel"/>
+      <div class="door-info">
+        <div class="door-name">Raised Long Panel</div>
+        <div class="door-desc">Classic ribbed · 2 columns</div>
+        <div class="door-stock">✓ In stock</div>
+      </div>
+    </div>
+
+    <div class="door-card" onclick="selectDoorStyle(this,'skyline','Skyline Flush','Skyline flush white.png','Skyline Flush Black.png')">
+      <img class="door-thumb" src="https://colagomdesignco-source.github.io/garage-door-estimator/Skyline flush white.png" alt="Skyline Flush"/>
+      <div class="door-info">
+        <div class="door-name">Skyline Flush</div>
+        <div class="door-desc">Smooth & modern</div>
+        <div class="door-stock">✓ In stock</div>
+      </div>
+    </div>
+
+    <div class="door-card" onclick="selectDoorStyle(this,'carriage-short','Carriage Stamp Short','Carriage house short panel white.png',null)">
+      <img class="door-thumb" src="https://colagomdesignco-source.github.io/garage-door-estimator/Carriage house short panel white.png" alt="Carriage Stamp Short"/>
+      <div class="door-info">
+        <div class="door-name">Carriage Stamp Short</div>
+        <div class="door-desc">Classic overlay · short</div>
+        <div class="door-stock">✓ In stock</div>
+      </div>
+    </div>
+
+    <div class="door-card" onclick="selectDoorStyle(this,'carriage-long','Carriage Stamp Long','Carriage House long panel white.png',null)">
+      <img class="door-thumb" src="https://colagomdesignco-source.github.io/garage-door-estimator/Carriage House long panel white.png" alt="Carriage Stamp Long"/>
+      <div class="door-info">
+        <div class="door-name">Carriage Stamp Long</div>
+        <div class="door-desc">Classic overlay · long</div>
+        <div class="door-stock">✓ In stock</div>
+      </div>
+    </div>
+
   </div>
 
-  <!-- STEP 1: Service -->
-  <div id="step1" class="step active">
-    <div class="step-title">What can we help you with?</div>
-    <div class="step-sub">Select the service that best fits your situation.</div>
-    <div class="option-grid">
-      <div class="option-card" onclick="pick(this,'need','replace')">
-        <div class="opt-icon"><svg width="38" height="38" viewBox="0 0 40 40" fill="none"><rect x="4" y="16" width="32" height="20" rx="1" stroke="#1a1a1a" stroke-width="1.5" fill="none"/><path d="M4 16L20 6L36 16" stroke="#1a1a1a" stroke-width="1.5" stroke-linejoin="round" fill="none"/><rect x="10" y="22" width="20" height="8" rx="0.5" stroke="#1a1a1a" stroke-width="1.5" fill="none"/><path d="M17 26L20 23L23 26" stroke="#888" stroke-width="1.2" fill="none"/><line x1="20" y1="23" x2="20" y2="30" stroke="#888" stroke-width="1.2"/></svg></div>
-        <div class="opt-label">Replace my door</div><div class="opt-desc">Swap out an existing door</div>
-      </div>
-      <div class="option-card" onclick="pick(this,'need','new')">
-        <div class="opt-icon"><svg width="38" height="38" viewBox="0 0 40 40" fill="none"><rect x="4" y="16" width="32" height="20" rx="1" stroke="#1a1a1a" stroke-width="1.5" fill="none"/><path d="M4 16L20 6L36 16" stroke="#1a1a1a" stroke-width="1.5" stroke-linejoin="round" fill="none"/><line x1="20" y1="21" x2="20" y2="31" stroke="#1a1a1a" stroke-width="1.5"/><line x1="15" y1="26" x2="25" y2="26" stroke="#1a1a1a" stroke-width="1.5"/></svg></div>
-        <div class="opt-label">New installation</div><div class="opt-desc">Installing for the first time</div>
-      </div>
-      <div class="option-card" onclick="pick(this,'need','repair')">
-        <div class="opt-icon"><svg width="38" height="38" viewBox="0 0 40 40" fill="none"><rect x="4" y="16" width="32" height="20" rx="1" stroke="#1a1a1a" stroke-width="1.5" fill="none"/><path d="M4 16L20 6L36 16" stroke="#1a1a1a" stroke-width="1.5" stroke-linejoin="round" fill="none"/><rect x="10" y="22" width="20" height="8" rx="0.5" stroke="#aaa" stroke-width="1" fill="none" stroke-dasharray="2,2"/><circle cx="28" cy="19" r="4" stroke="#888" stroke-width="1.2" fill="none"/></svg></div>
-        <div class="opt-label">Repair or service</div><div class="opt-desc">Fix a broken door</div>
-      </div>
-    </div>
-    <div class="nav-row"><button class="btn-next" id="n1" onclick="goFromStep1()" disabled>Continue</button></div>
+  <!-- COLOR -->
+  <div class="color-section" id="color-section" style="display:none;">
+    <div class="section-label">Color</div>
+    <div class="swatches" id="color-swatches"></div>
   </div>
 
-  <!-- STEP REPAIR: What needs fixing -->
-  <div id="stepRepair" class="step">
-    <div class="step-title">What needs fixing?</div>
-    <div class="step-sub">Select the service you need and we'll give you a price range right away.</div>
-    <div class="option-grid" style="grid-template-columns:repeat(2,1fr);">
-      <div class="option-card" onclick="pickRepair(this,'spring')">
-        <div class="opt-icon"><svg width="38" height="38" viewBox="0 0 40 40" fill="none"><path d="M10 12 Q15 8 20 12 Q25 16 30 12" stroke="#1a1a1a" stroke-width="1.8" fill="none"/><path d="M10 18 Q15 14 20 18 Q25 22 30 18" stroke="#1a1a1a" stroke-width="1.8" fill="none"/><path d="M10 24 Q15 20 20 24 Q25 28 30 24" stroke="#1a1a1a" stroke-width="1.8" fill="none"/></svg></div>
-        <div class="opt-label">Spring replacement</div><div class="opt-desc">Broken or worn springs</div>
-      </div>
-      <div class="option-card" onclick="pickRepair(this,'opener')">
-        <div class="opt-icon"><svg width="38" height="38" viewBox="0 0 40 40" fill="none"><rect x="8" y="14" width="24" height="16" rx="2" stroke="#1a1a1a" stroke-width="1.5" fill="none"/><circle cx="20" cy="22" r="4" stroke="#1a1a1a" stroke-width="1.5" fill="none"/><line x1="20" y1="8" x2="20" y2="14" stroke="#1a1a1a" stroke-width="1.5"/><line x1="16" y1="9" x2="18" y2="13" stroke="#888" stroke-width="1.2"/><line x1="24" y1="9" x2="22" y2="13" stroke="#888" stroke-width="1.2"/></svg></div>
-        <div class="opt-label">Opener / Motor</div><div class="opt-desc">Repair or replace opener</div>
-      </div>
-      <div class="option-card" onclick="pickRepair(this,'glass')">
-        <div class="opt-icon"><svg width="38" height="38" viewBox="0 0 40 40" fill="none"><rect x="6" y="14" width="28" height="16" rx="1" stroke="#1a1a1a" stroke-width="1.5" fill="none"/><line x1="6" y1="22" x2="34" y2="22" stroke="#aaa" stroke-width="1"/><line x1="20" y1="14" x2="20" y2="30" stroke="#aaa" stroke-width="1"/><path d="M8 16 L14 22 L8 28" stroke="#bbb" stroke-width="1.2" fill="none" stroke-dasharray="2,2"/></svg></div>
-        <div class="opt-label">Glass pane</div><div class="opt-desc">Cracked or broken glass</div>
-      </div>
-      <div class="option-card" onclick="pickRepair(this,'other')">
-        <div class="opt-icon"><svg width="38" height="38" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="12" stroke="#1a1a1a" stroke-width="1.5" fill="none"/><line x1="20" y1="13" x2="20" y2="21" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/><circle cx="20" cy="26" r="1.5" fill="#1a1a1a"/></svg></div>
-        <div class="opt-label">Other / Not sure</div><div class="opt-desc">Inspection & diagnosis</div>
-      </div>
+  <!-- INSULATION -->
+  <div class="section-label" style="margin-bottom:12px;margin-top:8px;">Insulation</div>
+  <div class="insulation-grid">
+    <div class="ins-card" onclick="selectIns(this,'none')">
+      <div class="ins-icon">🚪</div>
+      <div class="ins-info"><div class="ins-name">Non-Insulated</div><div class="ins-desc">Standard steel. Great for detached garages.</div></div>
+      <div class="ins-tag">Lowest price</div>
     </div>
-    <div class="nav-row"><button class="btn-back" onclick="go(1)">Back</button><button class="btn-next" id="nRepair" onclick="goFromRepair()" disabled>Continue</button></div>
+    <div class="ins-card" onclick="selectIns(this,'pvc')">
+      <div class="ins-icon">🏠</div>
+      <div class="ins-info"><div class="ins-name">PVC Insulated</div><div class="ins-desc">Better efficiency & quieter. Most popular.</div></div>
+      <div class="ins-tag">Mid range</div>
+    </div>
+    <div class="ins-card" onclick="selectIns(this,'steel')">
+      <div class="ins-icon">🏆</div>
+      <div class="ins-info"><div class="ins-name">Steelback</div><div class="ins-desc">Max durability & energy efficiency.</div></div>
+      <div class="ins-tag">Premium</div>
+    </div>
   </div>
 
-  <!-- STEP SPRING: Spring details -->
-  <div id="stepSpring" class="step">
-    <div class="step-title">Spring replacement</div>
-    <div class="step-sub">Select your garage type and spring size for an accurate quote.</div>
-    <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:8px;">Garage type</div>
-    <div class="bay-grid" style="grid-template-columns:1fr 1fr;margin-bottom:1.25rem;">
-      <div class="bay-card" onclick="pickSpring(this,'size','single')">
-        <svg viewBox="0 0 110 80"><polygon points="55,6 104,32 6,32" fill="none" stroke="#aaa" stroke-width="1.2" stroke-linejoin="round"/><rect x="6" y="32" width="98" height="42" fill="none" stroke="#aaa" stroke-width="1.2"/><rect x="22" y="40" width="66" height="28" rx="1" fill="none" stroke="#1a1a1a" stroke-width="1.8"/></svg>
-        <div class="bay-label">Single car</div><div class="bay-sub">1 spring</div>
-      </div>
-      <div class="bay-card" onclick="pickSpring(this,'size','double')">
-        <svg viewBox="0 0 110 80"><polygon points="55,6 106,32 4,32" fill="none" stroke="#aaa" stroke-width="1.2" stroke-linejoin="round"/><rect x="4" y="32" width="102" height="42" fill="none" stroke="#aaa" stroke-width="1.2"/><rect x="6" y="40" width="98" height="28" rx="1" fill="none" stroke="#1a1a1a" stroke-width="1.8"/></svg>
-        <div class="bay-label">Double car</div><div class="bay-sub">2 springs</div>
-      </div>
+  <!-- GLASS ADD-ON -->
+  <div class="section-label" style="margin-bottom:12px;">Add glass inserts? <span style="font-weight:300;text-transform:none;letter-spacing:0;">(optional)</span></div>
+  <div class="card-grid cols2" style="margin-bottom:8px;">
+    <div class="card" onclick="selectGlassAdd(this,false)">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="card-title">No glass</div><div class="card-sub">Standard door, no inserts</div>
     </div>
-    <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:8px;">Spring type</div>
-    <div class="option-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:1.25rem;">
-      <div class="option-card" onclick="pickSpring(this,'duty','standard')">
-        <div class="opt-label">Standard</div><div class="opt-desc">My door opens normally / average weight</div>
-      </div>
-      <div class="option-card" onclick="pickSpring(this,'duty','heavy')">
-        <div class="opt-label">Heavy Duty</div><div class="opt-desc">My door is large or feels heavy</div>
-      </div>
-      <div class="option-card" onclick="pickSpring(this,'duty','custom')">
-        <div class="opt-label">Schedule free inspection</div><div class="opt-desc">Not sure? Dustin will assess on-site</div>
-      </div>
+    <div class="card" onclick="selectGlassAdd(this,true)">
+      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="card-title">Add glass inserts</div><div class="card-sub">Choose type on next step</div>
     </div>
-    <div style="background:#f9f9f7;border-radius:10px;padding:10px 14px;border:1px solid #eee;font-size:12px;color:#888;margin-bottom:1.25rem;">
-      ✓ All spring services include a complimentary safety inspection of cables, drums & rollers · 3-year parts warranty · 1-year labor warranty
-    </div>
-    <div class="nav-row"><button class="btn-back" onclick="go('Repair')">Back</button><button class="btn-next" id="nSpring" onclick="go(5)" disabled>See my estimate →</button></div>
   </div>
 
-  <!-- STEP OPENER: LiftMaster options -->
-  <div id="stepOpener" class="step">
-    <div class="step-title">Opener replacement</div>
-    <div class="step-sub">Choose the opener that fits your needs and budget.</div>
-    <div style="display:grid;gap:10px;margin-bottom:1.25rem;" id="openerCards">
-      <div class="option-card" style="text-align:left;padding:14px 16px;" onclick="pickOpener(this,'chain7')">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-          <div class="opt-label">Chain Drive — 7ft rail</div>
-          <div style="font-size:14px;font-weight:700;color:#1a1a1a;">$800</div>
-        </div>
-        <div class="opt-desc">2420L Series · Reliable & affordable · Standard height garage</div>
-      </div>
-      <div class="option-card" style="text-align:left;padding:14px 16px;" onclick="pickOpener(this,'chain8')">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-          <div class="opt-label">Chain Drive — 8ft rail</div>
-          <div style="font-size:14px;font-weight:700;color:#1a1a1a;">$875</div>
-        </div>
-        <div class="opt-desc">2420L Series · For 8ft tall garage doors</div>
-      </div>
-      <div class="option-card" style="text-align:left;padding:14px 16px;position:relative;" onclick="pickOpener(this,'belt7')">
-        <div style="position:absolute;top:-10px;right:12px;background:#378ADD;color:#fff;font-size:10px;font-weight:700;padding:2px 10px;border-radius:99px;">⭐ Most popular</div>
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-          <div class="opt-label">Belt Drive — 7ft rail</div>
-          <div style="font-size:14px;font-weight:700;color:#1a1a1a;">$850</div>
-        </div>
-        <div class="opt-desc">6580L Series · Quieter operation · Great for attached garages</div>
-      </div>
-      <div class="option-card" style="text-align:left;padding:14px 16px;" onclick="pickOpener(this,'belt8')">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-          <div class="opt-label">Belt Drive — 8ft rail</div>
-          <div style="font-size:14px;font-weight:700;color:#1a1a1a;">$925</div>
-        </div>
-        <div class="opt-desc">6580L Series · Quieter · For 8ft tall garage doors</div>
-      </div>
-      <div class="option-card" style="text-align:left;padding:14px 16px;" onclick="pickOpener(this,'hend7')">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-          <div class="opt-label">High-End Belt — 7ft rail</div>
-          <div style="font-size:14px;font-weight:700;color:#1a1a1a;">$950</div>
-        </div>
-        <div class="opt-desc">6690L Series · Premium performance · WiFi & battery backup</div>
-      </div>
-      <div class="option-card" style="text-align:left;padding:14px 16px;" onclick="pickOpener(this,'ibeam7')">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-          <div class="opt-label">I-Beam Heavy Duty — 7ft</div>
-          <div style="font-size:14px;font-weight:700;color:#1a1a1a;">$1,610</div>
-        </div>
-        <div class="opt-desc">4690L Series · Commercial-grade · For heavy doors</div>
-      </div>
-      <div class="option-card" style="text-align:left;padding:14px 16px;" onclick="pickOpener(this,'jackshaft')">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-          <div class="opt-label">Jack Shaft</div>
-          <div style="font-size:14px;font-weight:700;color:#1a1a1a;">$1,500</div>
-        </div>
-        <div class="opt-desc">98022 · Wall-mounted · Great for low ceilings</div>
+  <div class="btn-row">
+    <button class="btn-back" onclick="goStep('2-door')">← Back</button>
+    <button class="btn btn-primary" onclick="nextFromStyle()">Continue</button>
+  </div>
+</div>
+
+<!-- STEP 4: Glass customization -->
+<div class="step" id="step-4">
+  <div class="step-title">Customize your glass</div>
+  <div class="step-sub">Pricing is per pane · installed</div>
+
+  <!-- LIVE PREVIEW -->
+  <div class="preview-section">
+    <div class="preview-label">Live preview</div>
+    <div class="preview-window">
+      <div class="preview-door" id="preview-door-wrap2">
+        <img id="preview-door-img2" class="preview-door-img" src="" alt=""/>
+        <img id="preview-insert-img2" class="preview-insert-img" src="" alt="" style="display:none;"/>
+        <div id="preview-glass-overlay2" class="preview-glass-overlay" style="display:none;"></div>
       </div>
     </div>
-    <div class="nav-row"><button class="btn-back" onclick="go('Repair')">Back</button><button class="btn-next" id="nOpener" onclick="go(5)" disabled>See my estimate →</button></div>
   </div>
 
-  <!-- STEP GLASS: Glass pane options -->
-  <div id="stepGlass" class="step">
-    <div class="step-title">Glass pane options</div>
-    <div class="step-sub">Pricing is per pane · installed</div>
-
-    <!-- Sticky live preview -->
-    <div style="position:sticky;top:0;z-index:10;background:#fff;padding-bottom:8px;">
-      <div style="border-radius:12px;overflow:hidden;border:1px solid #e8e8e4;background:#e8edf2;">
-        <canvas id="glassVizCanvas" style="display:block;width:100%;height:auto;"></canvas>
-      </div>
-      <div id="glassVizSummary" style="background:#f9f9f7;border-radius:8px;padding:8px 14px;margin-top:6px;border:1px solid #eee;font-size:12px;color:#555;text-align:center;"></div>
+  <!-- GLASS TYPE -->
+  <div class="section-label" style="margin-bottom:12px;">Glass type</div>
+  <div class="glass-grid" style="margin-bottom:20px;">
+    <div class="glass-card selected" onclick="selectGlassType(this,'clear','')">
+      <div class="glass-icon" style="background:#000;opacity:0.85;"></div>
+      <div class="glass-name">Plain</div><div class="glass-desc">Full visibility</div>
     </div>
-
-    <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin:14px 0 8px;" id="glassTypeLabel">Glass thickness</div>
-    <div class="option-grid" style="grid-template-columns:1fr 1fr;margin-bottom:1.25rem;">
-      <div class="option-card" onclick="pickGlassThickness(this,'nonins')">
-        <div class="opt-label">1/8" Non-Insulated</div><div class="opt-desc">Standard single pane</div>
-      </div>
-      <div class="option-card" onclick="pickGlassThickness(this,'ins')">
-        <div class="opt-label">1/2" Insulated</div><div class="opt-desc">Energy efficient double pane</div>
-      </div>
+    <div class="glass-card" onclick="selectGlassType(this,'obscure','blur(3px)')">
+      <div class="glass-icon" style="background:#000;filter:blur(2px);opacity:0.85;"></div>
+      <div class="glass-name">Obscure</div><div class="glass-desc">Blurred privacy</div>
     </div>
-
-    <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:8px;">Panel size</div>
-    <div class="option-grid" style="grid-template-columns:1fr 1fr;margin-bottom:1.25rem;" id="glassSizeOptions">
-      <div class="option-card" onclick="pickGlassSize(this,'long')">
-        <div class="opt-label">Long Panel</div><div class="opt-desc">Standard raised panel doors</div>
-      </div>
-      <div class="option-card" onclick="pickGlassSize(this,'oversized')" id="oversizedOption">
-        <div class="opt-label">Oversized</div><div class="opt-desc">Skyline Flush doors</div>
-      </div>
+    <div class="glass-card" onclick="selectGlassType(this,'tinted','brightness(0.5)')">
+      <div class="glass-icon" style="background:#111;opacity:0.95;"></div>
+      <div class="glass-name">Tinted</div><div class="glass-desc">Reduced glare</div>
     </div>
-
-    <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:8px;">Glass type</div>
-    <div class="option-grid" style="grid-template-columns:repeat(2,1fr);margin-bottom:1.25rem;">
-      <div class="option-card" onclick="pickGlassType(this,'clear')"><div class="opt-label">Clear</div><div class="opt-desc">Full visibility</div></div>
-      <div class="option-card" onclick="pickGlassType(this,'obscure')"><div class="opt-label">Obscure</div><div class="opt-desc">Blurred privacy</div></div>
-      <div class="option-card" onclick="pickGlassType(this,'tinted')"><div class="opt-label">Tinted</div><div class="opt-desc">Reduced glare</div></div>
-      <div class="option-card" onclick="pickGlassType(this,'frosted')"><div class="opt-label">Frosted</div><div class="opt-desc">Full privacy</div></div>
+    <div class="glass-card" onclick="selectGlassType(this,'frosted','blur(6px) brightness(1.3)')">
+      <div class="glass-icon" style="background:#888;opacity:0.5;"></div>
+      <div class="glass-name">Frosted</div><div class="glass-desc">Full privacy</div>
     </div>
-
-    <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:8px;">Window insert style <span style="font-size:11px;font-weight:400;color:#bbb;">(optional)</span></div>
-    <div class="option-grid" style="grid-template-columns:repeat(2,1fr);margin-bottom:1.25rem;">
-      <div class="option-card" onclick="pickInsertStyle(this,'none')"><div class="opt-label">No insert</div><div class="opt-desc">Plain glass</div></div>
-      <div class="option-card" onclick="pickInsertStyle(this,'cascade')"><div class="opt-label">Cascade</div><div class="opt-desc">Grid pattern</div></div>
-      <div class="option-card" onclick="pickInsertStyle(this,'prairie')"><div class="opt-label">Prairie</div><div class="opt-desc">Border grid</div></div>
-      <div class="option-card" onclick="pickInsertStyle(this,'sherwood')"><div class="opt-label">Sherwood</div><div class="opt-desc">Arched top</div></div>
-      <div class="option-card" onclick="pickInsertStyle(this,'waterton')"><div class="opt-label">Waterton</div><div class="opt-desc">Diamond pattern</div></div>
-      <div class="option-card" onclick="pickInsertStyle(this,'stockton')"><div class="opt-label">Stockton</div><div class="opt-desc">Rectangle grid</div></div>
-      <div class="option-card" onclick="pickInsertStyle(this,'sunburst')"><div class="opt-label">Sunburst</div><div class="opt-desc">Fan pattern</div></div>
+    <div class="glass-card" onclick="selectGlassType(this,'rain','blur(1px) contrast(1.2)')">
+      <div class="glass-icon" style="background:#000;opacity:0.7;background-image:repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(255,255,255,0.15) 3px,rgba(255,255,255,0.15) 4px);"></div>
+      <div class="glass-name">Rain</div><div class="glass-desc">Textured privacy</div>
     </div>
-
-    <div id="glassPricePreview" style="display:none;background:#f9f9f7;border-radius:10px;padding:12px 16px;border:1px solid #eee;font-size:13px;margin-bottom:1.25rem;text-align:center;"></div>
-    <div class="nav-row"><button class="btn-back" id="glassBackBtn" onclick="go('Repair')">Back</button><button class="btn-next" id="nGlass" onclick="go(5)" disabled>See my estimate →</button></div>
+    <div class="glass-card" onclick="selectGlassType(this,'poly','opacity(0.7)')">
+      <div class="glass-icon" style="background:#b0bec5;opacity:0.8;"></div>
+      <div class="glass-name">Polycarbonate</div><div class="glass-desc">Impact resistant</div>
+    </div>
   </div>
 
-  <!-- STEP 2: Garage type -->
-  <div id="step2" class="step">
-    <div class="step-title">What does your garage look like?</div>
-    <div class="step-sub">This helps us give you an accurate price range right away.</div>
-    <div class="bay-grid">
-      <div class="bay-card" onclick="pick(this,'bays','single')">
-        <svg viewBox="0 0 110 80"><polygon points="55,6 104,32 6,32" fill="none" stroke="#aaa" stroke-width="1.2" stroke-linejoin="round"/><rect x="6" y="32" width="98" height="42" fill="none" stroke="#aaa" stroke-width="1.2"/><rect x="22" y="40" width="66" height="28" rx="1" fill="none" stroke="#1a1a1a" stroke-width="1.8"/><line x1="55" y1="40" x2="55" y2="68" stroke="#bbb" stroke-width="0.8" stroke-dasharray="2,2"/><line x1="22" y1="54" x2="88" y2="54" stroke="#bbb" stroke-width="0.8" stroke-dasharray="2,2"/><circle cx="85" cy="54" r="2.5" fill="#bbb"/></svg>
-        <div class="bay-label">Single car</div><div class="bay-sub">One door</div>
-      </div>
-      <div class="bay-card" onclick="pick(this,'bays','double')">
-        <svg viewBox="0 0 110 80"><polygon points="55,6 106,32 4,32" fill="none" stroke="#aaa" stroke-width="1.2" stroke-linejoin="round"/><rect x="4" y="32" width="102" height="42" fill="none" stroke="#aaa" stroke-width="1.2"/><rect x="6" y="40" width="98" height="28" rx="1" fill="none" stroke="#1a1a1a" stroke-width="1.8"/><line x1="55" y1="40" x2="55" y2="68" stroke="#bbb" stroke-width="0.8" stroke-dasharray="2,2"/><line x1="6" y1="54" x2="104" y2="54" stroke="#bbb" stroke-width="0.8" stroke-dasharray="2,2"/><circle cx="101" cy="54" r="2.5" fill="#bbb"/></svg>
-        <div class="bay-label">Double car</div><div class="bay-sub">One wide door</div>
-      </div>
-      <div class="bay-card" onclick="pick(this,'bays','twodoors')">
-        <svg viewBox="0 0 110 80"><polygon points="55,6 106,32 4,32" fill="none" stroke="#aaa" stroke-width="1.2" stroke-linejoin="round"/><rect x="4" y="32" width="102" height="42" fill="none" stroke="#aaa" stroke-width="1.2"/><rect x="6" y="40" width="44" height="28" rx="1" fill="none" stroke="#1a1a1a" stroke-width="1.8"/><line x1="28" y1="40" x2="28" y2="68" stroke="#bbb" stroke-width="0.8" stroke-dasharray="2,2"/><circle cx="47" cy="54" r="2.5" fill="#bbb"/><rect x="60" y="40" width="44" height="28" rx="1" fill="none" stroke="#1a1a1a" stroke-width="1.8"/><line x1="82" y1="40" x2="82" y2="68" stroke="#bbb" stroke-width="0.8" stroke-dasharray="2,2"/><circle cx="101" cy="54" r="2.5" fill="#bbb"/></svg>
-        <div class="bay-label">Two doors</div><div class="bay-sub">Two openings</div>
-      </div>
+  <!-- INSERT STYLE -->
+  <div class="section-label" style="margin-bottom:12px;">Window insert style</div>
+  <div class="insert-grid">
+    <div class="insert-card selected" onclick="selectInsert(this,'none','')">
+      <div class="insert-thumb" style="background:#f0f0f0;height:60px;display:flex;align-items:center;justify-content:center;"><span style="color:#999;font-size:12px;">No insert</span></div>
+      <div class="insert-name">No Insert</div>
     </div>
-    <div class="nav-row"><button class="btn-back" onclick="go(1)">Back</button><button class="btn-next" id="n2" onclick="go(3)" disabled>Continue</button></div>
+    <div class="insert-card" onclick="selectInsert(this,'sherwood','Sherwood.png')">
+      <div class="insert-thumb"><img src="https://colagomdesignco-source.github.io/garage-door-estimator/Sherwood.png" alt="Sherwood"/></div>
+      <div class="insert-name">Sherwood</div>
+    </div>
+    <div class="insert-card" onclick="selectInsert(this,'waterton','Waterton.png')">
+      <div class="insert-thumb"><img src="https://colagomdesignco-source.github.io/garage-door-estimator/Waterton.png" alt="Waterton"/></div>
+      <div class="insert-name">Waterton</div>
+    </div>
+    <div class="insert-card" onclick="selectInsert(this,'prairie','Praire.png')">
+      <div class="insert-thumb"><img src="https://colagomdesignco-source.github.io/garage-door-estimator/Praire.png" alt="Prairie"/></div>
+      <div class="insert-name">Prairie</div>
+    </div>
+    <div class="insert-card" onclick="selectInsert(this,'madison','Madison.png')">
+      <div class="insert-thumb"><img src="https://colagomdesignco-source.github.io/garage-door-estimator/Madison.png" alt="Madison"/></div>
+      <div class="insert-name">Madison</div>
+    </div>
+    <div class="insert-card" onclick="selectInsert(this,'madison-insert','madison_insert.png')">
+      <div class="insert-thumb"><img src="https://colagomdesignco-source.github.io/garage-door-estimator/madison_insert.png" alt="Madison Insert"/></div>
+      <div class="insert-name">Madison Insert</div>
+    </div>
+    <div class="insert-card" onclick="selectInsert(this,'arch-stockton','2. and 4. Piece Arched Stockton.png')">
+      <div class="insert-thumb"><img src="https://colagomdesignco-source.github.io/garage-door-estimator/2. and 4. Piece Arched Stockton.png" alt="Arched Stockton"/></div>
+      <div class="insert-name">Arched Stockton</div>
+    </div>
+    <div class="insert-card" onclick="selectInsert(this,'arch-madison','2. and 4. Piece arch madison.png')">
+      <div class="insert-thumb"><img src="https://colagomdesignco-source.github.io/garage-door-estimator/2. and 4. Piece arch madison.png" alt="Arched Madison"/></div>
+      <div class="insert-name">Arched Madison</div>
+    </div>
+    <div class="insert-card" onclick="selectInsert(this,'sunburst','2. and 4 piece suburst.png')">
+      <div class="insert-thumb"><img src="https://colagomdesignco-source.github.io/garage-door-estimator/2. and 4 piece suburst.png" alt="Sunburst"/></div>
+      <div class="insert-name">Sunburst</div>
+    </div>
   </div>
 
-  <!-- STEP 3: Door style + color + insulation -->
-  <div id="step3" class="step">
-    <div class="step-title">Choose your door style</div>
-    <div class="step-sub">All in-stock doors are ready to ship fast.</div>
+  <div class="btn-row">
+    <button class="btn-back" onclick="goStep(3)">← Back</button>
+    <button class="btn btn-primary" onclick="goStep('contact')">Continue</button>
+  </div>
+</div>
 
-    <div class="door-gallery">
-      <div class="door-card" onclick="pickStyle(this,'raised')">
-        <img class="door-photo" src="Raised Panel.webp" onerror="this.style.background='#e8e8e8'" alt="Raised Panel">
-        <div class="door-info">
-          <div class="door-name">Raised Panel</div>
-          <div class="door-type">Classic ribbed</div>
-          <span class="badge badge-green">✓ In stock</span>
-        </div>
-      </div>
-      <div class="door-card" onclick="pickStyle(this,'flush')">
-        <img class="door-photo" src="Skyline Flush" onerror="this.style.background='#e8e8e8'" alt="Skyline Flush">
-        <div class="door-info">
-          <div class="door-name">Skyline Flush</div>
-          <div class="door-type">Smooth & modern</div>
-          <span class="badge badge-blue">✓ In stock</span>
-        </div>
-      </div>
-      <div class="door-card" onclick="pickStyle(this,'carriage')">
-        <img class="door-photo" src="Stamped carriage house.webp" onerror="this.style.background='#e8e8e8'" alt="Carriage Stamp">
-        <div class="door-info">
-          <div class="door-name">Carriage Stamp</div>
-          <div class="door-type">Classic overlay</div>
-          <span class="badge badge-amber">✓ In stock</span>
-        </div>
-      </div>
-    </div>
+<!-- STEP CONTACT -->
+<div class="step" id="step-contact">
+  <div class="step-title">Almost there!</div>
+  <div class="step-sub">Enter your info to unlock your personalized price range.</div>
 
-    <!-- Color picker (shown after style selected) -->
-    <div class="color-section" id="colorSection" style="display:none;">
-      <div class="color-label">Color preference</div>
-      <div class="color-options" id="colorOptions"></div>
-    </div>
-
-    <!-- Insulation selector -->
-    <div class="ins-selector" id="insSelector">
-      <div class="ins-note" id="insNote" style="display:none;"></div>
-      <div class="ins-title">Choose your insulation level</div>
-      <div class="ins-options three-col" id="insOptions">
-        <div class="ins-card eco" onclick="pickIns(this,'noninsulated')" id="ins-eco">
-          <span class="ins-emoji">🚪</span>
-          <div class="ins-label">Non-Insulated</div>
-          <div class="ins-desc">Standard steel. Great for detached garages.</div>
-          <div class="ins-price">Lowest price</div>
-        </div>
-        <div class="ins-card pvc" onclick="pickIns(this,'pvcinsulated')" id="ins-pvc">
-          <span class="ins-emoji">🏠</span>
-          <div class="ins-label">PVC Insulated</div>
-          <div class="ins-desc">Better efficiency & quieter. Most popular.</div>
-          <div class="ins-price">Mid range</div>
-        </div>
-        <div class="ins-card steel" onclick="pickIns(this,'steelback')" id="ins-steel">
-          <span class="ins-emoji">🏆</span>
-          <div class="ins-label">Steelback</div>
-          <div class="ins-desc">Max durability & energy efficiency.</div>
-          <div class="ins-price">Premium</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Glass add-on (optional, shown after insulation picked) -->
-    <div id="glassAddon" style="display:none;margin-bottom:1.25rem;">
-      <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:4px;">Add glass inserts? <span style="font-size:11px;font-weight:400;color:#bbb;">(optional)</span></div>
-      <div style="font-size:12px;color:#888;margin-bottom:10px;">Pricing is per pane · installed</div>
-      <div class="option-grid" style="grid-template-columns:1fr 1fr;margin-bottom:8px;">
-        <div class="option-card" onclick="pickAddonGlass(this,'none')">
-          <div class="opt-label">No glass</div><div class="opt-desc">Standard door, no inserts</div>
-        </div>
-        <div class="option-card" onclick="pickAddonGlass(this,'yes')">
-          <div class="opt-label">Add glass inserts</div><div class="opt-desc">Choose type on next step</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="nav-row"><button class="btn-back" onclick="go(2)">Back</button><button class="btn-next" id="n3" onclick="goFromStep3()" disabled>Continue</button></div>
+  <div class="locked-box">
+    <div class="locked-icon">🔒</div>
+    <div class="locked-title">Your estimate is ready to unlock</div>
+    <div class="locked-sub">Submit your info to instantly see your price range.</div>
+    <div style="margin-top:16px;font-size:22px;font-weight:700;color:var(--charcoal);filter:blur(6px);user-select:none;">$X,XXX – $X,XXX</div>
+    <div style="font-size:12px;color:var(--gray);margin-top:4px;">Installation included</div>
   </div>
 
-  <!-- STEP 4: Door Visual -->
-  <div id="step4" class="step">
-    <div class="step-title">Your door preview ✨</div>
-    <div class="step-sub">Here's how your selected door and color will look!</div>
-
-    <div style="border-radius:16px;overflow:hidden;border:1px solid #e8e8e4;margin-bottom:1rem;background:linear-gradient(180deg,#d6e4f0 0%,#b8cfe0 40%,#8aab7a 40%,#7a9e6a 100%);">
-      <canvas id="vizCanvas" style="display:block;width:100%;height:auto;"></canvas>
-    </div>
-
-    <div id="vizSummary" style="background:#f9f9f7;border-radius:10px;padding:12px 16px;margin-bottom:1.25rem;border:1px solid #eee;font-size:13px;color:#555;text-align:center;line-height:1.6;"></div>
-
-    <div class="nav-row"><button class="btn-back" onclick="go(3)">Back</button><button class="btn-next" onclick="go(5)">Continue</button></div>
-  </div>
-
-  <!-- STEP 5: Lead gate -->
-  <div id="step5" class="step">
-    <div class="step-title">Almost there!</div>
-    <div class="step-sub">Enter your info to unlock your personalized price range.</div>
-    <div class="gate-box">
-      <div class="gate-header">
-        <div class="gate-lock"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="2" stroke="white" stroke-width="1.5" fill="none"/><path d="M8 11V7a4 4 0 018 0v4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-        <div class="gate-title">Your estimate is ready to unlock</div>
-      </div>
-      <div class="gate-sub">Submit your info to instantly see your price range.</div>
-      <div class="gate-preview">
-        <div class="gate-preview-card"><div class="gate-preview-label">Estimated range</div><div class="gate-preview-value">$X,XXX – $X,XXX</div><div class="blur-cover">🔒</div></div>
-        <div class="gate-preview-card"><div class="gate-preview-label">Installation</div><div class="gate-preview-value">Included</div><div class="blur-cover">🔒</div></div>
-      </div>
-    </div>
-    <div class="error-msg" id="errorMsg">Please enter your name and phone number.</div>
-    <!-- Honeypot — hidden from humans, bots will fill this in -->
-    <div style="position:absolute;left:-9999px;top:-9999px;opacity:0;height:0;overflow:hidden;" aria-hidden="true">
-      <input type="text" id="hp_website" name="website" tabindex="-1" autocomplete="off">
-      <input type="text" id="hp_company" name="company" tabindex="-1" autocomplete="off">
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label>First name *</label><input type="text" id="firstName" placeholder="John"></div>
-      <div class="form-group"><label>Last name *</label><input type="text" id="lastName" placeholder="Smith"></div>
-    </div>
-    <div class="form-group"><label>Phone number *</label><input type="tel" id="phone" placeholder="(925) 555-1234"></div>
-    <div class="form-group"><label>Email address</label><input type="email" id="email" placeholder="john@example.com"></div>
-    <div class="form-group"><label>Home address</label><input type="text" id="address" placeholder="123 Main St, Livermore CA"></div>
+  <div class="form-row">
     <div class="form-group">
-      <label>Door size <span class="optional-tag">(optional — for a more precise range)</span></label>
-      <select id="doorSize">
-        <option value="">Skip — show me the full range</option>
-        <option value="8x7">8 wide × 7 tall</option>
-        <option value="8x8">8 wide × 8 tall</option>
-        <option value="9x7">9 wide × 7 tall</option>
-        <option value="9x8">9 wide × 8 tall</option>
-        <option value="10x7">10 wide × 7 tall</option>
-        <option value="10x8">10 wide × 8 tall</option>
-        <option value="12x7">12 wide × 7 tall</option>
-        <option value="12x8">12 wide × 8 tall</option>
-        <option value="14x7">14 wide × 7 tall</option>
-        <option value="14x8">14 wide × 8 tall</option>
-        <option value="15x7">15 wide × 7 tall</option>
-        <option value="15x8">15 wide × 8 tall</option>
-        <option value="16x7">16 wide × 7 tall</option>
-        <option value="16x8">16 wide × 8 tall</option>
-        <option value="18x7">18 wide × 7 tall</option>
-        <option value="18x8">18 wide × 8 tall</option>
-        <option value="other">Not sure / Other size</option>
-      </select>
+      <label class="form-label">First name *</label>
+      <input class="form-input" type="text" id="fname" placeholder="Calla" required/>
     </div>
-    <div class="form-group"><label>Questions or notes</label><textarea id="notes" placeholder="Anything else we should know?"></textarea></div>
-    <div style="font-size:11px;color:#bbb;margin-bottom:1rem;">By submitting, you agree to be contacted by Generational Garage Doors. We never share your info.</div>
-    <div class="nav-row"><button class="btn-back" onclick="go(4)">Back</button><button class="btn-next" onclick="submitLead()">Unlock my estimate →</button></div>
+    <div class="form-group">
+      <label class="form-label">Last name *</label>
+      <input class="form-input" type="text" id="lname" placeholder="Smith" required/>
+    </div>
   </div>
-
-  <!-- RESULTS -->
-  <div id="stepResults" class="step">
-    <div class="results-header">
-      <div style="font-size:20px;font-weight:700;color:#1a1a1a;margin-bottom:4px;" id="resultsName">Here's your estimate!</div>
-      <div style="font-size:13px;color:#888;">Dustin will reach out soon to confirm your free measurement visit.</div>
-    </div>
-
-    <div id="resultsPreviewWrap" style="display:none;margin-bottom:1.5rem;">
-      <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:8px;">Your door preview 🏠</div>
-      <canvas id="resultsCanvas" style="width:100%;border-radius:12px;display:block;"></canvas>
-    </div>
-
-    <div class="price-cards three" id="priceCards"></div>
-    <div class="summary-box" id="summaryBox"></div>
-    <div class="cta-box">
-      <div class="cta-title">We'll be in touch soon! 👋</div>
-      <div class="cta-sub">Dustin will give you a friendly call to confirm your free measurement visit — no pressure, no commitment.</div>
-      <a href="tel:+19253168384" class="cta-btn">Or call us: (925) 316-8384</a>
-    </div>
-    <div style="font-size:11px;color:#bbb;text-align:center;">*Price ranges based on standard installation. Exact price confirmed after free in-home measurement.</div>
+  <div class="form-group">
+    <label class="form-label">Phone number *</label>
+    <input class="form-input" type="tel" id="phone" placeholder="(925) 555-0100" required/>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Email address</label>
+    <input class="form-input" type="email" id="email" placeholder="you@email.com"/>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Home address</label>
+    <input class="form-input" type="text" id="address" placeholder="123 Main St, Livermore CA"/>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Door size <span style="font-weight:300;">(optional — for a more precise range)</span></label>
+    <select class="form-select" id="doorsize">
+      <option value="">Skip — show me the full range</option>
+      <option>8 wide × 7 tall</option><option>8 wide × 8 tall</option>
+      <option>9 wide × 7 tall</option><option>9 wide × 8 tall</option>
+      <option>10 wide × 7 tall</option><option>10 wide × 8 tall</option>
+      <option>12 wide × 7 tall</option><option>12 wide × 8 tall</option>
+      <option>14 wide × 7 tall</option><option>14 wide × 8 tall</option>
+      <option>15 wide × 7 tall</option><option>15 wide × 8 tall</option>
+      <option>16 wide × 7 tall</option><option>16 wide × 8 tall</option>
+      <option>18 wide × 7 tall</option><option>18 wide × 8 tall</option>
+      <option>Not sure / Other size</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label class="form-label">Questions or notes</label>
+    <textarea class="form-input" id="notes" rows="3" placeholder="Anything you'd like us to know..."></textarea>
+  </div>
+  <p style="font-size:12px;color:var(--gray);margin-bottom:16px;">By submitting, you agree to be contacted by Generational Garage Doors. We never share your info.</p>
+  <div class="btn-row">
+    <button class="btn-back" id="contact-back-btn" onclick="contactBack()">← Back</button>
+    <button class="btn btn-primary" onclick="submitEstimate()">Unlock my estimate →</button>
   </div>
 </div>
+
+<!-- STEP SUCCESS -->
+<div class="step" id="step-success">
+  <div class="success-header">
+    <div class="success-icon">
+      <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="step-title">Here's your estimate!</div>
+    <div class="step-sub">Dustin will reach out soon to confirm your free measurement visit.</div>
+  </div>
+
+  <div class="estimate-box">
+    <div style="font-size:13px;opacity:0.6;text-transform:uppercase;letter-spacing:1px;">Estimated range</div>
+    <div class="estimate-range" id="estimate-display">$2,800 – $4,200</div>
+    <div class="estimate-includes">
+      <div class="estimate-item"><span>✓</span> Installation included</div>
+      <div class="estimate-item"><span>✓</span> Free measurement visit</div>
+    </div>
+    <div class="estimate-note">*Exact price confirmed after free in-home measurement</div>
+  </div>
+
+  <!-- Door preview on success -->
+  <div class="preview-section" id="success-preview" style="display:none;">
+    <div class="preview-label">Your door preview 🏠</div>
+    <div class="preview-window">
+      <div class="preview-door">
+        <img id="success-door-img" class="preview-door-img" src="" alt=""/>
+        <img id="success-insert-img" class="preview-insert-img" src="" alt="" style="display:none;"/>
+      </div>
+    </div>
+  </div>
+
+  <div class="call-box">
+    <div style="font-weight:600;">We'll be in touch soon! 👋</div>
+    <div style="font-size:13px;color:var(--gray);margin-top:4px;">Dustin will give you a friendly call to confirm your free measurement visit — no pressure, no commitment.</div>
+    <a href="tel:+19253168384">Or call us: (925) 316-8384</a>
+  </div>
+</div>
+
+</main>
 
 <script>
-const WEBHOOK = 'https://hook.us2.make.com/egj41lnwxxb31x5dvilchpt8dr2qjxau';
+const BASE = 'https://colagomdesignco-source.github.io/garage-door-estimator/';
 
-const state = {
-  need: null, bays: null, style: null, color: null,
-  insulation: null, photoDataUrl: null, compositeDataUrl: null
+// State
+let state = {
+  service: null,
+  repairType: null,
+  garageCount: null,
+  doorStyle: null,
+  doorColor: 'white',
+  doorWhiteImg: null,
+  doorAlmondImg: null,
+  hasAlmond: false,
+  insulation: null,
+  glassAdd: false,
+  glassType: '',
+  insertFile: '',
+  currentStep: '1',
 };
 
-// ─── Price ranges from pricebook (min/max Customer Price per insulation) ───
-// Raised Panel: White & Almond, all sizes
-const prices = {
-  raised: {
-    noninsulated: { min: 1140, max: 4670 },
-    pvcinsulated: { min: 1500, max: 8760 },
-    steelback:    { min: 1720, max: 7620 }
-  },
-  flush: {
-    // Skyline Flush — Steelback only, ranges TBD from second sheet
-    steelback: { min: 1720, max: 4800 }
-  },
-  carriage: {
-    // Carriage Stamp: White only
-    noninsulated: { min: 1320, max: 5300 },
-    pvcinsulated: { min: 1690, max: 7400 },
-    steelback:    { min: 1820, max: 7400 }
-  }
-};
-
-// Colors available per style
+// Color options per style
 const styleColors = {
-  raised:   ['White', 'Almond'],
-  flush:    ['White'],
-  carriage: ['White']
+  'raised-short': [{id:'white',label:'White',hex:'#f5f5f0',img:'Raised short panel white.png'},{id:'almond',label:'Almond',hex:'#d8c9b0',img:'Raised panel short almond.png'}],
+  'raised-long':  [{id:'white',label:'White',hex:'#f5f5f0',img:'Raised lomg panel white.png'},{id:'almond',label:'Almond',hex:'#d8c9b0',img:'Raised long panel- almond.png'}],
+  'skyline':      [{id:'white',label:'White',hex:'#f5f5f0',img:'Skyline flush white.png'},{id:'black',label:'Black',hex:'#1a1a1a',img:'Skyline Flush Black.png'}],
+  'carriage-short':[{id:'white',label:'White',hex:'#f5f5f0',img:'Carriage house short panel white.png'}],
+  'carriage-long': [{id:'white',label:'White',hex:'#f5f5f0',img:'Carriage House long panel white.png'}],
 };
 
-const styleNames = { raised:'Raised Panel', flush:'Skyline Flush', carriage:'Carriage Stamp' };
-const overlayImages = {
-  raised:   'overlay-raised-panel.png',
-  flush:    'overlay-skyline-flush.png',
-  carriage: 'overlay-carriage-house.png'
-};
-const stylePhotos = {
-  raised:   'Raised Panel.webp',
-  flush:    'Skyline Flush',
-  carriage: 'Stamped carriage house.webp'
+// Estimate ranges
+const ranges = {
+  replace:{ single:'$1,800 – $2,800', double:'$2,800 – $4,200', two:'$3,600 – $5,600' },
+  new:    { single:'$2,000 – $3,200', double:'$3,200 – $4,800', two:'$4,200 – $6,400' },
+  repair: { spring:'$180 – $350', opener:'$800 – $1,610', glass:'$120 – $280 per pane', other:'Schedule free inspection' },
 };
 
-// ─── Canvas composer ───
-let bgImg = null, doorImg = null;
-let doorX = 0, doorY = 0;
-let isDragging = false, dragOffX = 0, dragOffY = 0;
-let cW = 800, cH = 600;
+function updateProgress(step){
+  const steps = {'1':1,'2-door':2,'2-repair':2,'3':3,'4':4,'contact':5,'success':5};
+  const n = steps[step] || 1;
+  const total = 5;
+  document.getElementById('progress-fill').style.width = (n/total*100)+'%';
+  document.getElementById('progress-label').textContent = `Step ${n} of ${total}`;
+}
 
-function pick(el, key, val) {
-  el.closest('.option-grid,.bay-grid').querySelectorAll('.option-card,.bay-card').forEach(c => c.classList.remove('selected'));
+function showStep(id){
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  const el = document.getElementById('step-'+id);
+  if(el){ el.classList.add('active'); el.scrollIntoView({behavior:'smooth',block:'start'}); }
+  updateProgress(id);
+  state.currentStep = id;
+}
+
+function goStep(id){ showStep(id); }
+
+function restart(){
+  state = {service:null,repairType:null,garageCount:null,doorStyle:null,doorColor:'white',doorWhiteImg:null,doorAlmondImg:null,hasAlmond:false,insulation:null,glassAdd:false,glassType:'',insertFile:'',currentStep:'1'};
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('selected'));
+  document.querySelectorAll('.ins-card').forEach(c=>c.classList.remove('selected'));
+  showStep('1');
+}
+
+function selectService(type){
+  state.service = type;
+  document.querySelectorAll('#step-1 .card').forEach(c=>c.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  setTimeout(()=>{
+    if(type==='repair') showStep('2-repair');
+    else showStep('2-door');
+  },200);
+}
+
+function selectRepair(type){
+  state.repairType = type;
+  document.querySelectorAll('#step-2-repair .card').forEach(c=>c.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+}
+
+function goRepairDetail(){
+  if(!state.repairType){ alert('Please select a repair type'); return; }
+  if(state.repairType==='spring') showStep('spring');
+  else if(state.repairType==='opener') showStep('opener');
+  else if(state.repairType==='glass') showStep('glass-repair');
+  else showStep('contact');
+}
+
+function selectOpt(el, key, val){
+  // Find sibling cards in same parent
+  el.parentElement.querySelectorAll('.card').forEach(c=>c.classList.remove('selected'));
   el.classList.add('selected');
   state[key] = val;
-  const btn = document.getElementById('n' + currentStep());
-  if (btn) btn.disabled = false;
 }
 
-function pickStyle(el, styleId) {
-  document.querySelectorAll('.door-card').forEach(c => c.classList.remove('selected'));
+function selectDoorStyle(el, styleId, name, whiteImg, almondImg){
+  document.querySelectorAll('.door-card').forEach(c=>c.classList.remove('selected'));
   el.classList.add('selected');
-  state.style = styleId;
-  state.color = null;
-  state.insulation = null;
-  document.querySelectorAll('.ins-card').forEach(c => c.classList.remove('selected'));
-  document.getElementById('n3').disabled = true;
+  state.doorStyle = styleId;
+  state.doorWhiteImg = whiteImg;
+  state.doorAlmondImg = almondImg;
+  state.hasAlmond = !!almondImg;
 
-  // Show color picker
-  const colors = styleColors[styleId];
-  const colorSection = document.getElementById('colorSection');
-  const colorOptions = document.getElementById('colorOptions');
-  colorOptions.innerHTML = '';
-  colors.forEach(c => {
-    const chip = document.createElement('div');
-    chip.className = 'color-chip';
-    chip.innerHTML = `<div class="color-dot ${c === 'White' ? 'dot-white' : 'dot-almond'}"></div>${c}`;
-    chip.onclick = () => {
-      document.querySelectorAll('.color-chip').forEach(ch => ch.classList.remove('selected'));
-      chip.classList.add('selected');
-      state.color = c;
-      refreshViz();
+  // Default to white
+  state.doorColor = 'white';
+  updateDoorPreview();
+  renderColorSwatches(styleId);
+  document.getElementById('color-section').style.display = 'block';
+}
+
+function renderColorSwatches(styleId){
+  const colors = styleColors[styleId] || [];
+  const wrap = document.getElementById('color-swatches');
+  wrap.innerHTML = '';
+  colors.forEach(c=>{
+    const div = document.createElement('div');
+    div.className = 'swatch' + (c.id===state.doorColor?' selected':'');
+    div.innerHTML = `<div class="swatch-circle" style="background:${c.hex};"></div><div class="swatch-label">${c.label}</div>`;
+    div.onclick = ()=>{
+      document.querySelectorAll('.swatch').forEach(s=>s.classList.remove('selected'));
+      div.classList.add('selected');
+      state.doorColor = c.id;
+      state.currentColorImg = c.img;
+      updateDoorPreview();
     };
-    colorOptions.appendChild(chip);
+    wrap.appendChild(div);
   });
-
-  // Auto-select if only one color
-  if (colors.length === 1) {
-    colorOptions.firstChild.classList.add('selected');
-    state.color = colors[0];
-  }
-  colorSection.style.display = 'block';
-
-  // Show insulation
-  const insSelector = document.getElementById('insSelector');
-  const insNote = document.getElementById('insNote');
-  const insOptions = document.getElementById('insOptions');
-
-  insSelector.classList.add('visible');
-
-  if (styleId === 'flush') {
-    insNote.style.display = 'block';
-    insNote.textContent = 'ℹ️ Skyline Flush is only available in Steelback insulation.';
-    document.getElementById('ins-eco').style.display = 'none';
-    document.getElementById('ins-pvc').style.display = 'none';
-    document.getElementById('ins-steel').style.display = '';
-    insOptions.className = 'ins-options one-col';
-    // Auto-select steelback
-    pickIns(document.getElementById('ins-steel'), 'steelback');
-    document.getElementById('glassAddon').style.display = 'block';
-  } else {
-    insNote.style.display = 'none';
-    document.getElementById('ins-eco').style.display = '';
-    document.getElementById('ins-pvc').style.display = '';
-    document.getElementById('ins-steel').style.display = '';
-    insOptions.className = 'ins-options three-col';
-  }
 }
 
-function pickIns(el, ins) {
-  document.querySelectorAll('.ins-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  state.insulation = ins;
-  if (state.style) document.getElementById('n3').disabled = false;
-  // Show glass add-on option
-  document.getElementById('glassAddon').style.display = 'block';
-  refreshViz();
-}
+function updateDoorPreview(){
+  const colors = styleColors[state.doorStyle] || [];
+  const chosen = colors.find(c=>c.id===state.doorColor) || colors[0];
+  if(!chosen) return;
+  const imgFile = chosen.img;
 
-function currentStep() {
-  const steps = ['step1','step2','step3','step4','step5','stepRepair','stepSpring','stepOpener','stepGlass'];
-  for (let s of steps) {
-    const el = document.getElementById(s);
-    if (el && el.classList.contains('active')) return s.replace('step','');
-  }
-  return '1';
-}
-
-window.go = function(n) {
-  const id = String(n);
-  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-  const targets = {
-    'Results':'stepResults','Repair':'stepRepair','Spring':'stepSpring',
-    'Opener':'stepOpener','Glass':'stepGlass'
-  };
-  const target = targets[id] || ('step' + id);
-  const el = document.getElementById(target);
-  if (el) el.classList.add('active');
-  const stepMap = {'1':14,'2':28,'3':42,'4':60,'5':80,'Repair':30,'Spring':60,'Opener':60,'Glass':60,'Results':100};
-  document.getElementById('progress').style.width = (stepMap[id]||14) + '%';
-  document.getElementById('startOverBtn').style.display = id === '1' ? 'none' : 'inline-block';
-  window.scrollTo({top:0, behavior:'smooth'});
-  if(id === '4') setTimeout(() => drawHouseScene(), 100);
-  if(id === 'Glass') setTimeout(() => drawGlassViz(), 100);
-};
-
-// ─── Routing functions ───
-function goFromStep1() {
-  if(state.need === 'repair') go('Repair');
-  else go(2);
-}
-
-function goFromRepair() {
-  if(state.repairType === 'spring') go('Spring');
-  else if(state.repairType === 'opener') go('Opener');
-  else if(state.repairType === 'glass') {
-    document.getElementById('glassBackBtn').onclick = () => go('Repair');
-    // For repair glass — show both panel sizes
-    document.getElementById('oversizedOption').style.display = '';
-    go('Glass');
-  }
-  else go(5); // other — just collect lead
-}
-
-function goFromStep3() {
-  if(state.addGlass === 'yes') {
-    // Pre-set glass options based on door style
-    document.getElementById('glassBackBtn').onclick = () => go(3);
-    if(state.style === 'flush') {
-      document.getElementById('oversizedOption').style.display = '';
-      // Auto-select oversized for Skyline Flush
-      document.querySelectorAll('#glassSizeOptions .option-card').forEach(c => c.classList.remove('selected'));
-      document.querySelectorAll('#glassSizeOptions .option-card')[1].classList.add('selected');
-      state.glassSize = 'oversized';
-    } else {
-      document.getElementById('oversizedOption').style.display = 'none';
-      document.querySelectorAll('#glassSizeOptions .option-card').forEach(c => c.classList.remove('selected'));
-      document.querySelectorAll('#glassSizeOptions .option-card')[0].classList.add('selected');
-      state.glassSize = 'long';
-    }
-    go('Glass');
-  } else {
-    go(4);
-  }
-}
-
-// ─── Repair pickers ───
-function pickRepair(el, type) {
-  el.closest('.option-grid').querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  state.repairType = type;
-  document.getElementById('nRepair').disabled = false;
-}
-
-// ─── Spring pickers ───
-function pickSpring(el, key, val) {
-  const grid = el.closest('.option-grid,.bay-grid');
-  grid.querySelectorAll('.option-card,.bay-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  state['spring_'+key] = val;
-  // Enable continue if both size and duty selected
-  if(state.spring_size && state.spring_duty) {
-    document.getElementById('nSpring').disabled = false;
-  }
-  updateSpringNote();
-}
-
-function updateSpringNote() {
-  // No price preview needed — handled in results
-}
-
-// ─── Opener picker ───
-function pickOpener(el, model) {
-  document.querySelectorAll('#openerCards .option-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  state.openerModel = model;
-  document.getElementById('nOpener').disabled = false;
-}
-
-// ─── Glass pickers ───
-function pickGlassThickness(el, val) {
-  el.closest('.option-grid').querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  state.glassThickness = val;
-  updateGlassPrice();
-  drawGlassViz();
-}
-
-function pickGlassSize(el, val) {
-  el.closest('.option-grid').querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  state.glassSize = val;
-  updateGlassPrice();
-  drawGlassViz();
-}
-
-function pickGlassType(el, val) {
-  el.closest('.option-grid').querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  state.glassType = val;
-  updateGlassPrice();
-  drawGlassViz();
-}
-
-function drawInsertPattern(ctx, x, y, w, h, style) {
-  ctx.strokeStyle='rgba(80,80,80,0.6)'; ctx.lineWidth=1.2;
-  if(style==='cascade') {
-    // 3x2 grid
-    for(let c=1;c<3;c++){ctx.beginPath();ctx.moveTo(x+c*w/3,y);ctx.lineTo(x+c*w/3,y+h);ctx.stroke();}
-    ctx.beginPath();ctx.moveTo(x,y+h/2);ctx.lineTo(x+w,y+h/2);ctx.stroke();
-  } else if(style==='prairie') {
-    // Border grid
-    const m=w*0.15;
-    ctx.strokeRect(x+m,y+m*0.6,w-m*2,h-m*1.2);
-    ctx.beginPath();ctx.moveTo(x+m,y+h/2);ctx.lineTo(x+m*0.3,y+h/2);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(x+w-m,y+h/2);ctx.lineTo(x+w-m*0.3,y+h/2);ctx.stroke();
-  } else if(style==='sherwood') {
-    // Arched top
-    ctx.beginPath();
-    ctx.moveTo(x+w*0.1,y+h*0.5);
-    ctx.lineTo(x+w*0.1,y+h*0.9);
-    ctx.lineTo(x+w*0.9,y+h*0.9);
-    ctx.lineTo(x+w*0.9,y+h*0.5);
-    ctx.arc(x+w/2,y+h*0.5,w*0.4,0,Math.PI,true);
-    ctx.stroke();
-    ctx.beginPath();ctx.moveTo(x+w/2-w*0.15,y+h*0.5);ctx.lineTo(x+w/2-w*0.15,y+h*0.9);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(x+w/2+w*0.15,y+h*0.5);ctx.lineTo(x+w/2+w*0.15,y+h*0.9);ctx.stroke();
-  } else if(style==='waterton') {
-    // Diamond
-    ctx.beginPath();
-    ctx.moveTo(x+w/2,y+h*0.1);ctx.lineTo(x+w*0.85,y+h/2);
-    ctx.lineTo(x+w/2,y+h*0.9);ctx.lineTo(x+w*0.15,y+h/2);
-    ctx.closePath();ctx.stroke();
-  } else if(style==='stockton') {
-    // 4-pane grid
-    ctx.beginPath();ctx.moveTo(x+w/2,y);ctx.lineTo(x+w/2,y+h);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(x,y+h/2);ctx.lineTo(x+w,y+h/2);ctx.stroke();
-  } else if(style==='sunburst') {
-    // Fan/sunburst from bottom center
-    const cx2=x+w/2, cy2=y+h*0.95, r=h*0.85;
-    for(let a=0;a<=10;a++){
-      const angle=-Math.PI+(a/10)*Math.PI;
-      ctx.beginPath();ctx.moveTo(cx2,cy2);
-      ctx.lineTo(cx2+Math.cos(angle)*r,cy2+Math.sin(angle)*r);ctx.stroke();
-    }
-    ctx.beginPath();ctx.arc(cx2,cy2,r,Math.PI,0);ctx.stroke();
-  }
-}
-
-function pickInsertStyle(el, val) {
-  el.closest('.option-grid').querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  state.insertStyle = val;
-  drawGlassViz();
-}
-
-function pickAddonGlass(el, val) {
-  el.closest('.option-grid').querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  state.addGlass = val;
-  document.getElementById('n3').disabled = false;
-}
-
-// Glass pricing table (per pane, with 20% markup)
-const glassPrices = {
-  nonins: { long: { clear:128.40, obscure:142.20, tinted:158.40, frosted:240.60 }, oversized: { clear:142.20, obscure:161.40, tinted:182.40, frosted:243.00 } },
-  ins:    { long: { clear:166.20, obscure:192.60, tinted:207.00, frosted:259.80 }, oversized: { clear:190.80, obscure:211.20, tinted:242.40, frosted:297.60 } }
-};
-
-function updateGlassPrice() {
-  const { glassThickness, glassSize, glassType } = state;
-  const preview = document.getElementById('glassPricePreview');
-  if(!glassThickness || !glassSize || !glassType) { preview.style.display='none'; return; }
-  const price = glassPrices[glassThickness]?.[glassSize]?.[glassType];
-  if(!price) { preview.style.display='none'; return; }
-  const thick = glassThickness === 'nonins' ? '1/8" Non-Insulated' : '1/2" Insulated';
-  const size = glassSize === 'long' ? 'Long Panel' : 'Oversized';
-  const type = glassType.charAt(0).toUpperCase() + glassType.slice(1);
-  preview.style.display = 'block';
-  preview.innerHTML = `<strong>$${price.toFixed(2)} per pane</strong> · ${thick} ${size} ${type} glass · Includes installation`;
-  document.getElementById('nGlass').disabled = false;
-}
-
-// ─── Spring pricing ───
-const springPrices = {
-  single: { standard: 299, heavy: 349, custom: null },
-  double: { standard: 399, heavy: 429, custom: null }
-};
-
-function getSpringPrice() {
-  const size = state.spring_size, duty = state.spring_duty;
-  if(!size || !duty) return null;
-  return springPrices[size]?.[duty] || null;
-}
-
-// ─── Opener pricing ───
-const openerPrices = {
-  chain7:1610, chain8:875, belt7:850, belt8:925,
-  hend7:950, ibeam7:1610, jackshaft:1500
-};
-
-const openerNames = {
-  chain7:'Chain Drive 7ft (2420L)', chain8:'Chain Drive 8ft (2420L)',
-  belt7:'Belt Drive 7ft (6580L)', belt8:'Belt Drive 8ft (6580L)',
-  hend7:'High-End Belt 7ft (6690L)', ibeam7:'I-Beam Heavy Duty 7ft (4690L)',
-  jackshaft:'Jack Shaft (98022)'
-};
-
-function startOver() {
-  state.need = null; state.bays = null; state.style = null;
-  state.color = null; state.insulation = null;
-  state.photoDataUrl = null; state.compositeDataUrl = null;
-  state.repairType = null; state.spring_size = null; state.spring_duty = null;
-  state.openerModel = null; state.glassThickness = null; state.glassSize = null;
-  state.glassType = null; state.addGlass = null;
-  document.querySelectorAll('.option-card,.bay-card,.door-card,.ins-card,.color-chip').forEach(el => el.classList.remove('selected'));
-  document.querySelectorAll('.btn-next[id]').forEach(btn => btn.disabled = true);
-  document.getElementById('insSelector').classList.remove('visible');
-  document.getElementById('colorSection').style.display = 'none';
-  document.getElementById('glassAddon').style.display = 'none';
-  ['firstName','lastName','phone','email','address','notes'].forEach(id => {
-    const el = document.getElementById(id); if(el) el.value = '';
+  ['preview-door-img','preview-door-img2','success-door-img'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el){ el.src = BASE + encodeURIComponent(imgFile); el.style.display='block'; }
   });
-  document.getElementById('doorSize').value = '';
-  go(1);
+  document.getElementById('preview-placeholder').style.display='none';
+
+  // Sync insert
+  updateInsertPreview();
 }
 
-// ─── House Silhouette Visualizer ───
-const colorMap = {
-  'White':'#f5f5f0','Almond':'#e8d5b0','Black':'#222222',
-  'Sandstone':'#c4b49a','Brown':'#5c3d2e','Gray':'#8a8a8a'
-};
-
-function drawHouseScene() {
-  const canvas = document.getElementById('vizCanvas');
-  if (!canvas) return;
-  const W=800, H=480;
-  canvas.width=W; canvas.height=H;
-  const ctx=canvas.getContext('2d');
-
-  // Sky gradient
-  const sky=ctx.createLinearGradient(0,0,0,H*0.68);
-  sky.addColorStop(0,'#87CEEB'); sky.addColorStop(0.6,'#c8dff0'); sky.addColorStop(1,'#deeaf5');
-  ctx.fillStyle=sky; ctx.fillRect(0,0,W,H*0.68);
-
-  // Distant tree line
-  ctx.fillStyle='#6a9458';
-  for(let i=0;i<12;i++){
-    const tx=i*(W/11), th=40+Math.sin(i*1.7)*15;
-    ctx.beginPath(); ctx.moveTo(tx,H*0.68); ctx.lineTo(tx-18,H*0.68-th); ctx.lineTo(tx+18,H*0.68-th); ctx.closePath(); ctx.fill();
-  }
-
-  // Ground / lawn
-  const gnd=ctx.createLinearGradient(0,H*0.68,0,H);
-  gnd.addColorStop(0,'#7a9e6a'); gnd.addColorStop(1,'#5a7e4a');
-  ctx.fillStyle=gnd; ctx.fillRect(0,H*0.68,W,H*0.32);
-
-  // Driveway — left side leading to garage
-  ctx.fillStyle='#b8b4a8';
-  ctx.beginPath();
-  ctx.moveTo(W*0.05,H*0.68); ctx.lineTo(W*0.48,H*0.68);
-  ctx.lineTo(W*0.58,H); ctx.lineTo(0,H);
-  ctx.closePath(); ctx.fill();
-  // Driveway texture lines
-  ctx.strokeStyle='#a8a49a'; ctx.lineWidth=1; ctx.setLineDash([20,18]);
-  ctx.beginPath(); ctx.moveTo(W*0.15,H*0.68); ctx.lineTo(W*0.08,H); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(W*0.30,H*0.68); ctx.lineTo(W*0.22,H); ctx.stroke();
-  ctx.setLineDash([]);
-
-  // Walkway to front door — right side
-  ctx.fillStyle='#c4bfb4';
-  ctx.beginPath();
-  ctx.moveTo(W*0.68,H*0.68); ctx.lineTo(W*0.78,H*0.68);
-  ctx.lineTo(W*0.82,H*0.82); ctx.lineTo(W*0.64,H*0.82);
-  ctx.closePath(); ctx.fill();
-
-  // ── House body ──
-  // Main house — full width ranch style
-  const hX=W*0.04, hY=H*0.20, hW=W*0.92, hH=H*0.50;
-  ctx.fillStyle='#e2d8c8'; ctx.fillRect(hX,hY,hW,hH);
-
-  // Wall texture / shadow gradient
-  const wg=ctx.createLinearGradient(hX,hY,hX,hY+hH);
-  wg.addColorStop(0,'rgba(255,255,255,0.08)'); wg.addColorStop(1,'rgba(0,0,0,0.12)');
-  ctx.fillStyle=wg; ctx.fillRect(hX,hY,hW,hH);
-
-  // Vertical siding lines
-  ctx.strokeStyle='rgba(0,0,0,0.04)'; ctx.lineWidth=1;
-  for(let i=0;i<20;i++){
-    ctx.beginPath(); ctx.moveTo(hX+i*(hW/20),hY); ctx.lineTo(hX+i*(hW/20),hY+hH); ctx.stroke();
-  }
-
-  // ── Roof ──
-  // Main roof
-  ctx.fillStyle='#3d3228';
-  ctx.beginPath();
-  ctx.moveTo(hX-30,hY+12);
-  ctx.lineTo(W*0.50,H*0.02);
-  ctx.lineTo(hX+hW+30,hY+12);
-  ctx.closePath(); ctx.fill();
-
-  // Right side smaller roof section (over entry)
-  ctx.fillStyle='#352b22';
-  ctx.beginPath();
-  ctx.moveTo(W*0.60,hY+12);
-  ctx.lineTo(W*0.73,hY-30);
-  ctx.lineTo(W*0.86,hY+12);
-  ctx.closePath(); ctx.fill();
-
-  // Roof shadow underside
-  ctx.fillStyle='rgba(0,0,0,0.20)';
-  ctx.beginPath(); ctx.moveTo(W*0.50,H*0.02); ctx.lineTo(hX+hW+30,hY+12); ctx.lineTo(W*0.50,hY+12); ctx.closePath(); ctx.fill();
-
-  // Fascia / soffit
-  ctx.fillStyle='#d0c8bc'; ctx.fillRect(hX-30,hY+10,hW+60,14);
-
-  // ── Garage section (LEFT 55% of house) ──
-  const gX=hX+hW*0.04, gY=hY+hH*0.32, gW=hW*0.52, gH=hH*0.65;
-
-  // Garage header / lintel
-  ctx.fillStyle='#c8c0b0'; ctx.fillRect(gX-8,gY-14,gW+16,14);
-
-  // Garage surround
-  ctx.fillStyle='#b8b0a0'; ctx.fillRect(gX-8,gY-14,8,gH+14); ctx.fillRect(gX+gW,gY-14,8,gH+14);
-
-  // Draw the garage door
-  const color=colorMap[state.color]||'#f5f5f0';
-  const style=state.style||'raised';
-  if(style==='flush') drawFlushDoor(ctx,gX,gY,gW,gH,color);
-  else if(style==='carriage') drawCarriageDoor(ctx,gX,gY,gW,gH,color);
-  else drawRaisedPanelDoor(ctx,gX,gY,gW,gH,color);
-
-  // Garage light fixtures (both sides)
-  drawLight2(ctx, gX-2, gY-28);
-  drawLight2(ctx, gX+gW+2, gY-28);
-
-  // ── Entry section (RIGHT side) ──
-  const eX=hX+hW*0.62, eY=hY, eW=hW*0.32, eH=hH;
-
-  // Entry wall slightly different color
-  ctx.fillStyle='#d8d0c0'; ctx.fillRect(eX,eY,eW,eH);
-  const ewg=ctx.createLinearGradient(eX,eY,eX,eY+eH);
-  ewg.addColorStop(0,'rgba(255,255,255,0.05)'); ewg.addColorStop(1,'rgba(0,0,0,0.10)');
-  ctx.fillStyle=ewg; ctx.fillRect(eX,eY,eW,eH);
-
-  // Entry windows (two tall windows flanking door)
-  drawWindow2(ctx, eX+eW*0.05, eY+eH*0.15, eW*0.20, eH*0.38);
-  drawWindow2(ctx, eX+eW*0.75, eY+eH*0.15, eW*0.20, eH*0.38);
-
-  // Front door — centered in entry section, no overlap
-  const fdW=52, fdH=eH*0.52;
-  const fdX=eX+eW/2-fdW/2, fdY=eY+eH*0.46;
-  // Door frame
-  ctx.fillStyle='#8a6a4a'; ctx.fillRect(fdX-6,fdY-6,fdW+12,fdH+6);
-  // Door body
-  ctx.fillStyle='#5a3a1a'; ctx.fillRect(fdX,fdY,fdW,fdH);
-  // Door panels
-  ctx.fillStyle='#4a2a0a';
-  ctx.fillRect(fdX+6,fdY+8,fdW-12,fdH*0.38);
-  ctx.fillRect(fdX+6,fdY+fdH*0.45,fdW-12,fdH*0.42);
-  // Door handle
-  ctx.beginPath(); ctx.arc(fdX+fdW-10,fdY+fdH/2,4,0,Math.PI*2); ctx.fillStyle='#d4a840'; ctx.fill();
-  // Porch light above door
-  drawLight2(ctx, fdX+fdW/2, fdY-18);
-
-  // ── Small window far left above garage ──
-  drawWindow2(ctx, hX+10, hY+hH*0.05, 50, 42);
-
-  // ── Bushes / landscaping ──
-  drawBush2(ctx, gX-20, H*0.695, 22);
-  drawBush2(ctx, gX+gW+20, H*0.695, 24);
-  drawBush2(ctx, fdX-20, H*0.695, 20);
-  drawBush2(ctx, fdX+fdW+20, H*0.695, 20);
-  drawBush2(ctx, hX+hW+12, H*0.695, 18);
-
-  // Small flowers near entry
-  for(let i=0;i<4;i++){
-    ctx.fillStyle=['#e05050','#e08030','#e0d030','#d060c0'][i];
-    ctx.beginPath(); ctx.arc(eX+eW*0.12+i*14, H*0.700, 5, 0, Math.PI*2); ctx.fill();
-    ctx.fillStyle='#5a8040'; ctx.fillRect(eX+eW*0.12+i*14-1,H*0.705,2,8);
-  }
-
-  // Summary text
-  const sN={raised:'Raised Panel',flush:'Skyline Flush',carriage:'Carriage Stamp'};
-  const iN={noninsulated:'Non-Insulated',pvcinsulated:'PVC Insulated',steelback:'Steelback'};
-  const el=document.getElementById('vizSummary');
-  if(el) el.innerHTML=`<strong>${sN[state.style]||'Raised Panel'}</strong> · <strong>${state.color||'White'}</strong>${state.insulation?' · '+iN[state.insulation]:''}`;
-  state.compositeDataUrl=canvas.toDataURL('image/jpeg',0.92);
-}
-
-function drawWindow2(ctx,x,y,w,h) {
-  ctx.fillStyle='#b8d4e8'; ctx.fillRect(x,y,w,h);
-  ctx.strokeStyle='#d4ccc0'; ctx.lineWidth=4; ctx.strokeRect(x,y,w,h);
-  ctx.lineWidth=1.5; ctx.strokeStyle='#c8c0b4';
-  ctx.beginPath(); ctx.moveTo(x+w/2,y); ctx.lineTo(x+w/2,y+h); ctx.moveTo(x,y+h/2); ctx.lineTo(x+w,y+h/2); ctx.stroke();
-  ctx.fillStyle='rgba(255,255,255,0.22)'; ctx.fillRect(x+4,y+4,w/2-8,h/2-8);
-}
-
-function drawBush2(ctx,x,y,r) {
-  ctx.fillStyle='#4a7030';
-  ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.arc(x+r*0.6,y-r*0.3,r*0.75,0,Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.arc(x-r*0.5,y-r*0.2,r*0.65,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle='#5a8040';
-  ctx.beginPath(); ctx.arc(x,y-r*0.3,r*0.6,0,Math.PI*2); ctx.fill();
-}
-
-function drawLight2(ctx,x,y) {
-  ctx.fillStyle='#888'; ctx.fillRect(x-3,y,6,10);
-  ctx.fillStyle='rgba(255,220,100,0.9)'; ctx.beginPath(); ctx.arc(x,y,5,0,Math.PI*2); ctx.fill();
-}
-
-function refreshViz() { drawHouseScene(); }
-
-function refreshGlassViz() { drawGlassViz(); }
-function handleOwnPhoto() {}
-function saveVizPreview() {
-  drawHouseScene();
-  const a=document.createElement('a'); a.href=state.compositeDataUrl; a.download='my-door-preview.jpg'; a.click();
-}
-
-function adjBright(hex, amt) {
-  let r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
-  r=Math.min(255,Math.max(0,r+amt)); g=Math.min(255,Math.max(0,g+amt)); b=Math.min(255,Math.max(0,b+amt));
-  return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
-}
-
-function drawRaisedPanelDoor(ctx, x, y, w, h, color) {
-  const rows=4, cols=2, m=w*0.012, sw=w/cols, sh=h/rows;
-  // Main door face
-  ctx.fillStyle = color;
-  ctx.fillRect(x,y,w,h);
-  // Subtle shadow on right and bottom edges for depth
-  const grad = ctx.createLinearGradient(x,y,x+w,y);
-  grad.addColorStop(0, 'rgba(0,0,0,0.04)');
-  grad.addColorStop(1, 'rgba(0,0,0,0.12)');
-  ctx.fillStyle = grad;
-  ctx.fillRect(x,y,w,h);
-  // Horizontal panel seams
-  for(let r=1;r<rows;r++){
-    ctx.beginPath();ctx.moveTo(x+w*0.01,y+r*sh);ctx.lineTo(x+w*0.99,y+r*sh);
-    ctx.strokeStyle='rgba(0,0,0,0.18)';ctx.lineWidth=Math.max(1.5,h*0.004);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(x+w*0.01,y+r*sh+1.5);ctx.lineTo(x+w*0.99,y+r*sh+1.5);
-    ctx.strokeStyle='rgba(255,255,255,0.25)';ctx.lineWidth=1;ctx.stroke();
-  }
-  // Raised panels
-  for(let r=0;r<rows;r++) for(let c=0;c<cols;c++) {
-    const px=x+c*sw+m*2.5, py=y+r*sh+m*2, pw=sw-m*5, ph=sh-m*4;
-    const dep=Math.max(2.5,w*0.004);
-    // Panel recess
-    ctx.fillStyle=adjBright(color,-6); ctx.fillRect(px,py,pw,ph);
-    // Top highlight
-    ctx.fillStyle=adjBright(color,18); ctx.fillRect(px,py,pw,dep);
-    // Left highlight
-    ctx.fillStyle=adjBright(color,12); ctx.fillRect(px,py+dep,dep,ph-dep);
-    // Bottom shadow
-    ctx.fillStyle=adjBright(color,-22); ctx.fillRect(px,py+ph-dep,pw,dep);
-    // Right shadow
-    ctx.fillStyle=adjBright(color,-18); ctx.fillRect(px+pw-dep,py+dep,dep,ph-dep*2);
-    // Panel face
-    ctx.fillStyle=adjBright(color,3); ctx.fillRect(px+dep,py+dep,pw-dep*2,ph-dep*2);
-  }
-  // Outer door frame
-  ctx.strokeStyle=adjBright(color,-28);ctx.lineWidth=Math.max(2,w*0.004);ctx.strokeRect(x+1,y+1,w-2,h-2);
-  // Center vertical divider line
-  ctx.beginPath();ctx.moveTo(x+w/2,y+h*0.02);ctx.lineTo(x+w/2,y+h*0.98);
-  ctx.strokeStyle=adjBright(color,-20);ctx.lineWidth=Math.max(1.5,w*0.003);ctx.stroke();
-}
-
-function drawFlushDoor(ctx, x, y, w, h, color) {
-  ctx.fillStyle=color; ctx.fillRect(x,y,w,h);
-  for(let r=1;r<4;r++){ctx.beginPath();ctx.moveTo(x+w*0.02,y+r*(h/4));ctx.lineTo(x+w*0.98,y+r*(h/4));ctx.strokeStyle=adjBright(color,-15);ctx.lineWidth=1.5;ctx.stroke();}
-  const wH=h*0.12,wY=y+h*0.04,wW=w*0.18,gap=(w-4*wW)/5;
-  for(let i=0;i<4;i++){const wx=x+gap+i*(wW+gap);ctx.fillStyle='rgba(150,200,230,0.5)';ctx.fillRect(wx,wY,wW,wH);ctx.strokeStyle=adjBright(color,-20);ctx.lineWidth=2;ctx.strokeRect(wx,wY,wW,wH);}
-  ctx.strokeStyle=adjBright(color,-35);ctx.lineWidth=2;ctx.strokeRect(x+1,y+1,w-2,h-2);
-}
-
-function drawCarriageDoor(ctx, x, y, w, h, color) {
-  ctx.fillStyle=color; ctx.fillRect(x,y,w,h);
-  const rows=3,cols=2,m=w*0.02,sw=w/cols,sh=h/rows;
-  for(let r=0;r<rows;r++) for(let c=0;c<cols;c++){
-    const px=x+c*sw+m*2,py=y+r*sh+m*2,pw=sw-m*4,ph=sh-m*4;
-    ctx.strokeStyle=adjBright(color,-30);ctx.lineWidth=3;ctx.strokeRect(px,py,pw,ph);
-    const ins=pw*0.1;ctx.strokeStyle=adjBright(color,-15);ctx.lineWidth=1.5;ctx.strokeRect(px+ins,py+ins,pw-ins*2,ph-ins*2);
-    ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(px+pw*0.3,py+ph*0.5);ctx.moveTo(px+pw,py);ctx.lineTo(px+pw*0.7,py+ph*0.5);
-    ctx.strokeStyle=adjBright(color,-10);ctx.lineWidth=1;ctx.stroke();
-  }
-  ctx.strokeStyle=adjBright(color,-35);ctx.lineWidth=2;ctx.strokeRect(x+1,y+1,w-2,h-2);
-}
-
-function drawGlassViz() {
-  const canvas = document.getElementById('glassVizCanvas');
-  if (!canvas) return;
-  const W=800, H=360;
-  canvas.width=W; canvas.height=H;
-  const ctx=canvas.getContext('2d');
-
-  // Sky
-  const sky=ctx.createLinearGradient(0,0,0,H*0.60);
-  sky.addColorStop(0,'#87CEEB'); sky.addColorStop(1,'#c8dff0');
-  ctx.fillStyle=sky; ctx.fillRect(0,0,W,H*0.60);
-
-  // Ground
-  const gnd=ctx.createLinearGradient(0,H*0.60,0,H);
-  gnd.addColorStop(0,'#7a9e6a'); gnd.addColorStop(1,'#5a7e4a');
-  ctx.fillStyle=gnd; ctx.fillRect(0,H*0.60,W,H*0.40);
-
-  // Driveway
-  ctx.fillStyle='#b8b4a8';
-  ctx.beginPath();
-  ctx.moveTo(W*0.15,H*0.60); ctx.lineTo(W*0.85,H*0.60);
-  ctx.lineTo(W*0.95,H); ctx.lineTo(W*0.05,H);
-  ctx.closePath(); ctx.fill();
-
-  // House body
-  const hX=W*0.08, hY=H*0.12, hW=W*0.84, hH=H*0.50;
-  ctx.fillStyle='#e2d8c8'; ctx.fillRect(hX,hY,hW,hH);
-
-  // Roof
-  ctx.fillStyle='#3d3228';
-  ctx.beginPath();
-  ctx.moveTo(hX-20,hY+10); ctx.lineTo(W*0.50,H*0.02); ctx.lineTo(hX+hW+20,hY+10);
-  ctx.closePath(); ctx.fill();
-  ctx.fillStyle='#d0c8bc'; ctx.fillRect(hX-20,hY+10,hW+40,10);
-
-  // Garage trim
-  const gX=hX+hW*0.08, gY=hY+hH*0.28, gW=hW*0.84, gH=hH*0.70;
-  ctx.fillStyle='#c0b8a8'; ctx.fillRect(gX-8,gY-10,gW+16,10);
-  ctx.fillStyle='#b8b0a0';
-  ctx.fillRect(gX-8,gY-10,8,gH+10);
-  ctx.fillRect(gX+gW,gY-10,8,gH+10);
-
-  // Draw door with glass
-  const color=colorMap[state.color]||'#f5f5f0';
-  const style=state.style||'raised';
-  if(style==='flush') drawFlushDoor(ctx,gX,gY,gW,gH,color);
-  else if(style==='carriage') drawCarriageDoor(ctx,gX,gY,gW,gH,color);
-  else drawRaisedPanelDoor(ctx,gX,gY,gW,gH,color);
-
-  // Lights
-  drawLight2(ctx,gX+4,gY-18); drawLight2(ctx,gX+gW-4,gY-18);
-
-  // Bushes
-  drawBush2(ctx,gX-18,H*0.615,20); drawBush2(ctx,gX+gW+18,H*0.615,20);
-
-  // Glass preview overlay on top row of door
-  if(state.glassType) {
-    const glassColors = {
-      clear:'rgba(180,220,255,0.45)', obscure:'rgba(160,180,200,0.55)',
-      tinted:'rgba(80,120,80,0.40)', frosted:'rgba(220,220,220,0.65)'
-    };
-    const gc = glassColors[state.glassType] || 'rgba(180,220,255,0.45)';
-    const topRowH = gH/4;
-    const panelW = (gW*0.96) / 2;
-    const panelMargin = gW*0.02;
-
-    for(let c=0;c<2;c++) {
-      const px = gX + c*(panelW+panelMargin) + panelMargin;
-      const insetX = px + panelW*0.08;
-      const insetW = panelW*0.84;
-      const insetY = gY + topRowH*0.12;
-      const insetH = topRowH*0.70;
-
-      // Glass fill
-      ctx.fillStyle=gc; ctx.fillRect(insetX,insetY,insetW,insetH);
-
-      // Draw insert pattern
-      drawInsertPattern(ctx, insetX, insetY, insetW, insetH, state.insertStyle||'none');
-
-      // Glass frame
-      ctx.strokeStyle='rgba(100,140,170,0.7)'; ctx.lineWidth=1.5;
-      ctx.strokeRect(insetX,insetY,insetW,insetH);
-      // Reflection
-      ctx.fillStyle='rgba(255,255,255,0.18)';
-      ctx.fillRect(insetX+3,insetY+3,insetW*0.3,insetH*0.35);
-    }
-  }
-
-  // Update summary
-  const glassLabel = state.glassType ? state.glassType.charAt(0).toUpperCase()+state.glassType.slice(1)+' glass' : 'Select options below';
-  const insertLabel = state.insertStyle && state.insertStyle !== 'none' ? ` · ${state.insertStyle.charAt(0).toUpperCase()+state.insertStyle.slice(1)} insert` : '';
-  const el=document.getElementById('glassVizSummary');
-  if(el) el.innerHTML = state.glassType
-    ? `🪟 <strong>${glassLabel}${insertLabel}</strong> · ${state.glassThickness==='ins'?'1/2" Insulated':'1/8" Non-Insulated'} · ${state.glassSize==='oversized'?'Oversized':'Long Panel'}`
-    : `<span style="color:#bbb;">Select your options below to preview</span>`;
-}
-
-// ─── Pricing ───
-function getRange() {
-  const stylePrices = prices[state.style];
-  if (!stylePrices) return null;
-  return stylePrices[state.insulation] || null;
-}
-
-function formatRange(r) {
-  if (!r) return 'Quote on visit';
-  return '$' + r.min.toLocaleString() + ' – $' + r.max.toLocaleString();
-}
-
-// ─── Results ───
-function showResults(name) {
-  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-  document.getElementById('stepResults').classList.add('active');
-  document.getElementById('progress').style.width = '100%';
-  document.getElementById('progressLabel').textContent = 'Complete';
-  document.getElementById('resultsName').textContent = "Here's your estimate, " + name.split(' ')[0] + "!";
-
-  // Show composite on results
-  const previewSrc = state.compositeDataUrl || state.photoDataUrl;
-  if (previewSrc) {
-    const rc = document.getElementById('resultsCanvas');
-    const img = new Image();
-    img.onload = () => { rc.width=img.width; rc.height=img.height; rc.getContext('2d').drawImage(img,0,0); };
-    img.src = previewSrc;
-    document.getElementById('resultsPreviewWrap').style.display = 'block';
-  }
-
-  const pc = document.getElementById('priceCards');
-  const baysMap = {single:'Single car',double:'Double car',twodoors:'Two separate doors'};
-  const needMap = {replace:'Replace existing',new:'New installation',repair:'Repair / service'};
-  const insMap = {noninsulated:'Non-Insulated',pvcinsulated:'PVC Insulated',steelback:'Steelback'};
-  const sizeVal = document.getElementById('doorSize').value;
-  let summaryRows = [];
-
-  if(state.need === 'repair') {
-    // ── Repair results ──
-    if(state.repairType === 'spring') {
-      const price = getSpringPrice();
-      const sizeLabel = state.spring_size === 'single' ? 'Single car' : 'Double car';
-      const dutyLabel = state.spring_duty === 'custom' ? 'Custom (inspection required)' : state.spring_duty === 'heavy' ? 'Heavy Duty' : 'Standard';
-      pc.className = 'price-cards one';
-      if(state.spring_duty === 'custom') {
-        pc.innerHTML = `<div class="price-card"><span class="price-emoji">🔧</span><div class="price-tier eco">Custom Spring</div><div class="price-range">Quote on inspection</div><div class="price-note">Dustin will assess on-site</div><div class="price-features"><div><span class="price-check">✓</span>Custom-manufactured to spec</div><div><span class="price-check">✓</span>3-year parts warranty</div><div><span class="price-check">✓</span>Free safety inspection included</div></div></div>`;
-      } else {
-        pc.innerHTML = `<div class="price-card recommended"><div class="price-top-badge">Your selection</div><span class="price-emoji">🔧</span><div class="price-tier eco">Spring Replacement</div><div class="price-range">$${price.toLocaleString()}</div><div class="price-note">installed · all in</div><div class="price-features"><div><span class="price-check">✓</span>${sizeLabel} · ${dutyLabel}</div><div><span class="price-check">✓</span>3-year parts warranty</div><div><span class="price-check">✓</span>1-year labor warranty</div><div><span class="price-check">✓</span>Free safety inspection of cables, drums & rollers</div></div></div>`;
-      }
-      summaryRows = [['Service','Spring Replacement'],['Garage',sizeLabel],['Spring type',dutyLabel],['Price',state.spring_duty==='custom'?'Quote on inspection':'$'+price],['Warranty','3yr parts · 1yr labor']];
-    } else if(state.repairType === 'opener') {
-      const price = openerPrices[state.openerModel] || 0;
-      const name2 = openerNames[state.openerModel] || 'Opener';
-      pc.className = 'price-cards one';
-      pc.innerHTML = `<div class="price-card recommended"><div class="price-top-badge">Your selection</div><span class="price-emoji">⚡</span><div class="price-tier pop">Opener Replacement</div><div class="price-range">$${price.toLocaleString()}</div><div class="price-note">installed · all in</div><div class="price-features"><div><span class="price-check">✓</span>${name2}</div><div><span class="price-check">✓</span>Professional installation</div><div><span class="price-check">✓</span>LiftMaster — industry leading brand</div></div></div>`;
-      summaryRows = [['Service','Opener Replacement'],['Model',name2],['Price','$'+price.toLocaleString()],['Installation','Included']];
-    } else if(state.repairType === 'glass') {
-      const price = glassPrices[state.glassThickness]?.[state.glassSize]?.[state.glassType];
-      const thick = state.glassThickness==='nonins'?'1/8" Non-Insulated':'1/2" Insulated';
-      const size = state.glassSize==='long'?'Long Panel':'Oversized';
-      const type = state.glassType ? state.glassType.charAt(0).toUpperCase()+state.glassType.slice(1) : '';
-      pc.className = 'price-cards one';
-      pc.innerHTML = `<div class="price-card recommended"><div class="price-top-badge">Per pane</div><span class="price-emoji">🪟</span><div class="price-tier pop">Glass Pane Replacement</div><div class="price-range">$${price?.toFixed(2)||'TBD'}</div><div class="price-note">per pane · installed</div><div class="price-features"><div><span class="price-check">✓</span>${thick} · ${size} · ${type}</div><div><span class="price-check">✓</span>Professional installation</div><div><span class="price-check">✓</span>Final price based on number of panes</div></div></div>`;
-      summaryRows = [['Service','Glass Pane Replacement'],['Glass type',`${thick} · ${size} · ${type}`],['Price per pane',price?'$'+price.toFixed(2):'TBD'],['Installation','Included']];
+function updateInsertPreview(){
+  const file = state.insertFile;
+  ['preview-insert-img','preview-insert-img2','success-insert-img'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    if(file){
+      el.src = BASE + encodeURIComponent(file);
+      el.style.display='block';
+      el.style.filter = state.glassType || '';
     } else {
-      // Other repair
-      pc.className = 'price-cards one';
-      pc.innerHTML = `<div class="price-card"><span class="price-emoji">🔍</span><div class="price-tier eco">Diagnosis & Repair</div><div class="price-range">Quote on visit</div><div class="price-note">Free inspection</div><div class="price-features"><div><span class="price-check">✓</span>Full door system inspection</div><div><span class="price-check">✓</span>Dustin will diagnose and quote on-site</div></div></div>`;
-      summaryRows = [['Service','Repair / Diagnosis'],['Approach','Free inspection & quote']];
+      el.style.display='none';
     }
-  } else {
-    // ── Door replacement/new install results ──
-    const isFlush = state.style === 'flush';
-    const tiers = isFlush ? [
-      { label:'Skyline Flush', ins:'steelback', emoji:'🏆', cls:'pre', badge:'Steelback included',
-        features:['Premium Steelback insulation','Maximum energy efficiency','Smooth modern flat panel','White or Black color'] }
-    ] : [
-      { label:'Economy', ins:'noninsulated', emoji:'🚪', cls:'eco', badge:null, features:['Durable steel construction','Standard installation included','Great for detached garages'] },
-      { label:'Popular', ins:'pvcinsulated', emoji:'🏠', cls:'pop', badge:'⭐ Most popular', features:['Everything in Economy','PVC insulation layer','Lower energy bills','Quieter operation'] },
-      { label:'Premium', ins:'steelback', emoji:'🏆', cls:'pre', badge:null, features:['Everything in Popular','Full Steelback insulation','Maximum durability','Best energy efficiency'] }
-    ];
-    pc.className = isFlush ? 'price-cards one' : 'price-cards three';
-    pc.innerHTML = tiers.map(t => {
-      const r = prices[state.style]?.[t.ins];
-      const rec = t.badge && t.badge.includes('Most popular');
-      return `<div class="price-card${rec?' recommended':''}">
-        ${t.badge?`<div class="price-top-badge">${t.badge}</div>`:''}
-        <span class="price-emoji">${t.emoji}</span>
-        <div class="price-tier ${t.cls}">${t.label}</div>
-        <div class="price-range">${formatRange(r)}</div>
-        <div class="price-note">installed · all in</div>
-        <div class="price-features">${t.features.map(f=>`<div><span class="price-check">✓</span>${f}</div>`).join('')}</div>
-      </div>`;
-    }).join('');
-
-    // Glass add-on note on results
-    if(state.addGlass === 'yes' && state.glassType) {
-      const gp = glassPrices[state.glassThickness]?.[state.glassSize]?.[state.glassType];
-      const glassNote = gp ? `<div style="background:#edf7ee;border-radius:10px;padding:10px 14px;margin-bottom:1rem;font-size:13px;color:#2d7a35;text-align:center;">🪟 Glass inserts: +$${gp.toFixed(2)} per pane installed</div>` : '';
-      document.getElementById('priceCardsWrap').insertAdjacentHTML('afterend', glassNote);
-    }
-
-    summaryRows = [
-      ['Service', needMap[state.need]||'—'],
-      ['Garage', baysMap[state.bays]||'—'],
-      ['Door style', styleNames[state.style]||'—'],
-      ['Color', state.color||'—'],
-      ['Insulation', insMap[state.insulation]||'—'],
-      ['Size', sizeVal && sizeVal !== 'other' ? sizeVal+' ft' : (sizeVal==='other'?'Non-standard / TBD':'Not provided')],
-      ['Installation', 'Included in all prices'],
-      ['Measurement visit', 'Free — no obligation'],
-    ];
-  }
-
-  document.getElementById('summaryBox').innerHTML = summaryRows.map(([l,v]) => `<div class="summary-row"><span>${l}</span><span>${v}</span></div>`).join('');
-  window.scrollTo({top:0,behavior:'smooth'});
+  });
 }
 
-// ─── Submit ───
-// ─── Spam protection ───
-const _formLoadTime = Date.now();
-let _lastSubmitTime = 0;
-let _submitCount = 0;
+function selectIns(el, val){
+  document.querySelectorAll('.ins-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.insulation = val;
+}
 
-async function submitLead() {
-  // 1. Honeypot check — bots fill hidden fields
-  const hp1 = document.getElementById('hp_website').value;
-  const hp2 = document.getElementById('hp_company').value;
-  if (hp1 || hp2) {
-    // Silently fake success — don't let bot know it was blocked
-    showResults('there');
-    return;
+function selectGlassAdd(el, val){
+  el.parentElement.querySelectorAll('.card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.glassAdd = val;
+}
+
+function nextFromStyle(){
+  if(!state.doorStyle){ alert('Please select a door style'); return; }
+  if(state.glassAdd) showStep(4);
+  else showStep('contact');
+  // Sync preview to step 4
+  if(state.doorStyle) updateDoorPreview();
+}
+
+function selectGlassType(el, type, filterVal){
+  document.querySelectorAll('.glass-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.glassType = filterVal;
+  updateInsertPreview();
+}
+
+function selectInsert(el, name, file){
+  document.querySelectorAll('.insert-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.insertFile = file;
+  updateInsertPreview();
+
+  // Show success preview insert
+  const si = document.getElementById('success-insert-img');
+  if(si){ si.style.display = file ? 'block':'none'; }
+}
+
+function contactBack(){
+  if(state.service==='repair') showStep('2-repair');
+  else if(state.glassAdd) showStep(4);
+  else showStep(3);
+}
+
+function getEstimate(){
+  if(state.service==='repair' && state.repairType){
+    return ranges.repair[state.repairType] || 'Call for estimate';
   }
+  const svc = ranges[state.service] || ranges.replace;
+  return svc[state.garageCount] || svc.double;
+}
 
-  // 2. Minimum time check — humans take at least 8 seconds to fill a form
-  const timeOnForm = Date.now() - _formLoadTime;
-  if (timeOnForm < 8000) {
-    showResults('there');
-    return;
-  }
-
-  // 3. Rate limit — max 2 submissions per session
-  _submitCount++;
-  if (_submitCount > 2) {
-    showResults('there');
-    return;
-  }
-
-  // 4. Cooldown — prevent double-clicks (5 second cooldown)
-  const now = Date.now();
-  if (now - _lastSubmitTime < 5000) return;
-  _lastSubmitTime = now;
-  const fn = document.getElementById('firstName').value.trim();
-  const ln = document.getElementById('lastName').value.trim();
+async function submitEstimate(){
+  const fname = document.getElementById('fname').value.trim();
+  const lname = document.getElementById('lname').value.trim();
   const phone = document.getElementById('phone').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const address = document.getElementById('address').value.trim();
-  const notes = document.getElementById('notes').value.trim();
-  const sizeVal = document.getElementById('doorSize').value;
+  if(!fname||!lname||!phone){ alert('Please enter your name and phone number.'); return; }
 
-  if (!fn || !phone) { document.getElementById('errorMsg').style.display='block'; return; }
-  document.getElementById('errorMsg').style.display = 'none';
-  document.getElementById('loadingOverlay').classList.add('visible');
+  document.getElementById('sending-overlay').classList.add('active');
 
-  const insMap = {noninsulated:'Non-Insulated',pvcinsulated:'PVC Insulated',steelback:'Steelback'};
-
-  // Build service/price details for webhook
-  let serviceDetail = '', estimatedRange = '';
-  if(state.need === 'repair') {
-    if(state.repairType === 'spring') {
-      const p = getSpringPrice();
-      serviceDetail = `Spring Replacement — ${state.spring_size==='single'?'Single':'Double'} car — ${state.spring_duty==='custom'?'Custom':state.spring_duty==='heavy'?'Heavy Duty':'Standard'}`;
-      estimatedRange = p ? '$'+p : 'Custom quote on inspection';
-    } else if(state.repairType === 'opener') {
-      serviceDetail = `Opener Replacement — ${openerNames[state.openerModel]||''}`;
-      estimatedRange = '$'+(openerPrices[state.openerModel]||'TBD');
-    } else if(state.repairType === 'glass') {
-      const p = glassPrices[state.glassThickness]?.[state.glassSize]?.[state.glassType];
-      serviceDetail = `Glass Pane — ${state.glassThickness==='nonins'?'1/8" Non-Insulated':'1/2" Insulated'} ${state.glassSize==='long'?'Long Panel':'Oversized'} ${state.glassType}`;
-      estimatedRange = p ? '$'+p.toFixed(2)+' per pane' : 'TBD';
-    } else {
-      serviceDetail = 'Repair / Diagnosis';
-      estimatedRange = 'Quote on inspection';
-    }
-  } else {
-    const r = getRange();
-    serviceDetail = `${styleNames[state.style]||''} — ${state.color||''} — ${insMap[state.insulation]||''}`;
-    estimatedRange = r ? '$'+r.min.toLocaleString()+' – $'+r.max.toLocaleString() : 'TBD';
-  }
+  const payload = {
+    ...state,
+    firstName: fname, lastName: lname, phone,
+    email: document.getElementById('email').value,
+    address: document.getElementById('address').value,
+    doorSize: document.getElementById('doorsize').value,
+    notes: document.getElementById('notes').value,
+    estimate: getEstimate(),
+    submittedAt: new Date().toISOString(),
+  };
 
   try {
-    await fetch(WEBHOOK, {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-        subject: `New Lead — ${fn} ${ln} — ${({replace:'Door Replace',new:'New Install',repair:'Repair'}[state.need]||'Estimate')}`,
-        fullName: fn+' '+ln, phone, email, address,
-        service: {replace:'Replace existing door',new:'New installation',repair:'Repair or service'}[state.need]||'',
-        repairType: state.repairType||'',
-        garageType: {single:'Single car',double:'Double car',twodoors:'Two separate doors'}[state.bays]||'',
-        doorStyle: styleNames[state.style]||'',
-        color: state.color||'',
-        insulation: insMap[state.insulation]||'',
-        glassAddon: state.addGlass==='yes' ? `${state.glassThickness} ${state.glassSize} ${state.glassType}` : 'None',
-        doorSize: sizeVal && sizeVal !== 'other' ? sizeVal+' ft' : (sizeVal==='other'?'Non-standard':'Not provided'),
-        serviceDetail,
-        estimatedRange,
-        notes, leadSource: 'Website Estimator'
-      })
+    await fetch('https://formspree.io/f/xbljevop', {
+      method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify(payload)
     });
-    showResults(fn+' '+ln);
-  } catch(e) {
-    alert('Something went wrong. Please call us at (925) 316-8384');
-  }
-  document.getElementById('loadingOverlay').classList.remove('visible');
+  } catch(e){ console.log('Form error',e); }
+
+  setTimeout(()=>{
+    document.getElementById('sending-overlay').classList.remove('active');
+    document.getElementById('estimate-display').textContent = getEstimate();
+
+    // Show door preview on success
+    if(state.doorStyle){
+      document.getElementById('success-preview').style.display='block';
+      updateDoorPreview();
+    }
+    showStep('success');
+  }, 1200);
 }
 </script>
 </body>
