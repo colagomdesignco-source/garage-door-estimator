@@ -131,14 +131,21 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 .call-box a{color:var(--red);font-size:20px;font-weight:700;text-decoration:none;display:block;margin-top:6px;}
 /* INSULATION */
 .insulation-grid{display:grid;gap:10px;margin-bottom:20px;}
-.ins-card{background:var(--white);border:2px solid var(--tan);border-radius:var(--radius);padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:all 0.2s;}
-.ins-card:hover{border-color:#c8bfb3;}
+.ins-card{background:var(--white);border:2px solid var(--tan);border-radius:var(--radius);padding:18px 20px;cursor:pointer;transition:all 0.2s;position:relative;}
+.ins-card:hover{border-color:#a0bcaa;box-shadow:var(--shadow);}
 .ins-card.selected{border-color:var(--red);background:#edf4ef;}
-.ins-icon{font-size:24px;}
-.ins-info{flex:1;}
+.ins-header{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.ins-icon{font-size:26px;flex-shrink:0;}
+.ins-title-row{flex:1;}
 .ins-name{font-weight:600;font-size:15px;}
-.ins-desc{font-size:13px;color:var(--gray);margin-top:2px;}
-.ins-tag{font-size:11px;font-weight:600;color:var(--gray);background:var(--light);padding:3px 8px;border-radius:10px;}
+.ins-tag{display:inline-block;font-size:10px;font-weight:700;color:var(--gray);background:var(--light);padding:3px 8px;border-radius:10px;margin-top:3px;letter-spacing:0.3px;text-transform:uppercase;}
+.ins-card.selected .ins-tag{background:#c8dece;color:var(--red-dark);}
+.ins-bullets{display:grid;grid-template-columns:1fr 1fr;gap:4px 8px;margin-top:2px;}
+.ins-bullet{font-size:12px;color:var(--gray);display:flex;align-items:baseline;gap:5px;line-height:1.4;}
+.ins-bullet::before{content:"";flex-shrink:0;}
+.ins-best-for{font-size:12px;color:var(--gray);margin-top:8px;padding-top:8px;border-top:1px solid var(--tan);}
+.ins-best-for strong{color:var(--charcoal);font-weight:600;}
+.ins-card.selected .ins-best-for{border-color:#b8d4be;}
 /* ICON CARDS */
 .icon-card{text-align:center;padding:24px 16px 20px;}
 .icon-wrap{width:52px;height:52px;background:var(--light);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;}
@@ -357,10 +364,60 @@ header{padding:12px 16px;}
 </div>
 <!-- INSULATION -->
 <div class="section-label" style="margin-bottom:12px;margin-top:8px;">Choose your insulation level</div>
+<p style="font-size:13px;color:var(--gray);margin-bottom:14px;margin-top:-6px;">Insulation affects comfort, noise, and energy costs — not just price.</p>
 <div class="insulation-grid">
-<div class="ins-card" onclick="selectIns(this,'none')"><div class="ins-icon">🚪</div><div class="ins-info"><div class="ins-name">Non-Insulated</div><div class="ins-desc">Standard steel. Great for detached garages.</div></div><div class="ins-tag">Lowest price</div></div>
-<div class="ins-card" onclick="selectIns(this,'pvc')"><div class="ins-icon">🏠</div><div class="ins-info"><div class="ins-name">PVC Insulated</div><div class="ins-desc">Better efficiency &amp; quieter. Most popular.</div></div><div class="ins-tag">Mid range</div></div>
-<div class="ins-card" onclick="selectIns(this,'steel')"><div class="ins-icon">🏆</div><div class="ins-info"><div class="ins-name">Steelback</div><div class="ins-desc">Max durability &amp; energy efficiency.</div></div><div class="ins-tag">Premium</div></div>
+
+<div class="ins-card" onclick="selectIns(this,'none')">
+  <div class="ins-header">
+    <div class="ins-icon">🚪</div>
+    <div class="ins-title-row">
+      <div class="ins-name">Non-Insulated</div>
+      <span class="ins-tag">Lowest price</span>
+    </div>
+  </div>
+  <div class="ins-bullets">
+    <div class="ins-bullet">🔩 Single-layer steel</div>
+    <div class="ins-bullet">💨 No thermal barrier</div>
+    <div class="ins-bullet">🔊 More road noise</div>
+    <div class="ins-bullet">⚡ Lower upfront cost</div>
+  </div>
+  <div class="ins-best-for"><strong>Best for:</strong> Detached garages, storage sheds, or mild climates where temperature control isn't a priority.</div>
+</div>
+
+<div class="ins-card" onclick="selectIns(this,'pvc')">
+  <div class="ins-header">
+    <div class="ins-icon">🏠</div>
+    <div class="ins-title-row">
+      <div class="ins-name">PVC Insulated</div>
+      <span class="ins-tag">⭐ Most popular · Mid range</span>
+    </div>
+  </div>
+  <div class="ins-bullets">
+    <div class="ins-bullet">🧱 Steel + foam + PVC liner</div>
+    <div class="ins-bullet">🌡️ R-value ~6–9</div>
+    <div class="ins-bullet">🔇 Noticeably quieter</div>
+    <div class="ins-bullet">💡 Lower energy bills</div>
+  </div>
+  <div class="ins-best-for"><strong>Best for:</strong> Attached garages, homes with a bedroom above the garage, or anywhere you want a quieter, more comfortable space.</div>
+</div>
+
+<div class="ins-card" onclick="selectIns(this,'steel')">
+  <div class="ins-header">
+    <div class="ins-icon">🏆</div>
+    <div class="ins-title-row">
+      <div class="ins-name">Steelback</div>
+      <span class="ins-tag">Premium</span>
+    </div>
+  </div>
+  <div class="ins-bullets">
+    <div class="ins-bullet">🛡️ Steel + foam + steel back</div>
+    <div class="ins-bullet">🌡️ R-value ~12–18</div>
+    <div class="ins-bullet">🔕 Maximum sound dampening</div>
+    <div class="ins-bullet">💪 Most dent-resistant</div>
+  </div>
+  <div class="ins-best-for"><strong>Best for:</strong> Year-round garages, home gyms, workshops, or extreme weather climates where max durability and efficiency matter.</div>
+</div>
+
 </div>
 <!-- GLASS ADD-ON -->
 <div class="section-label" style="margin-bottom:12px;">Add glass inserts? <span style="font-weight:300;text-transform:none;letter-spacing:0;">(optional)</span></div>
