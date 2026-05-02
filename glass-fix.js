@@ -1,75 +1,127 @@
-// Garage Door Estimator — Glass Options Patch
-// Fixes: 1) Plain glass showing Cascade image  2) Insert selection highlight typo
-// Apply by adding this line before </body> in index.html:
-//   <script src="glass-fix.js"></script>
+// Garage Door Estimator — Glass Options Patch v2
+// Fixes:
+//   1. Plain glass showing wrong image (Cascade)
+//   2. Live preview not matching selected color/panel style
+//   3. Insert thumbnails not reflecting selected door color
+// Add before </body>:  <script src="glass-fix.js"></script>
 
 (function () {
-  // ── Fix 1: Remove corrupt PHOTOS entries ──────────────────────────────────
-  // These three keys were embedded with the wrong base64 image data
-  // (Cascade, Stockton, and frosted glass respectively).
-  // Deleting them lets the renderer fall through to the SVG placeholder below.
-  function patchPhotos() {
+
+  // ── Wait until page JS is fully loaded ───────────────────────────────────
+  function ready(fn) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', fn);
+    } else {
+      fn();
+    }
+  }
+
+  ready(function () {
+
+    // ── Fix 1: Delete corrupt PHOTOS entries ──────────────────────────────
+    // These keys had wrong base64 data (Cascade/Stockton/Frosted images)
     if (typeof PHOTOS !== 'undefined') {
       delete PHOTOS.short_white_plain;
       delete PHOTOS.long_almond_plain;
       delete PHOTOS.long_white_plain;
     }
-  }
 
-  // ── Fix 2: Patch renderInsertCards to fix typo + add plain SVG thumb ──────
-  function patchRenderInsertCards() {
-    if (typeof renderInsertCards !== 'function') return;
+    // ── Fix 2: Patch updatePreview to use correct door+color+glass image ──
+    if (typeof updatePreview === 'function') {
+      const _origUpdate = updatePreview;
+      window.updatePreview = function () {
+        _origUpdate.apply(this, arguments);
+        fixPreviewImage();
+      };
+    }
 
-    const original = renderInsertCards;
+    // ── Fix 3: Patch renderInsertCards ────────────────────────────────────
+    if (typeof renderInsertCards === 'function') {
+      const _origRender = renderInsertCards;
+      window.renderInsertCards = function () {
+        _origRender.apply(this, arguments);
+        fixInsertCards();
+      };
+    }
 
-    window.renderInsertCards = function () {
-      original.apply(this, arguments);
+    // ── Helper: fix the live preview image ───────────────────────────────
+    function fixPreviewImage() {
+      if (typeof state === 'undefined' || typeof PHOTOS === 'undefined') return;
 
-      // After cards are rendered, fix selection highlight (state.insertStyle → state.windowInsert)
-      // and replace any wrong plain thumbnails with the SVG placeholder.
+      const img = document.querySelector('.preview-door-img');
+      if (!img) return;
+
+      const panel  = state.panelStyle  || '';
+      const color  = state.color       || '';
+      const insert = state.windowInsert || 'plain';
+
+      if (!panel || !color) return;
+
+      const exactKey = panel + '_' + color + '_' + insert;
+      const baseKey  = panel + '_' + color;
+
+      let src = null;
+      if (insert !== 'plain' && PHOTOS[exactKey]) {
+        src = PHOTOS[exactKey];
+      } else if (PHOTOS[baseKey]) {
+        src = PHOTOS[baseKey];
+      }
+
+      if (src && img.src !== src) {
+        img.src = src;
+      }
+    }
+
+    // ── Helper: fix Plain insert card thumbnail ───────────────────────────
+    function fixInsertCards() {
       const cards = document.querySelectorAll('.insert-card');
-      cards.forEach(card => {
-        const id = card.dataset.insertId || card.getAttribute('data-insert-id');
+      cards.forEach(function (card) {
+        const nameEl  = card.querySelector('.insert-name');
+        const isPlain = nameEl && nameEl.textContent.trim().toLowerCase().startsWith('plain');
 
-        // Fix selection highlight
-        if (typeof state !== 'undefined' && id) {
-          card.classList.toggle('selected', state.windowInsert === id);
-        }
-
-        // Fix plain thumbnail
-        if (id === 'plain') {
-          const img = card.querySelector('img');
-          if (img) {
-            // Replace bad image with SVG placeholder
-            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-            svg.setAttribute('viewBox', '0 0 96 64');
-            svg.style.cssText = 'width:100%;height:64px;display:block;background:#eef3f0;';
-            svg.innerHTML = `
-              <rect x="6"  y="14" width="20" height="36" rx="2" fill="#f6fafa" stroke="#b8c6c0" stroke-width="1.2"/>
-              <rect x="32" y="14" width="20" height="36" rx="2" fill="#f6fafa" stroke="#b8c6c0" stroke-width="1.2"/>
-              <rect x="58" y="14" width="20" height="36" rx="2" fill="#f6fafa" stroke="#b8c6c0" stroke-width="1.2"/>
-            `;
-            img.replaceWith(svg);
+        if (isPlain) {
+          const existingImg = card.querySelector('img');
+          const thumb = card.querySelector('.insert-thumb');
+          if (existingImg && thumb) {
+            existingImg.remove();
+            if (!thumb.querySelector('svg')) {
+              const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+              svg.setAttribute('viewBox', '0 0 96 64');
+              svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+              svg.style.cssText = 'width:90px;height:56px;display:block;background:#eef3f0;border-radius:4px;';
+              svg.innerHTML =
+                '<rect x="6"  y="10" width="22" height="44" rx="2" fill="#f6fafa" stroke="#b8c6c0" stroke-width="1.2"/>' +
+                '<rect x="33" y="10" width="22" height="44" rx="2" fill="#f6fafa" stroke="#b8c6c0" stroke-width="1.2"/>' +
+                '<rect x="60" y="10" width="22" height="44" rx="2" fill="#f6fafa" stroke="#b8c6c0" stroke-width="1.2"/>';
+              thumb.appendChild(svg);
+            }
           }
         }
+
+        if (typeof state !== 'undefined') {
+          const nameText    = nameEl ? nameEl.textContent.trim().toLowerCase() : '';
+          const cardInsertId = card.dataset.insertId || card.getAttribute('data-id') || nameText;
+          card.classList.toggle('selected', state.windowInsert === cardInsertId);
+        }
       });
-    };
-  }
-
-  // ── Wait for page to be ready, then apply patches ─────────────────────────
-  function applyPatches() {
-    patchPhotos();
-    patchRenderInsertCards();
-
-    // Re-render insert cards if the function is available
-    if (typeof renderInsertCards === 'function') {
-      renderInsertCards();
     }
-  }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', applyPatches);
-  } else {
-    applyPatches();
-  }
+    // ── Run once on load, then on every click ────────────────────────────
+    setTimeout(function () {
+      fixPreviewImage();
+      fixInsertCards();
+
+      document.addEventListener('click', function (e) {
+        const card = e.target.closest('.insert-card, .glass-card, .door-card, .color-tile');
+        if (card) {
+          setTimeout(function () {
+            fixPreviewImage();
+            fixInsertCards();
+          }, 50);
+        }
+      });
+    }, 300);
+
+  });
+
 })();
