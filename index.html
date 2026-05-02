@@ -40,74 +40,98 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 .card.selected{border-color:var(--green);background:#edf4ef;}
 .card-title{font-weight:600;font-size:15px;margin-bottom:3px;}
 .card-sub{font-size:13px;color:var(--gray);}
-.card-price{font-size:16px;font-weight:600;color:var(--green);margin-top:4px;}
+.card-price{font-size:15px;font-weight:600;color:var(--green);margin-top:4px;}
 .card-check{position:absolute;top:12px;right:12px;width:22px;height:22px;border-radius:50%;background:var(--green);display:none;align-items:center;justify-content:center;}
 .card-check svg{width:12px;height:12px;stroke:white;stroke-width:3;}
 .card.selected .card-check{display:flex;}
+/* Icon cards */
 .icon-card{text-align:center;padding:24px 16px 20px;}
 .icon-wrap{width:52px;height:52px;background:var(--light);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;}
-.icon-wrap svg{width:26px;height:26px;color:var(--charcoal);}
+.icon-wrap svg{width:26px;height:26px;stroke:var(--charcoal);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
 .icon-card .card-title{font-size:14px;}
 .icon-card .card-sub{font-size:12px;}
-.door-selector{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
-.door-card{background:var(--white);border:2px solid var(--tan);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all 0.2s;}
-.door-card:hover{border-color:#a0bcaa;box-shadow:var(--shadow);}
-.door-card.selected{border-color:var(--green);}
-.door-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#e2ede4;}
-.door-info{padding:12px 14px;}
-.door-name{font-weight:600;font-size:14px;}
-.door-desc{font-size:12px;color:var(--gray);margin-top:2px;}
-.door-stock{font-size:11px;color:#2d7a4a;font-weight:500;margin-top:4px;}
-.section-label{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--gray);margin-bottom:10px;display:block;}
-.color-section{margin-bottom:24px;}
-.color-tiles{display:flex;gap:10px;flex-wrap:wrap;}
-.color-tile{display:flex;flex-direction:column;align-items:center;cursor:pointer;border-radius:10px;overflow:hidden;border:3px solid var(--tan);transition:all 0.2s;width:90px;background:var(--white);}
-.color-tile:hover{border-color:#a0bcaa;box-shadow:var(--shadow);}
+/* Door + color on same page */
+.door-color-wrap{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+.door-option{background:var(--white);border:2px solid var(--tan);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all 0.2s;}
+.door-option:hover{border-color:#a0bcaa;box-shadow:var(--shadow);}
+.door-option.selected{border-color:var(--green);}
+.door-preview{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#e2ede4;}
+.door-info{padding:10px 12px;}
+.door-name{font-weight:600;font-size:13px;}
+.door-desc{font-size:11px;color:var(--gray);margin-top:2px;}
+/* Color tiles */
+.section-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--gray);margin-bottom:10px;display:block;margin-top:20px;}
+.color-tiles{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:4px;}
+.color-tile{display:flex;flex-direction:column;align-items:center;cursor:pointer;border-radius:10px;overflow:hidden;border:3px solid var(--tan);transition:all 0.2s;width:80px;background:var(--white);}
+.color-tile:hover{border-color:#a0bcaa;}
 .color-tile.selected{border-color:var(--green);box-shadow:0 0 0 2px var(--green);}
-.color-tile-swatch{width:100%;height:44px;}
-.color-tile-label{font-size:12px;font-weight:600;color:var(--charcoal);padding:7px 6px;text-align:center;width:100%;border-top:1px solid var(--tan);line-height:1.2;}
+.color-tile-swatch{width:100%;height:40px;}
+.color-tile-label{font-size:11px;font-weight:600;color:var(--charcoal);padding:5px 4px;text-align:center;width:100%;border-top:1px solid var(--tan);}
 .color-tile.selected .color-tile-label{color:var(--green);}
-.preview-section{background:var(--white);border:1px solid var(--tan);border-radius:var(--radius);overflow:hidden;margin-bottom:24px;position:sticky;top:72px;z-index:90;}
-.preview-label{padding:10px 16px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--gray);border-bottom:1px solid var(--tan);}
+/* Preview */
+.preview-section{background:var(--white);border:1px solid var(--tan);border-radius:var(--radius);overflow:hidden;margin-bottom:20px;position:sticky;top:72px;z-index:90;}
+.preview-label{padding:8px 14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--gray);border-bottom:1px solid var(--tan);}
 .preview-window{position:relative;width:100%;aspect-ratio:16/6;background:#e8e4de;overflow:hidden;}
 .preview-door-img{width:100%;height:100%;object-fit:contain;object-position:center;display:block;}
-.preview-placeholder{display:flex;align-items:center;justify-content:center;height:100%;color:var(--gray);font-size:14px;text-align:center;padding:20px;}
-.glass-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px;}
-.glass-card{background:var(--white);border:2px solid var(--tan);border-radius:10px;padding:14px 12px;cursor:pointer;text-align:center;transition:all 0.2s;}
+.preview-placeholder{display:flex;align-items:center;justify-content:center;height:100%;color:var(--gray);font-size:13px;text-align:center;padding:20px;}
+/* Glass */
+.glass-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;}
+.glass-card{background:var(--white);border:2px solid var(--tan);border-radius:10px;padding:12px 10px;cursor:pointer;text-align:center;transition:all 0.2s;}
 .glass-card:hover{border-color:#a0bcaa;}
 .glass-card.selected{border-color:var(--green);background:#edf4ef;}
-.glass-icon-svg{width:64px;height:40px;margin:0 auto 8px;display:block;border-radius:4px;}
+.glass-icon-svg{width:60px;height:36px;margin:0 auto 6px;display:block;border-radius:4px;}
 .glass-name{font-size:13px;font-weight:600;}
 .glass-desc{font-size:11px;color:var(--gray);margin-top:2px;}
 .glass-price{font-size:12px;font-weight:700;color:var(--green);margin-top:4px;}
-.insert-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px;}
+/* Toggle */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;background:var(--white);border:2px solid var(--tan);border-radius:10px;padding:14px 16px;margin-bottom:16px;cursor:pointer;transition:all 0.2s;}
+.toggle-row.on{border-color:var(--green);background:#edf4ef;}
+.toggle-label{font-weight:600;font-size:14px;}
+.toggle-sub{font-size:12px;color:var(--gray);margin-top:2px;}
+.toggle-switch{width:44px;height:24px;background:var(--tan);border-radius:12px;position:relative;transition:background 0.2s;flex-shrink:0;}
+.toggle-switch.on{background:var(--green);}
+.toggle-switch::after{content:'';position:absolute;width:18px;height:18px;background:white;border-radius:50%;top:3px;left:3px;transition:left 0.2s;box-shadow:0 1px 4px rgba(0,0,0,0.2);}
+.toggle-switch.on::after{left:23px;}
+/* Inserts */
+.insert-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;}
 .insert-card{background:var(--white);border:2px solid var(--tan);border-radius:10px;overflow:hidden;cursor:pointer;transition:all 0.2s;}
 .insert-card:hover{border-color:#a0bcaa;}
 .insert-card.selected{border-color:var(--green);}
-.insert-thumb{width:100%;background:#f4f8f6;display:flex;align-items:center;justify-content:center;padding:6px;height:72px;overflow:hidden;}
-.insert-thumb img{width:100%;height:100%;object-fit:cover;border-radius:4px;}
-.insert-name{padding:8px 10px;font-size:12px;font-weight:600;text-align:center;}
-.ins-card{background:var(--white);border:2px solid var(--tan);border-radius:var(--radius);padding:18px 20px;cursor:pointer;transition:all 0.2s;position:relative;margin-bottom:10px;}
+.insert-thumb{width:100%;background:#f4f8f6;display:flex;align-items:center;justify-content:center;padding:6px;height:68px;overflow:hidden;}
+.insert-thumb img{width:100%;height:100%;object-fit:cover;border-radius:3px;}
+.insert-name{padding:7px 10px;font-size:12px;font-weight:600;text-align:center;}
+/* Callout */
+.callout-box{background:#edf4ef;border:1px solid #b8d4be;border-radius:10px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;}
+.callout-box svg{width:18px;height:18px;stroke:var(--green);fill:none;flex-shrink:0;margin-top:1px;}
+.callout-box p{font-size:13px;color:var(--charcoal);line-height:1.5;}
+.callout-box a{color:var(--green);font-weight:600;text-decoration:none;}
+/* Insulation */
+.ins-card{background:var(--white);border:2px solid var(--tan);border-radius:var(--radius);padding:16px 18px;cursor:pointer;transition:all 0.2s;position:relative;margin-bottom:10px;}
 .ins-card:hover{border-color:#a0bcaa;box-shadow:var(--shadow);}
 .ins-card.selected{border-color:var(--green);background:#edf4ef;}
-.ins-header{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
-.ins-icon{font-size:26px;}
+.ins-card.recommended{border-color:#a0bcaa;}
+.ins-badge{position:absolute;top:12px;right:12px;background:var(--green);color:white;font-size:10px;padding:3px 8px;border-radius:10px;font-weight:700;}
+.ins-header{display:flex;align-items:center;gap:12px;margin-bottom:6px;}
+.ins-icon{font-size:24px;}
 .ins-name{font-weight:600;font-size:15px;}
 .ins-tag{display:inline-block;font-size:10px;font-weight:700;color:var(--gray);background:var(--light);padding:3px 8px;border-radius:10px;margin-top:3px;text-transform:uppercase;}
-.ins-desc{font-size:12px;color:var(--gray);margin-top:6px;}
+.ins-desc{font-size:12px;color:var(--gray);margin-top:4px;}
+/* Form */
 .form-group{margin-bottom:16px;}
 .form-label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--charcoal);}
 .form-input{width:100%;padding:12px 14px;border:2px solid var(--tan);border-radius:8px;font-size:15px;font-family:'DM Sans',sans-serif;background:var(--white);color:var(--charcoal);transition:border-color 0.2s;outline:none;}
 .form-input:focus{border-color:var(--green);}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .form-select{width:100%;padding:12px 14px;border:2px solid var(--tan);border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif;background:var(--white);color:var(--charcoal);outline:none;appearance:none;cursor:pointer;}
+/* Estimate */
 .estimate-box{background:var(--charcoal);color:white;border-radius:var(--radius);padding:28px;margin-bottom:20px;text-align:center;}
-.estimate-range{font-family:'Playfair Display',serif;font-size:38px;font-weight:500;margin:8px 0;}
+.estimate-range{font-family:'Playfair Display',serif;font-size:36px;font-weight:500;margin:8px 0;}
 .estimate-note{font-size:13px;opacity:0.6;margin-top:6px;}
 .locked-box{background:var(--white);border:2px solid var(--tan);border-radius:var(--radius);padding:24px;margin-bottom:20px;text-align:center;}
 .locked-icon{font-size:32px;margin-bottom:8px;}
 .locked-title{font-weight:600;font-size:16px;margin-bottom:4px;}
 .locked-sub{font-size:13px;color:var(--gray);}
+/* Buttons */
 .btn{display:block;width:100%;padding:16px;border:none;border-radius:10px;font-size:16px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.2s;text-align:center;}
 .btn-primary{background:var(--green);color:white;}
 .btn-primary:hover{background:var(--green-dark);transform:translateY(-1px);box-shadow:0 4px 16px rgba(45,90,61,0.3);}
@@ -115,33 +139,26 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 .btn-row .btn{flex:1;}
 .btn-back{flex:0 0 auto;width:auto;padding:16px 20px;background:none;border:2px solid var(--tan);color:var(--gray);border-radius:10px;font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;}
 .btn-back:hover{border-color:var(--charcoal);color:var(--charcoal);}
-.success-header{text-align:center;padding:32px 0 24px;}
+/* Success */
 .success-icon{width:64px;height:64px;background:#eafaf1;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
-.success-icon svg{width:32px;height:32px;stroke:#27ae60;stroke-width:2.5;}
+.success-icon svg{width:32px;height:32px;stroke:#27ae60;fill:none;stroke-width:2.5;}
 .call-box{background:var(--white);border:1px solid var(--tan);border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:16px;}
 .call-box a{color:var(--green);font-size:20px;font-weight:700;text-decoration:none;display:block;margin-top:6px;}
+/* Repair */
 .price-list{display:grid;gap:10px;}
-.callout-box{background:#edf4ef;border:1px solid var(--tan);border-radius:10px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:flex-start;gap:12px;}
-.callout-box svg{width:20px;height:20px;stroke:var(--green);flex-shrink:0;margin-top:2px;}
-.callout-box p{font-size:13px;color:var(--charcoal);line-height:1.5;}
-.callout-box a{color:var(--green);font-weight:600;text-decoration:none;}
-.toggle-row{display:flex;align-items:center;justify-content:space-between;background:var(--white);border:2px solid var(--tan);border-radius:10px;padding:14px 16px;margin-bottom:20px;cursor:pointer;}
-.toggle-row.selected{border-color:var(--green);background:#edf4ef;}
-.toggle-label{font-weight:600;font-size:14px;}
-.toggle-sub{font-size:12px;color:var(--gray);margin-top:2px;}
-.toggle-switch{width:44px;height:24px;background:var(--tan);border-radius:12px;position:relative;transition:background 0.2s;flex-shrink:0;}
-.toggle-switch.on{background:var(--green);}
-.toggle-switch::after{content:'';position:absolute;width:18px;height:18px;background:white;border-radius:50%;top:3px;left:3px;transition:left 0.2s;}
-.toggle-switch.on::after{left:23px;}
+/* Skyline pane selector */
+.pane-selector{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+
 @media(max-width:480px){
-  .door-selector,.card-grid.cols2{grid-template-columns:1fr 1fr;}
-  .card-grid.cols3,.glass-grid{grid-template-columns:1fr 1fr;}
+  .door-color-wrap{grid-template-columns:1fr 1fr;}
+  .card-grid.cols3{grid-template-columns:1fr 1fr;}
+  .glass-grid{grid-template-columns:1fr 1fr;}
   .form-row{grid-template-columns:1fr;}
   .step-title{font-size:22px;}
   main{padding:16px 16px 80px;}
   header{padding:12px 16px;}
   .btn{font-size:15px;padding:14px;}
-  .color-tile{width:75px;}
+  .color-tile{width:70px;}
 }
 </style>
 </head>
@@ -152,148 +169,156 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
   <button class="restart-btn" onclick="restart()">↺ Start over</button>
 </header>
 <div class="progress-wrap">
-  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:10%"></div></div>
-  <div class="progress-label" id="progress-label">Step 1 of 5</div>
+  <div class="progress-bar"><div class="progress-fill" id="pfill" style="width:10%"></div></div>
+  <div class="progress-label" id="plabel">Step 1 of 6</div>
 </div>
 <main>
 
 <!-- STEP 1: Service -->
-<div class="step active" id="step-1">
+<div class="step active" id="s1">
   <div class="step-title">What can we help you with?</div>
   <div class="step-sub">Select the service that best fits your situation.</div>
   <div class="card-grid cols3">
-    <div class="card icon-card" onclick="selectService('replace',this)">
-      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
-      <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/><line x1="5" y1="21" x2="19" y2="21"/></svg></div>
+    <div class="card icon-card" onclick="pick(this,'service','replace')">
+      <div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="icon-wrap"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/><rect x="9" y="15" width="6" height="6"/><line x1="5" y1="21" x2="19" y2="21"/></svg></div>
       <div class="card-title">Replace my door</div><div class="card-sub">Swap out an existing door</div>
     </div>
-    <div class="card icon-card" onclick="selectService('new',this)">
-      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
-      <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/><line x1="5" y1="21" x2="19" y2="21"/><line x1="12" y1="7" x2="12" y2="13"/><line x1="9" y1="10" x2="15" y2="10"/></svg></div>
-      <div class="card-title">New installation</div><div class="card-sub">Installing for the first time</div>
+    <div class="card icon-card" onclick="pick(this,'service','new')">
+      <div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="icon-wrap"><svg viewBox="0 0 24 24"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/><line x1="5" y1="21" x2="19" y2="21"/><line x1="12" y1="7" x2="12" y2="13"/><line x1="9" y1="10" x2="15" y2="10"/></svg></div>
+      <div class="card-title">New installation</div><div class="card-sub">First time install</div>
     </div>
-    <div class="card icon-card" onclick="selectService('repair',this)">
-      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
-      <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div>
+    <div class="card icon-card" onclick="pick(this,'service','repair')">
+      <div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="icon-wrap"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div>
       <div class="card-title">Repair or service</div><div class="card-sub">Fix a broken door</div>
     </div>
   </div>
-  <div class="btn-row" style="margin-top:24px;"><button class="btn btn-primary" onclick="goFromStep1()">Continue</button></div>
+  <div class="btn-row" style="margin-top:24px;"><button class="btn btn-primary" onclick="fromS1()">Continue</button></div>
 </div>
 
 <!-- STEP 2: Count -->
-<div class="step" id="step-2-count">
+<div class="step" id="s2-count">
   <div class="step-title">How many garage doors?</div>
   <div class="step-sub">Select how many doors you need.</div>
   <div class="card-grid cols3">
-    <div class="card icon-card" onclick="selectCount('single',this)"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Single</div><div class="card-sub">One door (8–10 ft)</div></div>
-    <div class="card icon-card" onclick="selectCount('double',this)"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Double</div><div class="card-sub">One wide door (16 ft)</div></div>
-    <div class="card icon-card" onclick="selectCount('two',this)"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Two doors</div><div class="card-sub">Two separate doors</div></div>
-  </div>
-  <div class="btn-row"><button class="btn-back" onclick="goStep('step-1')">← Back</button><button class="btn btn-primary" onclick="goFromCount()">Continue</button></div>
-</div>
-
-<!-- STEP 2: Door Style -->
-<div class="step" id="step-2-style">
-  <div class="step-title">Choose your door style</div>
-  <div class="step-sub">All doors are steel with a lifetime warranty.</div>
-  <div class="door-selector" id="door-selector"></div>
-  <div class="btn-row"><button class="btn-back" onclick="goStep('step-2-count')">← Back</button><button class="btn btn-primary" onclick="goFromStyle()">Continue</button></div>
-</div>
-
-<!-- STEP 2: Color -->
-<div class="step" id="step-2-color">
-  <div class="step-title">Choose your color</div>
-  <div class="step-sub">Select the finish for your door.</div>
-  <div id="color-tiles-wrap"></div>
-  <div class="btn-row"><button class="btn-back" onclick="goStep('step-2-style')">← Back</button><button class="btn btn-primary" onclick="goFromColor()">Continue</button></div>
-</div>
-
-<!-- STEP 3: Add glass? -->
-<div class="step" id="step-3">
-  <div class="step-title">Would you like to add windows?</div>
-  <div class="step-sub">Windows add light and curb appeal. Pricing depends on glass type selected.</div>
-  <div class="card-grid cols2">
-    <div class="card icon-card" onclick="selectGlassAdd(true,this)">
-      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
-      <div class="card-title">Yes, add windows</div><div class="card-sub">Customize glass type &amp; style</div>
+    <div class="card icon-card" onclick="pick(this,'garageCount','single')">
+      <div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="icon-wrap"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="1"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="3" y1="14" x2="21" y2="14"/><line x1="12" y1="6" x2="12" y2="20"/></svg></div>
+      <div class="card-title">Single car</div><div class="card-sub">One door (8–10 ft)</div>
     </div>
-    <div class="card icon-card" onclick="selectGlassAdd(false,this)">
-      <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <div class="card icon-card" onclick="pick(this,'garageCount','double')">
+      <div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="icon-wrap"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="1"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="2" y1="14" x2="22" y2="14"/></svg></div>
+      <div class="card-title">Double car</div><div class="card-sub">One wide door (16 ft)</div>
+    </div>
+    <div class="card icon-card" onclick="pick(this,'garageCount','two')">
+      <div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="icon-wrap"><svg viewBox="0 0 24 24"><rect x="1" y="6" width="10" height="14" rx="1"/><line x1="1" y1="10" x2="11" y2="10"/><line x1="1" y1="14" x2="11" y2="14"/><rect x="13" y="6" width="10" height="14" rx="1"/><line x1="13" y1="10" x2="23" y2="10"/><line x1="13" y1="14" x2="23" y2="14"/></svg></div>
+      <div class="card-title">Multiple doors</div><div class="card-sub">Two or more doors</div>
+    </div>
+  </div>
+  <div class="btn-row"><button class="btn-back" onclick="go('s1')">← Back</button><button class="btn btn-primary" onclick="fromCount()">Continue</button></div>
+</div>
+
+<!-- STEP 3: Door style + color -->
+<div class="step" id="s3-door">
+  <div class="step-title">Choose your door style</div>
+  <div class="step-sub">All doors are steel with a lifetime warranty. Select a style then pick your color.</div>
+  <div class="door-color-wrap" id="door-grid"></div>
+  <div id="color-wrap" style="display:none;">
+    <span class="section-label">Color</span>
+    <div class="color-tiles" id="color-tiles"></div>
+  </div>
+  <!-- Sticky live preview -->
+  <div class="preview-section" id="door-preview-section" style="display:none;margin-top:16px;">
+    <div class="preview-label">Live Preview</div>
+    <div class="preview-window">
+      <img class="preview-door-img" id="door-preview-img" src="" alt="Door preview"/>
+    </div>
+  </div>
+  <div class="btn-row"><button class="btn-back" onclick="go('s2-count')">← Back</button><button class="btn btn-primary" onclick="fromDoor()">Continue</button></div>
+</div>
+
+<!-- STEP 4: Add windows? -->
+<div class="step" id="s4-glass">
+  <div class="step-title">Would you like to add windows?</div>
+  <div class="step-sub">Windows add light and curb appeal. Pricing depends on glass type.</div>
+  <div class="card-grid cols2">
+    <div class="card icon-card" onclick="pick(this,'glassAdd',true)">
+      <div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="icon-wrap"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="9" x2="9" y2="21"/></svg></div>
+      <div class="card-title">Yes, add windows</div><div class="card-sub">Customize glass &amp; inserts</div>
+    </div>
+    <div class="card icon-card" onclick="pick(this,'glassAdd',false)">
+      <div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="icon-wrap"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="16"/><line x1="16" y1="8" x2="8" y2="16"/></svg></div>
       <div class="card-title">No windows</div><div class="card-sub">Clean, solid look</div>
     </div>
   </div>
-  <div class="btn-row"><button class="btn-back" onclick="goStep('step-2-color')">← Back</button><button class="btn btn-primary" onclick="goFromGlassAdd()">Continue</button></div>
+  <div class="btn-row"><button class="btn-back" onclick="go('s3-door')">← Back</button><button class="btn btn-primary" onclick="fromGlassAdd()">Continue</button></div>
 </div>
 
-<!-- STEP 3b: Glass customization -->
-<div class="step" id="step-3b">
+<!-- STEP 5: Glass customization -->
+<div class="step" id="s5-customize">
   <div class="step-title">Customize your windows</div>
   <div class="step-sub">Top row · 4 panes · installed</div>
 
   <div class="preview-section">
     <div class="preview-label">Live Preview</div>
     <div class="preview-window">
-      <img class="preview-door-img" id="preview-img" src="" alt="Door preview" style="display:none;"/>
-      <div class="preview-placeholder" id="preview-placeholder">Select options to see preview</div>
+      <img class="preview-door-img" id="glass-preview-img" src="" alt="" style="display:none;"/>
+      <div class="preview-placeholder" id="glass-preview-ph">Select options to preview</div>
     </div>
   </div>
 
-  <!-- Skyline pane style selector — shown only for skyline -->
-  <div id="skyline-pane-wrap" style="display:none;margin-bottom:20px;">
+  <!-- Skyline pane style (only shown for skyline) -->
+  <div id="pane-wrap" style="display:none;">
     <span class="section-label">Window Style</span>
-    <div class="card-grid cols2">
-      <div class="card" id="pane-long-card" onclick="selectPaneStyle('long',this)">
-        <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <div class="card-title">Long pane</div><div class="card-sub">4 wide windows</div>
-      </div>
-      <div class="card" id="pane-short-card" onclick="selectPaneStyle('short',this)">
-        <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <div class="card-title">Short pane</div><div class="card-sub">8 smaller windows</div>
-      </div>
+    <div class="pane-selector">
+      <div class="card" id="pane-long" onclick="pickPane('long',this)"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Long pane</div><div class="card-sub">4 wide windows</div></div>
+      <div class="card" id="pane-short" onclick="pickPane('short',this)"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Short pane</div><div class="card-sub">8 smaller windows</div></div>
     </div>
   </div>
 
-  <!-- Insulated toggle -->
-  <div class="toggle-row" id="insulated-toggle" onclick="toggleInsulated()">
-    <div>
-      <div class="toggle-label">Insulated glass</div>
-      <div class="toggle-sub">Adds thermal efficiency — available on any door</div>
-    </div>
-    <div class="toggle-switch" id="insulated-switch"></div>
+  <!-- Insulated glass toggle -->
+  <div class="toggle-row" id="ins-glass-toggle" onclick="toggleInsGlass()">
+    <div><div class="toggle-label">Insulated glass</div><div class="toggle-sub">Adds thermal efficiency — available on any door</div></div>
+    <div class="toggle-switch" id="ins-glass-sw"></div>
   </div>
 
   <span class="section-label">Glass Type</span>
   <div class="glass-grid" id="glass-type-grid"></div>
 
-  <span class="section-label" id="insert-section-label">Window Insert Style</span>
+  <span class="section-label" id="insert-lbl">Window Insert Style</span>
   <div class="insert-grid" id="insert-grid"></div>
 
   <div class="callout-box">
-    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-    <p>Want more glass locations, row options, or custom configurations? <a href="tel:+19254326784">Give us a call</a> or <strong>book a free design consultation</strong> — we'd love to help you design your perfect door.</p>
+    <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <p>Want long pane glass on a short panel door, additional glass rows, or other custom configurations? <a href="tel:+19254326784">Give us a call</a> or book a <strong>free design consultation</strong> — we'd love to help you design your perfect door.</p>
   </div>
 
-  <div class="btn-row"><button class="btn-back" onclick="goStep('step-3')">← Back</button><button class="btn btn-primary" onclick="goStep('step-4')">Continue</button></div>
+  <div class="btn-row"><button class="btn-back" onclick="go('s4-glass')">← Back</button><button class="btn btn-primary" onclick="go('s6-insulation')">Continue</button></div>
 </div>
 
-<!-- STEP 4: Insulation -->
-<div class="step" id="step-4">
+<!-- STEP 6: Insulation -->
+<div class="step" id="s6-insulation">
   <div class="step-title">Choose your insulation</div>
   <div class="step-sub">Better insulation means quieter operation and lower energy bills.</div>
-  <div id="insulation-cards"></div>
-  <div class="btn-row"><button class="btn-back" id="ins-back-btn" onclick="goInsBack()">← Back</button><button class="btn btn-primary" onclick="goStep('step-contact')">Continue</button></div>
+  <div id="ins-cards"></div>
+  <div class="btn-row"><button class="btn-back" id="ins-back" onclick="insBack()">← Back</button><button class="btn btn-primary" onclick="go('s7-contact')">Continue</button></div>
 </div>
 
-<!-- STEP: Contact -->
-<div class="step" id="step-contact">
+<!-- STEP 7: Contact -->
+<div class="step" id="s7-contact">
   <div class="step-title">Almost there!</div>
   <div class="step-sub">Enter your info to unlock your personalized price range.</div>
   <div class="locked-box">
     <div class="locked-icon">🔒</div>
     <div class="locked-title">Your estimate is ready to unlock</div>
     <div class="locked-sub">Submit your info to instantly see your price range.</div>
-    <div style="margin-top:16px;font-size:22px;font-weight:700;filter:blur(6px);user-select:none;">$X,XXX – $X,XXX</div>
+    <div style="margin-top:14px;font-size:22px;font-weight:700;filter:blur(6px);user-select:none;">$X,XXX – $X,XXX</div>
     <div style="font-size:12px;color:var(--gray);margin-top:4px;">Installation included</div>
   </div>
   <p style="font-size:13px;font-weight:600;margin-bottom:12px;">Please enter your name and phone number.</p>
@@ -306,29 +331,23 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
   <div class="form-group"><label class="form-label">Address</label><input class="form-input" type="text" id="address" placeholder="123 Main St, City, State"/></div>
   <div class="form-row">
     <div class="form-group"><label class="form-label">Door size</label>
-      <select class="form-select" id="doorsize">
-        <option value="">Select size</option>
-        <option>8x7</option><option>9x7</option><option>10x7</option>
-        <option>12x7</option><option>16x7</option><option>18x7</option>
-        <option>8x8</option><option>9x8</option><option>16x8</option>
-        <option>Other / Not sure</option>
-      </select>
+      <select class="form-select" id="doorsize"><option value="">Select size</option><option>8x7</option><option>9x7</option><option>10x7</option><option>12x7</option><option>16x7</option><option>18x7</option><option>8x8</option><option>9x8</option><option>16x8</option><option>Other / Not sure</option></select>
     </div>
   </div>
   <div class="form-group"><label class="form-label">Notes</label><textarea class="form-input" id="notes" rows="3" placeholder="Any details about your project..."></textarea></div>
-  <div class="btn-row"><button class="btn-back" onclick="goStep('step-4')">← Back</button><button class="btn btn-primary" onclick="submitEstimate()">See My Estimate →</button></div>
+  <div class="btn-row"><button class="btn-back" onclick="go('s6-insulation')">← Back</button><button class="btn btn-primary" onclick="submit()">See My Estimate →</button></div>
 </div>
 
 <!-- SUCCESS -->
-<div class="step" id="step-success">
-  <div class="success-header">
-    <div class="success-icon"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
+<div class="step" id="s-success">
+  <div style="text-align:center;padding:32px 0 24px;">
+    <div class="success-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
     <div class="step-title">Your estimate is ready!</div>
-    <div class="step-sub">We'll be in touch shortly to confirm details.</div>
+    <div class="step-sub" style="margin-bottom:0;">We'll be in touch shortly to confirm details.</div>
   </div>
   <div class="estimate-box">
-    <div style="font-size:13px;opacity:0.7;text-transform:uppercase;letter-spacing:1px;">Estimated Range</div>
-    <div class="estimate-range" id="estimate-display">—</div>
+    <div style="font-size:12px;opacity:0.7;text-transform:uppercase;letter-spacing:1px;">Estimated Range</div>
+    <div class="estimate-range" id="est-display">—</div>
     <div class="estimate-note">Final price confirmed after measurement · Installation included</div>
   </div>
   <div class="call-box">
@@ -338,536 +357,482 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
   <button class="btn btn-primary" style="margin-top:8px;" onclick="restart()">Start a new estimate</button>
 </div>
 
-<!-- REPAIR: What needs fixing -->
-<div class="step" id="step-2-repair">
+<!-- REPAIR -->
+<div class="step" id="s2-repair">
   <div class="step-title">What needs fixing?</div>
   <div class="step-sub">Select the service and we'll give you a price range.</div>
   <div class="card-grid">
-    <div class="card" onclick="selectRepair('spring',this)"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Spring replacement</div><div class="card-sub">Broken or worn springs</div></div>
-    <div class="card" onclick="selectRepair('opener',this)"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Opener / Motor</div><div class="card-sub">Repair or replace opener</div></div>
-    <div class="card" onclick="selectRepair('glass',this)"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Glass pane</div><div class="card-sub">Cracked or broken glass</div></div>
-    <div class="card" onclick="selectRepair('other',this)"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Other / Not sure</div><div class="card-sub">Inspection &amp; diagnosis</div></div>
+    <div class="card" onclick="pick(this,'repairType','opener')"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Opener / Motor</div><div class="card-sub">Repair or replace opener</div></div>
+    <div class="card" onclick="pick(this,'repairType','other')"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Other / Not sure</div><div class="card-sub">Inspection &amp; diagnosis</div></div>
   </div>
-  <div class="btn-row"><button class="btn-back" onclick="goStep('step-1')">← Back</button><button class="btn btn-primary" onclick="goRepairDetail()">Continue</button></div>
+  <div class="btn-row"><button class="btn-back" onclick="go('s1')">← Back</button><button class="btn btn-primary" onclick="fromRepair()">Continue</button></div>
 </div>
 
-<div class="step" id="step-spring">
-  <div class="step-title">Spring replacement</div>
-  <div class="step-sub">Select your garage type</div>
-  <div class="card-grid cols2" style="margin-bottom:16px;">
-    <div class="card" onclick="selectOpt(this,'springGarage','single')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Single door</div></div>
-    <div class="card" onclick="selectOpt(this,'springGarage','double')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Double door</div></div>
-  </div>
-  <div class="card-grid" style="margin-bottom:16px;">
-    <div class="card" onclick="selectOpt(this,'springType','inspection')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Free inspection</div><div class="card-sub">Not sure what's wrong</div></div>
-    <div class="card" onclick="selectOpt(this,'springType','standard')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Standard spring</div></div>
-    <div class="card" onclick="selectOpt(this,'springType','heavy')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Heavy-duty spring</div></div>
-  </div>
-  <div class="btn-row"><button class="btn-back" onclick="goStep('step-2-repair')">← Back</button><button class="btn btn-primary" onclick="goStep('step-contact')">Get estimate</button></div>
-</div>
-
-<div class="step" id="step-opener">
+<div class="step" id="s-opener">
   <div class="step-title">Opener / Motor</div>
   <div class="step-sub">Select your opener type</div>
   <div class="price-list">
-    <div class="card" onclick="selectOpt(this,'opener','chain7')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Chain drive (7' ceiling)</div><div class="card-price">$800 installed</div></div>
-    <div class="card" onclick="selectOpt(this,'opener','chain8')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Chain drive (8' ceiling)</div><div class="card-price">$875 installed</div></div>
-    <div class="card" onclick="selectOpt(this,'opener','belt7')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Belt drive (7' ceiling)</div><div class="card-price">$850 installed</div></div>
-    <div class="card" onclick="selectOpt(this,'opener','belt8')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Belt drive (8' ceiling)</div><div class="card-price">$925 installed</div></div>
-    <div class="card" onclick="selectOpt(this,'opener','belt-hi')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Belt drive high-lift</div><div class="card-price">$950 installed</div></div>
-    <div class="card" onclick="selectOpt(this,'opener','ibeam')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">I-beam jack shaft</div><div class="card-price">$1,610 installed</div></div>
-    <div class="card" onclick="selectOpt(this,'opener','jackshaft')"><div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Wall mount jack shaft</div><div class="card-price">$1,500 installed</div></div>
+    <div class="card" onclick="pick(this,'opener','chain7')"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Chain drive (7' ceiling)</div><div class="card-price">$800 installed</div></div>
+    <div class="card" onclick="pick(this,'opener','chain8')"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Chain drive (8' ceiling)</div><div class="card-price">$875 installed</div></div>
+    <div class="card" onclick="pick(this,'opener','belt7')"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Belt drive (7' ceiling)</div><div class="card-price">$850 installed</div></div>
+    <div class="card" onclick="pick(this,'opener','belt8')"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Belt drive (8' ceiling)</div><div class="card-price">$925 installed</div></div>
+    <div class="card" onclick="pick(this,'opener','belt-hi')"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Belt drive high-lift</div><div class="card-price">$950 installed</div></div>
+    <div class="card" onclick="pick(this,'opener','ibeam')"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">I-beam jack shaft</div><div class="card-price">$1,610 installed</div></div>
+    <div class="card" onclick="pick(this,'opener','jackshaft')"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Wall mount jack shaft</div><div class="card-price">$1,500 installed</div></div>
   </div>
-  <div class="btn-row"><button class="btn-back" onclick="goStep('step-2-repair')">← Back</button><button class="btn btn-primary" onclick="goStep('step-contact')">Get estimate</button></div>
+  <div class="btn-row"><button class="btn-back" onclick="go('s2-repair')">← Back</button><button class="btn btn-primary" onclick="go('s7-contact')">Get estimate</button></div>
 </div>
 
-<div class="step" id="step-glass-repair">
-  <div class="step-title">Glass pane repair</div>
-  <div class="step-sub">We'll replace cracked or broken window panes.</div>
-  <div class="estimate-box"><div class="estimate-range">$180 – $380</div><div class="estimate-note">Per pane · parts &amp; labor included</div></div>
-  <div class="btn-row"><button class="btn-back" onclick="goStep('step-2-repair')">← Back</button><button class="btn btn-primary" onclick="goStep('step-contact')">Get estimate</button></div>
-</div>
-
-<div class="step" id="step-other-repair">
+<div class="step" id="s-other">
   <div class="step-title">Repair or service</div>
   <div class="step-sub">We'll diagnose and fix the issue.</div>
   <div class="estimate-box"><div class="estimate-range">$200 – $500</div><div class="estimate-note">Final quote after inspection</div></div>
-  <div class="btn-row"><button class="btn-back" onclick="goStep('step-2-repair')">← Back</button><button class="btn btn-primary" onclick="goStep('step-contact')">Get estimate</button></div>
+  <div class="btn-row"><button class="btn-back" onclick="go('s2-repair')">← Back</button><button class="btn btn-primary" onclick="go('s7-contact')">Get estimate</button></div>
 </div>
 
 </main>
 <script>
-const BASE = 'https://colagomdesignco-source.github.io/garage-door-estimator/';
+const B = 'https://colagomdesignco-source.github.io/garage-door-estimator/';
 
-// ── IMAGE MAP ──────────────────────────────────────────────────────────────
+// ── ALL IMAGES (exact filenames from GitHub) ───────────────────────────────
 const IMG = {
-  // Base doors (no windows)
-  'raised-short-white':         BASE+'Raised%20short%20panel%20white.png',
-  'raised-short-almond':        BASE+'Raised%20panel%20short%20almond.png',
-  'raised-long-white':          BASE+'Raised%20lomg%20panel%20white.png',
-  'raised-long-almond':         BASE+'Raised%20long%20panel-%20almond.png',
-  'skyline-white':              BASE+'Skyline%20flush%20white.png',
-  'skyline-black':              BASE+'Skyline%20Flush%20Black.png',
-  'carriage-short-white':       BASE+'Carriage%20house%20short%20panel%20white.png',
-  'carriage-long-white':        BASE+'Carriage%20House%20long%20panel%20white.png',
+  // Base doors — no windows
+  'raised-short-white':         B+'Raised%20panel%20short.png',
+  'raised-short-almond':        B+'Raised%20panel%20short%20almond.png',
+  'raised-long-white':          B+'Raised%20long%20panel%20white.png',
+  'raised-long-almond':         B+'Raised%20long%20panel-%20almond.png',
+  'skyline-white':              B+'Skyline%20flush%20white.png',
+  'skyline-black':              B+'Skyline%20Flush%20Black.png',
+  'carriage-short-white':       B+'Carriage%20house%20short%20panel%20white.png',
+  'carriage-long-white':        B+'Carriage%20House%20long%20panel%20white.png',
 
-  // Plain windows (no insert, clear glass)
-  'raised-short-almond-plain':  BASE+'Raised%20short%20panel%20almond%20no%20window%20inserts%20.jpg',
-  'raised-short-white-plain':   BASE+'Raised%20panel%20short%20windows%20white.png',
-  'raised-long-almond-plain':   BASE+'Raised%20panel%20long%20windows.png',
-  'raised-long-white-plain':    BASE+'Raised%20panel%20long%20windows.png',
-  'skyline-white-long-plain':   BASE+'Skyline%20flush%20white%20windows%20no%20inserts%20.jpg',
-  'skyline-black-long-plain':   BASE+'Skyline_flush_black_windows_.jpg',
-  'skyline-white-short-plain':  BASE+'Skyline_flush_white_short_pane_windows.png',
-  'skyline-black-short-plain':  BASE+'skyline_flush_black_short_pane_windows.png',
-  'carriage-short-white-plain': BASE+'Carriage%20stamp%20short%20panel%20white%20windows%20no%20inserts%20.jpg',
-  'carriage-long-white-plain':  BASE+'Carriage%20stamp%20long%20panel%20windows%20no%20inserts%20white%20.jpg',
+  // Plain glass (windows, no insert) — long pane for all except skyline short
+  'raised-short-white-plain':   B+'Raised%20panel%20short%20windows%20white.png',
+  'raised-short-almond-plain':  B+'Raised%20panel%20short%20windows%20almond.png',
+  'raised-long-white-plain':    B+'Raised%20panel%20long%20windows.png',
+  'raised-long-almond-plain':   B+'Raised%20long%20panel%20almond%20no%20window.png',
+  'skyline-white-long-plain':   B+'Skyline%20flush%20white%20windows%20no%20inserts%20.jpg',
+  'skyline-black-long-plain':   B+'Skyline%20flush%20black%20windows%20.jpg',
+  'skyline-white-short-plain':  B+'Skyline%20flush%20white%20short%20pane%20windows.png',
+  'skyline-black-short-plain':  B+'skyline%20flush%20black%20short%20pane%20windows.png',
+  'carriage-short-white-plain': B+'Carriage%20stamp%20short%20panel%20with%20long%20pane%20windows.png',
+  'carriage-long-white-plain':  B+'Carriage%20stamp%20long%20panel%20windows.png',
 
-  // Raised long almond — glass types no insert
-  'raised-long-almond-obscure':       BASE+'Raised%20Long%20Panel%20Almond%20no%20insert%20Obscure%20glass%20.jpg',
-  'raised-long-almond-tinted':        BASE+'Raised%20long%20panel%20almond%20no%20insert%20tinted%20.jpg',
-  'raised-long-almond-frosted':       BASE+'Raised%20long%20panel%20almond%20no%20insert%20frosted%20.jpg',
-  'raised-long-almond-rain':          BASE+'Raised%20Long%20Panel%20Almond%20no%20insert%20Rain%20.jpg',
+  // Raised long almond — glass types (no insert)
+  'raised-long-almond-obscure':       B+'Raised%20Long%20Panel%20Almond%20no%20insert%20Obscure%20glass%20.jpg',
+  'raised-long-almond-rain':          B+'Raised%20Long%20Panel%20Almond%20no%20insert%20Rain%20.jpg',
+  'raised-long-almond-tinted':        B+'Raised%20long%20panel%20almond%20no%20insert%20tinted%20.jpg',
+  'raised-long-almond-frosted':       B+'Raised%20long%20panel%20almond%20no%20insert%20frosted%20.jpg',
+
+  // Raised long white — glass types (no insert)
+  'raised-long-white-obscure':        B+'White%20long%20panel%20window%20no%20inserts%20obscure.jpg',
+  'raised-long-white-rain':           B+'white%20long%20panel%20window%20no%20inserts%20rain%20.jpg',
+  'raised-long-white-tinted':         B+'white%20long%20panel%20window%20no%20inserts%20tinted%20.jpg',
+  'raised-long-white-frosted':        B+'white%20long%20panel%20window%20no%20inserts%20frosted%20.jpg',
 
   // Raised long almond inserts
-  'raised-long-almond-cascade':             BASE+'Raised%20Long%20Panel%20Almond%20Cascade.jpg',
-  'raised-long-almond-prairie':             BASE+'Raised%20Long%20Panel%20almond%20Praire.jpg',
-  'raised-long-almond-sherwood':            BASE+'Raised%20long%20Panel%20Almond%20Sherwood%20.jpg',
-  'raised-long-almond-waterton':            BASE+'Raised%20Long%20Panel%20Almond%20Waterton%20.jpg',
-  'raised-long-almond-stockton':            BASE+'raised%20Long%20Panel%20Almond%20Stockton%20.jpg',
-  'raised-long-almond-2-arched-stockton':   BASE+'Raised%20Long%20Panel%20Almond%202%20piece%20arched%20stockton%20.jpg',
-  'raised-long-almond-4-arched-stockton':   BASE+'raised%20long%20Panel%20Almond%204%20piece%20arched%20stockton%20.jpg',
-  'raised-long-almond-madison':             BASE+'Raised%20Long%20Panel%20Almond%20Madison%20.jpg',
-  'raised-long-almond-2-arched-madison':    BASE+'Raised%20long%20Panel%20Almond%202%20piece%20arched%20madison.jpg',
-  'raised-long-almond-2-sunburst':          BASE+'Raised%20Long%20Panel%20Almond%202%20piece%20sunburst%20.jpg',
-  'raised-long-almond-4-sunburst':          BASE+'Raised%20long%20panel%20almond%204%20piece%20sunburst%20.jpg',
+  'raised-long-almond-cascade':            B+'almond%20long%20panel%20cascade%20.jpg',
+  'raised-long-almond-prairie':            B+'almond%20long%20panel%20praire%20.jpg',
+  'raised-long-almond-sherwood':           B+'almond%20long%20panel%20sherwood%20.jpg',
+  'raised-long-almond-waterton':           B+'almond%20long%20panel%20waterton%20.jpg',
+  'raised-long-almond-stockton':           B+'almond%20long%20panel%20stockton%20.jpg',
+  'raised-long-almond-madison':            B+'Almond%20long%20panel%20madison%20.jpg',
+  'raised-long-almond-2-arched-stockton':  B+'almond%20long%20panel%202%20piece%20arched%20stockton%20.jpg',
+  'raised-long-almond-4-arched-stockton':  B+'almond%20long%20panel%204%20piece%20arched%20stockton%20.jpg',
+  'raised-long-almond-2-arched-madison':   B+'Raised%20long%20Panel%20Almond%202%20piece%20arched%20madison.jpg',
+  'raised-long-almond-2-sunburst':         B+'almond%20long%20panel%202%20piece%20sunburst%20.jpg',
+  'raised-long-almond-4-sunburst':         B+'almond%20long%20panel%204%20piece%20sunburst.jpg',
+
+  // Raised long white inserts
+  'raised-long-white-cascade':             B+'White%20long%20panel%20cascade%20.jpg',
+  'raised-long-white-prairie':             B+'White%20long%20panel%20praire%20.jpg',
+  'raised-long-white-sherwood':            B+'white%20long%20panel%20sherwood%20.jpg',
+  'raised-long-white-waterton':            B+'White%20long%20panel%20waterton%20.jpg',
+  'raised-long-white-stockton':            B+'White%20long%20panel%20stockton%20.jpg',
+  'raised-long-white-madison':             B+'white%20long%20panel%20madison%20.jpg',
+  'raised-long-white-2-arched-stockton':   B+'Whte%20long%20panel%202%20piece%20arched%20stockton%20.jpg',
+  'raised-long-white-4-arched-stockton':   B+'white%20long%20panel%204%20piece%20arched%20stockton%20.jpg',
+  'raised-long-white-2-arched-madison':    B+'white%20long%20panel%202%20piece%20arched%20madison%20.jpg',
+  'raised-long-white-4-arched-madison':    B+'white%20long%20panel%204%20piece%20arched%20madison%20.jpg',
+  'raised-long-white-2-sunburst':          B+'white%20long%20panel%202%20piece%20sunburst%20.jpg',
+  'raised-long-white-4-sunburst':          B+'white%20long%20panel%204%20piece%20sunburst%20.jpg',
 
   // Raised short almond inserts
-  'raised-short-almond-cascade':    BASE+'Raised%20short%20panel%20almond%20cascade%20.jpg',
-  'raised-short-almond-prairie':    BASE+'Raised%20short%20panel%20almond%20praire%20.jpg',
-  'raised-short-almond-sherwood':   BASE+'Raised%20short%20panel%20almond%20sherwood%20.jpg',
-  'raised-short-almond-waterton':   BASE+'Raised%20short%20panel%20almond%20waterton%20.jpg',
-  'raised-short-almond-stockton':   BASE+'Raised%20short%20panel%20almond%20stockton%20.jpg',
-  'raised-short-almond-4-sunburst': BASE+'Raised%20short%20panel%20almond%204%20piece%20sunburst%20.jpg',
-  'raised-short-almond-8-sunburst': BASE+'raised%20short%20panel%20almond%208%20piece%20sunburst%20.jpg',
+  'raised-short-almond-cascade':    B+'almond%20short%20panel%20cascade%20.jpg',
+  'raised-short-almond-prairie':    B+'almond%20short%20panel%20praire%20.jpg',
+  'raised-short-almond-sherwood':   B+'almond%20short%20panel%20sherwood%20.jpg',
+  'raised-short-almond-waterton':   B+'almond%20short%20panel%20waterton%20.jpg',
+  'raised-short-almond-stockton':   B+'almond%20short%20panel%20stockton%20.jpg',
+  'raised-short-almond-4-sunburst': B+'almond%20short%20panel%204%20piece%20sunburst%20.jpg',
+  'raised-short-almond-8-sunburst': B+'almond%20short%20panel%208%20piece%20sunburst%20.jpg',
+
+  // Raised short white inserts
+  'raised-short-white-cascade':     B+'White%20short%20panel%20cascade%20.jpg',
+  'raised-short-white-prairie':     B+'White%20short%20panel%20praire%20.jpg',
+  'raised-short-white-sherwood':    B+'white%20short%20panel%20sherwood%20.jpg',
+  'raised-short-white-waterton':    B+'white%20short%20panel%20waterton%20.jpg',
+  'raised-short-white-stockton':    B+'white%20short%20panel%20stockton%20.jpg',
+  'raised-short-white-4-sunburst':  B+'white%20short%20panel%204%20piece%20sunburst%20.jpg',
+  'raised-short-white-8-sunburst':  B+'white%20short%20panel%208%20piece%20sunburst%20.jpg',
 
   // Skyline white inserts
-  'skyline-white-cascade':    BASE+'Skyline%20flush%20white%20cascade%20inserts%20.jpg',
+  'skyline-white-cascade':          B+'Skyline%20flush%20white%20cascade%20inserts%20.jpg',
 
   // Skyline black inserts
-  'skyline-black-cascade':           BASE+'Skyline_flush_black_windows_cascade_.jpg',
-  'skyline-black-prairie':           BASE+'Skyline_flush_black_windows_praire_.jpg',
-  'skyline-black-sherwood':          BASE+'Skyline_flush_black_windows_sherwood_.jpg',
-  'skyline-black-waterton':          BASE+'Skyline_flush_black_windows_Waterton_.jpg',
-  'skyline-black-stockton':          BASE+'Skyline_flush_black_windows_stockton_.jpg',
-  'skyline-black-madison':           BASE+'Skyline_flush_black_windows_madison_.jpg',
-  'skyline-black-2-arched-stockton': BASE+'Skyline_flush_blackwindows_2_piece_arched_stockton_.jpg',
-  'skyline-black-4-arched-stockton': BASE+'Skyine_flush_black_windows_4_piece_arched_stockton_.jpg',
-  'skyline-black-2-arched-madison':  BASE+'Skyline_flush_black_windows_2_piece_arched_madison_.jpg',
-  'skyline-black-4-arched-madison':  BASE+'Skyline_flush_black_windows_4_piece_arched_madison_.jpg',
-  'skyline-black-2-sunburst':        BASE+'Skyline_flush_black_windows_2_piece_arched_sunburst_.jpg',
-  'skyline-black-4-sunburst':        BASE+'Skyline_flush_black_windows_4_piece_sunburst_.jpg',
+  'skyline-black-cascade':          B+'Skyline%20flush%20black%20windows%20cascade%20.jpg',
+  'skyline-black-prairie':          B+'Skyline%20flush%20black%20windows%20praire%20.jpg',
+  'skyline-black-sherwood':         B+'Skyline%20flush%20black%20windows%20sherwood%20.jpg',
+  'skyline-black-waterton':         B+'Skyline%20flush%20black%20windows%20Waterton%20.jpg',
+  'skyline-black-stockton':         B+'Skyline%20flush%20black%20windows%20stockton%20.jpg',
+  'skyline-black-madison':          B+'Skyline%20flush%20black%20windows%20madison%20.jpg',
+  'skyline-black-2-arched-stockton':B+'Skyline%20flush%20blackwindows%202%20piece%20arched%20stockton%20.jpg',
+  'skyline-black-4-arched-stockton':B+'Skyine%20flush%20black%20windows%204%20piece%20arched%20stockton%20.jpg',
+  'skyline-black-2-arched-madison': B+'Skyline%20flush%20black%20windows%202%20piece%20arched%20madison%20.jpg',
+  'skyline-black-4-arched-madison': B+'Skyline%20flush%20black%20windows%204%20piece%20arched%20madison%20.jpg',
+  'skyline-black-2-sunburst':       B+'Skyline%20flush%20black%20windows%202%20piece%20arched%20sunburst%20.jpg',
+  'skyline-black-4-sunburst':       B+'Skyline%20flush%20black%20windows%204%20piece%20sunburst%20.jpg',
 };
 
-// ── GLASS PRICING ──────────────────────────────────────────────────────────
-// 4 panes × per-pane price
-// Long panel pricing (raised short, raised long, carriage short, carriage long)
-// Oversized pricing (skyline long pane only)
-// Skyline short pane uses long panel pricing
-const GLASS_PRICE = {
-  // [non-insulated per pane, insulated per pane]
-  plain:   { long:[128.40,166.20], oversized:[142.20,190.80] },
-  rain:    { long:[142.20,192.60], oversized:[161.40,211.20] },  // rain = obscure on price sheet
-  tinted:  { long:[158.40,207.00], oversized:[182.40,242.40] },
-  frosted: { long:[240.60,259.80], oversized:[243.00,297.60] },
+// ── GLASS PRICING (per pane × 4) ──────────────────────────────────────────
+// long = raised/carriage + skyline short pane
+// oversized = skyline long pane only
+const GP = {
+  plain:   {long:[128.40,166.20], oversized:[142.20,190.80]},
+  rain:    {long:[142.20,192.60], oversized:[161.40,211.20]},
+  tinted:  {long:[158.40,207.00], oversized:[182.40,242.40]},
+  frosted: {long:[240.60,259.80], oversized:[243.00,297.60]},
 };
-
-function calcGlassCost() {
+function glassCost() {
   if (!state.glassAdd || !state.glassType) return 0;
-  const type = state.glassType;
-  const insIdx = state.insulatedGlass ? 1 : 0;
-  const isOversized = state.doorStyle === 'skyline' && state.skylinePaneStyle === 'long';
-  const tier = isOversized ? 'oversized' : 'long';
-  const perPane = (GLASS_PRICE[type] || GLASS_PRICE.plain)[tier][insIdx];
-  return Math.round(perPane * 4 * 100) / 100;
+  const oversized = state.doorStyle==='skyline' && state.paneStyle==='long';
+  const tier = oversized ? 'oversized' : 'long';
+  const idx = state.insulatedGlass ? 1 : 0;
+  return Math.round((GP[state.glassType]||GP.plain)[tier][idx] * 4 * 100)/100;
 }
-
-function fmtPrice(n) {
-  return '$' + n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
-}
+function fmt(n){return '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
 
 // ── STATE ──────────────────────────────────────────────────────────────────
 let state = {
-  service:null, garageCount:null, doorStyle:null, doorColor:'white',
-  glassAdd:null, glassType:null, windowInsert:null, insulatedGlass:false,
-  skylinePaneStyle:'long',
-  insulation:null, repairType:null, springGarage:null, springType:null, opener:null,
+  service:null, garageCount:null, doorStyle:null, doorColor:null,
+  glassAdd:null, glassType:null, windowInsert:null,
+  insulatedGlass:false, paneStyle:'long',
+  insulation:null, repairType:null, opener:null,
 };
 
 // ── DOOR DEFINITIONS ───────────────────────────────────────────────────────
 const DOORS = [
-  { id:'raised-short', name:'Raised Short Panel', desc:'Classic raised panels', colors:['white','almond'] },
-  { id:'raised-long',  name:'Raised Long Panel',  desc:'Traditional wide raised panels', colors:['white','almond'] },
-  { id:'skyline',      name:'Skyline Flush',       desc:'Modern flush steel', colors:['white','black'] },
-  { id:'carriage-short', name:'Carriage Stamp Short', desc:'Carriage house style', colors:['white'] },
-  { id:'carriage-long',  name:'Carriage Stamp Long',  desc:'Carriage house style', colors:['white'] },
+  {id:'raised-short', name:'Raised Short Panel', desc:'Classic raised panels', colors:['white','almond']},
+  {id:'raised-long',  name:'Raised Long Panel',  desc:'Traditional wide raised', colors:['white','almond']},
+  {id:'skyline',      name:'Skyline Flush',       desc:'Modern flush steel', colors:['white','black']},
+  {id:'carriage-short',name:'Carriage Stamp Short',desc:'Carriage house style', colors:['white']},
+  {id:'carriage-long', name:'Carriage Stamp Long', desc:'Carriage house style', colors:['white']},
 ];
-
 const COLORS = {
-  white:  { hex:'#f2f0eb', label:'White' },
-  almond: { hex:'#c8b99a', label:'Almond' },
-  black:  { hex:'#222222', label:'Black' },
+  white: {hex:'#f2f0eb',label:'White'},
+  almond:{hex:'#c8b99a',label:'Almond'},
+  black: {hex:'#222',   label:'Black'},
 };
 
 // ── INSERT DEFINITIONS ─────────────────────────────────────────────────────
-const INSERTS_SHORT = [
+const INS_SHORT = [
   {id:'plain',label:'Plain (no insert)'},{id:'cascade',label:'Cascade'},
   {id:'prairie',label:'Prairie'},{id:'sherwood',label:'Sherwood'},
   {id:'stockton',label:'Stockton'},{id:'waterton',label:'Waterton'},
   {id:'4-sunburst',label:'4-Piece Sunburst'},{id:'8-sunburst',label:'8-Piece Sunburst'},
 ];
-const INSERTS_LONG = [
+const INS_LONG = [
   {id:'plain',label:'Plain (no insert)'},{id:'cascade',label:'Cascade'},
   {id:'prairie',label:'Prairie'},{id:'sherwood',label:'Sherwood'},
   {id:'waterton',label:'Waterton'},{id:'stockton',label:'Stockton'},
+  {id:'madison',label:'Madison'},
   {id:'2-arched-stockton',label:'2-Piece Arched Stockton'},
   {id:'4-arched-stockton',label:'4-Piece Arched Stockton'},
-  {id:'madison',label:'Madison'},{id:'2-arched-madison',label:'2-Piece Arched Madison'},
-  {id:'2-sunburst',label:'2-Piece Sunburst'},{id:'4-sunburst',label:'4-Piece Sunburst'},
+  {id:'2-arched-madison',label:'2-Piece Arched Madison'},
+  {id:'2-sunburst',label:'2-Piece Sunburst'},
+  {id:'4-sunburst',label:'4-Piece Sunburst'},
 ];
-
-function getInserts() {
-  const s = state.doorStyle || '';
-  if (s === 'raised-long' || s === 'carriage-long' || s === 'skyline') return INSERTS_LONG;
-  return INSERTS_SHORT;
+function getInserts(){
+  const s = state.doorStyle||'';
+  return (s==='raised-short'||s==='carriage-short') ? INS_SHORT : INS_LONG;
 }
 
-// ── GET PREVIEW IMAGE ──────────────────────────────────────────────────────
-function getPreviewImg() {
-  const s = state.doorStyle;
-  const c = state.doorColor;
-  const gt = state.glassType;
-  const ins = state.windowInsert;
-  const pane = state.skylinePaneStyle;
-  if (!s) return null;
-  const base = s + '-' + c;
-
-  // No glass selected — show base door
-  if (!state.glassAdd || !gt) return IMG[base] || null;
-
-  // Skyline — pane style matters for plain image
-  if (s === 'skyline') {
-    if (ins && ins !== 'plain') {
-      const k = base + '-' + ins;
-      if (IMG[k]) return IMG[k];
+// ── IMAGE LOOKUP ───────────────────────────────────────────────────────────
+function getImg(style,color,glassType,insert,paneStyle){
+  const base = style+'-'+color;
+  if(!glassType) return IMG[base]||null;
+  // Skyline: pane style determines plain photo
+  if(style==='skyline'){
+    if(insert && insert!=='plain'){
+      const k = base+'-'+insert; if(IMG[k]) return IMG[k];
     }
-    // Plain or no insert — show pane style photo
-    const paneKey = base + '-' + pane + '-plain';
-    if (IMG[paneKey]) return IMG[paneKey];
-    return IMG[base] || null;
+    return IMG[base+'-'+paneStyle+'-plain'] || IMG[base] || null;
   }
-
-  // Insert selected
-  if (ins && ins !== 'plain') {
-    const k = base + '-' + ins;
-    if (IMG[k]) return IMG[k];
+  // Other doors: insert image
+  if(insert && insert!=='plain'){
+    const k = base+'-'+insert; if(IMG[k]) return IMG[k];
   }
-
-  // Glass type with no insert
-  const gtKey = base + '-' + gt;
-  if (IMG[gtKey]) return IMG[gtKey];
-
+  // Glass type no insert
+  const gtk = base+'-'+glassType; if(IMG[gtk]) return IMG[gtk];
   // Plain windows fallback
-  const plainKey = base + '-plain';
-  if (IMG[plainKey]) return IMG[plainKey];
-
-  return IMG[base] || null;
+  const pk = base+'-plain'; if(IMG[pk]) return IMG[pk];
+  return IMG[base]||null;
 }
 
-function updatePreview() {
-  const img = document.getElementById('preview-img');
-  const ph  = document.getElementById('preview-placeholder');
-  const src = getPreviewImg();
-  if (src) {
-    img.src = src; img.style.display = 'block'; ph.style.display = 'none';
-  } else {
-    img.style.display = 'none'; ph.style.display = 'flex';
-  }
-}
-
-// ── RENDER ─────────────────────────────────────────────────────────────────
-function renderDoors() {
-  document.getElementById('door-selector').innerHTML = DOORS.map(d => `
-    <div class="door-card${state.doorStyle===d.id?' selected':''}" onclick="selectDoor('${d.id}')">
-      <img class="door-thumb" src="${IMG[d.id+'-'+d.colors[0]]||''}" alt="${d.name}" onerror="this.style.background='#e2ede4'"/>
-      <div class="door-info">
-        <div class="door-name">${d.name}</div>
-        <div class="door-desc">${d.desc}</div>
-        <div class="door-stock">✓ In stock</div>
-      </div>
+// ── RENDER FUNCTIONS ───────────────────────────────────────────────────────
+function renderDoors(){
+  document.getElementById('door-grid').innerHTML = DOORS.map(d=>`
+    <div class="door-option${state.doorStyle===d.id?' selected':''}" onclick="selectDoor('${d.id}')">
+      <img class="door-preview" src="${IMG[d.id+'-'+(d.colors[0])]||''}" alt="${d.name}" onerror="this.style.background='#e2ede4'"/>
+      <div class="door-info"><div class="door-name">${d.name}</div><div class="door-desc">${d.desc}</div></div>
     </div>`).join('');
 }
 
-function renderColors() {
-  const door = DOORS.find(d => d.id === state.doorStyle);
-  if (!door) return;
-  document.getElementById('color-tiles-wrap').innerHTML =
-    `<div class="color-tiles">${door.colors.map(c => `
-      <div class="color-tile${state.doorColor===c?' selected':''}" onclick="selectColor('${c}')">
-        <div class="color-tile-swatch" style="background:${COLORS[c].hex};"></div>
-        <div class="color-tile-label">${COLORS[c].label}</div>
-      </div>`).join('')}</div>`;
+function renderColors(){
+  const door = DOORS.find(d=>d.id===state.doorStyle);
+  if(!door) return;
+  document.getElementById('color-wrap').style.display='block';
+  document.getElementById('color-tiles').innerHTML = door.colors.map(c=>`
+    <div class="color-tile${state.doorColor===c?' selected':''}" onclick="selectColor('${c}')">
+      <div class="color-tile-swatch" style="background:${COLORS[c].hex};"></div>
+      <div class="color-tile-label">${COLORS[c].label}</div>
+    </div>`).join('');
 }
 
-function renderGlassTypes() {
-  const isOversized = state.doorStyle === 'skyline' && state.skylinePaneStyle === 'long';
-  const insIdx = state.insulatedGlass ? 1 : 0;
+function renderGlassTypes(){
+  const oversized = state.doorStyle==='skyline' && state.paneStyle==='long';
+  const idx = state.insulatedGlass?1:0;
   const types = [
-    {id:'plain',  label:'Plain',   desc:'Clear glass, full visibility'},
+    {id:'plain',  label:'Plain',   desc:'Clear glass'},
     {id:'rain',   label:'Rain',    desc:'Textured privacy'},
     {id:'tinted', label:'Tinted',  desc:'Reduced glare'},
     {id:'frosted',label:'Frosted', desc:'Full privacy'},
   ];
-  document.getElementById('glass-type-grid').innerHTML = types.map(g => {
-    const tier = isOversized ? 'oversized' : 'long';
-    const pp = GLASS_PRICE[g.id][tier][insIdx];
-    const total = fmtPrice(pp * 4);
+  document.getElementById('glass-type-grid').innerHTML = types.map(g=>{
+    const tier = oversized?'oversized':'long';
+    const total = fmt(GP[g.id][tier][idx]*4);
     return `<div class="glass-card${state.glassType===g.id?' selected':''}" onclick="selectGlassType('${g.id}')">
-      <div class="glass-icon-svg">${glassIconSVG(g.id)}</div>
-      <div class="glass-name">${g.label}</div>
-      <div class="glass-desc">${g.desc}</div>
+      <div class="glass-icon-svg">${glassIcon(g.id)}</div>
+      <div class="glass-name">${g.label}</div><div class="glass-desc">${g.desc}</div>
       <div class="glass-price">${total} · 4 panes</div>
     </div>`;
   }).join('');
 }
 
-function renderInserts() {
+function renderInserts(){
   const inserts = getInserts();
-  const s = state.doorStyle || '';
-  const c = state.doorColor || 'white';
-  // Hide inserts for skyline short pane
-  const hideInserts = s === 'skyline' && state.skylinePaneStyle === 'short';
-  document.getElementById('insert-section-label').style.display = hideInserts ? 'none' : 'block';
-  if (hideInserts) { document.getElementById('insert-grid').innerHTML = ''; return; }
-
-  document.getElementById('insert-grid').innerHTML = inserts.map(ins => {
-    let imgKey = s + '-' + c + '-' + ins.id;
-    // For skyline, use pane-aware key for plain
-    if (s === 'skyline' && ins.id === 'plain') imgKey = s+'-'+c+'-'+state.skylinePaneStyle+'-plain';
-    const imgSrc = IMG[imgKey] || '';
-    const thumb = ins.id === 'plain'
-      ? plainPanesSVG()
-      : imgSrc ? `<img src="${imgSrc}" alt="${ins.label}" onerror="this.style.display='none'"/>` : plainPanesSVG();
+  const s = state.doorStyle||'', c = state.doorColor||'white';
+  // Skyline short pane — no inserts
+  const noInserts = s==='skyline' && state.paneStyle==='short';
+  document.getElementById('insert-lbl').style.display = noInserts?'none':'block';
+  if(noInserts){document.getElementById('insert-grid').innerHTML='';return;}
+  document.getElementById('insert-grid').innerHTML = inserts.map(ins=>{
+    let src='';
+    if(ins.id==='plain'){
+      // Show plain windows photo for this door/color/pane
+      if(s==='skyline') src=IMG[s+'-'+c+'-'+state.paneStyle+'-plain']||'';
+      else src=IMG[s+'-'+c+'-plain']||'';
+    } else {
+      src=IMG[s+'-'+c+'-'+ins.id]||'';
+    }
+    const thumb = src
+      ? `<img src="${src}" alt="${ins.label}" onerror="this.style.display='none'"/>`
+      : plainSVG();
     return `<div class="insert-card${state.windowInsert===ins.id?' selected':''}" onclick="selectInsert('${ins.id}')">
-      <div class="insert-thumb">${thumb}</div>
+      <div class="insert-thumb">${ins.id==='plain'?plainSVG():thumb}</div>
       <div class="insert-name">${ins.label}</div>
     </div>`;
   }).join('');
 }
 
-function renderInsulation() {
-  const isSkyline = state.doorStyle === 'skyline';
+function renderInsulation(){
+  const isSkyline = state.doorStyle==='skyline';
   const cards = [
-    { id:'none',  icon:'🚪', name:'No insulation',    tag:'Included', desc:'Standard steel, great value for mild climates.', hide: isSkyline },
-    { id:'pvc',   icon:'🧱', name:'Steelback (PVC)',   tag:'+$300',    desc:'PVC backing reduces noise, light insulation.' + (isSkyline ? ' Required for Skyline.' : '') },
-    { id:'steel', icon:'❄️', name:'Steel insulated',   tag:'+$600',    desc:'Full foam-core. Best for attached or heated garages.', hide: isSkyline },
+    {id:'none', icon:'🚪', name:'No insulation',  tag:'Included', desc:'Standard steel. Great for detached garages or mild climates.', hide:isSkyline, rec:false},
+    {id:'pvc',  icon:'🧱', name:'Steelback (PVC)', tag:'+$300',    desc:'Our most popular choice. Reduces noise and adds light insulation.'+(isSkyline?' Required for Skyline.':''), hide:false, rec:true},
+    {id:'steel',icon:'❄️', name:'Steel insulated', tag:'+$600',    desc:'Premium foam-core insulation. Best for attached or climate-controlled garages.', hide:isSkyline, rec:false},
   ];
-  document.getElementById('insulation-cards').innerHTML = cards
-    .filter(c => !c.hide)
-    .map(c => `
-      <div class="ins-card${state.insulation===c.id?' selected':''}" onclick="selectIns('${c.id}',this)">
-        <div class="card-check"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <div class="ins-header"><div class="ins-icon">${c.icon}</div><div><div class="ins-name">${c.name}</div><div class="ins-tag">${c.tag}</div></div></div>
-        <div class="ins-desc">${c.desc}</div>
-      </div>`).join('');
-  // Auto-select PVC for skyline
-  if (isSkyline) { state.insulation = 'pvc'; }
+  document.getElementById('ins-cards').innerHTML = cards.filter(c=>!c.hide).map(c=>`
+    <div class="ins-card${c.rec?' recommended':''}${state.insulation===c.id?' selected':''}" onclick="selectIns('${c.id}',this)">
+      ${c.rec?'<div class="ins-badge">⭐ Recommended</div>':''}
+      <div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="ins-header"><div class="ins-icon">${c.icon}</div><div><div class="ins-name">${c.name}</div><div class="ins-tag">${c.tag}</div></div></div>
+      <div class="ins-desc">${c.desc}</div>
+    </div>`).join('');
+  if(isSkyline && state.insulation!=='pvc') state.insulation='pvc';
 }
 
-function plainPanesSVG() {
-  return `<svg viewBox="0 0 96 56" xmlns="http://www.w3.org/2000/svg" style="width:88px;height:56px;display:block;background:#eef3f0;border-radius:4px;">
+function updatePreview(){
+  const img = document.getElementById('glass-preview-img');
+  const ph  = document.getElementById('glass-preview-ph');
+  const src = getImg(state.doorStyle,state.doorColor,state.glassType,state.windowInsert,state.paneStyle);
+  if(src){img.src=src;img.style.display='block';ph.style.display='none';}
+  else{img.style.display='none';ph.style.display='flex';}
+}
+
+function updateDoorPreview(){
+  const s = document.getElementById('door-preview-section');
+  const img = document.getElementById('door-preview-img');
+  if(state.doorStyle && state.doorColor){
+    const src = IMG[state.doorStyle+'-'+state.doorColor]||'';
+    if(src){s.style.display='block';img.src=src;}
+  }
+}
+
+function plainSVG(){
+  return `<svg viewBox="0 0 96 56" xmlns="http://www.w3.org/2000/svg" style="width:88px;height:56px;display:block;background:#eef3f0;border-radius:3px;">
     <rect x="5" y="8" width="24" height="40" rx="2" fill="#f6fafa" stroke="#b8c6c0" stroke-width="1.2"/>
     <rect x="34" y="8" width="24" height="40" rx="2" fill="#f6fafa" stroke="#b8c6c0" stroke-width="1.2"/>
     <rect x="63" y="8" width="24" height="40" rx="2" fill="#f6fafa" stroke="#b8c6c0" stroke-width="1.2"/>
   </svg>`;
 }
 
-function glassIconSVG(type) {
-  const m = {
-    plain:   `<svg viewBox="0 0 64 40" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="60" height="36" rx="3" fill="#f0f7f4" stroke="#bdd0c0" stroke-width="1.5"/><rect x="8" y="8" width="48" height="24" rx="2" fill="#e8f4f0" stroke="#bdd0c0" stroke-width="1"/></svg>`,
-    rain:    `<svg viewBox="0 0 64 40" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="60" height="36" rx="3" fill="#d8e4e8" stroke="#b0c4cc" stroke-width="1.5"/><rect x="8" y="8" width="48" height="24" rx="2" fill="#c8d8e0"/><line x1="14" y1="8" x2="12" y2="32" stroke="#b0ccd8" stroke-width="1.5" opacity="0.8"/><line x1="22" y1="8" x2="20" y2="32" stroke="#b0ccd8" stroke-width="1.5" opacity="0.8"/><line x1="30" y1="8" x2="28" y2="32" stroke="#b0ccd8" stroke-width="1.5" opacity="0.8"/><line x1="38" y1="8" x2="36" y2="32" stroke="#b0ccd8" stroke-width="1.5" opacity="0.8"/><line x1="46" y1="8" x2="44" y2="32" stroke="#b0ccd8" stroke-width="1.5" opacity="0.8"/><line x1="54" y1="8" x2="52" y2="32" stroke="#b0ccd8" stroke-width="1.5" opacity="0.8"/></svg>`,
-    tinted:  `<svg viewBox="0 0 64 40" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="60" height="36" rx="3" fill="#1a2820" stroke="#0d1a14" stroke-width="1.5"/><rect x="8" y="8" width="48" height="24" rx="2" fill="#223028" opacity="0.9"/><rect x="9" y="9" width="3" height="20" rx="1" fill="#3a5040" opacity="0.4"/></svg>`,
-    frosted: `<svg viewBox="0 0 64 40" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="60" height="36" rx="3" fill="#e8ecea" stroke="#c4ccc8" stroke-width="1.5"/><rect x="8" y="8" width="48" height="24" rx="2" fill="#dce4e0" opacity="0.9"/><line x1="12" y1="10" x2="12" y2="30" stroke="#f0f2f0" stroke-width="2" opacity="0.7"/><line x1="20" y1="10" x2="19" y2="30" stroke="#e8ecec" stroke-width="1.2" opacity="0.5"/><line x1="30" y1="10" x2="30" y2="30" stroke="#f0f2f0" stroke-width="2" opacity="0.7"/><line x1="42" y1="10" x2="41" y2="30" stroke="#f0f2f0" stroke-width="2" opacity="0.7"/><line x1="52" y1="10" x2="51" y2="30" stroke="#e8ecec" stroke-width="1.2" opacity="0.5"/></svg>`,
+function glassIcon(t){
+  const ic={
+    plain:`<svg viewBox="0 0 60 36" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="58" height="34" rx="3" fill="#f0f7f4" stroke="#bdd0c0" stroke-width="1.5"/><rect x="7" y="7" width="46" height="22" rx="2" fill="#e4f0ec"/></svg>`,
+    rain:`<svg viewBox="0 0 60 36" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="58" height="34" rx="3" fill="#d4e0e8" stroke="#a8bcc8" stroke-width="1.5"/><line x1="12" y1="7" x2="10" y2="29" stroke="#90b0c0" stroke-width="1.5" opacity=".8"/><line x1="20" y1="7" x2="18" y2="29" stroke="#90b0c0" stroke-width="1.5" opacity=".8"/><line x1="28" y1="7" x2="26" y2="29" stroke="#90b0c0" stroke-width="1.5" opacity=".8"/><line x1="36" y1="7" x2="34" y2="29" stroke="#90b0c0" stroke-width="1.5" opacity=".8"/><line x1="44" y1="7" x2="42" y2="29" stroke="#90b0c0" stroke-width="1.5" opacity=".8"/><line x1="52" y1="7" x2="50" y2="29" stroke="#90b0c0" stroke-width="1.5" opacity=".8"/></svg>`,
+    tinted:`<svg viewBox="0 0 60 36" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="58" height="34" rx="3" fill="#1a2820" stroke="#0d1a14" stroke-width="1.5"/><rect x="7" y="7" width="46" height="22" rx="2" fill="#223028" opacity=".9"/><rect x="8" y="8" width="6" height="18" rx="1" fill="#3a5040" opacity=".3"/></svg>`,
+    frosted:`<svg viewBox="0 0 60 36" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="58" height="34" rx="3" fill="#e4e8e6" stroke="#c0c8c4" stroke-width="1.5"/><rect x="7" y="7" width="46" height="22" rx="2" fill="#d8e0de" opacity=".9"/><line x1="11" y1="8" x2="11" y2="28" stroke="#f0f2f0" stroke-width="2" opacity=".7"/><line x1="19" y1="8" x2="18" y2="28" stroke="#e8ecec" stroke-width="1" opacity=".5"/><line x1="29" y1="8" x2="29" y2="28" stroke="#f0f2f0" stroke-width="2" opacity=".7"/><line x1="40" y1="8" x2="39" y2="28" stroke="#f0f2f0" stroke-width="2" opacity=".7"/><line x1="50" y1="8" x2="49" y2="28" stroke="#e8ecec" stroke-width="1" opacity=".5"/></svg>`,
   };
-  return m[type] || m.plain;
+  return ic[t]||ic.plain;
 }
 
 // ── SELECTION HANDLERS ─────────────────────────────────────────────────────
-function selectService(val, el) {
-  state.service = val;
-  document.querySelectorAll('#step-1 .card').forEach(c=>c.classList.remove('selected'));
+function pick(el,key,val){
+  state[key]=val;
+  const p=el.closest('.card-grid,.price-list');
+  if(p) p.querySelectorAll('.card').forEach(c=>c.classList.remove('selected'));
   el.classList.add('selected');
 }
-function goFromStep1() {
-  if (!state.service) { alert('Please select a service.'); return; }
-  goStep(state.service === 'repair' ? 'step-2-repair' : 'step-2-count');
+
+function selectDoor(id){
+  state.doorStyle=id;
+  const door=DOORS.find(d=>d.id===id);
+  state.doorColor=door.colors[0];
+  if(id==='skyline') state.insulation='pvc';
+  renderDoors(); renderColors(); updateDoorPreview();
 }
-function selectCount(val, el) {
-  state.garageCount = val;
-  document.querySelectorAll('#step-2-count .card').forEach(c=>c.classList.remove('selected'));
-  el.classList.add('selected');
+
+function selectColor(c){
+  state.doorColor=c;
+  renderColors(); updateDoorPreview();
 }
-function goFromCount() {
-  if (!state.garageCount) { alert('Please select how many doors.'); return; }
-  renderDoors(); goStep('step-2-style');
-}
-function selectDoor(id) {
-  state.doorStyle = id;
-  const door = DOORS.find(d=>d.id===id);
-  state.doorColor = door.colors[0];
-  if (id === 'skyline') { state.insulation = 'pvc'; state.skylinePaneStyle = 'long'; }
-  renderDoors(); updatePreview();
-}
-function goFromStyle() {
-  if (!state.doorStyle) { alert('Please select a door style.'); return; }
-  renderColors(); goStep('step-2-color');
-}
-function selectColor(c) {
-  state.doorColor = c;
-  renderColors(); updatePreview();
-}
-function goFromColor() {
-  if (!state.doorColor) { alert('Please select a color.'); return; }
-  goStep('step-3');
-}
-function selectGlassAdd(val, el) {
-  state.glassAdd = val;
-  document.querySelectorAll('#step-3 .card').forEach(c=>c.classList.remove('selected'));
-  el.classList.add('selected');
-}
-function goFromGlassAdd() {
-  if (state.glassAdd === null) { alert('Please make a selection.'); return; }
-  if (state.glassAdd) {
-    state.glassType = null; state.windowInsert = null;
-    // Show/hide skyline pane selector
-    const isSkyline = state.doorStyle === 'skyline';
-    document.getElementById('skyline-pane-wrap').style.display = isSkyline ? 'block' : 'none';
-    // Reset pane style cards
-    if (isSkyline) {
-      document.getElementById('pane-long-card').classList.add('selected');
-      document.getElementById('pane-short-card').classList.remove('selected');
-    }
-    renderGlassTypes(); renderInserts(); updatePreview();
-    goStep('step-3b');
-  } else {
-    state.glassType = null; state.windowInsert = null;
-    renderInsulation(); goStep('step-4');
-  }
-}
-function selectPaneStyle(style, el) {
-  state.skylinePaneStyle = style;
-  document.querySelectorAll('#skyline-pane-wrap .card').forEach(c=>c.classList.remove('selected'));
-  el.classList.add('selected');
+
+function selectGlassType(id){
+  state.glassType=id;
+  if(!state.windowInsert) state.windowInsert='plain';
   renderGlassTypes(); renderInserts(); updatePreview();
 }
-function toggleInsulated() {
-  state.insulatedGlass = !state.insulatedGlass;
-  const sw = document.getElementById('insulated-switch');
-  const row = document.getElementById('insulated-toggle');
-  sw.classList.toggle('on', state.insulatedGlass);
-  row.classList.toggle('selected', state.insulatedGlass);
-  renderGlassTypes();
-}
-function selectGlassType(id) {
-  state.glassType = id;
-  if (!state.windowInsert) state.windowInsert = 'plain';
-  renderGlassTypes(); renderInserts(); updatePreview();
-}
-function selectInsert(id) {
-  state.windowInsert = id;
-  if (!state.glassType) { state.glassType = 'plain'; renderGlassTypes(); }
+
+function selectInsert(id){
+  state.windowInsert=id;
+  if(!state.glassType){state.glassType='plain';renderGlassTypes();}
   renderInserts(); updatePreview();
 }
-function selectIns(val, el) {
-  state.insulation = val;
+
+function pickPane(style,el){
+  state.paneStyle=style;
+  document.querySelectorAll('#pane-wrap .card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  renderGlassTypes(); renderInserts(); updatePreview();
+}
+
+function toggleInsGlass(){
+  state.insulatedGlass=!state.insulatedGlass;
+  document.getElementById('ins-glass-sw').classList.toggle('on',state.insulatedGlass);
+  document.getElementById('ins-glass-toggle').classList.toggle('on',state.insulatedGlass);
+  renderGlassTypes();
+}
+
+function selectIns(val,el){
+  state.insulation=val;
   document.querySelectorAll('.ins-card').forEach(c=>c.classList.remove('selected'));
   el.classList.add('selected');
 }
-function selectRepair(val, el) {
-  state.repairType = val;
-  document.querySelectorAll('#step-2-repair .card').forEach(c=>c.classList.remove('selected'));
-  el.classList.add('selected');
-}
-function goRepairDetail() {
-  if (!state.repairType) { alert('Please select a repair type.'); return; }
-  const m = {spring:'step-spring',opener:'step-opener',glass:'step-glass-repair',other:'step-other-repair'};
-  goStep(m[state.repairType]);
-}
-function selectOpt(el, key, val) {
-  state[key] = val;
-  const parent = el.closest('.card-grid,.price-list');
-  if (parent) parent.querySelectorAll('.card').forEach(c=>c.classList.remove('selected'));
-  el.classList.add('selected');
-}
-function goInsBack() {
-  if (state.glassAdd) goStep('step-3b'); else goStep('step-3');
-}
 
 // ── NAVIGATION ─────────────────────────────────────────────────────────────
-function goStep(id) {
+function go(id){
   document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
-  updateProgress(id);
-  if (id === 'step-4') { renderInsulation(); }
+  progress(id);
+  if(id==='s6-insulation') renderInsulation();
 }
-function updateProgress(id) {
-  const pcts = {'step-1':10,'step-2-count':20,'step-2-style':30,'step-2-color':40,'step-3':50,'step-3b':60,'step-4':70,'step-contact':85,'step-success':100};
-  const labels = {'step-1':'Step 1 of 5','step-2-count':'Step 2 of 5','step-2-style':'Step 2 of 5','step-2-color':'Step 2 of 5','step-3':'Step 3 of 5','step-3b':'Step 3 of 5','step-4':'Step 4 of 5','step-contact':'Step 5 of 5','step-success':'Complete'};
-  document.getElementById('progress-fill').style.width = (pcts[id]||10)+'%';
-  document.getElementById('progress-label').textContent = labels[id]||'';
+
+function progress(id){
+  const pcts={'s1':10,'s2-count':20,'s3-door':35,'s4-glass':50,'s5-customize':62,'s6-insulation':75,'s7-contact':88,'s-success':100};
+  const labs={'s1':'Step 1 of 6','s2-count':'Step 2 of 6','s3-door':'Step 3 of 6','s4-glass':'Step 4 of 6','s5-customize':'Step 5 of 6','s6-insulation':'Step 6 of 6 ','s7-contact':'Almost done!','s-success':'Complete!'};
+  document.getElementById('pfill').style.width=(pcts[id]||10)+'%';
+  document.getElementById('plabel').textContent=labs[id]||'';
 }
-function restart() {
-  state = {service:null,garageCount:null,doorStyle:null,doorColor:'white',glassAdd:null,glassType:null,windowInsert:null,insulatedGlass:false,skylinePaneStyle:'long',insulation:null,repairType:null,springGarage:null,springType:null,opener:null};
-  goStep('step-1');
+
+function fromS1(){
+  if(!state.service){alert('Please select a service.');return;}
+  go(state.service==='repair'?'s2-repair':'s2-count');
+}
+function fromCount(){
+  if(!state.garageCount){alert('Please select how many doors.');return;}
+  renderDoors(); go('s3-door');
+}
+function fromDoor(){
+  if(!state.doorStyle){alert('Please select a door style.');return;}
+  if(!state.doorColor){alert('Please select a color.');return;}
+  go('s4-glass');
+}
+function fromGlassAdd(){
+  if(state.glassAdd===null){alert('Please make a selection.');return;}
+  if(state.glassAdd){
+    state.glassType=null; state.windowInsert=null;
+    const isSkyline=state.doorStyle==='skyline';
+    document.getElementById('pane-wrap').style.display=isSkyline?'block':'none';
+    if(isSkyline){
+      document.getElementById('pane-long').classList.add('selected');
+      document.getElementById('pane-short').classList.remove('selected');
+      state.paneStyle='long';
+    }
+    renderGlassTypes(); renderInserts(); updatePreview();
+    go('s5-customize');
+  } else {
+    go('s6-insulation');
+  }
+}
+function fromRepair(){
+  if(!state.repairType){alert('Please select a repair type.');return;}
+  go(state.repairType==='opener'?'s-opener':'s-other');
+}
+function insBack(){
+  go(state.glassAdd?'s5-customize':'s4-glass');
+}
+function restart(){
+  state={service:null,garageCount:null,doorStyle:null,doorColor:null,glassAdd:null,glassType:null,windowInsert:null,insulatedGlass:false,paneStyle:'long',insulation:null,repairType:null,opener:null};
+  go('s1');
 }
 
 // ── ESTIMATE ───────────────────────────────────────────────────────────────
-function calcEstimate() {
-  const s = state;
-  if (s.service === 'replace' || s.service === 'new') {
-    const base = {single:[1800,2800],double:[2400,3600],two:[3400,5200]}[s.garageCount]||[2000,3200];
-    const ins = {none:0,pvc:300,steel:600}[s.insulation]||0;
-    const gl = calcGlassCost();
-    const lo = Math.round(base[0]+ins+gl);
-    const hi = Math.round(base[1]+ins+gl);
-    return '$'+lo.toLocaleString()+' – $'+hi.toLocaleString();
+function calcEst(){
+  const s=state;
+  if(s.service==='replace'||s.service==='new'){
+    const base={single:[1800,2800],double:[2400,3600],two:[3400,5200]}[s.garageCount]||[2000,3200];
+    const ins={none:0,pvc:300,steel:600}[s.insulation]||0;
+    const gl=glassCost();
+    return '$'+(base[0]+ins+gl).toLocaleString()+' – $'+(base[1]+ins+gl).toLocaleString();
   }
-  if (s.repairType === 'spring') {
-    if (s.springType === 'inspection') return 'Free inspection';
-    const g = s.springGarage === 'double' ? 150 : 0;
-    const t = s.springType === 'heavy' ? 100 : 0;
-    return '$'+(350+g+t).toLocaleString()+' – $'+(550+g+t).toLocaleString();
-  }
-  if (s.repairType === 'opener') {
-    const p = {chain7:800,chain8:875,belt7:850,belt8:925,'belt-hi':950,ibeam:1610,jackshaft:1500}[s.opener]||900;
+  if(s.repairType==='opener'){
+    const p={chain7:800,chain8:875,belt7:850,belt8:925,'belt-hi':950,ibeam:1610,jackshaft:1500}[s.opener]||900;
     return '$'+p.toLocaleString()+' installed';
   }
-  if (s.repairType === 'glass') return '$180 – $380';
   return '$200 – $500';
 }
 
 // ── SUBMIT ─────────────────────────────────────────────────────────────────
-async function submitEstimate() {
-  const fname = document.getElementById('fname').value.trim();
-  const lname = document.getElementById('lname').value.trim();
-  const phone = document.getElementById('phone').value.trim();
-  if (!fname||!lname||!phone) { alert('Please fill in your name and phone number.'); return; }
+async function submit(){
+  const fn=document.getElementById('fname').value.trim();
+  const ln=document.getElementById('lname').value.trim();
+  const ph=document.getElementById('phone').value.trim();
+  if(!fn||!ln||!ph){alert('Please fill in your name and phone number.');return;}
   document.getElementById('sending-overlay').classList.add('active');
-  const styleNames = {'raised-short':'Raised Short Panel','raised-long':'Raised Long Panel','skyline':'Skyline Flush','carriage-short':'Carriage Stamp Short','carriage-long':'Carriage Stamp Long'};
-  const body = {
-    fname,lname,
-    phone:document.getElementById('phone').value.trim(),
+  const styleNames={'raised-short':'Raised Short Panel','raised-long':'Raised Long Panel','skyline':'Skyline Flush','carriage-short':'Carriage Stamp Short','carriage-long':'Carriage Stamp Long'};
+  const body={
+    fname:fn,lname:ln,phone:ph,
     email:document.getElementById('email').value.trim(),
     address:document.getElementById('address').value.trim(),
     doorsize:document.getElementById('doorsize').value,
@@ -876,23 +841,21 @@ async function submitEstimate() {
     doorStyle:styleNames[state.doorStyle]||state.doorStyle||'',
     doorColor:state.doorColor, insulation:state.insulation,
     glassAdd:state.glassAdd, glassType:state.glassType,
-    insulatedGlass:state.insulatedGlass,
-    skylinePaneStyle:state.skylinePaneStyle,
-    insertStyle:state.windowInsert,
-    repairType:state.repairType,
-    estimate:calcEstimate(),
+    insulatedGlass:state.insulatedGlass, paneStyle:state.paneStyle,
+    insertStyle:state.windowInsert, repairType:state.repairType,
+    estimate:calcEst(),
   };
-  try {
+  try{
     await fetch('https://hook.us1.make.com/qdiwk4pvkf95aovtbhh23qmw37vmpogd',{
       method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)
     });
-  } catch(e){console.warn('Webhook error',e);}
+  }catch(e){console.warn('Webhook error',e);}
   document.getElementById('sending-overlay').classList.remove('active');
-  document.getElementById('estimate-display').textContent = calcEstimate();
-  goStep('step-success');
+  document.getElementById('est-display').textContent=calcEst();
+  go('s-success');
 }
 
-// ── INIT ───────────────────────────────────────────────────────────────────
+// Init
 renderDoors();
 </script>
 </body>
