@@ -1,4 +1,4 @@
-// Garage Door Estimator — Glass Options Patch v5
+// Garage Door Estimator — Glass Options Patch v6
 
 (function () {
 
@@ -30,12 +30,14 @@
         };
       }
 
-      // ── Fix 2: Remove "Plain" card from Glass Type section ───────────────
-      // The glass-card with "Plain" text should not appear — Plain is
-      // already handled by Window Insert Style → "Plain (no insert)"
+      // ── Fix 2: Use MutationObserver to ALWAYS remove Plain glass card ───
+      // This fires every time the DOM changes, so it catches re-renders too
       function removePlainGlassCard() {
-        const glassCards = document.querySelectorAll('.glass-card');
-        glassCards.forEach(function (card) {
+        document.querySelectorAll('.glass-card').forEach(function (card) {
+          if (card.onclick && card.onclick.toString().indexOf("'plain'") !== -1) {
+            card.remove();
+          }
+          // Also catch by text content
           const name = card.querySelector('.glass-name');
           if (name && name.textContent.trim().toLowerCase() === 'plain') {
             card.remove();
@@ -43,37 +45,16 @@
         });
       }
 
-      // ── Fix 3: Fix glass overlay to only cover window strip ──────────────
-      // The overlay already uses height:18% which is correct.
-      // But the tint layer inside needs to not bleed outside the strip.
-      // We patch updateGlassOverlay to ensure correct positioning.
-      if (typeof updateGlassOverlay === 'function') {
-        const _orig = updateGlassOverlay;
-        window.updateGlassOverlay = function (wrapperId) {
-          _orig(wrapperId);
-          // After original runs, fix any overlay that's too tall
-          const wrapper = document.getElementById(wrapperId);
-          if (!wrapper) return;
-          const overlay = wrapper.querySelector('.glass-strip-overlay');
-          if (overlay) {
-            overlay.style.height = '22%';
-            overlay.style.top = '0';
-            overlay.style.overflow = 'hidden';
-          }
-        };
-      }
-
-      // Run fixes immediately
+      // Run immediately
       removePlainGlassCard();
 
-      // Re-run after clicks (glass cards may be re-rendered)
-      document.addEventListener('click', function (e) {
-        if (e.target.closest('.glass-card, .door-card, .color-tile, .insert-card')) {
-          setTimeout(removePlainGlassCard, 80);
-        }
+      // Watch for any DOM changes and re-remove if it comes back
+      const observer = new MutationObserver(function () {
+        removePlainGlassCard();
       });
+      observer.observe(document.body, { childList: true, subtree: true });
 
-    }, 400);
+    }, 300);
   });
 
 })();
