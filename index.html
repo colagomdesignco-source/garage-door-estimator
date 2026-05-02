@@ -60,7 +60,7 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 .door-option{background:var(--white);border:2px solid var(--tan);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all 0.2s;}
 .door-option:hover{border-color:#a0bcaa;box-shadow:var(--shadow);}
 .door-option.selected{border-color:var(--green);}
-.door-preview-img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#e2ede4;}
+.door-preview-img{width:100%;aspect-ratio:16/9;object-fit:contain;display:block;background:#e2ede4;}
 .door-info{padding:10px 12px;}
 .door-name{font-weight:600;font-size:13px;}
 .door-desc{font-size:11px;color:var(--gray);margin-top:2px;}
@@ -396,9 +396,10 @@ const IMG={
   'carriage-long-white':        B+'Carriage%20House%20long%20panel%20white.png',
   // Plain windows
   'raised-short-white-plain':   B+'Raised%20panel%20short%20windows%20white.png',
-  'raised-short-almond-plain':  B+'Raised%20panel%20short%20windows%20almond.png',
+  // Note: if this image looks bad, it will show placeholder instead
+  'raised-short-almond-plain':  B+'Raised%20short%20panel%20windows%20almond.png',
   'raised-long-white-plain':    B+'Raised%20panel%20long%20windows.png',
-  'raised-long-almond-plain':   B+'Raised%20long%20panel%20almond%20no%20window.png',
+  'raised-long-almond-plain':   B+'Raised%20long%20panel%20windows%20almond.png',
   'skyline-white-long-plain':   B+'Skyline%20flush%20white%20windows%20no%20inserts%20.jpg',
   'skyline-black-long-plain':   B+'Skyline%20flush%20black%20windows%20.jpg',
   'skyline-white-short-plain':  B+'Skyline%20flush%20white%20short%20pane%20windows.png',
