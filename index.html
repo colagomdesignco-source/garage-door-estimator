@@ -792,8 +792,7 @@ function renderColorTiles(styleId) {
       // Update the selected door card thumbnail to match color
       const selectedCard = document.querySelector('.door-card.selected .door-thumb');
       if (selectedCard) {
-        const insertKey = getInsertKey();
-        const src = resolveImg(state.doorStyle, state.doorColor, insertKey);
+        const src = getBaseDoorUrl(state.doorStyle, state.doorColor);
         if (src) selectedCard.src = src;
       }
       renderInsertCards();
