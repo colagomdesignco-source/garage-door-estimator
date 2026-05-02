@@ -1,4 +1,4 @@
-// Garage Door Estimator — Glass Options Patch v4
+// Garage Door Estimator — Glass Options Patch v5
 
 (function () {
 
@@ -13,7 +13,7 @@
   ready(function () {
     setTimeout(function () {
 
-      // ── Fix 1: Patch getWindowPhotoKey so Plain shows base door (no overlay) ──
+      // ── Fix 1: Patch getWindowPhotoKey so Plain shows base door photo ────
       if (typeof getWindowPhotoKey === 'function') {
         const _orig = getWindowPhotoKey;
         window.getWindowPhotoKey = function (style, color, insertStyle, glassType) {
@@ -30,56 +30,46 @@
         };
       }
 
-      // ── Fix 2: Remove "Plain (no insert)" card from Window Insert Style ──
-      function removePlainInsertCard() {
-        const cards = document.querySelectorAll('.insert-card');
-        cards.forEach(function (card) {
-          const nameEl = card.querySelector('.insert-name');
-          if (nameEl && nameEl.textContent.trim().toLowerCase().startsWith('plain')) {
+      // ── Fix 2: Remove "Plain" card from Glass Type section ───────────────
+      // The glass-card with "Plain" text should not appear — Plain is
+      // already handled by Window Insert Style → "Plain (no insert)"
+      function removePlainGlassCard() {
+        const glassCards = document.querySelectorAll('.glass-card');
+        glassCards.forEach(function (card) {
+          const name = card.querySelector('.glass-name');
+          if (name && name.textContent.trim().toLowerCase() === 'plain') {
             card.remove();
           }
         });
       }
 
-      // ── Fix 3: Fix preview insert overlay sizing ──────────────────────
-      function fixPreviewOverlay() {
-        const insertImg = document.querySelector('.preview-insert-img');
-        if (insertImg) {
-          insertImg.style.cssText = [
-            'position:absolute',
-            'top:0',
-            'left:0',
-            'width:100%',
-            'height:100%',
-            'object-fit:cover',
-            'object-position:top center',
-            'pointer-events:none',
-            'display:block',
-          ].join(';');
-        }
-      }
-
-      // ── Fix 4: Patch renderInsertCards to auto-remove Plain card ─────
-      if (typeof renderInsertCards === 'function') {
-        const _orig = renderInsertCards;
-        window.renderInsertCards = function () {
-          _orig.apply(this, arguments);
-          removePlainInsertCard();
-          fixPreviewOverlay();
+      // ── Fix 3: Fix glass overlay to only cover window strip ──────────────
+      // The overlay already uses height:18% which is correct.
+      // But the tint layer inside needs to not bleed outside the strip.
+      // We patch updateGlassOverlay to ensure correct positioning.
+      if (typeof updateGlassOverlay === 'function') {
+        const _orig = updateGlassOverlay;
+        window.updateGlassOverlay = function (wrapperId) {
+          _orig(wrapperId);
+          // After original runs, fix any overlay that's too tall
+          const wrapper = document.getElementById(wrapperId);
+          if (!wrapper) return;
+          const overlay = wrapper.querySelector('.glass-strip-overlay');
+          if (overlay) {
+            overlay.style.height = '22%';
+            overlay.style.top = '0';
+            overlay.style.overflow = 'hidden';
+          }
         };
       }
 
-      // Run immediately
-      removePlainInsertCard();
-      fixPreviewOverlay();
+      // Run fixes immediately
+      removePlainGlassCard();
 
-      // Re-run after any click (in case cards are re-rendered)
+      // Re-run after clicks (glass cards may be re-rendered)
       document.addEventListener('click', function (e) {
-        if (e.target.closest('.insert-card, .glass-card, .door-card, .color-tile')) {
-          setTimeout(function () {
-            removePlainInsertCard();
-            fixPreviewOverlay();
-          }, 80);
+        if (e.target.closest('.glass-card, .door-card, .color-tile, .insert-card')) {
+          setTimeout(removePlainGlassCard, 80);
         }
       });
 
