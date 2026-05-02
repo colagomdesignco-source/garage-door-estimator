@@ -68,9 +68,9 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 /* PREVIEW */
 .preview-section{background:var(--white);border:1px solid var(--tan);border-radius:var(--radius);overflow:hidden;margin-bottom:24px;position:sticky;top:72px;z-index:90;}
 .preview-label{padding:10px 16px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--gray);border-bottom:1px solid var(--tan);}
-.preview-window{position:relative;width:100%;aspect-ratio:2.5/1;background:#e8e4de;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.preview-window{position:relative;width:100%;aspect-ratio:16/5;background:#e8e4de;display:flex;align-items:center;justify-content:center;overflow:hidden;}
 .preview-door{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
-.preview-door-img{width:100%;height:100%;object-fit:contain;display:block;background:#e8e4de;}
+.preview-door-img{width:100%;height:100%;object-fit:contain;object-position:center center;display:block;background:#e8e4de;}
 .preview-insert-img{position:absolute;top:0;left:0;width:100%;height:auto;max-height:35%;object-fit:cover;pointer-events:none;display:none;}
 .preview-placeholder{text-align:center;color:var(--gray);}
 .preview-placeholder svg{width:48px;height:48px;stroke:var(--tan);margin-bottom:8px;}
@@ -662,22 +662,34 @@ function getWindowPhotoKey(style, color, insertStyle, glassType) {
   else if (style === 'raised-short' || style === 'carriage-short') panel = 'short';
   else panel = 'skyline';
 
-  // Map color
   const col = (color === 'almond') ? 'almond' : (color === 'black') ? 'black' : 'white';
 
-  // If no glass selected yet — return null (show door with no windows)
-  if (!insertStyle || insertStyle === '') return null;
+  // No insert selected yet — no overlay
+  if (!insertStyle || insertStyle === '' || insertStyle === 'plain') {
+    // Only show if a non-clear glass type is selected (shows glass effect on plain window)
+    if (glassType && glassType !== 'clear' && glassType !== 'plain') {
+      const glassKey = `${panel}_${col}_glass_${glassType}`;
+      if (PHOTOS[glassKey]) return glassKey;
+      // fallback: use long_white glass photos if others missing
+      const fallbackKey = `long_white_glass_${glassType}`;
+      if (PHOTOS[fallbackKey]) return fallbackKey;
+    }
+    // Plain glass selected (clear) — show the "plain windows" photo
+    if (glassType === 'clear' || glassType === 'plain') {
+      const plainKey = `${panel}_${col}_plain`;
+      if (PHOTOS[plainKey]) return plainKey;
+    }
+    return null; // No overlay — show base door only
+  }
 
-  // Map insert style to key suffix
+  // Insert style selected
   const insertMap = {
-    'plain':           'plain',
-    'none':            'plain',
-    'cascade':         'cascade',
-    'prairie':         'prairie',
-    'sherwood':        'sherwood',
-    'stockton':        'stockton',
-    'waterton':        'waterton',
-    'madison':         'madison',
+    'cascade':           'cascade',
+    'prairie':           'prairie',
+    'sherwood':          'sherwood',
+    'stockton':          'stockton',
+    'waterton':          'waterton',
+    'madison':           'madison',
     '2pc_arch_stockton': '2pc_arch_stockton',
     '4pc_arch_stockton': '4pc_arch_stockton',
     '2pc_arch_madison':  '2pc_arch_madison',
@@ -686,16 +698,15 @@ function getWindowPhotoKey(style, color, insertStyle, glassType) {
     '4pc_sunburst':      '4pc_sunburst',
     '8pc_sunburst':      '8pc_sunburst',
   };
-  const ins = insertMap[insertStyle] || 'plain';
-
-  // For glass type variations (only when insert is plain/none)
-  if ((ins === 'plain') && glassType && glassType !== 'clear' && glassType !== 'plain') {
-    const glassKey = `${panel}_${col}_glass_${glassType}`;
-    if (PHOTOS[glassKey]) return glassKey;
-  }
+  const ins = insertMap[insertStyle];
+  if (!ins) return null;
 
   const key = `${panel}_${col}_${ins}`;
-  return PHOTOS[key] ? key : `${panel}_${col}_plain`;
+  // Try exact match, then fallback to almond, then long_almond
+  if (PHOTOS[key]) return key;
+  const fallback = `${panel}_almond_${ins}`;
+  if (PHOTOS[fallback]) return fallback;
+  return null;
 }
 
 // Returns the no-window base door image URL from GitHub
@@ -850,12 +861,11 @@ function selectGlassAdd(el, val) {
   document.querySelectorAll('#step-3 .card-grid.cols2 .card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
   state.glassAdd = val;
-  if (val) {
-    state.windowInsert = 'plain'; // default to plain when glass first selected
-    state.glassTypeName = 'clear';
-  } else {
+  if (!val) {
     state.windowInsert = '';
+    state.glassTypeName = 'clear';
   }
+  // Don't set windowInsert here — user picks glass type on next step
   refreshAllPreviews();
 }
 
@@ -863,6 +873,8 @@ function selectGlassType(el, type) {
   document.querySelectorAll('.glass-card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
   state.glassTypeName = type;
+  // When a glass type is picked, ensure overlay shows (plain = just windows, no insert yet)
+  if (!state.windowInsert) state.windowInsert = 'plain';
   refreshAllPreviews();
 }
 function applyGlassFilter(imgEl) {
