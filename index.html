@@ -68,9 +68,9 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 /* PREVIEW */
 .preview-section{background:var(--white);border:1px solid var(--tan);border-radius:var(--radius);overflow:hidden;margin-bottom:24px;position:sticky;top:72px;z-index:90;}
 .preview-label{padding:10px 16px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--gray);border-bottom:1px solid var(--tan);}
-.preview-window{position:relative;width:100%;aspect-ratio:2.5/1;background:#e8e4de;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.preview-window{position:relative;width:100%;aspect-ratio:3/1;background:#e8e4de;display:flex;align-items:center;justify-content:center;overflow:hidden;}
 .preview-door{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
-.preview-door-img{width:100%;height:100%;object-fit:contain;display:block;}
+.preview-door-img{width:100%;height:100%;object-fit:cover;display:block;}
 .preview-insert-img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;pointer-events:none;}
 .preview-placeholder{text-align:center;color:var(--gray);}
 .preview-placeholder svg{width:48px;height:48px;stroke:var(--tan);margin-bottom:8px;}
@@ -172,6 +172,11 @@ header{padding:12px 16px;}
 .btn{font-size:15px;padding:14px;}
 .color-tile{width:75px;}
 }
+
+/* Glass strip overlay — only covers window row at top of door */
+.glass-strip-overlay { mix-blend-mode: multiply; }
+/* Ensure door image fills preview without letterboxing */
+.preview-door-img { width:100%;height:100%;object-fit:cover;display:block; }
 </style>
 </head>
 <body>
@@ -341,7 +346,7 @@ header{padding:12px 16px;}
 <div class="door-selector" id="door-style-grid">
 <div class="door-card" onclick="selectDoorStyle(this,'raised-short','Raised Short Panel')" style="position:relative;">
 <div style="position:absolute;top:10px;left:10px;background:var(--red);color:white;font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px;z-index:2;letter-spacing:0.4px;">⭐ MOST POPULAR</div>
-<img class="door-thumb" src="https://colagomdesignco-source.github.io/garage-door-estimator/Raised%20short%20panel%20white.png" alt="Raised Short Panel"/>
+<img class="door-thumb" src="https://colagomdesignco-source.github.io/garage-door-estimator/Raied%20panel%20short.png" alt="Raised Short Panel"/>
 <div class="door-info"><div class="door-name">Raised Short Panel</div><div class="door-desc">Classic ribbed · 4 columns · Best value</div><div class="door-stock">✓ In stock</div></div>
 </div>
 <div class="door-card" onclick="selectDoorStyle(this,'raised-long','Raised Long Panel')" style="position:relative;">
@@ -452,11 +457,11 @@ header{padding:12px 16px;}
 
 <div class="glass-card selected" onclick="selectGlassType(this,'clear')">
 <svg class="glass-icon-svg" viewBox="0 0 64 40" xmlns="http://www.w3.org/2000/svg">
-  <rect x="2" y="2" width="60" height="36" rx="3" fill="#e8eff2" stroke="#c0cdd4" stroke-width="2"/>
-  <rect x="8" y="8" width="48" height="24" rx="1" fill="#d4e8f0" opacity="0.7"/>
-  <!-- clear sky visible through -->
-  <ellipse cx="20" cy="18" rx="6" ry="5" fill="#b8d4e8" opacity="0.5"/>
-  <ellipse cx="44" cy="16" rx="8" ry="4" fill="#c8dcec" opacity="0.4"/>
+  <rect x="2" y="2" width="60" height="36" rx="3" fill="#f4f8fa" stroke="#c0cdd4" stroke-width="1.5"/>
+  <rect x="8" y="8" width="48" height="24" rx="1" fill="none" stroke="#c8d8e0" stroke-width="1"/>
+  <!-- clear glass shine lines -->
+  <line x1="12" y1="10" x2="20" y2="30" stroke="white" stroke-width="2.5" opacity="0.7"/>
+  <line x1="18" y1="9" x2="24" y2="31" stroke="white" stroke-width="1" opacity="0.4"/>
 </svg>
 <div class="glass-name">Plain</div><div class="glass-desc">Full visibility</div>
 </div>
@@ -852,6 +857,8 @@ function refreshAllPreviews() {
   updatePreview('preview-door-img','preview-insert-img','glass-overlay-1','preview-placeholder');
   updatePreview('preview-door-img2','preview-insert-img2','glass-overlay-2',null);
   updatePreview('success-door-img','success-insert-img','glass-overlay-3',null);
+  updateGlassOverlay('preview-door-wrap');
+  updateGlassOverlay('preview-door-wrap2');
 }
 
 // ── COLOR TILES ───────────────────────────────────────────────────────────────
@@ -959,19 +966,83 @@ function selectGlassType(el, type) {
   refreshAllPreviews();
 }
 function applyGlassFilter(imgEl) {
+  // Clear any lingering filter on the door image itself — glass is handled by overlay
   if (!imgEl) return;
-  const glassFilters = {
-    tinted:  'brightness(0.55) saturate(0.6) sepia(0.1)',
-    frosted: 'brightness(1.08) saturate(0.3) contrast(0.85)',
-    obscure: 'blur(2px) brightness(0.94)',
-    rain:    'brightness(0.9) saturate(0.7) contrast(1.06)',
-    poly:    'brightness(1.02) saturate(0.78) hue-rotate(5deg)',
-  };
-  // Apply glass filter any time glass is selected (works on all image types)
-  const glass = (state.glassAdd && state.glassTypeName && state.glassTypeName !== 'clear' && state.glassTypeName !== 'plain')
-    ? glassFilters[state.glassTypeName] || '' : '';
-  imgEl.style.filter = glass;
+  imgEl.style.filter = '';
   imgEl.classList.remove('glass-tinted','glass-frosted','glass-obscure','glass-rain','glass-poly');
+}
+
+function getGlassOverlayStyle(glassType) {
+  // Returns CSS filter string to apply to the window strip overlay only
+  const filters = {
+    clear:   '',
+    plain:   '',
+    obscure: 'blur(3px) brightness(0.92)',
+    tinted:  'brightness(0.45) saturate(0.5) sepia(0.2)',
+    frosted: 'brightness(1.1) saturate(0.2) contrast(0.8) blur(1px)',
+    rain:    'brightness(0.88) saturate(0.7) contrast(1.08)',
+    poly:    'brightness(1.05) saturate(0.75) hue-rotate(6deg)',
+  };
+  return filters[glassType] || '';
+}
+
+function getStripKey() {
+  const style = state.doorStyle || 'raised-short';
+  const color = state.doorColor || 'white';
+  const panel = (style === 'raised-long' || style === 'carriage-long') ? 'long' : 'short';
+  return panel + '_' + color;
+}
+
+function updateGlassOverlay(wrapperId) {
+  const wrapper = document.getElementById(wrapperId);
+  if (!wrapper) return;
+
+  // Remove any existing overlay
+  const old = wrapper.querySelector('.glass-strip-overlay');
+  if (old) old.remove();
+
+  // Only show overlay when glass is added and a non-plain type selected
+  if (!state.glassAdd || !state.doorStyle) return;
+  const glassType = state.glassTypeName;
+  const filter = getGlassOverlayStyle(glassType);
+
+  // Create overlay div positioned over the top ~18% of the preview (window row)
+  const overlay = document.createElement('div');
+  overlay.className = 'glass-strip-overlay';
+  overlay.style.cssText = [
+    'position:absolute',
+    'top:0',
+    'left:0',
+    'width:100%',
+    'height:18%',
+    'pointer-events:none',
+    'z-index:10',
+    'overflow:hidden',
+  ].join(';');
+
+  // Inner colored glass tint layer
+  const tint = document.createElement('div');
+  tint.style.cssText = 'width:100%;height:100%;';
+
+  if (glassType === 'tinted') {
+    tint.style.background = 'rgba(0,20,10,0.55)';
+  } else if (glassType === 'frosted') {
+    tint.style.background = 'rgba(240,245,242,0.55)';
+    tint.style.backdropFilter = 'blur(4px)';
+    tint.style.webkitBackdropFilter = 'blur(4px)';
+  } else if (glassType === 'obscure') {
+    tint.style.background = 'rgba(200,215,210,0.3)';
+    tint.style.backdropFilter = 'blur(5px)';
+    tint.style.webkitBackdropFilter = 'blur(5px)';
+  } else if (glassType === 'rain') {
+    tint.style.background = 'rgba(180,200,210,0.25)';
+    tint.style.backdropFilter = 'blur(1px)';
+  } else if (glassType === 'poly') {
+    tint.style.background = 'rgba(200,230,220,0.2)';
+  }
+
+  overlay.appendChild(tint);
+  wrapper.appendChild(overlay);
 }
 
 function selectInsert(el, insertId, file) {
