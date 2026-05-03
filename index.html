@@ -305,11 +305,25 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
     <div class="step-title">Your estimate is ready!</div>
     <div class="step-sub" style="margin-bottom:0;">We'll be in touch shortly to confirm details.</div>
   </div>
+
+  <!-- Live preview of their door selection -->
+  <div class="preview-section" style="margin-bottom:16px;">
+    <div class="preview-label">Your Door Selection</div>
+    <div class="preview-window">
+      <img class="preview-door-img" id="success-prev-img" src="" alt="" style="display:none;"/>
+      <div class="preview-placeholder" id="success-prev-ph">No preview available</div>
+    </div>
+  </div>
+
+  <!-- Selection summary -->
+  <div id="success-summary" style="background:var(--white);border:1px solid var(--tan);border-radius:var(--radius);padding:16px 18px;margin-bottom:16px;font-size:13px;color:var(--charcoal);line-height:1.8;"></div>
+
   <div class="estimate-box">
     <div style="font-size:12px;opacity:0.7;text-transform:uppercase;letter-spacing:1px;">Estimated Range</div>
     <div class="estimate-range" id="est-display">—</div>
     <div class="estimate-note">Final price confirmed after measurement · Installation included</div>
   </div>
+
   <div class="call-box">
     <div style="font-size:14px;color:var(--gray);">Questions? Call us directly</div>
     <a href="tel:+19254326784">(925) 432-6784</a>
@@ -787,9 +801,33 @@ async function submitEst(){
   document.getElementById('sending-overlay').classList.add('active');
   const sn={'raised-short':'Raised Short Panel','raised-long':'Raised Long Panel','skyline':'Skyline Flush','carriage-short':'Carriage Stamp Short','carriage-long':'Carriage Stamp Long'};
   const body={fname:fn,lname:ln,phone:ph,email:document.getElementById('email').value.trim(),address:document.getElementById('address').value.trim(),doorsize:document.getElementById('doorsize').value,notes:document.getElementById('notes').value.trim(),service:state.service,garageCount:state.garageCount,doorStyle:sn[state.doorStyle]||state.doorStyle||'',doorColor:state.doorColor,insulation:state.insulation,glassAdd:state.glassAdd,glassType:state.glassType,insulatedGlass:state.insulatedGlass,paneStyle:state.paneStyle,insertStyle:state.windowInsert,repairType:state.repairType,estimate:calcEst()};
-  try{await fetch('https://hook.us1.make.com/qdiwk4pvkf95aovtbhh23qmw37vmpogd',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});}catch(e){console.warn(e);}
+  try{await fetch('https://hook.us2.make.com/egj41lnwxxb31x5dvilchpt8dr2qjxau',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});}catch(e){console.warn(e);}
   document.getElementById('sending-overlay').classList.remove('active');
   document.getElementById('est-display').textContent=calcEst();
+
+  // Populate success page preview image
+  const prevImg = document.getElementById('success-prev-img');
+  const insLabels={none:'No insulation',pvc:'Steelback (PVC)',steel:'Steel insulated'};
+  const glassLabels={plain:'Plain (clear)',rain:'Rain',tinted:'Tinted',frosted:'Frosted'};
+  const insertLabels={'cascade':'Cascade','prairie':'Prairie','sherwood':'Sherwood','waterton':'Waterton','stockton':'Stockton','madison':'Madison','2-arched-stockton':'2-Piece Arched Stockton','4-arched-stockton':'4-Piece Arched Stockton','2-arched-madison':'2-Piece Arched Madison','4-arched-madison':'4-Piece Arched Madison','2-sunburst':'2-Piece Sunburst','4-sunburst':'4-Piece Sunburst','8-sunburst':'8-Piece Sunburst'};
+  const colorLabel = state.doorColor ? state.doorColor.charAt(0).toUpperCase()+state.doorColor.slice(1) : '';
+  const rows = [
+    ['Door Style', (sn[state.doorStyle]||'') + (colorLabel ? ' · '+colorLabel : '')],
+    ['Insulation', insLabels[state.insulation]||'—'],
+  ];
+  if(state.glassAdd){
+    rows.push(['Glass Type', (glassLabels[state.glassType]||'—') + (state.insulatedGlass?' (Insulated)':'')]);
+    if(state.windowInsert) rows.push(['Insert Style', insertLabels[state.windowInsert]||state.windowInsert]);
+  } else {
+    rows.push(['Windows', 'No windows']);
+  }
+  document.getElementById('success-summary').innerHTML = rows.map(([label,val])=>
+    `<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--tan);">
+      <span style="color:var(--gray);font-weight:600;">${label}</span>
+      <span style="font-weight:500;">${val}</span>
+    </div>`
+  ).join('');
+
   go('s-success');
 }
 
