@@ -349,10 +349,10 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 <script>
 const B='https://colagomdesignco-source.github.io/garage-door-estimator/';
 const IMG={
-  'raised-short-white':         B+'Raised%20short%20panel%20white.png',
-  'raised-short-almond':        B+'Raised%20panel%20short%20almond.png',
-  'raised-long-white':          B+'Raised%20lomg%20panel%20white.png',
-  'raised-long-almond':         B+'Raised%20long%20panel-%20almond.png',
+  'raised-short-white':         B+'Raied%20panel%20short%20no%20windows.png',
+  'raised-short-almond':        B+'Raised%20short%20panel%20almond%20no%20window.png',
+  'raised-long-white':          B+'Raised%20panel%20long%20white%20no%20windows.png',
+  'raised-long-almond':         B+'Raised%20long%20panel%20almond%20no%20window.png',
   'skyline-white':              B+'Skyline%20flush%20white.png',
   'skyline-black':              B+'Skyline%20Flush%20Black.png',
   'carriage-short-white':       B+'Carriage%20house%20short%20panel%20white.png',
@@ -447,6 +447,9 @@ const WHITE_KEYS=new Set([
   'raised-short-white-cascade','raised-short-white-prairie','raised-short-white-sherwood',
   'raised-short-white-waterton','raised-short-white-stockton',
   'raised-short-white-4-sunburst','raised-short-white-8-sunburst',
+  // Glass type fallbacks — almond photos used for white
+  'raised-long-almond-rain','raised-long-almond-tinted','raised-long-almond-frosted','raised-long-almond-obscure',
+  'raised-short-almond-rain','raised-short-almond-tinted','raised-short-almond-frosted',
 ]);
 
 const GP={
@@ -466,25 +469,24 @@ function fmt(n){return '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,max
 let state={service:null,garageCount:null,doorStyle:null,doorColor:null,glassAdd:null,glassType:null,windowInsert:null,insulatedGlass:false,paneStyle:'long',insulation:null,repairType:null,opener:null};
 
 const DOORS=[
-  {id:'raised-short',name:'Raised Short Panel',desc:'Classic raised panels',colors:['white','almond']},
-  {id:'raised-long', name:'Raised Long Panel', desc:'Traditional wide raised',colors:['white','almond']},
-  {id:'skyline',     name:'Skyline Flush',      desc:'Modern flush steel',   colors:['white','black']},
-  {id:'carriage-short',name:'Carriage Stamp Short',desc:'Carriage house style',colors:['white']},
-  {id:'carriage-long', name:'Carriage Stamp Long', desc:'Carriage house style',colors:['white']},
+  {id:'raised-short',name:'Raised Short Panel',desc:'Classic raised panels',colors:['white','almond'],badge:'⭐ Best Seller',badgeColor:'#2d5a3d'},
+  {id:'raised-long', name:'Raised Long Panel', desc:'Traditional wide raised',colors:['white','almond'],badge:'👍 Great Choice',badgeColor:'#6b8f78'},
+  {id:'skyline',     name:'Skyline Flush',      desc:'Modern flush steel',   colors:['white','black'],badge:null},
+  {id:'carriage-short',name:'Carriage Stamp Short',desc:'Carriage house style · White only',colors:['white'],badge:null},
+  {id:'carriage-long', name:'Carriage Stamp Long', desc:'Carriage house style · White only',colors:['white'],badge:null},
 ];
 const CLRS={white:{hex:'#f2f0eb',label:'White'},almond:{hex:'#c8b99a',label:'Almond'},black:{hex:'#222',label:'Black'}};
 
 const INS_SHORT=[
-  {id:'plain',label:'Plain (no insert)'},{id:'cascade',label:'Cascade'},
-  {id:'prairie',label:'Prairie'},{id:'sherwood',label:'Sherwood'},
-  {id:'stockton',label:'Stockton'},{id:'waterton',label:'Waterton'},
-  {id:'4-sunburst',label:'4-Piece Sunburst'},{id:'8-sunburst',label:'8-Piece Sunburst'},
+  {id:'cascade',label:'Cascade'},{id:'prairie',label:'Prairie'},
+  {id:'sherwood',label:'Sherwood'},{id:'stockton',label:'Stockton'},
+  {id:'waterton',label:'Waterton'},{id:'4-sunburst',label:'4-Piece Sunburst'},
+  {id:'8-sunburst',label:'8-Piece Sunburst'},
 ];
 const INS_LONG=[
-  {id:'plain',label:'Plain (no insert)'},{id:'cascade',label:'Cascade'},
-  {id:'prairie',label:'Prairie'},{id:'sherwood',label:'Sherwood'},
-  {id:'waterton',label:'Waterton'},{id:'stockton',label:'Stockton'},
-  {id:'madison',label:'Madison'},
+  {id:'cascade',label:'Cascade'},{id:'prairie',label:'Prairie'},
+  {id:'sherwood',label:'Sherwood'},{id:'waterton',label:'Waterton'},
+  {id:'stockton',label:'Stockton'},{id:'madison',label:'Madison'},
   {id:'2-arched-stockton',label:'2-Piece Arched Stockton'},
   {id:'4-arched-stockton',label:'4-Piece Arched Stockton'},
   {id:'2-arched-madison',label:'2-Piece Arched Madison'},
@@ -496,12 +498,20 @@ function getInserts(){return(state.doorStyle==='raised-short'||state.doorStyle==
 function getImgKey(style,color,gt,ins,pane){
   const base=style+'-'+color;
   if(!gt) return base;
-  if(style==='skyline'){
-    if(ins&&ins!=='plain'){const k=base+'-'+ins;if(IMG[k])return k;}
-    return base+'-'+pane+'-plain';
+  // If an insert is selected, show that insert photo (ignore glass type for preview)
+  if(ins&&ins!=='plain'&&ins!==null){
+    if(style==='skyline'){const k=base+'-'+ins;if(IMG[k])return k;}
+    else{const k=base+'-'+ins;if(IMG[k])return k;}
   }
-  if(ins&&ins!=='plain'){const k=base+'-'+ins;if(IMG[k])return k;}
-  const gtk=base+'-'+gt;if(IMG[gtk])return gtk;
+  // Plain glass type or no insert — show glass type photo if available, else plain windows
+  if(style==='skyline') return base+'-'+pane+'-plain';
+  // Try exact glass type photo for this door+color
+  const gtk=base+'-'+gt; if(IMG[gtk]) return gtk;
+  // If not found and color is white, try same glass type with almond (will get white filter)
+  if(color==='white'){
+    const almondGtk=style+'-almond-'+gt; if(IMG[almondGtk]) return almondGtk;
+  }
+  // Fall back to plain windows
   return base+'-plain';
 }
 
@@ -514,9 +524,14 @@ function needsWhiteFilter(key){return WHITE_KEYS.has(key);}
 
 function renderDoors(){
   document.getElementById('door-grid').innerHTML=DOORS.map(d=>`
-    <div class="door-option${state.doorStyle===d.id?' selected':''}" onclick="selectDoor('${d.id}')">
+    <div class="door-option${state.doorStyle===d.id?' selected':''}" onclick="selectDoor('${d.id}')" style="position:relative;">
+      ${d.badge?`<div style="position:absolute;top:8px;left:8px;background:${d.badgeColor};color:white;font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px;z-index:2;letter-spacing:0.3px;">${d.badge}</div>`:''}
       <img class="door-preview-img" src="${IMG[d.id+'-'+(d.colors[0])]||''}" alt="${d.name}" onerror="this.style.background='#e2ede4'"/>
-      <div class="door-info"><div class="door-name">${d.name}</div><div class="door-desc">${d.desc}</div></div>
+      <div class="door-info">
+        <div class="door-name">${d.name}</div>
+        <div class="door-desc">${d.desc}</div>
+        <div style="font-size:11px;color:#2d7a4a;font-weight:600;margin-top:4px;">✓ In Stock · Ships in 3 days</div>
+      </div>
     </div>`).join('');
 }
 
@@ -642,7 +657,7 @@ function selectColor(c){
 }
 function selectGlassType(id){
   state.glassType=id;
-  if(!state.windowInsert)state.windowInsert='plain';
+  state.windowInsert=null; // clear insert so glass type photo shows
   renderGlassTypes(); renderInserts(); updateGlassPreview();
 }
 function selectInsert(id){
