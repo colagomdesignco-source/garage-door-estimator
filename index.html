@@ -92,8 +92,8 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 .insert-card{background:var(--white);border:2px solid var(--tan);border-radius:10px;overflow:hidden;cursor:pointer;transition:all 0.2s;}
 .insert-card:hover{border-color:#a0bcaa;}
 .insert-card.selected{border-color:var(--green);}
-.insert-thumb{width:100%;background:#f4f8f6;display:flex;align-items:center;justify-content:center;padding:6px;height:68px;overflow:hidden;}
-.insert-thumb img{width:100%;height:100%;object-fit:cover;border-radius:3px;}
+.insert-thumb{width:100%;background:#f4f8f6;display:flex;align-items:center;justify-content:center;padding:4px;height:80px;overflow:hidden;}
+.insert-thumb img{width:100%;height:100%;object-fit:cover;object-position:top center;border-radius:3px;}
 .insert-name{padding:7px 10px;font-size:12px;font-weight:600;text-align:center;}
 .pane-selector{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
 .callout-box{background:#edf4ef;border:1px solid #b8d4be;border-radius:10px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;}
@@ -350,9 +350,9 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 const B='https://colagomdesignco-source.github.io/garage-door-estimator/';
 const IMG={
   'raised-short-white':         B+'Raied%20panel%20short%20no%20windows.png',
-  'raised-short-almond':        B+'Raised%20short%20panel%20almond%20no%20window.png',
+  'raised-short-almond':        B+'Raised%20panel%20short%20almond.png',
   'raised-long-white':          B+'Raised%20panel%20long%20white%20no%20windows.png',
-  'raised-long-almond':         B+'Raised%20long%20panel%20almond%20no%20window.png',
+  'raised-long-almond':         B+'Raised%20long%20panel-%20almond.png',
   'skyline-white':              B+'Skyline%20flush%20white.png',
   'skyline-black':              B+'Skyline%20Flush%20Black.png',
   'carriage-short-white':       B+'Carriage%20house%20short%20panel%20white.png',
@@ -436,20 +436,44 @@ const IMG={
   'skyline-black-4-arched-madison': B+'Skyline%20flush%20black%20windows%204%20piece%20arched%20madison%20.jpg',
   'skyline-black-2-sunburst':       B+'Skyline%20flush%20black%20windows%202%20piece%20arched%20sunburst%20.jpg',
   'skyline-black-4-sunburst':       B+'Skyline%20flush%20black%20windows%204%20piece%20sunburst%20.jpg',
+  // Carriage inserts (white filter applied via CSS)
+  'carriage-short-white-cascade':   B+'Raised%20short%20panel%20almond%20cascade%20.jpg',
+  'carriage-short-white-prairie':   B+'Raised%20short%20panel%20almond%20praire%20.jpg',
+  'carriage-short-white-sherwood':  B+'Raised%20short%20panel%20almond%20sherwood%20.jpg',
+  'carriage-short-white-waterton':  B+'Raised%20short%20panel%20almond%20waterton%20.jpg',
+  'carriage-short-white-stockton':  B+'Raised%20short%20panel%20almond%20stockton%20.jpg',
+  'carriage-long-white-cascade':    B+'Raised%20Long%20Panel%20Almond%20Cascade.jpg',
+  'carriage-long-white-prairie':    B+'Raised%20Long%20Panel%20almond%20Praire.jpg',
+  'carriage-long-white-sherwood':   B+'Raised%20long%20Panel%20Almond%20Sherwood%20.jpg',
+  'carriage-long-white-waterton':   B+'Raised%20Long%20Panel%20Almond%20Waterton%20.jpg',
+  'carriage-long-white-stockton':   B+'raised%20Long%20Panel%20Almond%20Stockton%20.jpg',
+  'carriage-long-white-madison':    B+'Raised%20Long%20Panel%20Almond%20Madison%20.jpg',
+  'carriage-long-white-2-sunburst': B+'Raised%20Long%20Panel%20Almond%202%20piece%20sunburst%20.jpg',
+  'carriage-long-white-4-sunburst': B+'Raised%20long%20panel%20almond%204%20piece%20sunburst%20.jpg',
 };
 
 const WHITE_KEYS=new Set([
+  // Raised long white inserts (use almond photos)
   'raised-long-white-cascade','raised-long-white-prairie','raised-long-white-sherwood',
   'raised-long-white-waterton','raised-long-white-stockton','raised-long-white-madison',
   'raised-long-white-2-arched-stockton','raised-long-white-4-arched-stockton',
   'raised-long-white-2-arched-madison','raised-long-white-4-arched-madison',
   'raised-long-white-2-sunburst','raised-long-white-4-sunburst',
+  // Raised short white inserts (use almond photos)
   'raised-short-white-cascade','raised-short-white-prairie','raised-short-white-sherwood',
   'raised-short-white-waterton','raised-short-white-stockton',
   'raised-short-white-4-sunburst','raised-short-white-8-sunburst',
-  // Glass type fallbacks — almond photos used for white
-  'raised-long-almond-rain','raised-long-almond-tinted','raised-long-almond-frosted','raised-long-almond-obscure',
-  'raised-short-almond-rain','raised-short-almond-tinted','raised-short-almond-frosted',
+  // Skyline white inserts (use black photos + white filter, except cascade)
+  'skyline-white-prairie','skyline-white-sherwood','skyline-white-waterton',
+  'skyline-white-stockton','skyline-white-madison','skyline-white-2-arched-stockton',
+  'skyline-white-4-arched-stockton','skyline-white-2-arched-madison','skyline-white-4-arched-madison',
+  'skyline-white-2-sunburst','skyline-white-4-sunburst',
+  // Carriage white inserts (use almond photos + white filter)
+  'carriage-short-white-cascade','carriage-short-white-prairie','carriage-short-white-sherwood',
+  'carriage-short-white-waterton','carriage-short-white-stockton',
+  'carriage-long-white-cascade','carriage-long-white-prairie','carriage-long-white-sherwood',
+  'carriage-long-white-waterton','carriage-long-white-stockton','carriage-long-white-madison',
+  'carriage-long-white-2-sunburst','carriage-long-white-4-sunburst',
 ]);
 
 const GP={
@@ -470,10 +494,10 @@ let state={service:null,garageCount:null,doorStyle:null,doorColor:null,glassAdd:
 
 const DOORS=[
   {id:'raised-short',name:'Raised Short Panel',desc:'Classic raised panels',colors:['white','almond'],badge:'⭐ Best Seller',badgeColor:'#2d5a3d'},
-  {id:'raised-long', name:'Raised Long Panel', desc:'Traditional wide raised',colors:['white','almond'],badge:'👍 Great Choice',badgeColor:'#6b8f78'},
-  {id:'skyline',     name:'Skyline Flush',      desc:'Modern flush steel',   colors:['white','black'],badge:null},
+  {id:'raised-long', name:'Raised Long Panel', desc:'Traditional wide raised',colors:['white','almond'],badge:null},
+  {id:'skyline',     name:'Skyline Flush',      desc:'Modern flush steel · Steelback insulation',colors:['white','black'],badge:null},
   {id:'carriage-short',name:'Carriage Stamp Short',desc:'Carriage house style · White only',colors:['white'],badge:null},
-  {id:'carriage-long', name:'Carriage Stamp Long', desc:'Carriage house style · White only',colors:['white'],badge:null},
+  {id:'carriage-long', name:'Carriage Stamp Long', desc:'Carriage house style · White only',colors:['white'],badge:'👍 Great Choice',badgeColor:'#6b8f78'},
 ];
 const CLRS={white:{hex:'#f2f0eb',label:'White'},almond:{hex:'#c8b99a',label:'Almond'},black:{hex:'#222',label:'Black'}};
 
@@ -498,19 +522,32 @@ function getInserts(){return(state.doorStyle==='raised-short'||state.doorStyle==
 function getImgKey(style,color,gt,ins,pane){
   const base=style+'-'+color;
   if(!gt) return base;
-  // If an insert is selected, show that insert photo (ignore glass type for preview)
-  if(ins&&ins!=='plain'&&ins!==null){
-    if(style==='skyline'){const k=base+'-'+ins;if(IMG[k])return k;}
-    else{const k=base+'-'+ins;if(IMG[k])return k;}
+  // Insert selected — show insert photo
+  if(ins&&ins!==null){
+    const k=base+'-'+ins; if(IMG[k]) return k;
+    // Skyline white: fall back to black insert photo (white filter applied)
+    if(style==='skyline'&&color==='white'){
+      const bk='skyline-black-'+ins; if(IMG[bk]) return bk;
+    }
+    // Carriage white: fall back to almond raised panel insert (white filter applied)
+    if((style==='carriage-short'||style==='carriage-long')&&color==='white'){
+      const panel=style==='carriage-short'?'raised-short':'raised-long';
+      const ak=panel+'-almond-'+ins; if(IMG[ak]) return ak;
+    }
   }
-  // Plain glass type or no insert — show glass type photo if available, else plain windows
-  if(style==='skyline') return base+'-'+pane+'-plain';
-  // Try exact glass type photo for this door+color
+  // No insert — show glass type photo
+  if(style==='skyline'){
+    // Skyline: try color-specific glass type, else plain
+    const gtk=base+'-'+gt; if(IMG[gtk]) return gtk;
+    return base+'-'+pane+'-plain';
+  }
+  if(style==='carriage-short'||style==='carriage-long'){
+    // Carriage: try specific glass type photo
+    const gtk=base+'-'+gt; if(IMG[gtk]) return gtk;
+    return base+'-plain';
+  }
+  // Try exact glass type photo
   const gtk=base+'-'+gt; if(IMG[gtk]) return gtk;
-  // If not found and color is white, try same glass type with almond (will get white filter)
-  if(color==='white'){
-    const almondGtk=style+'-almond-'+gt; if(IMG[almondGtk]) return almondGtk;
-  }
   // Fall back to plain windows
   return base+'-plain';
 }
@@ -520,7 +557,15 @@ function getImg(style,color,gt,ins,pane){
   return IMG[key]||IMG[style+'-'+color]||null;
 }
 
-function needsWhiteFilter(key){return WHITE_KEYS.has(key);}
+function needsWhiteFilter(key){
+  if(WHITE_KEYS.has(key)) return true;
+  // Skyline white using black insert photos
+  if(key&&key.startsWith('skyline-black-')&&state.doorColor==='white') return true;
+  // Carriage white using almond insert photos
+  if(key&&(key.startsWith('raised-short-almond-')||key.startsWith('raised-long-almond-'))&&
+     (state.doorStyle==='carriage-short'||state.doorStyle==='carriage-long')) return true;
+  return false;
+}
 
 function renderDoors(){
   document.getElementById('door-grid').innerHTML=DOORS.map(d=>`
@@ -530,7 +575,7 @@ function renderDoors(){
       <div class="door-info">
         <div class="door-name">${d.name}</div>
         <div class="door-desc">${d.desc}</div>
-        <div style="font-size:11px;color:#2d7a4a;font-weight:600;margin-top:4px;">✓ In Stock · Ships in 3 days</div>
+        <div style="font-size:11px;color:#2d7a4a;font-weight:600;margin-top:4px;">✓ In Stock · Install as soon as next day</div>
       </div>
     </div>`).join('');
 }
@@ -586,10 +631,16 @@ function renderInserts(){
   if(noIns){document.getElementById('insert-grid').innerHTML='';return;}
   document.getElementById('insert-grid').innerHTML=inserts.map(ins=>{
     let src='',imgKey='';
-    if(ins.id==='plain') src=s==='skyline'?(IMG[s+'-'+c+'-'+state.paneStyle+'-plain']||''):(IMG[s+'-'+c+'-plain']||'');
-    else{imgKey=s+'-'+c+'-'+ins.id;src=IMG[imgKey]||'';}
+    imgKey=s+'-'+c+'-'+ins.id; src=IMG[imgKey]||'';
+    // Skyline white: fall back to black insert
+    if(!src&&s==='skyline'&&c==='white'){imgKey='skyline-black-'+ins.id;src=IMG[imgKey]||'';}
+    // Carriage white: fall back to almond raised panel insert
+    if(!src&&(s==='carriage-short'||s==='carriage-long')&&c==='white'){
+      const p=s==='carriage-short'?'raised-short':'raised-long';
+      imgKey=p+'-almond-'+ins.id; src=IMG[imgKey]||'';
+    }
     const useFilter=needsWhiteFilter(imgKey);
-    const thumb=ins.id==='plain'?plainSVG():src?`<img src="${src}" alt="${ins.label}" ${useFilter?'class="filter-white"':''} onerror="this.style.display='none'"/>`:plainSVG();
+    const thumb=src?`<img src="${src}" alt="${ins.label}" ${useFilter?'class="filter-white"':''} onerror="this.style.display='none'"/>`:plainSVG();
     return`<div class="insert-card${state.windowInsert===ins.id?' selected':''}" onclick="selectInsert('${ins.id}')">
       <div class="insert-thumb">${thumb}</div>
       <div class="insert-name">${ins.label}</div>
