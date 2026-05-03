@@ -49,7 +49,6 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 .icon-wrap svg{width:26px;height:26px;stroke:var(--charcoal);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
 .icon-card .card-title{font-size:14px;}
 .icon-card .card-sub{font-size:12px;}
-/* DOOR STEP */
 .preview-section{background:var(--white);border:1px solid var(--tan);border-radius:var(--radius);overflow:hidden;margin-bottom:20px;}
 .preview-section.sticky{position:sticky;top:72px;z-index:90;}
 .preview-label{padding:8px 14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--gray);border-bottom:1px solid var(--tan);}
@@ -73,7 +72,6 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 .color-tile-swatch{width:100%;height:40px;}
 .color-tile-label{font-size:11px;font-weight:600;color:var(--charcoal);padding:5px 4px;text-align:center;width:100%;border-top:1px solid var(--tan);}
 .color-tile.selected .color-tile-label{color:var(--green);}
-/* GLASS */
 .toggle-row{display:flex;align-items:center;justify-content:space-between;background:var(--white);border:2px solid var(--tan);border-radius:10px;padding:14px 16px;margin-bottom:16px;cursor:pointer;transition:all 0.2s;}
 .toggle-row.on{border-color:var(--green);background:#edf4ef;}
 .toggle-label{font-weight:600;font-size:14px;}
@@ -102,7 +100,6 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 .callout-box svg{width:18px;height:18px;stroke:var(--green);fill:none;flex-shrink:0;margin-top:1px;stroke-width:2;stroke-linecap:round;}
 .callout-box p{font-size:13px;color:var(--charcoal);line-height:1.5;}
 .callout-box a{color:var(--green);font-weight:600;text-decoration:none;}
-/* INSULATION */
 .ins-card{background:var(--white);border:2px solid var(--tan);border-radius:var(--radius);padding:16px 18px;cursor:pointer;transition:all 0.2s;position:relative;margin-bottom:10px;}
 .ins-card:hover{border-color:#a0bcaa;box-shadow:var(--shadow);}
 .ins-card.selected{border-color:var(--green);background:#edf4ef;}
@@ -112,7 +109,6 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 .ins-name{font-weight:600;font-size:15px;}
 .ins-tag{display:inline-block;font-size:10px;font-weight:700;color:var(--gray);background:var(--light);padding:3px 8px;border-radius:10px;margin-top:3px;text-transform:uppercase;}
 .ins-desc{font-size:12px;color:var(--gray);margin-top:4px;}
-/* FORM */
 .form-group{margin-bottom:16px;}
 .form-label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--charcoal);}
 .form-input{width:100%;padding:12px 14px;border:2px solid var(--tan);border-radius:8px;font-size:15px;font-family:'DM Sans',sans-serif;background:var(--white);color:var(--charcoal);transition:border-color 0.2s;outline:none;}
@@ -148,6 +144,7 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
   header{padding:12px 16px;}
   .btn{font-size:15px;padding:14px;}
 }
+.filter-white{filter:brightness(1.55) saturate(0.08) contrast(0.92);}
 </style>
 </head>
 <body>
@@ -161,8 +158,6 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
   <div class="progress-label" id="plabel">Step 1 of 6</div>
 </div>
 <main>
-
-<!-- STEP 1 -->
 <div class="step active" id="s1">
   <div class="step-title">What can we help you with?</div>
   <div class="step-sub">Select the service that best fits your situation.</div>
@@ -185,8 +180,6 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
   </div>
   <div class="btn-row" style="margin-top:24px;"><button class="btn btn-primary" onclick="fromS1()">Continue</button></div>
 </div>
-
-<!-- STEP 2: Count -->
 <div class="step" id="s2-count">
   <div class="step-title">How many garage doors?</div>
   <div class="step-sub">Select how many doors you need.</div>
@@ -209,13 +202,9 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
   </div>
   <div class="btn-row"><button class="btn-back" onclick="go('s1')">← Back</button><button class="btn btn-primary" onclick="fromCount()">Continue</button></div>
 </div>
-
-<!-- STEP 3: Door + Color -->
 <div class="step" id="s3-door">
   <div class="step-title">Choose your door style</div>
   <div class="step-sub">Select a style then pick your color below.</div>
-
-  <!-- Live preview STICKY AT TOP -->
   <div class="preview-section sticky">
     <div class="preview-label">Live Preview</div>
     <div class="preview-window">
@@ -223,18 +212,13 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
       <div class="preview-placeholder" id="door-prev-ph">Select a door style to preview</div>
     </div>
   </div>
-
   <div class="door-grid" id="door-grid"></div>
-
   <div id="color-row" class="color-row" style="display:none;">
     <span class="section-label">Color</span>
     <div class="color-tiles" id="color-tiles"></div>
   </div>
-
   <div class="btn-row"><button class="btn-back" onclick="go('s2-count')">← Back</button><button class="btn btn-primary" onclick="fromDoor()">Continue</button></div>
 </div>
-
-<!-- STEP 4: Add glass? -->
 <div class="step" id="s4-glass">
   <div class="step-title">Would you like to add windows?</div>
   <div class="step-sub">Windows add light and curb appeal. Pricing depends on glass type.</div>
@@ -252,12 +236,9 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
   </div>
   <div class="btn-row"><button class="btn-back" onclick="go('s3-door')">← Back</button><button class="btn btn-primary" onclick="fromGlassAdd()">Continue</button></div>
 </div>
-
-<!-- STEP 5: Glass customization -->
 <div class="step" id="s5-customize">
   <div class="step-title">Customize your windows</div>
   <div class="step-sub">Top row · 4 panes · installed</div>
-
   <div class="preview-section sticky">
     <div class="preview-label">Live Preview</div>
     <div class="preview-window">
@@ -265,7 +246,6 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
       <div class="preview-placeholder" id="glass-prev-ph">Select options to preview</div>
     </div>
   </div>
-
   <div id="pane-wrap" style="display:none;">
     <span class="section-label">Window Style</span>
     <div class="pane-selector">
@@ -273,35 +253,26 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
       <div class="card" id="pane-short" onclick="pickPane('short',this)"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Short pane</div><div class="card-sub">8 smaller windows</div></div>
     </div>
   </div>
-
   <div class="toggle-row" id="ins-glass-toggle" onclick="toggleInsGlass()">
     <div><div class="toggle-label">Insulated glass</div><div class="toggle-sub">Adds thermal efficiency — available on any door</div></div>
     <div class="toggle-switch" id="ins-glass-sw"></div>
   </div>
-
   <span class="section-label">Glass Type</span>
   <div class="glass-grid" id="glass-type-grid"></div>
-
   <span class="section-label" id="insert-lbl">Window Insert Style</span>
   <div class="insert-grid" id="insert-grid"></div>
-
   <div class="callout-box">
     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
     <p>Want additional glass rows, long pane on a short panel door, or other custom configurations? <a href="tel:+19254326784">Give us a call</a> or book a <strong>free design consultation</strong> — we'd love to help!</p>
   </div>
-
   <div class="btn-row"><button class="btn-back" onclick="go('s4-glass')">← Back</button><button class="btn btn-primary" onclick="go('s6-insulation')">Continue</button></div>
 </div>
-
-<!-- STEP 6: Insulation -->
 <div class="step" id="s6-insulation">
   <div class="step-title">Choose your insulation</div>
   <div class="step-sub">Better insulation means quieter operation and lower energy bills.</div>
   <div id="ins-cards"></div>
   <div class="btn-row"><button class="btn-back" id="ins-back" onclick="insBack()">← Back</button><button class="btn btn-primary" onclick="go('s7-contact')">Continue</button></div>
 </div>
-
-<!-- STEP 7: Contact -->
 <div class="step" id="s7-contact">
   <div class="step-title">Almost there!</div>
   <div class="step-sub">Enter your info to unlock your personalized price range.</div>
@@ -328,8 +299,6 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
   <div class="form-group"><label class="form-label">Notes</label><textarea class="form-input" id="notes" rows="3" placeholder="Any details about your project..."></textarea></div>
   <div class="btn-row"><button class="btn-back" onclick="go('s6-insulation')">← Back</button><button class="btn btn-primary" onclick="submitEst()">See My Estimate →</button></div>
 </div>
-
-<!-- SUCCESS -->
 <div class="step" id="s-success">
   <div style="text-align:center;padding:32px 0 24px;">
     <div class="success-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
@@ -347,8 +316,6 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
   </div>
   <button class="btn btn-primary" style="margin-top:8px;" onclick="restart()">Start a new estimate</button>
 </div>
-
-<!-- REPAIR -->
 <div class="step" id="s2-repair">
   <div class="step-title">What needs fixing?</div>
   <div class="step-sub">Select the service and we'll give you a price range.</div>
@@ -358,7 +325,6 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
   </div>
   <div class="btn-row"><button class="btn-back" onclick="go('s1')">← Back</button><button class="btn btn-primary" onclick="fromRepair()">Continue</button></div>
 </div>
-
 <div class="step" id="s-opener">
   <div class="step-title">Opener / Motor</div>
   <div class="step-sub">Select your opener type</div>
@@ -373,93 +339,91 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
   </div>
   <div class="btn-row"><button class="btn-back" onclick="go('s2-repair')">← Back</button><button class="btn btn-primary" onclick="go('s7-contact')">Get estimate</button></div>
 </div>
-
 <div class="step" id="s-other">
   <div class="step-title">Repair or service</div>
   <div class="step-sub">We'll diagnose and fix the issue.</div>
   <div class="estimate-box"><div class="estimate-range">$200 – $500</div><div class="estimate-note">Final quote after inspection</div></div>
   <div class="btn-row"><button class="btn-back" onclick="go('s2-repair')">← Back</button><button class="btn btn-primary" onclick="go('s7-contact')">Get estimate</button></div>
 </div>
-
 </main>
 <script>
 const B='https://colagomdesignco-source.github.io/garage-door-estimator/';
 const IMG={
-  // Base doors — no windows (CORRECT filenames)
-  'raised-short-white':         B+'Raised%20panel%20short.png',
-  'raised-short-almond':        B+'Raised%20short%20panel%20almond%20no%20window.png',
-  'raised-long-white':          B+'Raised%20long%20panel%20white.png',
-  'raised-long-almond':         B+'Raised%20long%20panel%20almond%20no%20window.png',
+  'raised-short-white':         B+'Raised%20short%20panel%20white.png',
+  'raised-short-almond':        B+'Raised%20panel%20short%20almond.png',
+  'raised-long-white':          B+'Raised%20lomg%20panel%20white.png',
+  'raised-long-almond':         B+'Raised%20long%20panel-%20almond.png',
   'skyline-white':              B+'Skyline%20flush%20white.png',
   'skyline-black':              B+'Skyline%20Flush%20Black.png',
   'carriage-short-white':       B+'Carriage%20house%20short%20panel%20white.png',
   'carriage-long-white':        B+'Carriage%20House%20long%20panel%20white.png',
-  // Plain windows
   'raised-short-white-plain':   B+'Raised%20panel%20short%20windows%20white.png',
-  // Note: if this image looks bad, it will show placeholder instead
-  'raised-short-almond-plain':  B+'Raised%20short%20panel%20windows%20almond.png',
+  'raised-short-almond-plain':  B+'Raised%20panel%20short%20windows%20almond.png',
   'raised-long-white-plain':    B+'Raised%20panel%20long%20windows.png',
   'raised-long-almond-plain':   B+'Raised%20long%20panel%20windows%20almond.png',
   'skyline-white-long-plain':   B+'Skyline%20flush%20white%20windows%20no%20inserts%20.jpg',
   'skyline-black-long-plain':   B+'Skyline%20flush%20black%20windows%20.jpg',
   'skyline-white-short-plain':  B+'Skyline%20flush%20white%20short%20pane%20windows.png',
   'skyline-black-short-plain':  B+'skyline%20flush%20black%20short%20pane%20windows.png',
-  'carriage-short-white-plain': B+'Carriage%20stamp%20short%20panel%20with%20long%20pane%20windows.png',
-  'carriage-long-white-plain':  B+'Carriage%20stamp%20long%20panel%20windows.png',
-  // Raised long almond glass types
+  'carriage-short-white-plain': B+'Carriage%20stamp%20short%20panel%20white%20windows%20no%20inserts%20.jpg',
+  'carriage-long-white-plain':  B+'Carriage%20stamp%20long%20panel%20windows%20no%20inserts%20white%20.jpg',
   'raised-long-almond-obscure': B+'Raised%20Long%20Panel%20Almond%20no%20insert%20Obscure%20glass%20.jpg',
   'raised-long-almond-rain':    B+'Raised%20Long%20Panel%20Almond%20no%20insert%20Rain%20.jpg',
   'raised-long-almond-tinted':  B+'Raised%20long%20panel%20almond%20no%20insert%20tinted%20.jpg',
   'raised-long-almond-frosted': B+'Raised%20long%20panel%20almond%20no%20insert%20frosted%20.jpg',
-  // Raised long white glass types
-  'raised-long-white-obscure':  B+'White%20long%20panel%20window%20no%20inserts%20obscure.jpg',
-  'raised-long-white-rain':     B+'white%20long%20panel%20window%20no%20inserts%20rain%20.jpg',
-  'raised-long-white-tinted':   B+'white%20long%20panel%20window%20no%20inserts%20tinted%20.jpg',
-  'raised-long-white-frosted':  B+'white%20long%20panel%20window%20no%20inserts%20frosted%20.jpg',
-  // Raised long almond inserts
-  'raised-long-almond-cascade':           B+'almond%20long%20panel%20cascade%20.jpg',
-  'raised-long-almond-prairie':           B+'almond%20long%20panel%20praire%20.jpg',
-  'raised-long-almond-sherwood':          B+'almond%20long%20panel%20sherwood%20.jpg',
-  'raised-long-almond-waterton':          B+'almond%20long%20panel%20waterton%20.jpg',
-  'raised-long-almond-stockton':          B+'almond%20long%20panel%20stockton%20.jpg',
-  'raised-long-almond-madison':           B+'Almond%20long%20panel%20madison%20.jpg',
-  'raised-long-almond-2-arched-stockton': B+'almond%20long%20panel%202%20piece%20arched%20stockton%20.jpg',
-  'raised-long-almond-4-arched-stockton': B+'almond%20long%20panel%204%20piece%20arched%20stockton%20.jpg',
+  'raised-long-white-rain':     B+'raised%20long%20panel%20white%20rain%20.jpg',
+  'raised-long-white-tinted':   B+'Raised%20long%20panel%20white%20tinted%20.jpg',
+  'raised-long-white-frosted':  B+'Raised%20long%20panel%20white%20frosted%20.jpg',
+  'raised-short-white-rain':    B+'Raised%20panel%20short%20rain%20white%20.jpg',
+  'raised-short-white-tinted':  B+'Raised%20panel%20short%20windows%20tinted%20white.jpg',
+  'raised-short-white-frosted': B+'Raised%20panel%20short%20frosted%20white.jpg',
+  'raised-short-almond-rain':   B+'Raised%20panel%20short%20almond%20rain%20.jpg',
+  'raised-short-almond-tinted': B+'raised%20short%20panel%20almond%20tinted%20.jpg',
+  'raised-short-almond-frosted':B+'Raised%20panel%20short%20almond%20frosted%20.jpg',
+  'carriage-short-white-rain':  B+'Carriage_stamp_short_rain.png',
+  'carriage-short-white-tinted':B+'carriage_stamp_short_tinted.png',
+  'carriage-short-white-frosted':B+'Carriage_stamp_short_frosted.png',
+  'carriage-long-white-rain':   B+'Carriage_stamp_long_rain.png',
+  'carriage-long-white-tinted': B+'Carriage_stamp_long_tinted.png',
+  'carriage-long-white-frosted':B+'Carriage_stamp_long_frosted.png',
+  'raised-long-almond-cascade':           B+'Raised%20Long%20Panel%20Almond%20Cascade.jpg',
+  'raised-long-almond-prairie':           B+'Raised%20Long%20Panel%20almond%20Praire.jpg',
+  'raised-long-almond-sherwood':          B+'Raised%20long%20Panel%20Almond%20Sherwood%20.jpg',
+  'raised-long-almond-waterton':          B+'Raised%20Long%20Panel%20Almond%20Waterton%20.jpg',
+  'raised-long-almond-stockton':          B+'raised%20Long%20Panel%20Almond%20Stockton%20.jpg',
+  'raised-long-almond-madison':           B+'Raised%20Long%20Panel%20Almond%20Madison%20.jpg',
+  'raised-long-almond-2-arched-stockton': B+'Raised%20Long%20Panel%20Almond%202%20piece%20arched%20stockton%20.jpg',
+  'raised-long-almond-4-arched-stockton': B+'raised%20long%20Panel%20Almond%204%20piece%20arched%20stockton%20.jpg',
   'raised-long-almond-2-arched-madison':  B+'Raised%20long%20Panel%20Almond%202%20piece%20arched%20madison.jpg',
-  'raised-long-almond-2-sunburst':        B+'almond%20long%20panel%202%20piece%20sunburst%20.jpg',
-  'raised-long-almond-4-sunburst':        B+'almond%20long%20panel%204%20piece%20sunburst.jpg',
-  // Raised long white inserts
-  'raised-long-white-cascade':            B+'White%20long%20panel%20cascade%20.jpg',
-  'raised-long-white-prairie':            B+'White%20long%20panel%20praire%20.jpg',
-  'raised-long-white-sherwood':           B+'white%20long%20panel%20sherwood%20.jpg',
-  'raised-long-white-waterton':           B+'White%20long%20panel%20waterton%20.jpg',
-  'raised-long-white-stockton':           B+'White%20long%20panel%20stockton%20.jpg',
-  'raised-long-white-madison':            B+'white%20long%20panel%20madison%20.jpg',
-  'raised-long-white-2-arched-stockton':  B+'Whte%20long%20panel%202%20piece%20arched%20stockton%20.jpg',
-  'raised-long-white-4-arched-stockton':  B+'white%20long%20panel%204%20piece%20arched%20stockton%20.jpg',
-  'raised-long-white-2-arched-madison':   B+'white%20long%20panel%202%20piece%20arched%20madison%20.jpg',
-  'raised-long-white-4-arched-madison':   B+'white%20long%20panel%204%20piece%20arched%20madison%20.jpg',
-  'raised-long-white-2-sunburst':         B+'white%20long%20panel%202%20piece%20sunburst%20.jpg',
-  'raised-long-white-4-sunburst':         B+'white%20long%20panel%204%20piece%20sunburst%20.jpg',
-  // Raised short almond inserts
-  'raised-short-almond-cascade':    B+'almond%20short%20panel%20cascade%20.jpg',
-  'raised-short-almond-prairie':    B+'almond%20short%20panel%20praire%20.jpg',
-  'raised-short-almond-sherwood':   B+'almond%20short%20panel%20sherwood%20.jpg',
-  'raised-short-almond-waterton':   B+'almond%20short%20panel%20waterton%20.jpg',
-  'raised-short-almond-stockton':   B+'almond%20short%20panel%20stockton%20.jpg',
-  'raised-short-almond-4-sunburst': B+'almond%20short%20panel%204%20piece%20sunburst%20.jpg',
-  'raised-short-almond-8-sunburst': B+'almond%20short%20panel%208%20piece%20sunburst%20.jpg',
-  // Raised short white inserts
-  'raised-short-white-cascade':     B+'White%20short%20panel%20cascade%20.jpg',
-  'raised-short-white-prairie':     B+'White%20short%20panel%20praire%20.jpg',
-  'raised-short-white-sherwood':    B+'white%20short%20panel%20sherwood%20.jpg',
-  'raised-short-white-waterton':    B+'white%20short%20panel%20waterton%20.jpg',
-  'raised-short-white-stockton':    B+'white%20short%20panel%20stockton%20.jpg',
-  'raised-short-white-4-sunburst':  B+'white%20short%20panel%204%20piece%20sunburst%20.jpg',
-  'raised-short-white-8-sunburst':  B+'white%20short%20panel%208%20piece%20sunburst%20.jpg',
-  // Skyline white inserts
+  'raised-long-almond-2-sunburst':        B+'Raised%20Long%20Panel%20Almond%202%20piece%20sunburst%20.jpg',
+  'raised-long-almond-4-sunburst':        B+'Raised%20long%20panel%20almond%204%20piece%20sunburst%20.jpg',
+  'raised-long-white-cascade':            B+'Raised%20Long%20Panel%20Almond%20Cascade.jpg',
+  'raised-long-white-prairie':            B+'Raised%20Long%20Panel%20almond%20Praire.jpg',
+  'raised-long-white-sherwood':           B+'Raised%20long%20Panel%20Almond%20Sherwood%20.jpg',
+  'raised-long-white-waterton':           B+'Raised%20Long%20Panel%20Almond%20Waterton%20.jpg',
+  'raised-long-white-stockton':           B+'raised%20Long%20Panel%20Almond%20Stockton%20.jpg',
+  'raised-long-white-madison':            B+'Raised%20Long%20Panel%20Almond%20Madison%20.jpg',
+  'raised-long-white-2-arched-stockton':  B+'Raised%20Long%20Panel%20Almond%202%20piece%20arched%20stockton%20.jpg',
+  'raised-long-white-4-arched-stockton':  B+'raised%20long%20Panel%20Almond%204%20piece%20arched%20stockton%20.jpg',
+  'raised-long-white-2-arched-madison':   B+'Raised%20long%20Panel%20Almond%202%20piece%20arched%20madison.jpg',
+  'raised-long-white-4-arched-madison':   B+'Raised%20Long%20Panel%20Almond%20Madison%20.jpg',
+  'raised-long-white-2-sunburst':         B+'Raised%20Long%20Panel%20Almond%202%20piece%20sunburst%20.jpg',
+  'raised-long-white-4-sunburst':         B+'Raised%20long%20panel%20almond%204%20piece%20sunburst%20.jpg',
+  'raised-short-almond-cascade':    B+'Raised%20short%20panel%20almond%20cascade%20.jpg',
+  'raised-short-almond-prairie':    B+'Raised%20short%20panel%20almond%20praire%20.jpg',
+  'raised-short-almond-sherwood':   B+'Raised%20short%20panel%20almond%20sherwood%20.jpg',
+  'raised-short-almond-waterton':   B+'Raised%20short%20panel%20almond%20waterton%20.jpg',
+  'raised-short-almond-stockton':   B+'Raised%20short%20panel%20almond%20stockton%20.jpg',
+  'raised-short-almond-4-sunburst': B+'Raised%20short%20panel%20almond%204%20piece%20sunburst%20.jpg',
+  'raised-short-almond-8-sunburst': B+'raised%20short%20panel%20almond%208%20piece%20sunburst%20.jpg',
+  'raised-short-white-cascade':     B+'Raised%20short%20panel%20almond%20cascade%20.jpg',
+  'raised-short-white-prairie':     B+'Raised%20short%20panel%20almond%20praire%20.jpg',
+  'raised-short-white-sherwood':    B+'Raised%20short%20panel%20almond%20sherwood%20.jpg',
+  'raised-short-white-waterton':    B+'Raised%20short%20panel%20almond%20waterton%20.jpg',
+  'raised-short-white-stockton':    B+'Raised%20short%20panel%20almond%20stockton%20.jpg',
+  'raised-short-white-4-sunburst':  B+'Raised%20short%20panel%20almond%204%20piece%20sunburst%20.jpg',
+  'raised-short-white-8-sunburst':  B+'raised%20short%20panel%20almond%208%20piece%20sunburst%20.jpg',
   'skyline-white-cascade':          B+'Skyline%20flush%20white%20cascade%20inserts%20.jpg',
-  // Skyline black inserts
   'skyline-black-cascade':          B+'Skyline%20flush%20black%20windows%20cascade%20.jpg',
   'skyline-black-prairie':          B+'Skyline%20flush%20black%20windows%20praire%20.jpg',
   'skyline-black-sherwood':         B+'Skyline%20flush%20black%20windows%20sherwood%20.jpg',
@@ -467,12 +431,23 @@ const IMG={
   'skyline-black-stockton':         B+'Skyline%20flush%20black%20windows%20stockton%20.jpg',
   'skyline-black-madison':          B+'Skyline%20flush%20black%20windows%20madison%20.jpg',
   'skyline-black-2-arched-stockton':B+'Skyline%20flush%20blackwindows%202%20piece%20arched%20stockton%20.jpg',
-  'skyline-black-4-arched-stockton':B+'Skyine%20flush%20black%20windows%204%20piece%20arched%20stockton%20.jpg',
+  'skyline-black-4-arched-stockton':B+'Skyline%20flush%20black%20windows%204%20piece%20arched%20stockton%20.jpg',
   'skyline-black-2-arched-madison': B+'Skyline%20flush%20black%20windows%202%20piece%20arched%20madison%20.jpg',
   'skyline-black-4-arched-madison': B+'Skyline%20flush%20black%20windows%204%20piece%20arched%20madison%20.jpg',
   'skyline-black-2-sunburst':       B+'Skyline%20flush%20black%20windows%202%20piece%20arched%20sunburst%20.jpg',
   'skyline-black-4-sunburst':       B+'Skyline%20flush%20black%20windows%204%20piece%20sunburst%20.jpg',
 };
+
+const WHITE_KEYS=new Set([
+  'raised-long-white-cascade','raised-long-white-prairie','raised-long-white-sherwood',
+  'raised-long-white-waterton','raised-long-white-stockton','raised-long-white-madison',
+  'raised-long-white-2-arched-stockton','raised-long-white-4-arched-stockton',
+  'raised-long-white-2-arched-madison','raised-long-white-4-arched-madison',
+  'raised-long-white-2-sunburst','raised-long-white-4-sunburst',
+  'raised-short-white-cascade','raised-short-white-prairie','raised-short-white-sherwood',
+  'raised-short-white-waterton','raised-short-white-stockton',
+  'raised-short-white-4-sunburst','raised-short-white-8-sunburst',
+]);
 
 const GP={
   plain:  {long:[128.40,166.20],oversized:[142.20,190.80]},
@@ -518,18 +493,24 @@ const INS_LONG=[
 ];
 function getInserts(){return(state.doorStyle==='raised-short'||state.doorStyle==='carriage-short')?INS_SHORT:INS_LONG;}
 
-function getImg(style,color,gt,ins,pane){
+function getImgKey(style,color,gt,ins,pane){
   const base=style+'-'+color;
-  if(!gt) return IMG[base]||null;
+  if(!gt) return base;
   if(style==='skyline'){
-    if(ins&&ins!=='plain'){const k=base+'-'+ins;if(IMG[k])return IMG[k];}
-    return IMG[base+'-'+pane+'-plain']||IMG[base]||null;
+    if(ins&&ins!=='plain'){const k=base+'-'+ins;if(IMG[k])return k;}
+    return base+'-'+pane+'-plain';
   }
-  if(ins&&ins!=='plain'){const k=base+'-'+ins;if(IMG[k])return IMG[k];}
-  const gtk=base+'-'+gt;if(IMG[gtk])return IMG[gtk];
-  const pk=base+'-plain';if(IMG[pk])return IMG[pk];
-  return IMG[base]||null;
+  if(ins&&ins!=='plain'){const k=base+'-'+ins;if(IMG[k])return k;}
+  const gtk=base+'-'+gt;if(IMG[gtk])return gtk;
+  return base+'-plain';
 }
+
+function getImg(style,color,gt,ins,pane){
+  const key=getImgKey(style,color,gt,ins,pane);
+  return IMG[key]||IMG[style+'-'+color]||null;
+}
+
+function needsWhiteFilter(key){return WHITE_KEYS.has(key);}
 
 function renderDoors(){
   document.getElementById('door-grid').innerHTML=DOORS.map(d=>`
@@ -549,7 +530,6 @@ function renderColors(){
       <div class="color-tile-swatch" style="background:${CLRS[c].hex};"></div>
       <div class="color-tile-label">${CLRS[c].label}</div>
     </div>`).join('');
-  // Auto-scroll to color row
   setTimeout(()=>wrap.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
 }
 
@@ -558,7 +538,7 @@ function updateDoorPreview(){
   const ph=document.getElementById('door-prev-ph');
   if(state.doorStyle&&state.doorColor){
     const src=IMG[state.doorStyle+'-'+state.doorColor]||'';
-    if(src){img.src=src;img.style.display='block';ph.style.display='none';return;}
+    if(src){img.src=src;img.style.display='block';img.style.filter='';ph.style.display='none';return;}
   }
   img.style.display='none';ph.style.display='flex';
 }
@@ -590,10 +570,11 @@ function renderInserts(){
   document.getElementById('insert-lbl').style.display=noIns?'none':'block';
   if(noIns){document.getElementById('insert-grid').innerHTML='';return;}
   document.getElementById('insert-grid').innerHTML=inserts.map(ins=>{
-    let src='';
+    let src='',imgKey='';
     if(ins.id==='plain') src=s==='skyline'?(IMG[s+'-'+c+'-'+state.paneStyle+'-plain']||''):(IMG[s+'-'+c+'-plain']||'');
-    else src=IMG[s+'-'+c+'-'+ins.id]||'';
-    const thumb=ins.id==='plain'?plainSVG():src?`<img src="${src}" alt="${ins.label}" onerror="this.style.display='none'"/>`:plainSVG();
+    else{imgKey=s+'-'+c+'-'+ins.id;src=IMG[imgKey]||'';}
+    const useFilter=needsWhiteFilter(imgKey);
+    const thumb=ins.id==='plain'?plainSVG():src?`<img src="${src}" alt="${ins.label}" ${useFilter?'class="filter-white"':''} onerror="this.style.display='none'"/>`:plainSVG();
     return`<div class="insert-card${state.windowInsert===ins.id?' selected':''}" onclick="selectInsert('${ins.id}')">
       <div class="insert-thumb">${thumb}</div>
       <div class="insert-name">${ins.label}</div>
@@ -604,9 +585,12 @@ function renderInserts(){
 function updateGlassPreview(){
   const img=document.getElementById('glass-prev-img');
   const ph=document.getElementById('glass-prev-ph');
-  const src=getImg(state.doorStyle,state.doorColor,state.glassType,state.windowInsert,state.paneStyle);
-  if(src){img.src=src;img.style.display='block';ph.style.display='none';}
-  else{img.style.display='none';ph.style.display='flex';}
+  const key=getImgKey(state.doorStyle,state.doorColor,state.glassType,state.windowInsert,state.paneStyle);
+  const src=IMG[key]||IMG[state.doorStyle+'-'+state.doorColor]||null;
+  if(src){
+    img.src=src;img.style.display='block';ph.style.display='none';
+    img.style.filter=needsWhiteFilter(key)?'brightness(1.55) saturate(0.08) contrast(0.92)':'';
+  }else{img.style.display='none';ph.style.display='flex';img.style.filter='';}
 }
 
 function renderInsulation(){
