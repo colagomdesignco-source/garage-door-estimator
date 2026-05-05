@@ -1,323 +1,1146 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Your Estimate — Generational Garage Doors</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
 :root {
-  --green: #2c5f2e;
-  --green2: #4a9e4e;
-  --gold: #b8860b;
-  --bg: #f7f5f1;
+  --bg: #f5f3ef;
   --surface: #ffffff;
-  --border: #e4dfd7;
+  --surface2: #f0ede8;
+  --border: #e0dbd2;
   --text: #1a1714;
   --text2: #6b6560;
+  --accent: #2c5f2e;
+  --accent2: #4a9e4e;
   --warn: #c0392b;
-  --radius: 12px;
+  --gold: #b8860b;
+  --radius: 10px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-.page-wrap { max-width: 760px; margin: 0 auto; padding: 32px 16px 80px; }
+header {
+  background: var(--accent);
+  color: white;
+  padding: 18px 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+header h1 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; }
+header span { font-size: 0.8rem; opacity: 0.7; margin-left: auto; }
 
-/* Header */
-.est-header { background: var(--green); color: white; border-radius: var(--radius) var(--radius) 0 0; padding: 32px 40px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
-.est-logo { height: 72px; width: auto; }
-.est-header-right { text-align: right; }
-.est-header-right h2 { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 400; margin-bottom: 4px; }
-.est-header-right p { font-size: 0.8rem; opacity: 0.7; }
-.est-number { font-size: 0.78rem; opacity: 0.6; margin-top: 6px; }
+.container { max-width: 100%; margin: 0 auto; padding: 24px 16px; display: grid; grid-template-columns: 1fr 360px; gap: 20px; }
+@media (max-width: 768px) {
+  .container { grid-template-columns: 1fr; padding: 12px; }
+  .quote-panel { position: static; }
+  .quote-total-box { padding: 16px; }
+  .qt-total { font-size: 2rem; }
+  .row2, .row3, .row4 { grid-template-columns: 1fr; }
+  header { padding: 14px 16px; flex-wrap: wrap; gap: 8px; }
+  header span { margin-left: 0; font-size: 0.75rem; }
+  .btn { font-size: 0.82rem; padding: 10px 14px; }
+  .line-item { grid-template-columns: 1fr auto auto; }
+  .add-item-row { grid-template-columns: 1fr 80px auto; }
+}
+.panel { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; }
+.panel-header { background: var(--surface2); padding: 14px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+.panel-header h2 { font-size: 0.85rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text2); }
+.panel-header .badge { background: var(--accent); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 600; flex-shrink: 0; }
+.panel-body { padding: 20px; }
 
-/* Green bar */
-.green-bar { height: 5px; background: linear-gradient(90deg, var(--green2), var(--gold)); }
+label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text2); margin-bottom: 6px; letter-spacing: 0.04em; text-transform: uppercase; }
+select, input[type="number"], input[type="text"] {
+  width: 100%; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 7px;
+  font-family: 'DM Sans', sans-serif; font-size: 0.9rem; background: var(--surface);
+  color: var(--text); transition: border-color 0.2s;
+}
+select:focus, input:focus { outline: none; border-color: var(--accent); }
 
-/* Customer info */
-.est-meta { background: var(--surface); padding: 28px 40px; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
-@media(max-width:600px){ .est-meta { grid-template-columns: 1fr; padding: 20px; } .est-header { padding: 20px; } .est-header-right h2 { font-size: 1.2rem; } .est-logo { height: 52px; } .line-items-table th, .line-items-table td { padding: 10px 12px; } }
-.meta-group label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text2); display: block; margin-bottom: 4px; }
-.meta-group p { font-size: 0.9rem; color: var(--text); line-height: 1.5; }
+.field-group { margin-bottom: 18px; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.row4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; }
 
-/* Line items */
-.line-items-section { background: var(--surface); padding: 0 40px; }
-@media(max-width:600px){ .line-items-section { padding: 0; } }
-.line-items-table { width: 100%; border-collapse: collapse; }
-.line-items-table th { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text2); padding: 14px 16px; text-align: left; border-bottom: 2px solid var(--border); background: #faf9f7; }
-.line-items-table th:last-child { text-align: right; }
-.line-items-table td { padding: 14px 16px; font-size: 0.88rem; border-bottom: 1px solid var(--border); vertical-align: top; }
-.line-items-table td:last-child { text-align: right; font-weight: 600; }
-.line-items-table tr:last-child td { border-bottom: none; }
-.item-name { font-weight: 500; }
-.item-sub { font-size: 0.78rem; color: var(--text2); margin-top: 2px; }
+.rec-box { background: #f0f7f0; border: 1.5px solid #b8d9b9; border-radius: 8px; padding: 14px 16px; margin: 16px 0; }
+.rec-box h3 { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); margin-bottom: 10px; }
+.rec-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; font-size: 0.85rem; }
+.rec-label { color: var(--text2); }
+.rec-value { font-weight: 600; color: var(--text); }
+.rec-warning { background: #fff8e1; border: 1.5px solid #ffe082; border-radius: 8px; padding: 12px 14px; margin: 10px 0; font-size: 0.82rem; color: #7b5800; }
+.rec-danger { background: #fff0f0; border: 1.5px solid #ffaaaa; border-radius: 8px; padding: 12px 14px; margin: 10px 0; font-size: 0.82rem; color: #c0392b; font-weight: 600; }
 
-/* Totals */
-.totals-section { background: var(--surface); padding: 20px 40px 28px; border-top: 2px solid var(--border); }
-@media(max-width:600px){ .totals-section { padding: 16px 20px; } }
-.totals-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; font-size: 0.88rem; }
-.totals-row.grand { border-top: 2px solid var(--text); margin-top: 10px; padding-top: 14px; font-size: 1.1rem; font-weight: 700; color: var(--green); }
-.totals-label { color: var(--text2); }
-.totals-row.grand .totals-label { color: var(--text); }
+.divider { height: 1px; background: var(--border); margin: 20px 0; }
 
-/* Notes */
-.notes-section { background: #f0f7f0; border-left: 4px solid var(--green2); margin: 0 40px 0; padding: 16px 20px; }
-@media(max-width:600px){ .notes-section { margin: 0; } }
-.notes-section p { font-size: 0.85rem; color: var(--text); line-height: 1.6; }
+.line-items { display: flex; flex-direction: column; gap: 8px; }
+.line-item {
+  display: grid; grid-template-columns: 1fr auto auto auto;
+  align-items: center; gap: 10px;
+  padding: 10px 12px; background: var(--surface2); border-radius: 7px;
+  border: 1px solid var(--border);
+}
+.line-item.free { opacity: 0.6; text-decoration: line-through; }
+.li-name { font-size: 0.88rem; font-weight: 500; }
+.li-sub { font-size: 0.75rem; color: var(--text2); }
+.li-price { font-size: 0.9rem; font-weight: 600; color: var(--accent); white-space: nowrap; }
+.li-price.zero { color: var(--text2); }
+.free-btn {
+  font-size: 0.7rem; padding: 3px 8px; border-radius: 20px; border: 1.5px solid var(--border);
+  cursor: pointer; background: white; color: var(--text2); transition: all 0.2s; white-space: nowrap;
+}
+.free-btn.active { background: var(--gold); border-color: var(--gold); color: white; }
+.li-remove { background: none; border: none; cursor: pointer; color: var(--text2); font-size: 1rem; padding: 2px 4px; }
+.li-remove:hover { color: var(--warn); }
 
-/* CTA section */
-.cta-section { background: var(--surface); border-radius: 0 0 var(--radius) var(--radius); padding: 32px 40px; text-align: center; border-top: 1px solid var(--border); }
-@media(max-width:600px){ .cta-section { padding: 24px 20px; } }
-.cta-section h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 400; color: var(--text); margin-bottom: 8px; }
-.cta-section p { font-size: 0.85rem; color: var(--text2); margin-bottom: 24px; line-height: 1.6; }
-.cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-.btn-accept { background: var(--green); color: white; border: none; padding: 14px 32px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-.btn-accept:hover { background: #234e25; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(44,95,46,0.3); }
-.btn-accept:disabled { background: var(--green2); cursor: not-allowed; transform: none; box-shadow: none; }
-.btn-pay { background: #1a4fa0; color: white; border: none; padding: 14px 32px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block; }
-.btn-pay:hover { background: #163d7a; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26,79,160,0.3); }
-.btn-pay.hidden { display: none; }
+.add-item-row { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; margin-top: 12px; align-items: end; }
+.add-item-row input { font-size: 0.85rem; }
+.add-item-row .price-input { width: 100px; }
+.btn { padding: 10px 18px; border-radius: 7px; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.85rem; transition: all 0.2s; }
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: #234e25; }
+.btn-sm { padding: 8px 14px; font-size: 0.8rem; }
+.btn-outline { background: white; border: 1.5px solid var(--border); color: var(--text); }
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
-.accepted-badge { background: #f0f7f0; border: 2px solid var(--green2); border-radius: 10px; padding: 16px 24px; display: none; }
-.accepted-badge h4 { font-size: 1rem; font-weight: 600; color: var(--green); margin-bottom: 4px; }
-.accepted-badge p { font-size: 0.82rem; color: var(--text2); }
+.quote-panel { position: sticky; top: 24px; }
+.quote-total-box { background: var(--accent); color: white; border-radius: var(--radius); padding: 24px; margin-bottom: 16px; }
+.qt-label { font-size: 0.75rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+.qt-total { font-family: 'DM Serif Display', serif; font-size: 3rem; font-weight: 400; line-height: 1; }
+.qt-sub { font-size: 0.8rem; opacity: 0.65; margin-top: 6px; }
 
-/* Footer */
-.est-footer { text-align: center; padding: 24px 0 0; font-size: 0.78rem; color: var(--text2); line-height: 1.7; }
-.est-footer a { color: var(--green); text-decoration: none; }
+.quote-breakdown { padding: 16px; }
+.qb-row { display: flex; justify-content: space-between; padding: 7px 0; font-size: 0.85rem; border-bottom: 1px solid var(--border); }
+.qb-row:last-child { border-bottom: none; }
+.qb-label { color: var(--text2); }
+.qb-value { font-weight: 600; }
 
-/* Error state */
-.error-state { text-align: center; padding: 80px 20px; }
-.error-state h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--text2); margin-bottom: 12px; }
-.error-state p { font-size: 0.88rem; color: var(--text2); }
+.customer-section { padding: 20px; border-top: 1px solid var(--border); }
+.customer-section h3 { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text2); margin-bottom: 14px; }
+
+.action-btns { padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--border); }
+
+.tag { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.72rem; font-weight: 600; }
+.tag-custom { background: #fff0e0; color: #c05a00; border: 1px solid #ffc87a; }
+.tag-frame { background: #e8f4ff; color: #0055a5; border: 1px solid #90c8ff; }
+.tag-stepdown { background: #ffeaea; color: #c0392b; border: 1px solid #ffaaaa; }
+
+.pitched-toggle { display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--surface2); border-radius: 7px; border: 1.5px solid var(--border); cursor: pointer; }
+.pitched-toggle input { width: auto; accent-color: var(--accent); width: 16px; height: 16px; }
+.pitched-toggle span { font-size: 0.88rem; font-weight: 500; }
+
+.btn-invoice { background: #1a4fa0; color: white; border: none; }
+.btn-invoice:hover { background: #163d7a; }
+.btn-send-est { background: #5c3d8f; color: white; border: none; }
+.btn-send-est:hover { background: #4a2f73; }
+
+/* Invoice Modal */
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:1000; align-items:center; justify-content:center; }
+.modal-overlay.open { display:flex; }
+.modal { background:white; border-radius:14px; padding:28px; width:100%; max-width:420px; margin:20px; box-shadow:0 20px 60px rgba(0,0,0,0.2); }
+.modal h2 { font-family:'DM Serif Display',serif; font-size:1.3rem; font-weight:400; color:var(--accent); margin-bottom:4px; }
+.modal .modal-sub { font-size:0.82rem; color:var(--text2); margin-bottom:20px; }
+.modal-amount { background:var(--accent); color:white; border-radius:10px; padding:16px 20px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; }
+.modal-amount .ma-label { font-size:0.75rem; opacity:0.7; text-transform:uppercase; letter-spacing:0.06em; }
+.modal-amount .ma-value { font-family:'DM Serif Display',serif; font-size:1.8rem; }
+.modal-type-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px; }
+.type-btn { padding:12px; border:2px solid var(--border); border-radius:8px; cursor:pointer; background:white; text-align:left; transition:all 0.2s; }
+.type-btn:hover { border-color:var(--accent); }
+.type-btn.selected { border-color:var(--accent); background:#f0f7f0; }
+.type-btn .tb-label { font-size:0.75rem; color:var(--text2); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:2px; }
+.type-btn .tb-amount { font-size:1rem; font-weight:600; color:var(--text); }
+.type-btn .tb-desc { font-size:0.72rem; color:var(--text2); margin-top:2px; }
+.modal-status { border-radius:8px; padding:12px 14px; font-size:0.82rem; margin-top:12px; display:none; }
+.modal-status.pending { background:#fff8e1; border:1px solid #ffe082; color:#7b5800; display:block; }
+.modal-status.success { background:#f0f7f0; border:1px solid #b8d9b9; color:#2c5f2e; display:block; }
+.modal-status.error   { background:#fff0f0; border:1px solid #ffaaaa; color:#c0392b; display:block; }
+.modal-actions { display:flex; gap:10px; margin-top:16px; }
+.modal-actions .btn { flex:1; }
+
+
+.clearance-hint { font-size: 0.75rem; color: var(--text2); margin-top: 4px; }
+.clearance-hint.ok { color: var(--accent2); }
+.clearance-hint.warn { color: var(--gold); }
+.clearance-hint.danger { color: var(--warn); }
 </style>
-</head>
-<body>
 
-<div class="page-wrap" id="app">
-  <div class="error-state" id="errorState" style="display:none;">
-    <h2>Estimate not found</h2>
-    <p>This link may be invalid or expired. Please contact Generational Garage Doors.</p>
-    <p style="margin-top:12px;"><a href="tel:9253168384">(925) 316-8384</a> · <a href="mailto:dustin@gengaragedoors.com">dustin@gengaragedoors.com</a></p>
+<header>
+  <div><h1>Estimate Builder</h1></div>
+  <span>Generational Garage Doors · Internal Use Only</span>
+</header>
+
+<!-- Invoice Modal -->
+<div class="modal-overlay" id="invoiceModal">
+  <div class="modal">
+    <h2>Send Payment Request</h2>
+    <p class="modal-sub">Sends a Stripe invoice to the customer's email automatically.</p>
+    <div class="modal-amount">
+      <div><div class="ma-label">Estimate Total</div><div class="ma-value" id="modalTotal">$0</div></div>
+      <div style="text-align:right;"><div class="ma-label">Customer</div><div style="font-size:0.9rem;font-weight:500;" id="modalCustomer">—</div><div style="font-size:0.78rem;opacity:0.7;" id="modalEmail">—</div></div>
+    </div>
+    <div style="font-size:0.8rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;">Payment Type</div>
+    <div class="modal-type-grid">
+      <button class="type-btn selected" id="typeDeposit" onclick="selectPaymentType('deposit')">
+        <div class="tb-label">Deposit</div><div class="tb-amount" id="depositAmt">$0</div><div class="tb-desc">50% of total (door installs)</div>
+      </button>
+      <button class="type-btn" id="typeFull" onclick="selectPaymentType('full')">
+        <div class="tb-label">Full Amount</div><div class="tb-amount" id="fullAmt">$0</div><div class="tb-desc">100% (service & repair)</div>
+      </button>
+    </div>
+    <div class="field-group" style="margin-bottom:12px;">
+      <label>Amount to Charge</label>
+      <input type="number" id="invoiceAmount" placeholder="0.00" oninput="onInvoiceAmountEdit()"/>
+    </div>
+    <div class="field-group" style="margin-bottom:4px;">
+      <label>Invoice Description</label>
+      <input type="text" id="invoiceDesc" placeholder="e.g. Deposit — 16x7 Raised Panel Install"/>
+    </div>
+    <div class="modal-status" id="modalStatus"></div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeInvoiceModal()">Cancel</button>
+      <button class="btn btn-invoice" id="sendInvoiceBtn" onclick="sendInvoice()">💳 Send Invoice</button>
+    </div>
+    <div style="margin-top:14px;font-size:0.75rem;color:var(--text2);text-align:center;">⏳ Make.com webhook — activates when credits reset on the 15th</div>
   </div>
-  <div id="estimateContent" style="display:none;">
-    <!-- Header -->
-    <div class="est-header">
-      <img class="est-logo" src="data:image/jpeg;base64,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" alt="Generational Garage Doors"/>
-      <div class="est-header-right">
-        <h2>Your Estimate</h2>
-        <p>Generational Garage Doors</p>
-        <div class="est-number" id="estNum">Est. #—</div>
-      </div>
-    </div>
-    <div class="green-bar"></div>
+</div>
 
-    <!-- Meta -->
-    <div class="est-meta">
-      <div class="meta-group">
-        <label>Prepared for</label>
-        <p id="custNameDisplay">—</p>
-        <p id="custPhoneDisplay" style="color:var(--text2);font-size:0.82rem;"></p>
-      </div>
-      <div class="meta-group">
-        <label>Service Address</label>
-        <p id="custAddressDisplay">—</p>
-      </div>
-      <div class="meta-group">
-        <label>Estimate Date</label>
-        <p id="estDateDisplay">—</p>
-        <label style="margin-top:10px;">Service Type</label>
-        <p id="serviceTypeDisplay">—</p>
-      </div>
+<!-- Send Estimate Modal -->
+<div class="modal-overlay" id="sendEstimateModal">
+  <div class="modal">
+    <h2>Send Estimate to Customer</h2>
+    <p class="modal-sub">Generates a customer-facing estimate link and sends it via Make.com.</p>
+
+    <div class="modal-amount">
+      <div><div class="ma-label">Estimate Total</div><div class="ma-value" id="semTotal">$0</div></div>
+      <div style="text-align:right;"><div class="ma-label">Customer</div><div style="font-size:0.9rem;font-weight:500;" id="semCustomer">—</div><div style="font-size:0.78rem;opacity:0.7;" id="semEmail">—</div></div>
     </div>
 
-    <!-- Line items -->
-    <div class="line-items-section">
-      <table class="line-items-table">
-        <thead>
-          <tr>
-            <th>Description</th>
-            <th style="text-align:right;width:120px;">Amount</th>
-          </tr>
-        </thead>
-        <tbody id="lineItemsBody"></tbody>
-      </table>
+    <div class="field-group" style="margin-bottom:12px;">
+      <label>Stripe Payment Link (optional)</label>
+      <input type="text" id="semStripeLink" placeholder="https://buy.stripe.com/... (paste if ready)"/>
     </div>
 
-    <!-- Totals -->
-    <div class="totals-section">
-      <div id="depositRow" class="totals-row" style="display:none;">
-        <span class="totals-label">Deposit Due</span>
-        <span id="depositDisplay">—</span>
-      </div>
-      <div class="totals-row grand">
-        <span class="totals-label">Estimate Total</span>
-        <span id="grandTotalDisplay">—</span>
-      </div>
+    <div class="field-group" style="margin-bottom:4px;">
+      <label>Internal Notes for Customer</label>
+      <input type="text" id="semNotes" placeholder="e.g. Includes installation, 1-yr labor warranty"/>
     </div>
 
-    <!-- Notes -->
-    <div id="notesSection" class="notes-section" style="display:none;">
-      <p id="notesDisplay"></p>
+    <div style="margin:14px 0;padding:12px 14px;background:var(--surface2);border-radius:8px;font-size:0.8rem;color:var(--text2);">
+      <strong style="color:var(--text);display:block;margin-bottom:4px;">What the customer receives:</strong>
+      A branded estimate page with their line items, total, and an "Accept Estimate" button. When they accept, you get notified automatically.
     </div>
 
-    <!-- CTA -->
-    <div class="cta-section">
-      <div id="acceptedBadge" class="accepted-badge" style="display:none;">
-        <h4>✅ Estimate Accepted</h4>
-        <p>Thank you! We'll be in touch shortly to confirm your appointment.</p>
+    <div class="modal-status" id="semStatus"></div>
+
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeSendEstimateModal()">Cancel</button>
+      <button class="btn btn-send-est" id="sendEstBtn" onclick="sendEstimate()">📨 Send Estimate</button>
+    </div>
+    <div style="margin-top:14px;font-size:0.75rem;color:var(--text2);text-align:center;">⏳ Email delivery via Make.com — activates when credits reset. Link is generated immediately.</div>
+  </div>
+</div>
+
+
+    <div class="panel">
+      <div class="panel-header">
+        <div class="badge" style="background:#2c5f2e;">👤</div>
+        <h2>Customer / Lead</h2>
       </div>
-      <div id="ctaContent">
-        <h3>Ready to move forward?</h3>
-        <p id="ctaText">Review your estimate above and click accept to confirm — we'll reach out to schedule your job.</p>
-        <div class="cta-buttons">
-          <button class="btn-accept" id="acceptBtn" onclick="acceptEstimate()">✓ Accept This Estimate</button>
-          <a class="btn-pay hidden" id="payBtn" href="#" target="_blank">💳 Pay Deposit</a>
+      <div class="panel-body">
+        <div class="field-group">
+          <label>Search Existing Lead</label>
+          <div style="display:flex;gap:8px;">
+            <input type="text" id="leadSearch" placeholder="Type name or phone to search..." oninput="searchLeads(this.value)" style="flex:1;"/>
+            <button class="btn btn-outline btn-sm" onclick="clearCustomer()">Clear</button>
+          </div>
+          <div id="leadResults" style="margin-top:8px;display:none;background:white;border:1.5px solid var(--border);border-radius:8px;max-height:200px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
+        </div>
+        <div class="row2">
+          <div class="field-group">
+            <label>Customer Name</label>
+            <input type="text" id="custName" placeholder="Full name"/>
+          </div>
+          <div class="field-group">
+            <label>Phone</label>
+            <input type="text" id="custPhone" placeholder="(925) 000-0000"/>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field-group">
+            <label>Email</label>
+            <input type="text" id="custEmail" placeholder="email@example.com"/>
+          </div>
+          <div class="field-group">
+            <label>Address</label>
+            <input type="text" id="custAddress" placeholder="Street address"/>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field-group">
+            <label>Est. #</label>
+            <input type="text" id="estNumber" placeholder="Auto-generated"/>
+          </div>
+          <div class="field-group">
+            <label>Service Type</label>
+            <select id="serviceType">
+              <option value="">— Select —</option>
+              <option>New Door Install</option>
+              <option>Door Replacement</option>
+              <option>Spring Repair</option>
+              <option>Opener Install</option>
+              <option>Glass Replacement</option>
+              <option>Service / Repair</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div id="leadLoadedBadge" style="display:none;" class="rec-box">
+          <div class="rec-row"><span class="rec-label">✅ Lead loaded from Google Sheets</span><span class="rec-value" id="leadLoadedName"></span></div>
         </div>
       </div>
     </div>
 
-    <!-- Footer -->
-    <div class="est-footer">
-      <p><strong>Generational Garage Doors</strong></p>
-      <p><a href="mailto:dustin@gengaragedoors.com">dustin@gengaragedoors.com</a> · <a href="tel:9253168384">(925) 316-8384</a></p>
-      <p style="margin-top:6px;font-size:0.72rem;opacity:0.6;">This estimate is valid for 30 days from the date of issue.</p>
+    <!-- Measurements -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="badge">1</div>
+        <h2>Opening Measurements</h2>
+      </div>
+      <div class="panel-body">
+        <div class="row3">
+          <div class="field-group">
+            <label>Opening Width (inches)</label>
+            <input type="number" id="openingWidth" placeholder="e.g. 120" min="80" max="240" oninput="calculate()"/>
+          </div>
+          <div class="field-group">
+            <label>Opening Height (inches)</label>
+            <input type="number" id="openingHeight" placeholder="e.g. 84" min="63" max="168" oninput="calculate()"/>
+          </div>
+          <div class="field-group">
+            <label>Available Headroom (inches)</label>
+            <input type="number" id="headroom" placeholder="e.g. 13" min="0" max="60" oninput="calculate()"/>
+          </div>
+        </div>
+
+        <!-- NEW: Side Room & Back Room -->
+        <div class="row2" style="margin-top:4px;">
+          <div class="field-group">
+            <label>Side Room — Each Side (inches)</label>
+            <input type="number" id="sideRoom" placeholder="e.g. 10" min="0" max="60" oninput="calculate()"/>
+            <div class="clearance-hint" id="sideRoomHint">Min 8" required for jackshaft/side-mount operators.</div>
+          </div>
+          <div class="field-group">
+            <label>Back Room (inches)</label>
+            <input type="number" id="backRoom" placeholder="e.g. 120" min="0" max="360" oninput="calculate()"/>
+            <div class="clearance-hint" id="backRoomHint">Min = door height + 42" for trolley operators.</div>
+          </div>
+        </div>
+
+        <label class="pitched-toggle" style="display:flex;align-items:center;gap:10px;cursor:pointer;margin-top:4px;">
+          <input type="checkbox" id="pitchedCeiling" onchange="calculate()"/>
+          <span>Pitched Ceiling (forces Side-Mount/Jackshaft operator)</span>
+        </label>
+        <div id="measurementRec" style="margin-top:14px;"></div>
+      </div>
+    </div>
+
+    <!-- Door Selection -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="badge">2</div>
+        <h2>Door Selection</h2>
+      </div>
+      <div class="panel-body">
+        <div class="row2">
+          <div class="field-group">
+            <label>Door Style</label>
+            <select id="doorStyle" onchange="calculate()">
+              <option value="">— Select Style —</option>
+              <option value="2250">Raised Panel 25GA (2250/4250)</option>
+              <option value="2250pvc">Raised Panel 25GA Insulated (2251/4251)</option>
+              <option value="2240">Raised Panel 24GA (2240/4240)</option>
+              <option value="2240pvc">Raised Panel 24GA Insulated (2241/4241)</option>
+              <option value="2283">Raised Panel Steelback (2283/4283)</option>
+              <option value="5250">Carriage Stamp (5250/5950)</option>
+              <option value="5250pvc">Carriage Stamp Insulated (5251/5951)</option>
+              <option value="5283">Carriage Stamp Steelback (5283/5983)</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Color</label>
+            <select id="doorColor" onchange="calculate()">
+              <option value="white">White (Stock)</option>
+              <option value="almond">Almond (Stock)</option>
+              <option value="special">Special Order Color (+lead time)</option>
+            </select>
+          </div>
+        </div>
+        <div id="doorRec" style="margin-top:4px;"></div>
+      </div>
+    </div>
+
+    <!-- Operator -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="badge">3</div>
+        <h2>Operator / Motor</h2>
+      </div>
+      <div class="panel-body">
+        <div class="row2">
+          <div class="field-group">
+            <label>Operator Model</label>
+            <select id="operatorSeries" onchange="updateOperatorModels()">
+              <option value="">— Select —</option>
+              <optgroup label="Chain Drive (2420 Series)">
+                <option value="chain_7">2420L Chain Drive — 7' Rail</option>
+                <option value="chain_8">2420L Chain Drive — 8' Rail</option>
+                <option value="chain_10">2420L Chain Drive — 10' Rail</option>
+              </optgroup>
+              <optgroup label="Belt Drive (6580 Series)">
+                <option value="belt_7">6580L Belt Drive — 7' Rail</option>
+                <option value="belt_8">6580L Belt Drive — 8' Rail</option>
+                <option value="belt_10">6580L Belt Drive — 10' Rail</option>
+              </optgroup>
+              <optgroup label="High-End Belt (6690 Series)">
+                <option value="highbelt_7">6690L-267 High-End Belt — 7' Rail</option>
+                <option value="highbelt_8">6690L-267 High-End Belt — 8' Rail</option>
+                <option value="highbelt_10">6690L-267 High-End Belt — 10' Rail</option>
+              </optgroup>
+              <optgroup label="I-Beam Heavy Duty (4690 Series)">
+                <option value="ibeam_7">4690L I-Beam — 7' Rail</option>
+                <option value="ibeam_8">4690L I-Beam — 8' Rail</option>
+                <option value="ibeam_10">4690L I-Beam — 10' Rail</option>
+                <option value="ibeam_12">4690L I-Beam — 12' Rail</option>
+                <option value="ibeam_14">4690L I-Beam — 14' Rail</option>
+              </optgroup>
+              <optgroup label="Jackshaft / Side-Mount">
+                <option value="jackshaft_98022">98022 Jackshaft</option>
+                <option value="jackshaft_98032">98032 Jackshaft (Heavy)</option>
+              </optgroup>
+              <option value="none">No Operator</option>
+            </select>
+          </div>
+          <div class="field-group" id="railLengthField" style="display:none;">
+            <label>Rail Length</label>
+            <select id="railLength" onchange="calculate()">
+              <option value="7">7' Rail</option>
+              <option value="8">8' Rail</option>
+              <option value="10">10' Rail</option>
+            </select>
+          </div>
+        </div>
+        <div id="operatorRec" style="margin-top:4px;"></div>
+      </div>
+    </div>
+
+    <!-- Add-ons -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="badge">4</div>
+        <h2>Add-ons & Line Items</h2>
+      </div>
+      <div class="panel-body">
+        <div class="field-group">
+          <label>Springs</label>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <button class="btn btn-outline btn-sm" onclick="addRetailItem('Spring — Single Car Standard',299)">+ Single Standard $299</button>
+            <button class="btn btn-outline btn-sm" onclick="addRetailItem('Spring — Single Car Heavy Duty',349)">+ Single HD $349</button>
+            <button class="btn btn-outline btn-sm" onclick="addRetailItem('Spring — Double Car Standard',399)">+ Double Standard $399</button>
+            <button class="btn btn-outline btn-sm" onclick="addRetailItem('Spring — Double Car Heavy Duty',429)">+ Double HD $429</button>
+            <button class="btn btn-outline btn-sm" onclick="addRetailItem('Custom Spring (TBD)',0)">+ Custom (TBD)</button>
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Glass Panes — 1/8" Non-Insulated</label>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <button class="btn btn-outline btn-sm" onclick="addRetailItem('Glass Clear LP 1/8 Non-Insul.',128.40)">+ Clear LP $128</button>
+            <button class="btn btn-outline btn-sm" onclick="addRetailItem('Glass Obscure LP 1/8 Non-Insul.',142.20)">+ Obscure LP $142</button>
+            <button class="btn btn-outline btn-sm" onclick="addRetailItem('Glass Tinted LP 1/8 Non-Insul.',158.40)">+ Tinted LP $158</button>
+            <button class="btn btn-outline btn-sm" onclick="addRetailItem('Glass Frosted LP 1/8 Non-Insul.',240.60)">+ Frosted LP $241</button>
+            <button class="btn btn-outline btn-sm" onclick="addRetailItem('Glass Clear Oversized 1/8 Non-Insul.',142.20)">+ Clear OS $142</button>
+            <button class="btn btn-outline btn-sm" onclick="addRetailItem('Glass Obscure Oversized 1/8 Non-Insul.',161.40)">+ Obscure OS $161</button>
+            <button class="btn btn-outline btn-sm" onclick="addRetailItem('Glass Tinted Oversized 1/8 Non-Insul.',182.40)">+ Tinted OS $182</button>
+            <button class="btn btn-outline btn-sm" onclick="addRetailItem('Glass Frosted Oversized 1/8 Non-Insul.',243.00)">+ Frosted OS $243</button>
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Glass Panes — 1/2" Insulated</label>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <button class="btn btn-outline btn-sm" onclick="addRetailItem('Glass Clear LP 1/2 Insulated',166.20)">+ Clear LP $166</button>
+            <button class="btn btn-outline btn-sm" onclick="addRetailItem('Glass Obscure LP 1/2 Insulated',192.60)">+ Obscure LP $193</button>
+            <button class="btn btn-outline btn-sm" onclick="addRetailItem('Glass Tinted LP 1/2 Insulated',207.00)">+ Tinted LP $207</button>
+            <button class="btn btn-outline btn-sm" onclick="addRetailItem('Glass Frosted LP 1/2 Insulated',259.80)">+ Frosted LP $260</button>
+            <button class="btn btn-outline btn-sm" onclick="addRetailItem('Glass Clear Oversized 1/2 Insulated',190.80)">+ Clear OS $191</button>
+            <button class="btn btn-outline btn-sm" onclick="addRetailItem('Glass Obscure Oversized 1/2 Insulated',211.20)">+ Obscure OS $211</button>
+            <button class="btn btn-outline btn-sm" onclick="addRetailItem('Glass Tinted Oversized 1/2 Insulated',242.40)">+ Tinted OS $242</button>
+            <button class="btn btn-outline btn-sm" onclick="addRetailItem('Glass Frosted Oversized 1/2 Insulated',297.60)">+ Frosted OS $298</button>
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Hardware & Other</label>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <button class="btn btn-outline btn-sm" onclick="addQuickItem('Vinyl Trim 16ft',16.94,'VVT-16')">+ Vinyl Trim 16'</button>
+            <button class="btn btn-outline btn-sm" onclick="addQuickItem('Vinyl Trim 18ft',20.02,'VVT-18')">+ Vinyl Trim 18'</button>
+            <button class="btn btn-outline btn-sm" onclick="addQuickItem('Frame-In Lumber 2x6',45,'LUMBER')">+ Frame-In Lumber</button>
+            <button class="btn btn-outline btn-sm" onclick="addQuickItem('Header Frame Down',75,'FRAME-HDR')">+ Header Frame Down</button>
+            <button class="btn btn-outline btn-sm" onclick="addQuickItem('Low Headroom Track',149,'LHR-8-3')">+ Low Headroom Track</button>
+            <button class="btn btn-outline btn-sm" onclick="addQuickItem('Rear Torsion Kit 8ft',200,'LHR-RT-8')">+ Rear Torsion Kit</button>
+            <button class="btn btn-outline btn-sm" onclick="addQuickItem('Extra Remote 373LM',33,'373LM')">+ Extra Remote</button>
+            <button class="btn btn-outline btn-sm" onclick="addQuickItem('Keyless Entry 387LM',55,'387LM')">+ Keyless Entry</button>
+            <button class="btn btn-outline btn-sm" onclick="addQuickItem('MyQ Gateway 828LM',76,'828LM')">+ MyQ Gateway</button>
+            <button class="btn btn-outline btn-sm" onclick="addRetailItem('Service Call',150)">+ Service Call $150</button>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div id="lineItemsList">
+          <div class="empty-state"><div class="icon">📋</div>No add-ons yet. Use quick-add above or enter custom item below.</div>
+        </div>
+        <div class="add-item-row" style="margin-top:14px;">
+          <div class="field-group" style="margin:0;">
+            <label>Custom Item</label>
+            <input type="text" id="customItemName" placeholder="Item description"/>
+          </div>
+          <div class="field-group" style="margin:0;">
+            <label>Wholesale $</label>
+            <input type="number" id="customItemPrice" placeholder="0.00" class="price-input"/>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="addCustomItem()" style="margin-bottom:0;align-self:flex-end;">Add</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="badge">5</div>
+        <h2>Notes</h2>
+      </div>
+      <div class="panel-body">
+        <textarea id="estimateNotes" style="width:100%;height:80px;padding:10px;border:1.5px solid var(--border);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:0.88rem;resize:vertical;" placeholder="Internal notes, special instructions, job details..."></textarea>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: Quote Summary -->
+  <div class="quote-panel">
+    <div class="quote-total-box">
+      <div class="qt-label">Customer Total</div>
+      <div class="qt-total" id="grandTotal">$0</div>
+      <div class="qt-sub">Includes labor & markup</div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div class="badge" style="background:var(--text2);">$</div>
+        <h2>Price Breakdown</h2>
+      </div>
+      <div class="quote-breakdown" id="quoteBreakdown">
+        <div style="color:var(--text2);font-size:0.85rem;padding:10px 0;">Select door options to see pricing.</div>
+      </div>
+      <div class="action-btns">
+        <button class="btn btn-primary" onclick="generateEstimate()">📄 Generate Estimate PDF</button>
+        <button class="btn btn-invoice" onclick="openInvoiceModal()">💳 Send Payment Request</button>
+        <button class="btn btn-send-est" onclick="openSendEstimateModal()">📨 Send Estimate to Customer</button>
+        <button class="btn btn-outline" onclick="clearAll()">🗑 Clear & Start Over</button>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-// ── MAKE WEBHOOK ──────────────────────────────────────────────
-const MAKE_ACCEPT_WEBHOOK = 'YOUR_MAKE_ACCEPT_WEBHOOK_URL_HERE';
+const DOOR_PRICES = {
+  '2250': {'8x7':444,'8x8':523,'8x10':823,'8x12':899,'8x14':1157,'9x7':474,'9x8':565,'9x10':879,'9x12':954,'9x14':1226,'10x7':539,'10x8':648,'10x10':960,'10x12':1181,'10x14':1391,'12x7':634,'12x8':735,'12x10':1004,'12x12':1240,'12x14':1484,'14x7':685,'14x8':839,'14x10':1213,'14x12':1471,'14x14':1677,'15x7':701,'15x8':868,'15x10':1384,'15x12':1692,'15x14':1927,'16x7':680,'16x8':824,'16x10':1384,'16x12':1692,'16x14':1927,'18x7':875,'18x8':1032,'18x10':1545,'18x12':1910,'18x14':2210},
+  '2250pvc': {'8x7':627,'8x8':740,'8x10':1096,'8x12':1218,'8x14':1539,'9x7':690,'9x8':812,'9x10':1208,'9x12':1341,'9x14':1669,'10x7':774,'10x8':913,'10x10':1306,'10x12':1600,'10x14':1883,'12x7':906,'12x8':1051,'12x10':1407,'12x12':1730,'12x14':2046,'14x7':1009,'14x8':1208,'14x10':1678,'14x12':2032,'14x14':2357,'15x7':1015,'15x8':1266,'15x10':1909,'15x12':2325,'15x14':2660,'16x7':955,'16x8':1140,'16x10':1909,'16x12':2325,'16x14':2660,'18x7':1371,'18x8':1572,'18x10':2242,'18x12':2773,'18x14':3238},
+  '2240': {'8x7':510,'8x8':557,'8x10':882,'8x12':1245,'8x14':1428,'9x7':539,'9x8':624,'9x10':935,'9x12':1298,'9x14':1489,'10x7':683,'10x8':779,'10x10':1079,'10x12':1428,'10x14':1620,'12x7':783,'12x8':880,'12x10':1161,'12x12':1602,'12x14':1802,'14x7':827,'14x8':954,'14x10':1336,'14x12':1754,'14x14':1932,'15x7':817,'15x8':925,'15x10':1546,'15x12':1906,'15x14':2159,'16x7':817,'16x8':925,'16x10':1546,'16x12':1906,'16x14':2159,'18x7':1076,'18x8':1192,'18x10':1784,'18x12':2186,'18x14':2555},
+  '2240pvc': {'8x7':653,'8x8':746,'8x10':1162,'8x12':1592,'8x14':1831,'9x7':712,'9x8':874,'9x10':1266,'9x12':1710,'9x14':1952,'10x7':929,'10x8':1053,'10x10':1430,'10x12':1865,'10x14':2130,'12x7':1067,'12x8':1208,'12x10':1577,'12x12':2121,'12x14':2391,'14x7':1162,'14x8':1333,'14x10':1810,'14x12':2340,'14x14':2630,'15x7':1140,'15x8':1327,'15x10':2087,'15x12':2556,'15x14':2913,'16x7':1140,'16x8':1327,'16x10':2087,'16x12':2556,'16x14':2913,'18x7':1586,'18x8':1744,'18x10':2499,'18x12':3072,'18x14':3607},
+  '2283': {'8x7':735,'8x8':936,'8x10':1264,'8x12':1767,'8x14':1981,'9x7':797,'9x8':941,'9x10':1292,'9x12':1748,'9x14':2122,'10x7':930,'10x8':1102,'10x10':1527,'10x12':2066,'10x14':2274,'12x7':1165,'12x8':1360,'12x10':1716,'12x12':2321,'12x14':2524,'14x7':1359,'14x8':1556,'14x10':2228,'14x12':2881,'14x14':3127,'15x7':1197,'15x8':1474,'15x10':2308,'15x12':2950,'15x14':3226,'16x7':1197,'16x8':1474,'16x10':2308,'16x12':2650,'16x14':3226,'18x7':1554,'18x8':1874,'18x10':2596,'18x12':3300,'18x14':3684},
+  '5250': {'8x7':534,'8x8':611,'8x10':927,'8x12':986,'8x14':1215,'9x7':560,'9x8':648,'9x10':984,'9x12':1047,'9x14':1282,'10x7':643,'10x8':761,'10x10':1076,'10x12':1306,'10x14':1528,'12x7':805,'12x8':904,'12x10':1181,'12x12':1437,'12x14':1688,'14x7':882,'14x8':1031,'14x10':1399,'14x12':1671,'14x14':1891,'15x7':892,'15x8':1056,'15x10':1580,'15x12':1906,'15x14':2153,'16x7':737,'16x8':882,'16x10':1580,'16x12':1906,'16x14':2153,'18x7':1055,'18x8':1239,'18x10':1801,'18x12':2197,'18x14':2524},
+  '5250pvc': {'8x7':722,'8x8':837,'8x10':1208,'8x12':1312,'8x14':1603,'9x7':782,'9x8':901,'9x10':1319,'9x12':1441,'9x14':1732,'10x7':886,'10x8':1033,'10x10':1430,'10x12':1733,'10x14':2029,'12x7':1093,'12x8':1232,'12x10':1600,'12x12':1943,'12x14':2268,'14x7':1222,'14x8':1415,'14x10':1878,'14x12':2251,'14x14':2586,'15x7':1218,'15x8':1467,'15x10':2122,'15x12':2559,'15x14':2905,'16x7':1012,'16x8':1197,'16x10':2122,'16x12':2559,'16x14':2905,'18x7':1565,'18x8':1793,'18x10':2516,'18x12':3086,'18x14':3576},
+  '5283': {'8x7':783,'8x8':985,'8x10':1242,'8x12':1489,'8x14':1820,'9x7':833,'9x8':983,'9x10':1343,'9x12':1596,'9x14':1952,'10x7':991,'10x8':1130,'10x10':1473,'10x12':1770,'10x14':2063,'12x7':1281,'12x8':1449,'12x10':1928,'12x12':2282,'12x14':2628,'14x7':1306,'14x8':1613,'14x10':2028,'14x12':2402,'14x14':2758,'15x7':1322,'15x8':1600,'15x10':2214,'15x12':2652,'15x14':3011,'16x7':1322,'16x8':1600,'16x10':2214,'16x12':2652,'16x14':3011,'18x7':1615,'18x8':1941,'18x10':2591,'18x12':3090,'18x14':3575}
+};
 
-// ── LOAD ESTIMATE FROM URL ────────────────────────────────────
-function loadEstimate() {
-  const params = new URLSearchParams(window.location.search);
-  const data = params.get('d');
+const OPERATOR_RETAIL = {
+  chain_7:{name:"2420L Chain Drive — 7' Rail",retail:800},chain_8:{name:"2420L Chain Drive — 8' Rail",retail:875},chain_10:{name:"2420L Chain Drive — 10' Rail",retail:955},
+  belt_7:{name:"6580L Belt Drive — 7' Rail",retail:850},belt_8:{name:"6580L Belt Drive — 8' Rail",retail:925},belt_10:{name:"6580L Belt Drive — 10' Rail",retail:1090},
+  highbelt_7:{name:"6690L-267 High-End Belt — 7' Rail",retail:950},highbelt_8:{name:"6690L-267 High-End Belt — 8' Rail",retail:1025},highbelt_10:{name:"6690L-267 High-End Belt — 10' Rail",retail:1120},
+  ibeam_7:{name:"4690L I-Beam — 7' Rail",retail:1610},ibeam_8:{name:"4690L I-Beam — 8' Rail",retail:1705},ibeam_10:{name:"4690L I-Beam — 10' Rail",retail:1875},ibeam_12:{name:"4690L I-Beam — 12' Rail",retail:2020},ibeam_14:{name:"4690L I-Beam — 14' Rail",retail:2175},
+  jackshaft_98022:{name:"98022 Jackshaft",retail:1500},jackshaft_98032:{name:"98032 Jackshaft (Heavy)",retail:1965},
+  none:{name:"No Operator",retail:0}
+};
 
-  if (!data) { showError(); return; }
+const STD_WIDTHS = [96,108,120,144,168,180,192];
+const STD_HEIGHTS_IN = [75,78,81,84,87,90,93,96,99,102,105,108,111,114,117,120,123,126,129,132,135,138,141,144];
 
+// Low headroom track types — jackshaft NEVER allowed on these
+const LOW_HEADROOM_TRACKS = ['0" Low Headroom','3" Low Headroom','6" Low Headroom','0" Rear Torsion','3" Rear Torsion'];
+
+function getTrackRecommendation(headroomIn, pitched) {
+  if (pitched) return { track:'Standard (any radius)', torsion:'Standard Front', operator:'Side-Mount Jackshaft', isJackshaft:true, isLowHeadroom:false, note:'Pitched ceiling — Jackshaft required' };
+  if (headroomIn > 33)  return { track:'High Lift',    torsion:'HL Drums',        operator:'Side-Mount Jackshaft', isJackshaft:true,  isLowHeadroom:false };
+  if (headroomIn >= 21) return { track:'20" Radius',   torsion:'Standard Front',  operator:'Side-Mount Jackshaft', isJackshaft:true,  isLowHeadroom:false };
+  if (headroomIn >= 16) return { track:'15" Radius',   torsion:'Standard Front',  operator:'Side-Mount Jackshaft', isJackshaft:true,  isLowHeadroom:false };
+  if (headroomIn >= 13) return { track:'12" Radius',   torsion:'Standard Front',  operator:'Standard Trolley',     isJackshaft:false, isLowHeadroom:false };
+  if (headroomIn >= 11) return { track:'10" Radius',   torsion:'Standard Front',  operator:'Standard Trolley',     isJackshaft:false, isLowHeadroom:false };
+  if (headroomIn >= 10) return { track:'6" Low Headroom', torsion:'Standard Front', operator:'Standard Trolley',   isJackshaft:false, isLowHeadroom:true };
+  if (headroomIn >= 9)  return { track:'3" Low Headroom', torsion:'Standard Front', operator:'Standard Trolley',   isJackshaft:false, isLowHeadroom:true };
+  if (headroomIn >= 6)  return { track:'0" Low Headroom', torsion:'Standard Front', operator:'Standard Trolley',   isJackshaft:false, isLowHeadroom:true };
+  if (headroomIn >= 3.5)return { track:'3" Rear Torsion', torsion:'Rear Torsion',  operator:'Standard Trolley',   isJackshaft:false, isLowHeadroom:true };
+  if (headroomIn >= 3)  return { track:'0" Rear Torsion', torsion:'Rear Torsion',  operator:'Standard Trolley',   isJackshaft:false, isLowHeadroom:true };
+  return { track:'INSUFFICIENT HEADROOM', torsion:'—', operator:'—', isJackshaft:false, isLowHeadroom:false, error:true };
+}
+
+function getWidthRecommendation(openingIn) {
+  let bestMatch=null, bestDiff=Infinity;
+  for (const sw of STD_WIDTHS) { const d=Math.abs(openingIn-sw); if(d<bestDiff){bestDiff=d;bestMatch=sw;} }
+  const doorFt=bestMatch/12;
+  if (Math.abs(openingIn-bestMatch)<=3) {
+    const framein=openingIn>bestMatch && openingIn<=bestMatch+3;
+    return {doorFt,doorIn:bestMatch,type:framein?'frame-in':'standard',diff:openingIn-bestMatch};
+  }
+  return {doorFt,doorIn:bestMatch,type:'custom',diff:openingIn-bestMatch};
+}
+
+function getHeightRecommendation(openingIn, headroomIn) {
+  let bestMatch=null,bestDiff=Infinity;
+  for (const sh of STD_HEIGHTS_IN) {
+    if(sh<=openingIn+0.5){const d=Math.abs(openingIn-sh);if(d<bestDiff){bestDiff=d;bestMatch=sh;}}
+  }
+  if(!bestMatch) bestMatch=75;
+  let stepDown=false,frameDown=false;
+  if(headroomIn<3){
+    const idx=STD_HEIGHTS_IN.indexOf(bestMatch);
+    if(idx>0){bestMatch=STD_HEIGHTS_IN[idx-1];stepDown=true;frameDown=true;}
+  }
+  const ft=Math.floor(bestMatch/12),inches=bestMatch%12;
+  return {doorIn:bestMatch,display:`${ft}'${inches>0?inches+'"':''}`,stepDown,frameDown};
+}
+
+function roundToFive(n){ return Math.ceil(n/5)*5; }
+function applyMarkup(w){ return roundToFive(w*1.2+250); }
+
+let lineItems=[], doorWholesale=0, operatorWholesale=0, itemIdCounter=0;
+
+function calculate() {
+  const ow      = parseFloat(document.getElementById('openingWidth').value);
+  const oh      = parseFloat(document.getElementById('openingHeight').value);
+  const hr      = parseFloat(document.getElementById('headroom').value);
+  const sr      = parseFloat(document.getElementById('sideRoom').value);
+  const br      = parseFloat(document.getElementById('backRoom').value);
+  const pitched = document.getElementById('pitchedCeiling').checked;
+  const doorStyle = document.getElementById('doorStyle').value;
+  const opSeries  = document.getElementById('operatorSeries').value;
+
+  doorWholesale = 0;
+  let recHTML = '';
+
+  // Update side room hint
+  const srHint = document.getElementById('sideRoomHint');
+  if (!isNaN(sr)) {
+    if (sr >= 8) { srHint.className='clearance-hint ok'; srHint.textContent=`✓ ${sr}" — sufficient for jackshaft.`; }
+    else         { srHint.className='clearance-hint danger'; srHint.textContent=`✗ ${sr}" — less than 8" required for jackshaft/side-mount.`; }
+  } else {
+    srHint.className='clearance-hint'; srHint.textContent='Min 8" required for jackshaft/side-mount operators.';
+  }
+
+  if (ow && oh && !isNaN(hr)) {
+    const widthRec  = getWidthRecommendation(ow);
+    const heightRec = getHeightRecommendation(oh, hr);
+    const trackRec  = getTrackRecommendation(hr, pitched);
+
+    // Back room check — min = door height (in) + 42"
+    const doorHeightIn = heightRec.doorIn;
+    const minBackRoom  = doorHeightIn + 42;
+    const brEntered    = !isNaN(br);
+    const brOk         = brEntered && br >= minBackRoom;
+    const brHint       = document.getElementById('backRoomHint');
+
+    if (brEntered) {
+      if (brOk) {
+        brHint.className='clearance-hint ok';
+        brHint.textContent=`✓ ${br}" — sufficient (min ${minBackRoom}" for this door height).`;
+      } else {
+        brHint.className='clearance-hint danger';
+        brHint.textContent=`✗ ${br}" — insufficient. Need ${minBackRoom}" for door height ${heightRec.display}.`;
+      }
+    } else {
+      brHint.className='clearance-hint';
+      brHint.textContent=`Min = door height + 42" (${doorHeightIn}" + 42" = ${minBackRoom}" for this job).`;
+    }
+
+    // Side room check for jackshaft
+    const srOk = !isNaN(sr) && sr >= 8;
+    const srEntered = !isNaN(sr);
+
+    // Deadlock check
+    const jackshaftNeeded = trackRec.isJackshaft || pitched;
+    const trolleyNeeded   = !jackshaftNeeded;
+
+    let tags = '';
+    if (widthRec.type==='custom')   tags += ' <span class="tag tag-custom">Custom Cut-Down Required</span>';
+    if (widthRec.type==='frame-in') tags += ' <span class="tag tag-frame">Frame-In Required</span>';
+    if (heightRec.stepDown)         tags += ' <span class="tag tag-stepdown">Step-Down Applied</span>';
+
+    recHTML = `<div class="rec-box">
+      <h3>System Recommendation</h3>
+      <div class="rec-row"><span class="rec-label">Door Width</span><span class="rec-value">${widthRec.doorFt}' ${tags}</span></div>
+      <div class="rec-row"><span class="rec-label">Door Height</span><span class="rec-value">${heightRec.display}${heightRec.stepDown?' (stepped down)':''}</span></div>
+      <div class="rec-row"><span class="rec-label">Track Type</span><span class="rec-value">${trackRec.track}</span></div>
+      <div class="rec-row"><span class="rec-label">Torsion Setup</span><span class="rec-value">${trackRec.torsion}</span></div>
+      <div class="rec-row"><span class="rec-label">Operator Rec.</span><span class="rec-value">${trackRec.operator}</span></div>
+      ${srEntered ? `<div class="rec-row"><span class="rec-label">Side Room</span><span class="rec-value" style="color:${srOk?'var(--accent2)':'var(--warn)'}">${sr}" ${srOk?'✓ OK':'✗ Insufficient'}</span></div>` : ''}
+      ${brEntered ? `<div class="rec-row"><span class="rec-label">Back Room</span><span class="rec-value" style="color:${brOk?'var(--accent2)':'var(--warn)'}">${br}" ${brOk?'✓ OK':'✗ Insufficient (need '+minBackRoom+'")'}</span></div>` : ''}
+    </div>`;
+
+    // Errors & warnings
+    if (trackRec.error) {
+      recHTML += `<div class="rec-danger">⛔ Insufficient headroom. Minimum 3" required. Cannot proceed — consult Dustin.</div>`;
+    }
+
+    // Deadlock: jackshaft needed but side room < 8" AND back room insufficient for trolley
+    if (jackshaftNeeded && srEntered && !srOk && brEntered && !brOk) {
+      recHTML += `<div class="rec-danger">🚨 MANUAL FIELD REVIEW REQUIRED — Side room &lt; 8" blocks jackshaft and back room is insufficient for trolley. No standard operator fits. Dustin must assess on-site.</div>`;
+    } else if (jackshaftNeeded && srEntered && !srOk) {
+      recHTML += `<div class="rec-danger">⛔ Jackshaft/side-mount required for this headroom but side room is only ${sr}" — minimum 8" needed. Manual field review required.</div>`;
+    } else if (trolleyNeeded && brEntered && !brOk) {
+      recHTML += `<div class="rec-warning">⚠️ Trolley operator requires ${minBackRoom}" back room but only ${br}" available. Consider a shorter rail or review space with customer.</div>`;
+    }
+
+    // Low headroom jackshaft incompatibility warning (if Dustin manually picks jackshaft)
+    if (trackRec.isLowHeadroom) {
+      recHTML += `<div class="rec-warning">⚠️ Low Headroom track detected — Jackshaft/Side-Mount operator is NOT compatible with this configuration. Use Standard Trolley only.</div>`;
+    }
+
+    if (widthRec.type==='frame-in') {
+      recHTML += `<div class="rec-warning">📐 Frame-in required: Opening is ${widthRec.diff.toFixed(1)}" wider than standard door. Add 2x6 or 1x6 lumber to jambs.</div>`;
+    }
+    if (widthRec.type==='custom') {
+      recHTML += `<div class="rec-warning">⚙️ Custom width cut-down required — opening is more than 3" from standard. Confirm with supplier.</div>`;
+    }
+    if (heightRec.frameDown) {
+      recHTML += `<div class="rec-warning">🔧 Header frame-down required: headroom &lt; 3". Door height stepped down to ${heightRec.display}.</div>`;
+    }
+
+    if (doorStyle) {
+      const wFt=widthRec.doorFt, hFt=Math.floor(heightRec.doorIn/12), key=`${wFt}x${hFt}`;
+      const prices=DOOR_PRICES[doorStyle];
+      if(prices&&prices[key]) { doorWholesale=prices[key]; }
+      else { recHTML+=`<div class="rec-warning">⚠️ No price found for ${wFt}'×${hFt}' in selected style. May be special order — call supplier.</div>`; }
+    }
+  }
+
+  document.getElementById('measurementRec').innerHTML = recHTML;
+
+  // Operator
+  let operatorRetail=0;
+  let opRecHTML='';
+  if (opSeries && opSeries!=='none' && OPERATOR_RETAIL[opSeries]) {
+    operatorRetail = OPERATOR_RETAIL[opSeries].retail;
+    const isJackshaftSelected = opSeries.startsWith('jackshaft');
+    const isTrolleySelected   = !isJackshaftSelected;
+    const hr2 = parseFloat(document.getElementById('headroom').value);
+    const trackRec2 = !isNaN(hr2) ? getTrackRecommendation(hr2, document.getElementById('pitchedCeiling').checked) : null;
+    const sr2 = parseFloat(document.getElementById('sideRoom').value);
+    const oh2 = parseFloat(document.getElementById('openingHeight').value);
+    const br2 = parseFloat(document.getElementById('backRoom').value);
+
+    opRecHTML = `<div class="rec-box" style="margin-top:10px;">
+      <div class="rec-row"><span class="rec-label">Model</span><span class="rec-value">${OPERATOR_RETAIL[opSeries].name}</span></div>
+      <div class="rec-row"><span class="rec-label">Customer Price</span><span class="rec-value" style="color:var(--accent);">$${operatorRetail.toLocaleString()}</span></div>
+    </div>`;
+
+    // Warn if jackshaft picked on low headroom
+    if (isJackshaftSelected && trackRec2 && trackRec2.isLowHeadroom) {
+      opRecHTML += `<div class="rec-danger">⛔ Jackshaft is NOT compatible with Low Headroom track. Switch to a trolley operator.</div>`;
+    }
+    // Warn if jackshaft picked but side room < 8"
+    if (isJackshaftSelected && !isNaN(sr2) && sr2 < 8) {
+      opRecHTML += `<div class="rec-danger">⛔ Jackshaft requires 8" side room — only ${sr2}" available.</div>`;
+    }
+    // Warn if trolley picked but back room insufficient
+    if (isTrolleySelected && !isNaN(oh2) && !isNaN(br2)) {
+      const minBR = oh2 + 42;
+      if (br2 < minBR) {
+        opRecHTML += `<div class="rec-warning">⚠️ This trolley operator needs ${minBR}" back room but only ${br2}" available. Check rail length or review space.</div>`;
+      }
+    }
+  }
+  document.getElementById('operatorRec').innerHTML = opRecHTML;
+  operatorWholesale = operatorRetail;
+  window._operatorIsRetail = true;
+
+  updateQuote();
+}
+
+function updateQuote() {
+  const opSeries  = document.getElementById('operatorSeries').value;
+  const doorStyle = document.getElementById('doorStyle').value;
+  let breakdown='', addonWholesaleTotal=0, addonRetailTotal=0;
+  const styleNames={'2250':'Raised Panel 25GA','2250pvc':'Raised Panel 25GA Insulated','2240':'Raised Panel 24GA','2240pvc':'Raised Panel 24GA Insulated','2283':'Raised Panel Steelback','5250':'Carriage Stamp','5250pvc':'Carriage Stamp Insulated','5283':'Carriage Stamp Steelback'};
+
+  if (doorWholesale>0) {
+    breakdown+=`<div class="qb-row"><span class="qb-label">${styleNames[doorStyle]||'Door'}</span><span class="qb-value">$${applyMarkup(doorWholesale).toLocaleString()}</span></div>`;
+  }
+  if (operatorWholesale>0&&opSeries!=='none'&&OPERATOR_RETAIL[opSeries]) {
+    breakdown+=`<div class="qb-row"><span class="qb-label">${OPERATOR_RETAIL[opSeries].name}</span><span class="qb-value">$${operatorWholesale.toLocaleString()}</span></div>`;
+  }
+  for (const item of lineItems) {
+    if(!item.isFree){
+      const dp=item.isRetail?item.wholesale:applyMarkup(item.wholesale);
+      breakdown+=`<div class="qb-row"><span class="qb-label">${item.name}</span><span class="qb-value">$${dp.toLocaleString()}</span></div>`;
+      if(item.isRetail) addonRetailTotal+=item.wholesale;
+      else addonWholesaleTotal+=item.wholesale;
+    } else {
+      breakdown+=`<div class="qb-row" style="opacity:0.5;"><span class="qb-label">${item.name}</span><span class="qb-value" style="color:var(--gold);">$0 ✓</span></div>`;
+    }
+  }
+  const markedUpPart=roundToFive((doorWholesale+addonWholesaleTotal)*1.2+250);
+  const retailPart=operatorWholesale+addonRetailTotal;
+  const grandTotal=(doorWholesale>0||operatorWholesale>0||addonWholesaleTotal>0||addonRetailTotal>0)?roundToFive(markedUpPart+retailPart):0;
+  if(breakdown){
+    breakdown+=`<div class="qb-row" style="margin-top:8px;padding-top:12px;border-top:2px solid var(--text);"><span class="qb-label" style="font-weight:700;color:var(--text);">Customer Total</span><span class="qb-value" style="font-size:1.05rem;">$${grandTotal.toLocaleString()}</span></div>`;
+  }
+  document.getElementById('quoteBreakdown').innerHTML=breakdown||'<div style="color:var(--text2);font-size:0.85rem;padding:10px 0;">Select door options to see pricing.</div>';
+  document.getElementById('grandTotal').textContent=grandTotal>0?`$${grandTotal.toLocaleString()}`:'$0';
+}
+
+function renderLineItems() {
+  const container=document.getElementById('lineItemsList');
+  if(lineItems.length===0){container.innerHTML='<div class="empty-state"><div class="icon">📋</div>No add-ons yet.</div>';updateQuote();return;}
+  container.innerHTML=lineItems.map(item=>`
+    <div class="line-item${item.isFree?' free':''}" id="li-${item.id}">
+      <div><div class="li-name">${item.name}</div><div class="li-sub">${item.isRetail?'Fixed retail price':`Wholesale: $${item.wholesale.toFixed(2)}`}</div></div>
+      <div class="li-price${item.isFree?' zero':''}">$${item.isFree?'0':(item.isRetail?item.wholesale.toLocaleString():applyMarkup(item.wholesale).toLocaleString())}</div>
+      <button class="free-btn${item.isFree?' active':''}" onclick="toggleFree(${item.id})">${item.isFree?'✓ Free':'Mark Free'}</button>
+      <button class="li-remove" onclick="removeItem(${item.id})">✕</button>
+    </div>`).join('');
+  updateQuote();
+}
+
+function addRetailItem(name,retail){lineItems.push({id:itemIdCounter++,name,wholesale:retail,sku:'RETAIL',isFree:false,isRetail:true});renderLineItems();}
+function addQuickItem(name,wholesale,sku){lineItems.push({id:itemIdCounter++,name,wholesale,sku,isFree:false});renderLineItems();}
+function addCustomItem(){
+  const name=document.getElementById('customItemName').value.trim();
+  const price=parseFloat(document.getElementById('customItemPrice').value);
+  if(!name||isNaN(price))return;
+  lineItems.push({id:itemIdCounter++,name,wholesale:price,sku:'CUSTOM',isFree:false});
+  document.getElementById('customItemName').value='';
+  document.getElementById('customItemPrice').value='';
+  renderLineItems();
+}
+function toggleFree(id){const item=lineItems.find(i=>i.id===id);if(item){item.isFree=!item.isFree;renderLineItems();}}
+function removeItem(id){lineItems=lineItems.filter(i=>i.id!==id);renderLineItems();}
+function updateOperatorModels(){calculate();}
+
+function clearAll(){
+  if(!confirm('Are you sure you want to clear everything and start over?\n\nThis cannot be undone.'))return;
+  ['openingWidth','openingHeight','headroom','sideRoom','backRoom','custName','custPhone','custEmail','custAddress','leadSearch','estNumber','estimateNotes'].forEach(id=>{document.getElementById(id).value='';});
+  document.getElementById('pitchedCeiling').checked=false;
+  document.getElementById('doorStyle').value='';
+  document.getElementById('doorColor').value='white';
+  document.getElementById('operatorSeries').value='';
+  document.getElementById('serviceType').value='';
+  lineItems=[];doorWholesale=0;operatorWholesale=0;
+  renderLineItems();
+  ['measurementRec','operatorRec','doorRec'].forEach(id=>{document.getElementById(id).innerHTML='';});
+  document.getElementById('quoteBreakdown').innerHTML='<div style="color:var(--text2);font-size:0.85rem;padding:10px 0;">Select door options to see pricing.</div>';
+  document.getElementById('grandTotal').textContent='$0';
+  document.getElementById('sideRoomHint').className='clearance-hint';
+  document.getElementById('sideRoomHint').textContent='Min 8" required for jackshaft/side-mount operators.';
+  document.getElementById('backRoomHint').className='clearance-hint';
+  document.getElementById('backRoomHint').textContent='Min = door height + 42" for trolley operators.';
+}
+
+function generateEstimate(){
+  const name=document.getElementById('custName').value||'Customer';
+  const phone=document.getElementById('custPhone').value||'';
+  const total=document.getElementById('grandTotal').textContent;
+  const notes=document.getElementById('estimateNotes').value;
+  alert(`📄 Estimate for ${name}\nPhone: ${phone}\nTotal: ${total}\n\nPDF generation — connect to DocuSign or Square for full PDF output.\n\nNotes: ${notes}`);
+}
+
+// ==================== SEND ESTIMATE MODAL ====================
+const MAKE_ESTIMATE_WEBHOOK = 'YOUR_MAKE_ESTIMATE_WEBHOOK_URL_HERE';
+// Path to your hosted estimate-viewer.html — update when deployed
+const ESTIMATE_VIEWER_URL = 'https://colagomdesignco-source.github.io/garage-door-estimator/estimate-viewer.html';
+
+function openSendEstimateModal() {
+  const total = document.getElementById('grandTotal').textContent.replace(/[$,]/g,'');
+  const totalNum = parseFloat(total) || 0;
+  const name = document.getElementById('custName').value || '—';
+  const email = document.getElementById('custEmail').value || '';
+
+  if (totalNum === 0) { alert('Please complete the estimate before sending.'); return; }
+  if (!email) { alert('Please enter the customer\'s email address first.'); return; }
+
+  document.getElementById('semTotal').textContent = '$' + totalNum.toLocaleString();
+  document.getElementById('semCustomer').textContent = name;
+  document.getElementById('semEmail').textContent = email;
+  document.getElementById('semStatus').className = 'modal-status';
+  document.getElementById('semStatus').textContent = '';
+  document.getElementById('sendEstBtn').disabled = false;
+  document.getElementById('sendEstBtn').textContent = '📨 Send Estimate';
+  document.getElementById('sendEstimateModal').classList.add('open');
+}
+
+function closeSendEstimateModal() {
+  document.getElementById('sendEstimateModal').classList.remove('open');
+}
+
+function buildEstimatePayload() {
+  const total = parseFloat(document.getElementById('grandTotal').textContent.replace(/[$,]/g,'')) || 0;
+  const serviceType = document.getElementById('serviceType').value || '';
+  const isService = serviceType.toLowerCase().includes('service') || serviceType.toLowerCase().includes('repair') || serviceType.toLowerCase().includes('spring');
+  const deposit = isService ? 0 : Math.round(total * 0.5);
+
+  // Build items list from line items + door + operator
+  const items = [];
+  const doorStyle = document.getElementById('doorStyle').value;
+  const opSeries = document.getElementById('operatorSeries').value;
+  const styleNames = {'2250':'Raised Panel 25GA','2250pvc':'Raised Panel 25GA Insulated','2240':'Raised Panel 24GA','2240pvc':'Raised Panel 24GA Insulated','2283':'Raised Panel Steelback','5250':'Carriage Stamp','5250pvc':'Carriage Stamp Insulated','5283':'Carriage Stamp Steelback'};
+
+  if (doorWholesale > 0 && doorStyle) {
+    items.push({ name: styleNames[doorStyle] || 'Garage Door', price: applyMarkup(doorWholesale), isFree: false });
+  }
+  if (operatorWholesale > 0 && opSeries && opSeries !== 'none' && OPERATOR_RETAIL[opSeries]) {
+    items.push({ name: OPERATOR_RETAIL[opSeries].name, price: operatorWholesale, isFree: false });
+  }
+  for (const item of lineItems) {
+    items.push({
+      name: item.name,
+      price: item.isRetail ? item.wholesale : applyMarkup(item.wholesale),
+      isFree: item.isFree
+    });
+  }
+
+  const estNum = document.getElementById('estNumber').value || String(Date.now()).slice(-6);
+
+  return {
+    customerName: document.getElementById('custName').value,
+    customerEmail: document.getElementById('custEmail').value,
+    customerPhone: document.getElementById('custPhone').value,
+    customerAddress: document.getElementById('custAddress').value,
+    serviceType,
+    isService,
+    estNumber: estNum,
+    date: new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'}),
+    items,
+    total,
+    depositAmount: deposit,
+    stripeLink: document.getElementById('semStripeLink').value.trim(),
+    notes: document.getElementById('semNotes').value.trim() || document.getElementById('estimateNotes').value.trim(),
+  };
+}
+
+function buildEstimateLink(payload) {
+  const encoded = encodeURIComponent(btoa(JSON.stringify(payload)));
+  return `${ESTIMATE_VIEWER_URL}?d=${encoded}`;
+}
+
+async function sendEstimate() {
+  const btn = document.getElementById('sendEstBtn');
+  const status = document.getElementById('semStatus');
+  btn.disabled = true;
+  btn.textContent = 'Generating...';
+
+  const payload = buildEstimatePayload();
+  const estimateLink = buildEstimateLink(payload);
+
+  // Always show the link immediately
+  status.className = 'modal-status success';
+
+  if (MAKE_ESTIMATE_WEBHOOK === 'YOUR_MAKE_ESTIMATE_WEBHOOK_URL_HERE') {
+    status.innerHTML = `✅ <strong>Estimate link generated!</strong><br><br>
+      <span style="font-size:0.78rem;">Copy this link to send manually until Make.com is connected:</span><br>
+      <a href="${estimateLink}" target="_blank" style="font-size:0.72rem;word-break:break-all;color:var(--accent);">${estimateLink}</a><br><br>
+      <span style="font-size:0.75rem;color:var(--text2);">⏳ Auto-email via Make.com activates on the 15th.</span>`;
+    btn.textContent = '✓ Link Ready';
+    return;
+  }
+
+  // Fire Make webhook
+  status.className = 'modal-status pending';
+  status.textContent = 'Sending via Make.com...';
   try {
-    const est = JSON.parse(atob(decodeURIComponent(data)));
-    renderEstimate(est);
-    // Check if already accepted
-    if (est.accepted) showAccepted();
+    await fetch(MAKE_ESTIMATE_WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...payload, estimate_link: estimateLink, event: 'estimate_sent' })
+    });
+    status.className = 'modal-status success';
+    status.innerHTML = `✅ <strong>Estimate sent to ${payload.customerEmail}!</strong><br><small style="color:var(--text2);">Status will update to "Estimate Sent" in Google Sheets.</small>`;
+    btn.textContent = '✓ Sent';
   } catch(e) {
-    showError();
+    status.className = 'modal-status error';
+    status.textContent = '❌ Could not reach Make.com. Copy the link manually and send via text/email.';
+    btn.disabled = false;
+    btn.textContent = '📨 Send Estimate';
   }
 }
 
-function renderEstimate(est) {
-  document.getElementById('estimateContent').style.display = 'block';
+document.getElementById('sendEstimateModal').addEventListener('click', function(e) {
+  if (e.target === this) closeSendEstimateModal();
+});
 
-  // Header
-  document.getElementById('estNum').textContent = est.estNumber ? 'Est. #' + est.estNumber : '';
+// ==================== INVOICE MODAL ====================
+// PASTE YOUR MAKE.COM WEBHOOK URL HERE WHEN CREDITS RESET:
+const MAKE_WEBHOOK_URL = 'YOUR_MAKE_WEBHOOK_URL_HERE';
 
-  // Meta
-  document.getElementById('custNameDisplay').textContent = est.customerName || '—';
-  document.getElementById('custPhoneDisplay').textContent = est.customerPhone || '';
-  document.getElementById('custAddressDisplay').textContent = est.customerAddress || '—';
-  document.getElementById('estDateDisplay').textContent = est.date || new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
-  document.getElementById('serviceTypeDisplay').textContent = est.serviceType || '—';
+let currentPaymentType = 'deposit';
 
-  // Line items
-  const tbody = document.getElementById('lineItemsBody');
-  const items = est.items || [];
-  if (items.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="2" style="color:var(--text2);text-align:center;padding:24px;">No line items</td></tr>';
-  } else {
-    tbody.innerHTML = items.map(item => `
-      <tr>
-        <td>
-          <div class="item-name">${item.name}</div>
-          ${item.sub ? `<div class="item-sub">${item.sub}</div>` : ''}
-        </td>
-        <td>${item.isFree ? '<span style="color:var(--green2);font-size:0.82rem;">Included</span>' : '$' + Number(item.price).toLocaleString()}</td>
-      </tr>
-    `).join('');
-  }
+function openInvoiceModal() {
+  const total = document.getElementById('grandTotal').textContent.replace(/[$,]/g,'');
+  const totalNum = parseFloat(total) || 0;
+  const name = document.getElementById('custName').value || '—';
+  const email = document.getElementById('custEmail').value || '—';
+  const serviceType = document.getElementById('serviceType').value || '';
+  const deposit = Math.round(totalNum * 0.5);
 
-  // Totals
-  const total = est.total || 0;
-  document.getElementById('grandTotalDisplay').textContent = '$' + Number(total).toLocaleString();
+  if (totalNum === 0) { alert('Please complete the estimate before sending a payment request.'); return; }
+  if (!document.getElementById('custEmail').value) { alert('Please enter the customer\'s email address first.'); return; }
 
-  // Deposit
-  if (est.depositAmount && est.depositAmount > 0) {
-    document.getElementById('depositRow').style.display = 'flex';
-    document.getElementById('depositDisplay').textContent = '$' + Number(est.depositAmount).toLocaleString();
-  }
+  document.getElementById('modalTotal').textContent = '$' + totalNum.toLocaleString();
+  document.getElementById('modalCustomer').textContent = name;
+  document.getElementById('modalEmail').textContent = email;
+  document.getElementById('depositAmt').textContent = '$' + deposit.toLocaleString();
+  document.getElementById('fullAmt').textContent = '$' + totalNum.toLocaleString();
+  document.getElementById('invoiceDesc').value = serviceType ? `${serviceType} — Generational Garage Doors` : 'Generational Garage Doors';
+  document.getElementById('modalStatus').className = 'modal-status';
+  document.getElementById('modalStatus').textContent = '';
+  document.getElementById('sendInvoiceBtn').disabled = false;
+  document.getElementById('sendInvoiceBtn').textContent = '💳 Send Invoice';
 
-  // Notes
-  if (est.notes) {
-    document.getElementById('notesSection').style.display = 'block';
-    document.getElementById('notesDisplay').textContent = est.notes;
-  }
+  // Default: deposit for installs, full for service
+  const isService = serviceType.toLowerCase().includes('service') || serviceType.toLowerCase().includes('repair') || serviceType.toLowerCase().includes('spring');
+  selectPaymentType(isService ? 'full' : 'deposit');
 
-  // Pay button
-  if (est.stripeLink) {
-    const payBtn = document.getElementById('payBtn');
-    payBtn.href = est.stripeLink;
-    payBtn.classList.remove('hidden');
-  }
-
-  // CTA text based on job type
-  if (est.isService) {
-    document.getElementById('ctaText').textContent = 'Review your estimate above. Payment is due upon completion of service.';
-  } else {
-    document.getElementById('ctaText').textContent = 'Review your estimate above and click accept to get started. A deposit is required to schedule your installation.';
-  }
-
-  // Title
-  document.title = `Estimate for ${est.customerName || 'You'} — Generational Garage Doors`;
+  document.getElementById('invoiceModal').classList.add('open');
 }
 
-function showError() {
-  document.getElementById('errorState').style.display = 'block';
-  document.getElementById('estimateContent').style.display = 'none';
+function closeInvoiceModal() {
+  document.getElementById('invoiceModal').classList.remove('open');
 }
 
-function showAccepted() {
-  document.getElementById('acceptedBadge').style.display = 'block';
-  document.getElementById('ctaContent').style.display = 'none';
-  document.getElementById('acceptedBadge').style.display = 'block';
+function selectPaymentType(type) {
+  currentPaymentType = type;
+  document.getElementById('typeDeposit').classList.toggle('selected', type === 'deposit');
+  document.getElementById('typeFull').classList.toggle('selected', type === 'full');
+  const total = parseFloat(document.getElementById('grandTotal').textContent.replace(/[$,]/g,'')) || 0;
+  document.getElementById('invoiceAmount').value = type === 'deposit' ? Math.round(total * 0.5) : total;
 }
 
-async function acceptEstimate() {
-  const btn = document.getElementById('acceptBtn');
+function onInvoiceAmountEdit() {
+  document.getElementById('typeDeposit').classList.remove('selected');
+  document.getElementById('typeFull').classList.remove('selected');
+}
+
+async function sendInvoice() {
+  const amount = parseFloat(document.getElementById('invoiceAmount').value);
+  const email = document.getElementById('custEmail').value;
+  const name = document.getElementById('custName').value;
+  const phone = document.getElementById('custPhone').value;
+  const desc = document.getElementById('invoiceDesc').value;
+  const status = document.getElementById('modalStatus');
+  const btn = document.getElementById('sendInvoiceBtn');
+
+  if (!amount || amount <= 0) { alert('Please enter a valid amount.'); return; }
+
+  // If webhook not yet configured, show friendly message
+  if (MAKE_WEBHOOK_URL === 'YOUR_MAKE_WEBHOOK_URL_HERE') {
+    status.className = 'modal-status pending';
+    status.innerHTML = '⏳ <strong>Not yet connected</strong> — paste your Make.com webhook URL into the estimator HTML to activate. Everything else is ready to go!';
+    return;
+  }
+
   btn.disabled = true;
   btn.textContent = 'Sending...';
+  status.className = 'modal-status pending';
+  status.textContent = 'Sending invoice request to Make.com...';
 
-  const params = new URLSearchParams(window.location.search);
-  const data = params.get('d');
-  let est = {};
-  try { est = JSON.parse(atob(decodeURIComponent(data))); } catch(e) {}
-
-  // If webhook configured, fire it
-  if (MAKE_ACCEPT_WEBHOOK !== 'YOUR_MAKE_ACCEPT_WEBHOOK_URL_HERE') {
-    try {
-      await fetch(MAKE_ACCEPT_WEBHOOK, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          customer_name: est.customerName,
-          customer_email: est.customerEmail,
-          customer_phone: est.customerPhone,
-          estimate_number: est.estNumber,
-          total: est.total,
-          deposit_amount: est.depositAmount,
-          accepted_at: new Date().toISOString(),
-          event: 'estimate_accepted'
-        })
-      });
-    } catch(e) {}
+  try {
+    await fetch(MAKE_WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        customer_name: name,
+        customer_email: email,
+        customer_phone: phone,
+        amount_cents: Math.round(amount * 100),
+        amount_dollars: amount,
+        description: desc,
+        payment_type: currentPaymentType,
+        estimate_total: document.getElementById('grandTotal').textContent,
+        timestamp: new Date().toISOString()
+      })
+    });
+    status.className = 'modal-status success';
+    status.innerHTML = `✅ <strong>Invoice sent!</strong> Stripe invoice for $${amount.toLocaleString()} is on its way to ${email}.`;
+    btn.textContent = '✓ Sent';
+  } catch(e) {
+    status.className = 'modal-status error';
+    status.textContent = '❌ Could not reach Make.com. Check your webhook URL or internet connection.';
+    btn.disabled = false;
+    btn.textContent = '💳 Send Invoice';
   }
-
-  // Show accepted state
-  document.getElementById('ctaContent').style.display = 'none';
-  document.getElementById('acceptedBadge').style.display = 'block';
 }
 
-loadEstimate();
+// Close modal on overlay click
+document.getElementById('invoiceModal').addEventListener('click', function(e) {
+  if (e.target === this) closeInvoiceModal();
+});
+
+// ==================== LEAD SEARCH ====================
+const SHEETS_API_KEY='AIzaSyCc66ved9wipecm9WihdQisrRV9WwYuHbA';
+const SHEET_ID='1rZaXHyOVxJmI_Dp6IhdIwTXX3SsXaWJr3w4hhs0XYYI';
+const SHEET_NAME='New Leads';
+let allLeads=[],leadsLoaded=false,leadsLoading=false,searchTimeout=null;
+
+async function loadLeads(){
+  if(leadsLoaded||leadsLoading)return;leadsLoading=true;
+  try{
+    const url=`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(SHEET_NAME)}?key=${SHEETS_API_KEY}`;
+    const res=await fetch(url);if(!res.ok){leadsLoading=false;return;}
+    const data=await res.json();
+    if(data.values&&data.values.length>1){
+      const headers=data.values[0];
+      allLeads=data.values.slice(1).map((row,i)=>{const obj={};headers.forEach((h,j)=>obj[h]=row[j]||'');obj._row=i+2;return obj;});
+      leadsLoaded=true;
+    }
+  }catch(e){console.log('Could not load leads:',e);}
+  leadsLoading=false;
+}
+
+function searchLeads(query){
+  clearTimeout(searchTimeout);
+  const box=document.getElementById('leadResults');
+  if(!query||query.length<2){box.style.display='none';return;}
+  searchTimeout=setTimeout(async function(){
+    if(!leadsLoaded)await loadLeads();
+    const q=query.toLowerCase();
+    const matches=allLeads.filter(l=>(l['Full Name']||'').toLowerCase().includes(q)||(l['Phone']||'').includes(q)||(l['Email']||'').toLowerCase().includes(q)).slice(0,8);
+    if(matches.length===0){box.style.display='block';box.innerHTML='<div style="padding:12px;color:var(--text2);font-size:0.85rem;">No leads found</div>';return;}
+    box.style.display='block';
+    box.innerHTML=matches.map(l=>`<div onclick="selectLead(${JSON.stringify(l).replace(/"/g,'&quot;')})" style="padding:12px 14px;cursor:pointer;border-bottom:1px solid var(--border);transition:background 0.15s;" onmouseover="this.style.background='#f5f3ef'" onmouseout="this.style.background='white'"><div style="font-weight:600;font-size:0.88rem;">${l['Full Name']||'Unknown'}</div><div style="font-size:0.78rem;color:var(--text2);">${l['Phone']||''} ${l['City']?'· '+l['City']:''} ${l['Status']?'· '+l['Status']:''}</div></div>`).join('');
+  },400);
+}
+
+function selectLead(lead){
+  document.getElementById('custName').value=lead['Full Name']||'';
+  document.getElementById('custPhone').value=lead['Phone']||'';
+  document.getElementById('custEmail').value=lead['Email']||'';
+  document.getElementById('custAddress').value=(lead['Street Address']||'')+(lead['City']?', '+lead['City']:'');
+  document.getElementById('leadSearch').value=lead['Full Name']||'';
+  document.getElementById('leadResults').style.display='none';
+  document.getElementById('leadLoadedBadge').style.display='block';
+  document.getElementById('leadLoadedName').textContent=lead['Full Name']||'';
+  if(lead['Service Needed']){const sel=document.getElementById('serviceType');for(let opt of sel.options){if(opt.value.toLowerCase().includes(lead['Service Needed'].toLowerCase())){sel.value=opt.value;break;}}}
+}
+
+function clearCustomer(){
+  ['custName','custPhone','custEmail','custAddress','leadSearch','estNumber'].forEach(id=>{document.getElementById(id).value='';});
+  document.getElementById('serviceType').value='';
+  document.getElementById('leadResults').style.display='none';
+  document.getElementById('leadLoadedBadge').style.display='none';
+  leadsLoaded=false;
+}
+
+document.addEventListener('click',function(e){
+  if(!e.target.closest('#leadSearch')&&!e.target.closest('#leadResults')){const box=document.getElementById('leadResults');if(box)box.style.display='none';}
+});
 </script>
-</body>
-</html>
