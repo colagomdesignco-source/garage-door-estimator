@@ -4,289 +4,601 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Your Estimate — Generational Garage Doors</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
 :root {
-  --green: #2c5f2e;
-  --green2: #4a9e4e;
-  --gold: #b8860b;
-  --bg: #f7f5f1;
+  --bg: #f5f3ef;
   --surface: #ffffff;
-  --border: #e4dfd7;
+  --border: #e0dbd2;
   --text: #1a1714;
   --text2: #6b6560;
+  --accent: #2c5f2e;
+  --accent2: #4a9e4e;
   --warn: #c0392b;
+  --gold: #b8860b;
   --radius: 12px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-.page-wrap { max-width: 760px; margin: 0 auto; padding: 32px 16px 80px; }
+/* HEADER */
+header {
+  background: var(--accent);
+  color: white;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.header-brand { display: flex; align-items: center; gap: 12px; }
+.header-brand h1 { font-family: 'DM Serif Display', serif; font-size: 1.25rem; font-weight: 400; }
+.header-brand p { font-size: 0.72rem; opacity: 0.7; margin-top: 2px; }
+.est-badge {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
 
-.est-header { background: var(--green); color: white; border-radius: var(--radius) var(--radius) 0 0; padding: 32px 40px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
-.est-logo { height: 72px; width: auto; }
-.est-header-right { text-align: right; }
-.est-header-right h2 { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 400; margin-bottom: 4px; }
-.est-header-right p { font-size: 0.8rem; opacity: 0.7; }
-.est-number { font-size: 0.78rem; opacity: 0.6; margin-top: 6px; }
+/* LAYOUT */
+main { max-width: 600px; margin: 0 auto; padding: 28px 16px 48px; }
 
-.green-bar { height: 5px; background: linear-gradient(90deg, var(--green2), var(--gold)); }
+/* STATUS PILL */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.status-pending  { background: #fff8e1; color: #7b5800; border: 1px solid #ffe082; }
+.status-accepted { background: #f0f7f0; color: var(--accent); border: 1px solid #b8d9b9; }
+.status-expired  { background: #fff0f0; color: var(--warn); border: 1px solid #ffaaaa; }
 
-.est-meta { background: var(--surface); padding: 28px 40px; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
-@media(max-width:600px){ .est-meta { grid-template-columns: 1fr; padding: 20px; } .est-header { padding: 20px; } .est-header-right h2 { font-size: 1.2rem; } .est-logo { height: 52px; } .line-items-table th, .line-items-table td { padding: 10px 12px; } }
-.meta-group label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text2); display: block; margin-bottom: 4px; }
-.meta-group p { font-size: 0.9rem; color: var(--text); line-height: 1.5; }
+/* GREETING */
+.greeting { margin-bottom: 20px; }
+.greeting h2 { font-family: 'DM Serif Display', serif; font-size: 1.6rem; font-weight: 400; margin-bottom: 6px; }
+.greeting p { font-size: 0.9rem; color: var(--text2); line-height: 1.6; }
 
-.line-items-section { background: var(--surface); padding: 0 40px; }
-@media(max-width:600px){ .line-items-section { padding: 0; } }
-.line-items-table { width: 100%; border-collapse: collapse; }
-.line-items-table th { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text2); padding: 14px 16px; text-align: left; border-bottom: 2px solid var(--border); background: #faf9f7; }
-.line-items-table th:last-child { text-align: right; }
-.line-items-table td { padding: 14px 16px; font-size: 0.88rem; border-bottom: 1px solid var(--border); vertical-align: top; }
-.line-items-table td:last-child { text-align: right; font-weight: 600; }
-.line-items-table tr:last-child td { border-bottom: none; }
-.item-name { font-weight: 500; }
-.item-sub { font-size: 0.78rem; color: var(--text2); margin-top: 2px; }
+/* CARDS */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.card-header {
+  background: #f8f6f2;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.card-header h3 { font-size: 0.76rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text2); }
+.card-body { padding: 20px; }
 
-.totals-section { background: var(--surface); padding: 20px 40px 28px; border-top: 2px solid var(--border); }
-@media(max-width:600px){ .totals-section { padding: 16px 20px; } }
-.totals-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; font-size: 0.88rem; }
-.totals-row.grand { border-top: 2px solid var(--text); margin-top: 10px; padding-top: 14px; font-size: 1.1rem; font-weight: 700; color: var(--green); }
-.totals-label { color: var(--text2); }
-.totals-row.grand .totals-label { color: var(--text); }
+/* SERVICE BADGE */
+.service-badge {
+  display: inline-block;
+  background: #f0f7f0;
+  color: var(--accent);
+  border: 1px solid #b8d9b9;
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
 
-.notes-section { background: #f0f7f0; border-left: 4px solid var(--green2); margin: 0 40px 0; padding: 16px 20px; }
-@media(max-width:600px){ .notes-section { margin: 0; } }
-.notes-section p { font-size: 0.85rem; color: var(--text); line-height: 1.6; }
+/* LINE ITEMS */
+.line-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.88rem;
+  gap: 12px;
+}
+.line-item:last-child { border-bottom: none; }
+.li-name { color: var(--text); flex: 1; }
+.li-price { font-weight: 600; white-space: nowrap; }
+.li-price.free { color: var(--accent2); font-size: 0.8rem; }
 
-.cta-section { background: var(--surface); border-radius: 0 0 var(--radius) var(--radius); padding: 32px 40px; text-align: center; border-top: 1px solid var(--border); }
-@media(max-width:600px){ .cta-section { padding: 24px 20px; } }
-.cta-section h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 400; color: var(--text); margin-bottom: 8px; }
-.cta-section p { font-size: 0.85rem; color: var(--text2); margin-bottom: 24px; line-height: 1.6; }
-.cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-.btn-accept { background: var(--green); color: white; border: none; padding: 14px 32px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-.btn-accept:hover { background: #234e25; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(44,95,46,0.3); }
-.btn-accept:disabled { background: var(--green2); cursor: not-allowed; transform: none; box-shadow: none; }
-.btn-pay { background: #1a4fa0; color: white; border: none; padding: 14px 32px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block; }
-.btn-pay:hover { background: #163d7a; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26,79,160,0.3); }
-.btn-pay.hidden { display: none; }
+/* TOTALS */
+.total-block { padding: 16px 20px; background: var(--accent); color: white; }
+.total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.total-row:last-child { margin-bottom: 0; }
+.total-label { font-size: 0.8rem; opacity: 0.75; }
+.total-amount { font-family: 'DM Serif Display', serif; font-size: 2.2rem; font-weight: 400; }
+.deposit-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: #f0f7f0; border-top: 1px solid #b8d9b9; font-size: 0.85rem; }
+.deposit-label { color: var(--accent); font-weight: 600; }
+.deposit-amount { font-weight: 700; color: var(--accent); }
 
-.accepted-badge { background: #f0f7f0; border: 2px solid var(--green2); border-radius: 10px; padding: 16px 24px; display: none; }
-.accepted-badge h4 { font-size: 1rem; font-weight: 600; color: var(--green); margin-bottom: 4px; }
-.accepted-badge p { font-size: 0.82rem; color: var(--text2); }
+/* EXPIRY */
+.expiry-note { padding: 10px 20px; font-size: 0.75rem; color: var(--text2); border-top: 1px solid var(--border); display: flex; align-items: center; gap: 6px; }
 
-.est-footer { text-align: center; padding: 24px 0 0; font-size: 0.78rem; color: var(--text2); line-height: 1.7; }
-.est-footer a { color: var(--green); text-decoration: none; }
+/* ACTION BUTTONS */
+.action-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; }
+.btn {
+  display: block;
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: 8px;
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.2s;
+  margin-bottom: 10px;
+}
+.btn:last-child { margin-bottom: 0; }
+.btn-accept { background: var(--accent); color: white; }
+.btn-accept:hover { background: #234e25; }
+.btn-accept:disabled { background: #a0bda1; cursor: default; }
+.btn-pay { background: #1a4fa0; color: white; }
+.btn-pay:hover { background: #163d7a; }
+.btn-outline { background: white; border: 1.5px solid var(--border); color: var(--text); }
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
-.error-state { text-align: center; padding: 80px 20px; }
-.error-state h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--text2); margin-bottom: 12px; }
-.error-state p { font-size: 0.88rem; color: var(--text2); }
+/* ACCEPTED STATE */
+.accepted-banner {
+  background: #f0f7f0;
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.accepted-banner .checkmark { font-size: 2.5rem; margin-bottom: 8px; }
+.accepted-banner h3 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; color: var(--accent); margin-bottom: 4px; }
+.accepted-banner p { font-size: 0.85rem; color: var(--text2); }
+
+/* CONTACT */
+.contact-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; }
+.contact-card h3 { font-size: 0.76rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text2); margin-bottom: 12px; }
+.contact-row { display: flex; align-items: center; gap: 10px; padding: 4px 0; font-size: 0.88rem; }
+.contact-row a { color: var(--text); text-decoration: none; }
+.contact-row a:hover { color: var(--accent); }
+
+/* LOADING */
+#loadingState { text-align: center; padding: 80px 20px; }
+.spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-size: 0.88rem; color: var(--text2); }
+
+/* ERROR */
+#errorState { text-align: center; padding: 80px 20px; display: none; }
+.error-icon { font-size: 3rem; margin-bottom: 16px; }
+#errorState h2 { font-family: 'DM Serif Display', serif; font-size: 1.6rem; font-weight: 400; color: var(--text); margin-bottom: 8px; }
+#errorState p { font-size: 0.88rem; color: var(--text2); margin-bottom: 20px; line-height: 1.6; }
+.error-contact { display: inline-flex; flex-direction: column; gap: 6px; align-items: center; }
+.error-contact a { color: var(--accent); font-size: 0.9rem; text-decoration: none; }
+
+/* ESTIMATE CONTENT */
+#estimateContent { display: none; }
+
+/* FOOTER */
+footer { text-align: center; padding: 24px 16px; font-size: 0.75rem; color: var(--text2); border-top: 1px solid var(--border); margin-top: 8px; }
+footer strong { color: var(--text); }
+
+/* STATUS MSG */
+.status-msg { padding: 12px 14px; border-radius: 8px; font-size: 0.83rem; margin-top: 12px; display: none; }
+.status-msg.pending { background: #fff8e1; border: 1px solid #ffe082; color: #7b5800; display: block; }
+.status-msg.success { background: #f0f7f0; border: 1px solid #b8d9b9; color: var(--accent); display: block; }
+.status-msg.error   { background: #fff0f0; border: 1px solid #ffaaaa; color: var(--warn); display: block; }
 </style>
 </head>
 <body>
 
-<div class="page-wrap" id="app">
-  <div class="error-state" id="errorState" style="display:none;">
-    <h2>Estimate not found</h2>
-    <p>This link may be invalid or expired. Please contact Generational Garage Doors.</p>
-    <p style="margin-top:12px;"><a href="tel:9253168384">(925) 316-8384</a> · <a href="mailto:dustin@gengaragedoors.com">dustin@gengaragedoors.com</a></p>
+<header>
+  <div class="header-brand">
+    <div>
+      <h1>Generational Garage Doors</h1>
+      <p>Licensed · Insured · Bay Area Family Owned</p>
+    </div>
   </div>
-  <div id="estimateContent" style="display:none;">
-    <!-- Header -->
-    <div class="est-header">
-      <img class="est-logo" src="https://colagomdesignco-source.github.io/garage-door-estimator/logo.png" alt="Generational Garage Doors"/>
-      <div class="est-header-right">
-        <h2>Your Estimate</h2>
-        <p>Generational Garage Doors</p>
-        <div class="est-number" id="estNum">Est. #—</div>
-      </div>
-    </div>
-    <div class="green-bar"></div>
+  <div class="est-badge" id="headerEstNum">Your Estimate</div>
+</header>
 
-    <!-- Meta -->
-    <div class="est-meta">
-      <div class="meta-group">
-        <label>Prepared for</label>
-        <p id="custNameDisplay">—</p>
-        <p id="custPhoneDisplay" style="color:var(--text2);font-size:0.82rem;"></p>
-      </div>
-      <div class="meta-group">
-        <label>Service Address</label>
-        <p id="custAddressDisplay">—</p>
-      </div>
-      <div class="meta-group">
-        <label>Estimate Date</label>
-        <p id="estDateDisplay">—</p>
-        <label style="margin-top:10px;">Service Type</label>
-        <p id="serviceTypeDisplay">—</p>
-      </div>
-    </div>
+<main>
+  <!-- Loading -->
+  <div id="loadingState">
+    <div class="spinner"></div>
+    <div class="loading-text">Loading your estimate...</div>
+  </div>
 
-    <!-- Line items -->
-    <div class="line-items-section">
-      <table class="line-items-table">
-        <thead>
-          <tr>
-            <th>Description</th>
-            <th style="text-align:right;width:120px;">Amount</th>
-          </tr>
-        </thead>
-        <tbody id="lineItemsBody"></tbody>
-      </table>
+  <!-- Error -->
+  <div id="errorState">
+    <div class="error-icon">🔍</div>
+    <h2>Estimate not found</h2>
+    <p>This link may be invalid or expired.<br>Please contact Generational Garage Doors for a new estimate.</p>
+    <div class="error-contact">
+      <a href="tel:9253168384">📞 (925) 316-8384</a>
+      <a href="mailto:dustin@gengaragedoors.com">✉️ dustin@gengaragedoors.com</a>
+    </div>
+  </div>
+
+  <!-- Estimate content -->
+  <div id="estimateContent">
+    <div id="statusPill" class="status-pill status-pending">⏳ Pending Review</div>
+
+    <div class="greeting">
+      <h2 id="greetingName">Hi there,</h2>
+      <p>Your estimate from Generational Garage Doors is ready to review. Look it over and click <strong>Accept</strong> if everything looks good — we'll follow up to schedule.</p>
     </div>
 
-    <!-- Totals -->
-    <div class="totals-section">
-      <div id="depositRow" class="totals-row" style="display:none;">
-        <span class="totals-label">Deposit Due</span>
-        <span id="depositDisplay">—</span>
+    <!-- Estimate Details -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Estimate Details</h3>
+        <span style="font-size:0.78rem;color:var(--text2);" id="estimateDate"></span>
       </div>
-      <div class="totals-row grand">
-        <span class="totals-label">Estimate Total</span>
-        <span id="grandTotalDisplay">—</span>
+      <div class="card-body">
+        <div id="serviceBadge" class="service-badge"></div>
+        <div id="lineItemsList"></div>
       </div>
-    </div>
-
-    <!-- Notes -->
-    <div id="notesSection" class="notes-section" style="display:none;">
-      <p id="notesDisplay"></p>
-    </div>
-
-    <!-- CTA -->
-    <div class="cta-section">
-      <div id="acceptedBadge" class="accepted-badge" style="display:none;">
-        <h4>✅ Estimate Accepted</h4>
-        <p>Thank you! We'll be in touch shortly to confirm your appointment.</p>
-      </div>
-      <div id="ctaContent">
-        <h3>Ready to move forward?</h3>
-        <p id="ctaText">Review your estimate above and click accept to get started. A deposit is required to schedule your installation.</p>
-        <div class="cta-buttons">
-          <button class="btn-accept" id="acceptBtn" onclick="acceptEstimate()">✓ Accept This Estimate</button>
-          <a class="btn-pay hidden" id="payBtn" href="#" target="_blank">💳 Pay Deposit</a>
+      <div class="total-block">
+        <div class="total-row">
+          <span class="total-label">Total Estimate</span>
+          <span class="total-amount" id="totalAmount">$0</span>
         </div>
       </div>
+      <div class="deposit-row" id="depositRow" style="display:none;">
+        <span class="deposit-label">💳 Deposit Due at Scheduling</span>
+        <span class="deposit-amount" id="depositAmount">$0</span>
+      </div>
+      <div class="expiry-note" id="expiryNote" style="display:none;">
+        📅 Estimate valid until <span id="expiryDate"></span>
+      </div>
     </div>
 
-    <!-- Footer -->
-    <div class="est-footer">
-      <p><strong>Generational Garage Doors</strong></p>
-      <p><a href="mailto:dustin@gengaragedoors.com">dustin@gengaragedoors.com</a> · <a href="tel:9253168384">(925) 316-8384</a></p>
-      <p style="margin-top:6px;font-size:0.72rem;opacity:0.6;">This estimate is valid for 30 days from the date of issue.</p>
+    <!-- Actions -->
+    <div id="actionArea">
+      <div class="action-card">
+        <button class="btn btn-accept" id="acceptBtn" onclick="acceptEstimate()">✅ Accept This Estimate</button>
+        <a class="btn btn-pay" id="payBtn" href="#" target="_blank" style="display:none;">💳 Make a Payment</a>
+        <div class="status-msg" id="acceptStatus"></div>
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="contact-card">
+      <h3>Questions? We're here.</h3>
+      <div class="contact-row">📞 <a href="tel:9253168384">(925) 316-8384</a></div>
+      <div class="contact-row">✉️ <a href="mailto:dustin@gengaragedoors.com">dustin@gengaragedoors.com</a></div>
+      <div class="contact-row" style="color:var(--text2);font-size:0.82rem;margin-top:4px;">Serving the Bay Area · Same-week installs available</div>
     </div>
   </div>
-</div>
+</main>
+
+<footer>
+  <strong>Generational Garage Doors</strong> · Bay Area, CA · (925) 316-8384<br>
+  Licensed & Insured · Family Owned & Operated
+</footer>
 
 <script>
-const MAKE_ACCEPT_WEBHOOK = 'YOUR_MAKE_ACCEPT_WEBHOOK_URL_HERE';
+// =====================================================
+// CONFIG — keep in sync with estimate-builder.html
+// =====================================================
+const SHEETS_API_KEY = 'AIzaSyCc66ved9wipecm9WihdQisrRV9WwYuHbA';
+const SHEET_ID       = '1rZaXHyOVxJmI_Dp6IhdIwTXX3SsXaWJr3w4hhs0XYYI';
+const ESTIMATES_TAB  = 'Estimates';
 
-function loadEstimate() {
+// Set up your Make.com "Accept Estimate" scenario and paste the webhook URL here:
+const ACCEPT_WEBHOOK_URL = 'YOUR_ACCEPT_WEBHOOK_URL_HERE';
+
+// =====================================================
+// MAIN — load estimate on page load
+// =====================================================
+window.addEventListener('DOMContentLoaded', async () => {
   const params = new URLSearchParams(window.location.search);
-  const data = params.get('d');
-  if (!data) { showError(); return; }
-  try {
-    const est = JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(data)))));
-    renderEstimate(est);
-    if (est.accepted) showAccepted();
-  } catch(e) {
+  const id     = params.get('id');   // new: ?id=351690
+  const d      = params.get('d');    // legacy: ?d=base64...
+
+  let estimate = null;
+
+  if (id) {
+    estimate = await fetchEstimateById(id);
+  } else if (d) {
+    estimate = decodeEstimateFromUrl(d);
+  }
+
+  if (estimate) {
+    renderEstimate(estimate);
+  } else {
     showError();
   }
+});
+
+// =====================================================
+// FETCH — Google Sheets lookup by estNumber
+// =====================================================
+async function fetchEstimateById(id) {
+  try {
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(ESTIMATES_TAB)}?key=${SHEETS_API_KEY}`;
+    const res  = await fetch(url);
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!data.values || data.values.length < 2) return null;
+
+    const headers = data.values[0];
+    const rows    = data.values.slice(1);
+
+    // Find row where Estimate ID (col A) matches — handles various formats
+    const row = rows.find(r => {
+      const cellId = String(r[0] || '').trim();
+      return cellId === id ||
+             cellId === 'EST-' + id ||
+             cellId === 'WEB-' + id ||
+             cellId.includes(id);
+    });
+    if (!row) return null;
+
+    // Map headers → object
+    const obj = {};
+    headers.forEach((h, j) => { obj[h] = row[j] || ''; });
+    return sheetsRowToEstimate(obj);
+
+  } catch (e) {
+    console.error('Sheets fetch error:', e);
+    return null;
+  }
 }
 
+function sheetsRowToEstimate(row) {
+  const total      = parseFloat(String(row['Amount'] || '0').replace(/[$,]/g, '')) || 0;
+  const depositReq = (row['Deposit Required'] || '').toLowerCase() === 'yes';
+  const deposit    = depositReq ? Math.round(total * 0.5) : total;
+
+  // Try to parse items from Notes column (JSON array)
+  let items = [];
+  const notesRaw = row['Notes'] || '';
+  try {
+    if (notesRaw.trim().startsWith('[')) {
+      const parsed = JSON.parse(notesRaw);
+      if (Array.isArray(parsed)) items = parsed;
+    }
+  } catch (e) { /* fall through */ }
+
+  // Fallback: single line item from service type + total
+  if (items.length === 0 && total > 0) {
+    items = [{ name: row['Service Type'] || 'Garage Door Service', price: total, isFree: false }];
+  }
+
+  return {
+    customerName:    row['Customer Name']   || '',
+    customerEmail:   row['Email']           || '',
+    customerPhone:   row['Phone']           || '',
+    customerAddress: (row['Street Address'] || '') + (row['City'] ? ', ' + row['City'] : ''),
+    serviceType:     row['Service Type']    || '',
+    estNumber:       row['Estimate ID']     || '',
+    date:            row['Date Created']    || '',
+    status:          row['Status']          || 'Pending',
+    expirationDate:  row['Expiration Date'] || '',
+    items,
+    total,
+    depositAmount:   deposit,
+    stripeLink:      row['Stripe Link']     || '',
+    notes:           '',
+  };
+}
+
+// =====================================================
+// DECODE — legacy base64 ?d= URL
+// =====================================================
+function decodeEstimateFromUrl(encoded) {
+  try {
+    const json = decodeURIComponent(escape(atob(decodeURIComponent(encoded))));
+    return JSON.parse(json);
+  } catch (e) {
+    console.error('Decode error:', e);
+    return null;
+  }
+}
+
+// =====================================================
+// RENDER
+// =====================================================
 function renderEstimate(est) {
-  document.getElementById('estimateContent').style.display = 'block';
-  document.getElementById('estNum').textContent = est.estNumber ? 'Est. #' + est.estNumber : '';
-  document.getElementById('custNameDisplay').textContent = est.customerName || '—';
-  document.getElementById('custPhoneDisplay').textContent = est.customerPhone || '';
-  document.getElementById('custAddressDisplay').textContent = est.customerAddress || '—';
-  document.getElementById('estDateDisplay').textContent = est.date || new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
-  document.getElementById('serviceTypeDisplay').textContent = est.serviceType || '—';
+  // Header badge
+  const estId = est.estNumber || est.estId || '';
+  document.getElementById('headerEstNum').textContent = estId ? 'Est. #' + estId : 'Your Estimate';
 
-  const tbody = document.getElementById('lineItemsBody');
-  const items = est.items || [];
-  if (items.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="2" style="color:var(--text2);text-align:center;padding:24px;">No line items</td></tr>';
+  // Status pill
+  const pill    = document.getElementById('statusPill');
+  const status  = (est.status || 'Pending').toLowerCase();
+  if (status.includes('accept') || status.includes('approved')) {
+    pill.className = 'status-pill status-accepted';
+    pill.textContent = '✅ Accepted';
+    showAcceptedBanner();
+  } else if (status.includes('expired')) {
+    pill.className = 'status-pill status-expired';
+    pill.textContent = '⛔ Expired';
   } else {
-    tbody.innerHTML = items.map(item => `
-      <tr>
-        <td><div class="item-name">${item.name}</div>${item.sub ? `<div class="item-sub">${item.sub}</div>` : ''}</td>
-        <td>${item.isFree ? '<span style="color:var(--green2);font-size:0.82rem;">Included</span>' : '$' + Number(item.price).toLocaleString()}</td>
-      </tr>
+    pill.className = 'status-pill status-pending';
+    pill.textContent = '⏳ Pending Review';
+  }
+
+  // Greeting
+  const firstName = (est.customerName || '').split(' ')[0];
+  document.getElementById('greetingName').textContent = firstName ? `Hi ${firstName},` : 'Hi there,';
+
+  // Date
+  const dateStr = est.date ? formatDate(est.date) : '';
+  document.getElementById('estimateDate').textContent = dateStr;
+
+  // Service badge
+  if (est.serviceType) {
+    document.getElementById('serviceBadge').textContent = '🔧 ' + est.serviceType;
+    document.getElementById('serviceBadge').style.display = 'inline-block';
+  } else {
+    document.getElementById('serviceBadge').style.display = 'none';
+  }
+
+  // Line items
+  const itemsEl = document.getElementById('lineItemsList');
+  const items   = est.items || [];
+  if (items.length > 0) {
+    itemsEl.innerHTML = items.map(item => `
+      <div class="line-item">
+        <span class="li-name">${escHtml(item.name)}</span>
+        <span class="li-price ${item.isFree ? 'free' : ''}">
+          ${item.isFree ? 'Included' : '$' + formatNum(item.price)}
+        </span>
+      </div>
     `).join('');
-  }
-
-  const total = est.total || 0;
-  document.getElementById('grandTotalDisplay').textContent = '$' + Number(total).toLocaleString();
-
-  if (est.depositAmount && est.depositAmount > 0) {
-    document.getElementById('depositRow').style.display = 'flex';
-    document.getElementById('depositDisplay').textContent = '$' + Number(est.depositAmount).toLocaleString();
-  }
-
-  if (est.notes) {
-    document.getElementById('notesSection').style.display = 'block';
-    document.getElementById('notesDisplay').textContent = est.notes;
-  }
-
-  if (est.stripeLink) {
-    const payBtn = document.getElementById('payBtn');
-    payBtn.href = est.stripeLink;
-    payBtn.classList.remove('hidden');
-  }
-
-  if (est.isService) {
-    document.getElementById('ctaText').textContent = 'Review your estimate above. Payment is due upon completion of service.';
   } else {
-    document.getElementById('ctaText').textContent = 'Review your estimate above and click accept to get started. A deposit is required to schedule your installation.';
+    itemsEl.innerHTML = '<div style="color:var(--text2);font-size:0.85rem;">Service details included in estimate.</div>';
   }
 
-  document.title = `Estimate for ${est.customerName || 'You'} — Generational Garage Doors`;
+  // Total
+  document.getElementById('totalAmount').textContent = '$' + formatNum(est.total || 0);
+
+  // Deposit
+  if (est.depositAmount && est.depositAmount > 0 && est.depositAmount < est.total) {
+    document.getElementById('depositRow').style.display = 'flex';
+    document.getElementById('depositAmount').textContent = '$' + formatNum(est.depositAmount);
+  } else if (est.depositAmount && est.depositAmount === est.total) {
+    document.getElementById('depositRow').style.display = 'flex';
+    document.getElementById('depositRow').querySelector('.deposit-label').textContent = '💳 Full Payment Due';
+    document.getElementById('depositAmount').textContent = '$' + formatNum(est.depositAmount);
+  }
+
+  // Expiry
+  if (est.expirationDate) {
+    document.getElementById('expiryNote').style.display = 'flex';
+    document.getElementById('expiryDate').textContent = formatDate(est.expirationDate);
+  }
+
+  // Stripe payment button
+  const stripeLink = est.stripeLink || '';
+  if (stripeLink && stripeLink.startsWith('http')) {
+    const payBtn = document.getElementById('payBtn');
+    payBtn.href = stripeLink;
+    payBtn.style.display = 'block';
+  }
+
+  // Store estimate on window for accept handler
+  window._currentEstimate = est;
+
+  // Show content
+  document.getElementById('loadingState').style.display = 'none';
+  document.getElementById('estimateContent').style.display = 'block';
 }
 
-function showError() {
-  document.getElementById('errorState').style.display = 'block';
-  document.getElementById('estimateContent').style.display = 'none';
-}
-
-function showAccepted() {
-  document.getElementById('acceptedBadge').style.display = 'block';
-  document.getElementById('ctaContent').style.display = 'none';
-}
-
+// =====================================================
+// ACCEPT
+// =====================================================
 async function acceptEstimate() {
-  const btn = document.getElementById('acceptBtn');
+  const btn    = document.getElementById('acceptBtn');
+  const status = document.getElementById('acceptStatus');
+  const est    = window._currentEstimate;
+
+  if (!est) return;
+
+  if (ACCEPT_WEBHOOK_URL === 'YOUR_ACCEPT_WEBHOOK_URL_HERE') {
+    // Webhook not set up yet — show accepted UI anyway for now
+    showAcceptedBanner();
+    btn.disabled = true;
+    btn.textContent = '✅ Estimate Accepted';
+    status.className = 'status-msg success';
+    status.textContent = "✅ Thank you! Dustin will be in touch shortly to schedule.";
+    return;
+  }
+
   btn.disabled = true;
   btn.textContent = 'Sending...';
+  status.className = 'status-msg pending';
+  status.textContent = 'Processing...';
 
-  const params = new URLSearchParams(window.location.search);
-  const data = params.get('d');
-  let est = {};
-  try { est = JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(data))))); } catch(e) {}
+  try {
+    const payload = new URLSearchParams({
+      event:        'estimate_accepted',
+      estNumber:    est.estNumber || est.estId || '',
+      customerName: est.customerName || '',
+      customerEmail: est.customerEmail || '',
+      customerPhone: est.customerPhone || '',
+      total:        String(est.total || 0),
+      serviceType:  est.serviceType || '',
+      acceptedAt:   new Date().toISOString(),
+    });
 
-  if (MAKE_ACCEPT_WEBHOOK !== 'YOUR_MAKE_ACCEPT_WEBHOOK_URL_HERE') {
-    try {
-      await fetch(MAKE_ACCEPT_WEBHOOK, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          customer_name: est.customerName,
-          customer_email: est.customerEmail,
-          customer_phone: est.customerPhone,
-          estimate_number: est.estNumber,
-          total: est.total,
-          deposit_amount: est.depositAmount,
-          accepted_at: new Date().toISOString(),
-          event: 'estimate_accepted'
-        })
-      });
-    } catch(e) {}
+    await fetch(ACCEPT_WEBHOOK_URL, {
+      method:  'POST',
+      mode:    'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body:    payload.toString()
+    });
+
+    showAcceptedBanner();
+    btn.textContent = '✅ Estimate Accepted';
+    status.className = 'status-msg success';
+    status.textContent = "✅ Thank you! Dustin will be in touch shortly to schedule.";
+
+  } catch (e) {
+    btn.disabled = false;
+    btn.textContent = '✅ Accept This Estimate';
+    status.className = 'status-msg error';
+    status.textContent = '❌ Something went wrong. Please call (925) 316-8384.';
   }
-
-  showAccepted();
 }
 
-loadEstimate();
+function showAcceptedBanner() {
+  const actionArea = document.getElementById('actionArea');
+  const existing   = document.querySelector('.accepted-banner');
+  if (existing) return;
+
+  const banner = document.createElement('div');
+  banner.className = 'accepted-banner';
+  banner.innerHTML = `
+    <div class="checkmark">✅</div>
+    <h3>Estimate Accepted!</h3>
+    <p>Thank you — Dustin will follow up within 24 hours to confirm your appointment.</p>
+  `;
+  actionArea.insertBefore(banner, actionArea.firstChild);
+
+  const statusPill    = document.getElementById('statusPill');
+  statusPill.className = 'status-pill status-accepted';
+  statusPill.textContent = '✅ Accepted';
+}
+
+// =====================================================
+// HELPERS
+// =====================================================
+function showError() {
+  document.getElementById('loadingState').style.display = 'none';
+  document.getElementById('errorState').style.display = 'block';
+}
+
+function formatNum(n) {
+  return Number(n).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return '';
+  try {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return dateStr;
+    return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  } catch (e) { return dateStr; }
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 </script>
 </body>
 </html>
