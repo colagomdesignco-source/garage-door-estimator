@@ -990,7 +990,7 @@ async function sendEstimate() {
     status.innerHTML = `✅ <strong>Estimate sent to ${payload.customerEmail}!</strong> Redirecting...`;
     btn.textContent = '✓ Sent';
     setTimeout(() => {
-      window.location.href = 'https://portal.gengaragedoors.com/estimates-details';
+      window.location.href = 'https://gengaragedoorsportal.preview.softr.app/estimates-details?autoUser=true&show-toolbar=true';
     }, 1500);
 
   } catch(e) {
