@@ -870,7 +870,7 @@ function openSendEstimateModal() {
   const email = document.getElementById('custEmail').value || '';
   const serviceType = document.getElementById('serviceType').value || '';
   const isService = serviceType.toLowerCase().includes('service') || serviceType.toLowerCase().includes('repair') || serviceType.toLowerCase().includes('spring');
-  const deposit = isService ? 0 : Math.round(totalNum * 0.5);
+  const deposit = isService ? totalNum : Math.round(totalNum * 0.5);
 
   if (totalNum === 0) { alert('Please complete the estimate before previewing.'); return; }
   if (!email) { alert('Please enter the customer\'s email address first.'); return; }
@@ -923,7 +923,7 @@ function buildEstimatePayload() {
   const total = parseFloat(document.getElementById('grandTotal').textContent.replace(/[$,]/g,'')) || 0;
   const serviceType = document.getElementById('serviceType').value || '';
   const isService = serviceType.toLowerCase().includes('service') || serviceType.toLowerCase().includes('repair') || serviceType.toLowerCase().includes('spring');
-  const deposit = isService ? 0 : Math.round(total * 0.5);
+  const deposit = isService ? total : Math.round(total * 0.5);
 
   const items = [];
   const doorStyle = document.getElementById('doorStyle').value;
