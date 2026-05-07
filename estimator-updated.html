@@ -543,7 +543,10 @@ function getHeightRecommendation(openingIn, headroomIn) {
 }
 
 function roundToFive(n){ return Math.round(n/5)*5; }
-function applyMarkup(w){ return roundToFive((w+250)*1.2); }
+// Door markup: GDS wholesale → +20% price increase → ×2 + $250
+function applyDoorMarkup(w){ return roundToFive(w * 2.4 + 250); }
+// General markup for hardware/wholesale items (~50% markup)
+function applyMarkup(w){ return roundToFive(w * 1.5); }
 
 function onServiceTypeChange(val) {
   if (!val) return;
@@ -556,6 +559,15 @@ function onServiceTypeChange(val) {
 }
 
 let lineItems=[], doorWholesale=0, operatorWholesale=0, itemIdCounter=0;
+let doorDetails = null; // stores rich door selection info
+
+const STYLE_NAMES = {
+  '2250':'Raised Panel 25GA','2250pvc':'Raised Panel 25GA Insulated',
+  '2240':'Raised Panel 24GA','2240pvc':'Raised Panel 24GA Insulated',
+  '2283':'Raised Panel Steelback','5250':'Carriage Stamp',
+  '5250pvc':'Carriage Stamp Insulated','5283':'Carriage Stamp Steelback'
+};
+const COLOR_LABELS = {white:'White', almond:'Almond', special:'Special Order Color'};
 
 function calculate() {
   const ow = parseFloat(document.getElementById('openingWidth').value);
@@ -666,6 +678,36 @@ function calculate() {
   document.getElementById('operatorRec').innerHTML = opRecHTML;
   operatorWholesale = operatorRetail;
   window._operatorIsRetail = true;
+
+  // Save door details for use in estimate preview/payload
+  const _doorStyle = document.getElementById('doorStyle').value;
+  const _ow = parseFloat(document.getElementById('openingWidth').value);
+  const _oh = parseFloat(document.getElementById('openingHeight').value);
+  const _hr = parseFloat(document.getElementById('headroom').value);
+  if (_doorStyle && doorWholesale > 0 && _ow && _oh && !isNaN(_hr)) {
+    const _wRec = getWidthRecommendation(_ow);
+    const _hRec = getHeightRecommendation(_oh, _hr);
+    const _tRec = getTrackRecommendation(_hr, document.getElementById('pitchedCeiling').checked);
+    const _color = document.getElementById('doorColor').value;
+    const _hFt = Math.floor(_hRec.doorIn / 12);
+    const _hIn = _hRec.doorIn % 12;
+    doorDetails = {
+      styleName:   STYLE_NAMES[_doorStyle] || 'Garage Door',
+      sizeLabel:   `${_wRec.doorFt}' × ${_hFt}'${_hIn > 0 ? _hIn + '"' : ''}`,
+      color:       COLOR_LABELS[_color] || _color,
+      track:       _tRec.track,
+      torsion:     _tRec.torsion,
+      operatorRec: _tRec.operator,
+      isJackshaft: _tRec.isJackshaft,
+      isLowHeadroom: _tRec.isLowHeadroom,
+      isFrameIn:   _wRec.type === 'frame-in',
+      isCustom:    _wRec.type === 'custom',
+      isStepDown:  _hRec.stepDown,
+    };
+  } else if (!_doorStyle) {
+    doorDetails = null;
+  }
+
   updateQuote();
 }
 
@@ -673,9 +715,22 @@ function updateQuote() {
   const opSeries  = document.getElementById('operatorSeries').value;
   const doorStyle = document.getElementById('doorStyle').value;
   let breakdown='', addonWholesaleTotal=0, addonRetailTotal=0;
-  const styleNames={'2250':'Raised Panel 25GA','2250pvc':'Raised Panel 25GA Insulated','2240':'Raised Panel 24GA','2240pvc':'Raised Panel 24GA Insulated','2283':'Raised Panel Steelback','5250':'Carriage Stamp','5250pvc':'Carriage Stamp Insulated','5283':'Carriage Stamp Steelback'};
+  const styleNames = STYLE_NAMES;
 
-  if (doorWholesale>0) breakdown+=`<div class="qb-row"><span class="qb-label">${styleNames[doorStyle]||'Door'}</span><span class="qb-value">$${applyMarkup(doorWholesale).toLocaleString()}</span></div>`;
+  if (doorWholesale>0){
+    const _dl = doorDetails
+      ? `${doorDetails.styleName} — ${doorDetails.sizeLabel} (${doorDetails.color})`
+      : (STYLE_NAMES[doorStyle]||'Garage Door');
+    const _ds = doorDetails
+      ? `<div style="font-size:0.72rem;color:var(--text2);margin-top:3px;line-height:1.4;">`
+        + `Track: ${doorDetails.track} · ${doorDetails.torsion} Torsion · ${doorDetails.operatorRec}`
+        + (doorDetails.isFrameIn ? ' · Frame-In Req.' : '')
+        + (doorDetails.isCustom  ? ' · Custom Cut-Down' : '')
+        + (doorDetails.isStepDown ? ' · Step-Down' : '')
+        + (doorDetails.isLowHeadroom ? ' · Low Headroom' : '')
+        + `</div>` : '';
+    breakdown+=`<div class="qb-row"><span class="qb-label">${_dl}${_ds}</span><span class="qb-value" style="align-self:flex-start;">$${applyDoorMarkup(doorWholesale).toLocaleString()}</span></div>`;
+  }
   if (operatorWholesale>0&&opSeries!=='none'&&OPERATOR_RETAIL[opSeries]) breakdown+=`<div class="qb-row"><span class="qb-label">${OPERATOR_RETAIL[opSeries].name}</span><span class="qb-value">$${operatorWholesale.toLocaleString()}</span></div>`;
 
   for (const item of lineItems) {
@@ -691,9 +746,11 @@ function updateQuote() {
     }
   }
 
-  const markedUpPart=roundToFive((doorWholesale+addonWholesaleTotal)*1.2+250);
-  const retailPart=operatorWholesale+addonRetailTotal;
-  const grandTotal=(doorWholesale>0||operatorWholesale>0||addonWholesaleTotal>0||addonRetailTotal>0)?roundToFive(markedUpPart+retailPart):0;
+  const doorRetail = doorWholesale > 0 ? applyDoorMarkup(doorWholesale) : 0;
+  const addonMarkup = addonWholesaleTotal > 0 ? roundToFive(addonWholesaleTotal * 1.5) : 0;
+  const retailPart = operatorWholesale + addonRetailTotal;
+  const grandTotal = (doorWholesale>0||operatorWholesale>0||addonWholesaleTotal>0||addonRetailTotal>0)
+    ? roundToFive(doorRetail + addonMarkup + retailPart) : 0;
   if(breakdown) breakdown+=`<div class="qb-row" style="margin-top:8px;padding-top:12px;border-top:2px solid var(--text);"><span class="qb-label" style="font-weight:700;color:var(--text);">Customer Total</span><span class="qb-value" style="font-size:1.05rem;">$${grandTotal.toLocaleString()}</span></div>`;
   document.getElementById('quoteBreakdown').innerHTML=breakdown||'<div style="color:var(--text2);font-size:0.85rem;padding:10px 0;">Select door options to see pricing.</div>';
   document.getElementById('grandTotal').textContent=grandTotal>0?`$${grandTotal.toLocaleString()}`:'$0';
@@ -808,11 +865,22 @@ function openSendEstimateModal() {
   document.getElementById('sendEstBtn').disabled = false;
   document.getElementById('sendEstBtn').textContent = '📨 Send to Customer';
 
-  const styleNames = {'2250':'Raised Panel 25GA','2250pvc':'Raised Panel 25GA Insulated','2240':'Raised Panel 24GA','2240pvc':'Raised Panel 24GA Insulated','2283':'Raised Panel Steelback','5250':'Carriage Stamp','5250pvc':'Carriage Stamp Insulated','5283':'Carriage Stamp Steelback'};
+  const styleNames = STYLE_NAMES;
   const doorStyle = document.getElementById('doorStyle').value;
   const opSeries = document.getElementById('operatorSeries').value;
   let previewItems = [];
-  if (doorWholesale > 0 && doorStyle) previewItems.push({ name: styleNames[doorStyle] || 'Garage Door', price: applyMarkup(doorWholesale) });
+  if (doorWholesale > 0 && doorStyle) {
+    const _pn = doorDetails
+      ? `${doorDetails.styleName} — ${doorDetails.sizeLabel} (${doorDetails.color})`
+      : (STYLE_NAMES[doorStyle] || 'Garage Door');
+    const _pd = doorDetails
+      ? `Track: ${doorDetails.track} · ${doorDetails.torsion} · ${doorDetails.operatorRec}`
+        + (doorDetails.isFrameIn  ? ' · Frame-In Req.' : '')
+        + (doorDetails.isStepDown ? ' · Step-Down' : '')
+        + (doorDetails.isLowHeadroom ? ' · Low Headroom Track' : '')
+      : '';
+    previewItems.push({ name: _pn, detail: _pd, price: applyDoorMarkup(doorWholesale) });
+  }
   if (operatorWholesale > 0 && opSeries && opSeries !== 'none' && OPERATOR_RETAIL[opSeries]) previewItems.push({ name: OPERATOR_RETAIL[opSeries].name, price: operatorWholesale });
   for (const item of lineItems) {
     const qty = item.quantity || 1;
@@ -821,7 +889,13 @@ function openSendEstimateModal() {
     else previewItems.push({ name: displayName, price: 0, free: true });
   }
   document.getElementById('semLineItems').innerHTML = previewItems.map(i =>
-    `<div style="display:flex;justify-content:space-between;padding:3px 0;"><span>${i.name}</span><span style="font-weight:500;">${i.free ? '<span style="color:var(--accent2)">Included</span>' : '$'+i.price.toLocaleString()}</span></div>`
+    `<div style="padding:4px 0;">
+      <div style="display:flex;justify-content:space-between;">
+        <span style="font-weight:500;">${i.name}</span>
+        <span style="font-weight:600;white-space:nowrap;margin-left:8px;">${i.free ? '<span style=\"color:var(--accent2)\">Included</span>' : '$'+i.price.toLocaleString()}</span>
+      </div>
+      ${i.detail ? `<div style=\"font-size:0.74rem;color:var(--text2);margin-top:2px;\">${i.detail}</div>` : ''}
+    </div>`
   ).join('');
 
   const depRow = document.getElementById('semDepositRow');
@@ -853,9 +927,21 @@ function buildEstimatePayload() {
   const items = [];
   const doorStyle = document.getElementById('doorStyle').value;
   const opSeries = document.getElementById('operatorSeries').value;
-  const styleNames = {'2250':'Raised Panel 25GA','2250pvc':'Raised Panel 25GA Insulated','2240':'Raised Panel 24GA','2240pvc':'Raised Panel 24GA Insulated','2283':'Raised Panel Steelback','5250':'Carriage Stamp','5250pvc':'Carriage Stamp Insulated','5283':'Carriage Stamp Steelback'};
+  const styleNames = STYLE_NAMES;
 
-  if (doorWholesale > 0 && doorStyle) items.push({ name: styleNames[doorStyle] || 'Garage Door', price: applyMarkup(doorWholesale), isFree: false });
+  if (doorWholesale > 0 && doorStyle) {
+    const _en = doorDetails
+      ? `${doorDetails.styleName} — ${doorDetails.sizeLabel} (${doorDetails.color})`
+      : (STYLE_NAMES[doorStyle] || 'Garage Door');
+    const _ed = doorDetails
+      ? `Track: ${doorDetails.track} · ${doorDetails.torsion} Torsion · ${doorDetails.operatorRec}`
+        + (doorDetails.isFrameIn   ? ' · Frame-In Required' : '')
+        + (doorDetails.isCustom    ? ' · Custom Cut-Down' : '')
+        + (doorDetails.isStepDown  ? ' · Step-Down Applied' : '')
+        + (doorDetails.isLowHeadroom ? ' · Low Headroom Track' : '')
+      : '';
+    items.push({ name: _en, detail: _ed, price: applyDoorMarkup(doorWholesale), isFree: false });
+  }
   if (operatorWholesale > 0 && opSeries && opSeries !== 'none' && OPERATOR_RETAIL[opSeries]) items.push({ name: OPERATOR_RETAIL[opSeries].name, price: operatorWholesale, isFree: false });
 
   for (const item of lineItems) {
