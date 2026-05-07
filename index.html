@@ -612,6 +612,7 @@ function updateDoorPreview(){
       img.src=src;
       img.style.display='block';
       img.style.filter='';
+      img.style.objectPosition='center';
       ph.style.display='none';
       // FIX: fallback if image 404s (e.g. short almond missing) — use white version
       img.onerror=function(){
@@ -684,6 +685,7 @@ function updateGlassPreview(){
   if(src){
     img.src=src;img.style.display='block';ph.style.display='none';
     img.style.filter=needsWhiteFilter(key)?'brightness(1.55) saturate(0.08) contrast(0.92)':'';
+    img.style.objectPosition='top';
     applyGarageCountStyle(img);
   }else{img.style.display='none';ph.style.display='flex';img.style.filter='';}
 }
