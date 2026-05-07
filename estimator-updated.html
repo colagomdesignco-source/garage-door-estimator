@@ -1,161 +1,151 @@
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link
+  href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap"
+  rel="stylesheet" />
 <style>
-:root {
-  --bg: #f5f3ef;
-  --surface: #ffffff;
-  --surface2: #f0ede8;
-  --border: #e0dbd2;
-  --text: #1a1714;
-  --text2: #6b6560;
-  --accent: #2c5f2e;
-  --accent2: #4a9e4e;
-  --warn: #c0392b;
-  --gold: #b8860b;
-  --radius: 10px;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+  :root {
+    --bg: #f5f3ef;
+    --surface: #ffffff;
+    --surface2: #f0ede8;
+    --border: #e0dbd2;
+    --text: #1a1714;
+    --text2: #6b6560;
+    --accent: #2c5f2e;
+    --accent2: #4a9e4e;
+    --warn: #c0392b;
+    --gold: #b8860b;
+    --radius: 10px;
+  }
 
-header {
-  background: var(--accent);
-  color: white;
-  padding: 18px 32px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-header h1 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; }
-header span { font-size: 0.8rem; opacity: 0.7; margin-left: auto; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-.container { max-width: 100%; margin: 0 auto; padding: 24px 16px; display: grid; grid-template-columns: 1fr 360px; gap: 20px; }
-@media (max-width: 768px) {
-  .container { grid-template-columns: 1fr; padding: 12px; }
-  .quote-panel { position: static; }
-  .quote-total-box { padding: 16px; }
-  .qt-total { font-size: 2rem; }
-  .row2, .row3, .row4 { grid-template-columns: 1fr; }
-  header { padding: 14px 16px; flex-wrap: wrap; gap: 8px; }
-  header span { margin-left: 0; font-size: 0.75rem; }
-  .btn { font-size: 0.82rem; padding: 10px 14px; }
-  .line-item { grid-template-columns: 1fr auto auto; }
-  .add-item-row { grid-template-columns: 1fr 80px auto; }
-}
-.panel { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; }
-.panel-header { background: var(--surface2); padding: 14px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
-.panel-header h2 { font-size: 0.85rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text2); }
-.panel-header .badge { background: var(--accent); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 600; flex-shrink: 0; }
-.panel-body { padding: 20px; }
+  header { background: var(--accent); color: white; padding: 18px 32px; display: flex; align-items: center; gap: 16px; }
+  header h1 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; }
+  header span { font-size: 0.8rem; opacity: 0.7; margin-left: auto; }
 
-label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text2); margin-bottom: 6px; letter-spacing: 0.04em; text-transform: uppercase; }
-select, input[type="number"], input[type="text"] {
-  width: 100%; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 7px;
-  font-family: 'DM Sans', sans-serif; font-size: 0.9rem; background: var(--surface);
-  color: var(--text); transition: border-color 0.2s;
-}
-select:focus, input:focus { outline: none; border-color: var(--accent); }
+  .container { max-width: 100%; margin: 0 auto; padding: 24px 16px; display: grid; grid-template-columns: 1fr 360px; gap: 20px; }
+  @media (max-width: 768px) {
+    .container { grid-template-columns: 1fr; padding: 12px; }
+    .quote-panel { position: static; }
+    .quote-total-box { padding: 16px; }
+    .qt-total { font-size: 2rem; }
+    .row2, .row3, .row4 { grid-template-columns: 1fr; }
+    header { padding: 14px 16px; flex-wrap: wrap; gap: 8px; }
+    header span { margin-left: 0; font-size: 0.75rem; }
+    .btn { font-size: 0.82rem; padding: 10px 14px; }
+    .line-item { grid-template-columns: 1fr auto auto; }
+    .add-item-row { grid-template-columns: 1fr 80px auto; }
+  }
 
-.field-group { margin-bottom: 18px; }
-.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-.row4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; }
+  .panel { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; }
+  .panel-header { background: var(--surface2); padding: 14px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  .panel-header h2 { font-size: 0.85rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text2); }
+  .panel-header .badge { background: var(--accent); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 600; flex-shrink: 0; }
+  .panel-body { padding: 20px; }
 
-.rec-box { background: #f0f7f0; border: 1.5px solid #b8d9b9; border-radius: 8px; padding: 14px 16px; margin: 16px 0; }
-.rec-box h3 { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); margin-bottom: 10px; }
-.rec-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; font-size: 0.85rem; }
-.rec-label { color: var(--text2); }
-.rec-value { font-weight: 600; color: var(--text); }
-.rec-warning { background: #fff8e1; border: 1.5px solid #ffe082; border-radius: 8px; padding: 12px 14px; margin: 10px 0; font-size: 0.82rem; color: #7b5800; }
-.rec-danger { background: #fff0f0; border: 1.5px solid #ffaaaa; border-radius: 8px; padding: 12px 14px; margin: 10px 0; font-size: 0.82rem; color: #c0392b; font-weight: 600; }
+  label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text2); margin-bottom: 6px; letter-spacing: 0.04em; text-transform: uppercase; }
+  select, input[type="number"], input[type="text"] { width: 100%; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 7px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; background: var(--surface); color: var(--text); transition: border-color 0.2s; }
+  select:focus, input:focus { outline: none; border-color: var(--accent); }
 
-.divider { height: 1px; background: var(--border); margin: 20px 0; }
+  .field-group { margin-bottom: 18px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .row4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; }
 
-.line-items { display: flex; flex-direction: column; gap: 8px; }
-.line-item {
-  display: grid; grid-template-columns: 1fr auto auto auto;
-  align-items: center; gap: 10px;
-  padding: 10px 12px; background: var(--surface2); border-radius: 7px;
-  border: 1px solid var(--border);
-}
-.line-item.free { opacity: 0.6; text-decoration: line-through; }
-.li-name { font-size: 0.88rem; font-weight: 500; }
-.li-sub { font-size: 0.75rem; color: var(--text2); }
-.li-price { font-size: 0.9rem; font-weight: 600; color: var(--accent); white-space: nowrap; }
-.li-price.zero { color: var(--text2); }
-.free-btn {
-  font-size: 0.7rem; padding: 3px 8px; border-radius: 20px; border: 1.5px solid var(--border);
-  cursor: pointer; background: white; color: var(--text2); transition: all 0.2s; white-space: nowrap;
-}
-.free-btn.active { background: var(--gold); border-color: var(--gold); color: white; }
-.li-remove { background: none; border: none; cursor: pointer; color: var(--text2); font-size: 1rem; padding: 2px 4px; }
-.li-remove:hover { color: var(--warn); }
+  .rec-box { background: #f0f7f0; border: 1.5px solid #b8d9b9; border-radius: 8px; padding: 14px 16px; margin: 16px 0; }
+  .rec-box h3 { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); margin-bottom: 10px; }
+  .rec-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; font-size: 0.85rem; }
+  .rec-label { color: var(--text2); }
+  .rec-value { font-weight: 600; color: var(--text); }
+  .rec-warning { background: #fff8e1; border: 1.5px solid #ffe082; border-radius: 8px; padding: 12px 14px; margin: 10px 0; font-size: 0.82rem; color: #7b5800; }
+  .rec-danger { background: #fff0f0; border: 1.5px solid #ffaaaa; border-radius: 8px; padding: 12px 14px; margin: 10px 0; font-size: 0.82rem; color: #c0392b; font-weight: 600; }
 
-.add-item-row { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; margin-top: 12px; align-items: end; }
-.add-item-row input { font-size: 0.85rem; }
-.add-item-row .price-input { width: 100px; }
-.btn { padding: 10px 18px; border-radius: 7px; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.85rem; transition: all 0.2s; }
-.btn-primary { background: var(--accent); color: white; }
-.btn-primary:hover { background: #234e25; }
-.btn-sm { padding: 8px 14px; font-size: 0.8rem; }
-.btn-outline { background: white; border: 1.5px solid var(--border); color: var(--text); }
-.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+  .divider { height: 1px; background: var(--border); margin: 20px 0; }
 
-.quote-panel { position: sticky; top: 24px; }
-.quote-total-box { background: var(--accent); color: white; border-radius: var(--radius); padding: 24px; margin-bottom: 16px; }
-.qt-label { font-size: 0.75rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
-.qt-total { font-family: 'DM Serif Display', serif; font-size: 3rem; font-weight: 400; line-height: 1; }
-.qt-sub { font-size: 0.8rem; opacity: 0.65; margin-top: 6px; }
+  .line-items { display: flex; flex-direction: column; gap: 8px; }
+  .line-item { display: grid; grid-template-columns: 1fr auto auto auto; align-items: center; gap: 10px; padding: 10px 12px; background: var(--surface2); border-radius: 7px; border: 1px solid var(--border); }
+  .line-item.free { opacity: 0.6; text-decoration: line-through; }
+  .li-name { font-size: 0.88rem; font-weight: 500; }
+  .li-sub { font-size: 0.75rem; color: var(--text2); }
+  .li-price { font-size: 0.9rem; font-weight: 600; color: var(--accent); white-space: nowrap; }
+  .li-price.zero { color: var(--text2); }
 
-.quote-breakdown { padding: 16px; }
-.qb-row { display: flex; justify-content: space-between; padding: 7px 0; font-size: 0.85rem; border-bottom: 1px solid var(--border); }
-.qb-row:last-child { border-bottom: none; }
-.qb-label { color: var(--text2); }
-.qb-value { font-weight: 600; }
+  .free-btn { font-size: 0.7rem; padding: 3px 8px; border-radius: 20px; border: 1.5px solid var(--border); cursor: pointer; background: white; color: var(--text2); transition: all 0.2s; white-space: nowrap; }
+  .free-btn.active { background: var(--gold); border-color: var(--gold); color: white; }
+  .li-remove { background: none; border: none; cursor: pointer; color: var(--text2); font-size: 1rem; padding: 2px 4px; }
+  .li-remove:hover { color: var(--warn); }
 
-.customer-section { padding: 20px; border-top: 1px solid var(--border); }
-.customer-section h3 { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text2); margin-bottom: 14px; }
+  .add-item-row { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; margin-top: 12px; align-items: end; }
+  .add-item-row input { font-size: 0.85rem; }
+  .add-item-row .price-input { width: 100px; }
 
-.action-btns { padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--border); }
+  .btn { padding: 10px 18px; border-radius: 7px; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.85rem; transition: all 0.2s; }
+  .btn-primary { background: var(--accent); color: white; }
+  .btn-primary:hover { background: #234e25; }
+  .btn-sm { padding: 8px 14px; font-size: 0.8rem; }
+  .btn-outline { background: white; border: 1.5px solid var(--border); color: var(--text); }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
-.tag { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.72rem; font-weight: 600; }
-.tag-custom { background: #fff0e0; color: #c05a00; border: 1px solid #ffc87a; }
-.tag-frame { background: #e8f4ff; color: #0055a5; border: 1px solid #90c8ff; }
-.tag-stepdown { background: #ffeaea; color: #c0392b; border: 1px solid #ffaaaa; }
+  .quote-panel { position: sticky; top: 24px; }
+  .quote-total-box { background: var(--accent); color: white; border-radius: var(--radius); padding: 24px; margin-bottom: 16px; }
+  .qt-label { font-size: 0.75rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+  .qt-total { font-family: 'DM Serif Display', serif; font-size: 3rem; font-weight: 400; line-height: 1; }
+  .qt-sub { font-size: 0.8rem; opacity: 0.65; margin-top: 6px; }
 
-.pitched-toggle { display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--surface2); border-radius: 7px; border: 1.5px solid var(--border); cursor: pointer; }
-.pitched-toggle input { width: auto; accent-color: var(--accent); width: 16px; height: 16px; }
-.pitched-toggle span { font-size: 0.88rem; font-weight: 500; }
+  .quote-breakdown { padding: 16px; }
+  .qb-row { display: flex; justify-content: space-between; padding: 7px 0; font-size: 0.85rem; border-bottom: 1px solid var(--border); }
+  .qb-row:last-child { border-bottom: none; }
+  .qb-label { color: var(--text2); }
+  .qb-value { font-weight: 600; }
 
-.btn-invoice { background: #1a4fa0; color: white; border: none; }
-.btn-invoice:hover { background: #163d7a; }
-.btn-send-est { background: #5c3d8f; color: white; border: none; }
-.btn-send-est:hover { background: #4a2f73; }
+  .customer-section { padding: 20px; border-top: 1px solid var(--border); }
+  .customer-section h3 { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text2); margin-bottom: 14px; }
 
-.modal-overlay { display:none; }
-.modal-overlay.open { display:block; }
-.modal { background:white; border-radius:14px; padding:24px; width:100%; box-shadow:0 8px 32px rgba(0,0,0,0.15); border:1px solid var(--border); margin-top:12px; }
-.modal h2 { font-family:'DM Serif Display',serif; font-size:1.3rem; font-weight:400; color:var(--accent); margin-bottom:4px; }
-.modal .modal-sub { font-size:0.82rem; color:var(--text2); margin-bottom:20px; }
-.modal-amount { background:var(--accent); color:white; border-radius:10px; padding:16px 20px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; }
-.modal-amount .ma-label { font-size:0.75rem; opacity:0.7; text-transform:uppercase; letter-spacing:0.06em; }
-.modal-amount .ma-value { font-family:'DM Serif Display',serif; font-size:1.8rem; }
-.modal-type-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px; }
-.type-btn { padding:12px; border:2px solid var(--border); border-radius:8px; cursor:pointer; background:white; text-align:left; transition:all 0.2s; }
-.type-btn:hover { border-color:var(--accent); }
-.type-btn.selected { border-color:var(--accent); background:#f0f7f0; }
-.type-btn .tb-label { font-size:0.75rem; color:var(--text2); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:2px; }
-.type-btn .tb-amount { font-size:1rem; font-weight:600; color:var(--text); }
-.type-btn .tb-desc { font-size:0.72rem; color:var(--text2); margin-top:2px; }
-.modal-status { border-radius:8px; padding:12px 14px; font-size:0.82rem; margin-top:12px; display:none; }
-.modal-status.pending { background:#fff8e1; border:1px solid #ffe082; color:#7b5800; display:block; }
-.modal-status.success { background:#f0f7f0; border:1px solid #b8d9b9; color:#2c5f2e; display:block; }
-.modal-status.error   { background:#fff0f0; border:1px solid #ffaaaa; color:#c0392b; display:block; }
-.modal-actions { display:flex; gap:10px; margin-top:16px; }
-.modal-actions .btn { flex:1; }
+  .action-btns { padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--border); }
 
-.clearance-hint { font-size: 0.75rem; color: var(--text2); margin-top: 4px; }
-.clearance-hint.ok { color: var(--accent2); }
-.clearance-hint.warn { color: var(--gold); }
-.clearance-hint.danger { color: var(--warn); }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.72rem; font-weight: 600; }
+  .tag-custom { background: #fff0e0; color: #c05a00; border: 1px solid #ffc87a; }
+  .tag-frame { background: #e8f4ff; color: #0055a5; border: 1px solid #90c8ff; }
+  .tag-stepdown { background: #ffeaea; color: #c0392b; border: 1px solid #ffaaaa; }
+
+  .pitched-toggle { display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--surface2); border-radius: 7px; border: 1.5px solid var(--border); cursor: pointer; }
+  .pitched-toggle input { width: auto; accent-color: var(--accent); width: 16px; height: 16px; }
+  .pitched-toggle span { font-size: 0.88rem; font-weight: 500; }
+
+  .btn-invoice { background: #1a4fa0; color: white; border: none; }
+  .btn-invoice:hover { background: #163d7a; }
+  .btn-send-est { background: #5c3d8f; color: white; border: none; }
+  .btn-send-est:hover { background: #4a2f73; }
+
+  .modal-overlay { display: none; }
+  .modal-overlay.open { display: block; }
+  .modal { background: white; border-radius: 14px; padding: 24px; width: 100%; box-shadow: 0 8px 32px rgba(0,0,0,0.15); border: 1px solid var(--border); margin-top: 12px; }
+  .modal h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; color: var(--accent); margin-bottom: 4px; }
+  .modal .modal-sub { font-size: 0.82rem; color: var(--text2); margin-bottom: 20px; }
+  .modal-amount { background: var(--accent); color: white; border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+  .modal-amount .ma-label { font-size: 0.75rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.06em; }
+  .modal-amount .ma-value { font-family: 'DM Serif Display', serif; font-size: 1.8rem; }
+  .modal-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+  .type-btn { padding: 12px; border: 2px solid var(--border); border-radius: 8px; cursor: pointer; background: white; text-align: left; transition: all 0.2s; }
+  .type-btn:hover { border-color: var(--accent); }
+  .type-btn.selected { border-color: var(--accent); background: #f0f7f0; }
+  .type-btn .tb-label { font-size: 0.75rem; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px; }
+  .type-btn .tb-amount { font-size: 1rem; font-weight: 600; color: var(--text); }
+  .type-btn .tb-desc { font-size: 0.72rem; color: var(--text2); margin-top: 2px; }
+  .modal-status { border-radius: 8px; padding: 12px 14px; font-size: 0.82rem; margin-top: 12px; display: none; }
+  .modal-status.pending { background: #fff8e1; border: 1px solid #ffe082; color: #7b5800; display: block; }
+  .modal-status.success { background: #f0f7f0; border: 1px solid #b8d9b9; color: #2c5f2e; display: block; }
+  .modal-status.error   { background: #fff0f0; border: 1px solid #ffaaaa; color: #c0392b; display: block; }
+  .modal-actions { display: flex; gap: 10px; margin-top: 16px; }
+  .modal-actions .btn { flex: 1; }
+
+  .clearance-hint { font-size: 0.75rem; color: var(--text2); margin-top: 4px; }
+  .clearance-hint.ok { color: var(--accent2); }
+  .clearance-hint.warn { color: var(--gold); }
+  .clearance-hint.danger { color: var(--warn); }
+
+  /* Quantity badge */
+  .qty-badge { background: #e8f4ff; color: #1a56db; border-radius: 4px; padding: 1px 7px; font-size: 0.74rem; font-weight: 700; margin-left: 6px; vertical-align: middle; }
 </style>
 
 <header>
@@ -164,14 +154,10 @@ select:focus, input:focus { outline: none; border-color: var(--accent); }
 </header>
 
 <div class="container">
-
   <div>
     <!-- Customer -->
     <div class="panel" style="margin-bottom:20px;">
-      <div class="panel-header">
-        <div class="badge">👤</div>
-        <h2>Customer Info</h2>
-      </div>
+      <div class="panel-header"><div class="badge">👤</div><h2>Customer Info</h2></div>
       <div class="panel-body">
         <div class="field-group">
           <label>Search Existing Lead</label>
@@ -182,30 +168,15 @@ select:focus, input:focus { outline: none; border-color: var(--accent); }
           <div id="leadResults" style="margin-top:8px;display:none;background:white;border:1.5px solid var(--border);border-radius:8px;max-height:200px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
         </div>
         <div class="row2">
-          <div class="field-group">
-            <label>Customer Name</label>
-            <input type="text" id="custName" placeholder="Full name"/>
-          </div>
-          <div class="field-group">
-            <label>Phone</label>
-            <input type="text" id="custPhone" placeholder="(925) 000-0000"/>
-          </div>
+          <div class="field-group"><label>Customer Name</label><input type="text" id="custName" placeholder="Full name"/></div>
+          <div class="field-group"><label>Phone</label><input type="text" id="custPhone" placeholder="(925) 000-0000"/></div>
         </div>
         <div class="row2">
-          <div class="field-group">
-            <label>Email</label>
-            <input type="text" id="custEmail" placeholder="email@example.com"/>
-          </div>
-          <div class="field-group">
-            <label>Address</label>
-            <input type="text" id="custAddress" placeholder="Street address"/>
-          </div>
+          <div class="field-group"><label>Email</label><input type="text" id="custEmail" placeholder="email@example.com"/></div>
+          <div class="field-group"><label>Address</label><input type="text" id="custAddress" placeholder="Street address"/></div>
         </div>
         <div class="row2">
-          <div class="field-group">
-            <label>Est. #</label>
-            <input type="text" id="estNumber" placeholder="Auto-generated"/>
-          </div>
+          <div class="field-group"><label>Est. #</label><input type="text" id="estNumber" placeholder="Auto-generated"/></div>
           <div class="field-group">
             <label>Service Type</label>
             <select id="serviceType" onchange="onServiceTypeChange(this.value)">
@@ -228,24 +199,12 @@ select:focus, input:focus { outline: none; border-color: var(--accent); }
 
     <!-- Measurements -->
     <div class="panel" style="margin-bottom:20px;">
-      <div class="panel-header">
-        <div class="badge">1</div>
-        <h2>Opening Measurements</h2>
-      </div>
+      <div class="panel-header"><div class="badge">1</div><h2>Opening Measurements</h2></div>
       <div class="panel-body">
         <div class="row3">
-          <div class="field-group">
-            <label>Opening Width (inches)</label>
-            <input type="number" id="openingWidth" placeholder="e.g. 120" min="80" max="240" oninput="calculate()"/>
-          </div>
-          <div class="field-group">
-            <label>Opening Height (inches)</label>
-            <input type="number" id="openingHeight" placeholder="e.g. 84" min="63" max="168" oninput="calculate()"/>
-          </div>
-          <div class="field-group">
-            <label>Available Headroom (inches)</label>
-            <input type="number" id="headroom" placeholder="e.g. 13" min="0" max="60" oninput="calculate()"/>
-          </div>
+          <div class="field-group"><label>Opening Width (inches)</label><input type="number" id="openingWidth" placeholder="e.g. 120" min="80" max="240" oninput="calculate()"/></div>
+          <div class="field-group"><label>Opening Height (inches)</label><input type="number" id="openingHeight" placeholder="e.g. 84" min="63" max="168" oninput="calculate()"/></div>
+          <div class="field-group"><label>Available Headroom (inches)</label><input type="number" id="headroom" placeholder="e.g. 13" min="0" max="60" oninput="calculate()"/></div>
         </div>
         <div class="row2" style="margin-top:4px;">
           <div class="field-group">
@@ -269,10 +228,7 @@ select:focus, input:focus { outline: none; border-color: var(--accent); }
 
     <!-- Door Selection -->
     <div class="panel" style="margin-bottom:20px;">
-      <div class="panel-header">
-        <div class="badge">2</div>
-        <h2>Door Selection</h2>
-      </div>
+      <div class="panel-header"><div class="badge">2</div><h2>Door Selection</h2></div>
       <div class="panel-body">
         <div class="row2">
           <div class="field-group">
@@ -305,10 +261,7 @@ select:focus, input:focus { outline: none; border-color: var(--accent); }
 
     <!-- Operator -->
     <div class="panel" id="operatorSection" style="margin-bottom:20px;">
-      <div class="panel-header">
-        <div class="badge">3</div>
-        <h2>Operator / Motor</h2>
-      </div>
+      <div class="panel-header"><div class="badge">3</div><h2>Operator / Motor</h2></div>
       <div class="panel-body">
         <div class="row2">
           <div class="field-group">
@@ -359,10 +312,7 @@ select:focus, input:focus { outline: none; border-color: var(--accent); }
 
     <!-- Add-ons -->
     <div class="panel" style="margin-bottom:20px;">
-      <div class="panel-header">
-        <div class="badge">4</div>
-        <h2>Add-ons & Line Items</h2>
-      </div>
+      <div class="panel-header"><div class="badge">4</div><h2>Add-ons & Line Items</h2></div>
       <div class="panel-body">
         <div class="field-group" id="springSection">
           <label>Springs</label>
@@ -420,14 +370,8 @@ select:focus, input:focus { outline: none; border-color: var(--accent); }
           <div class="empty-state"><div class="icon">📋</div>No add-ons yet. Use quick-add above or enter custom item below.</div>
         </div>
         <div class="add-item-row" style="margin-top:14px;">
-          <div class="field-group" style="margin:0;">
-            <label>Custom Item</label>
-            <input type="text" id="customItemName" placeholder="Item description"/>
-          </div>
-          <div class="field-group" style="margin:0;">
-            <label>Total Price $</label>
-            <input type="number" id="customItemPrice" placeholder="0.00" class="price-input"/>
-          </div>
+          <div class="field-group" style="margin:0;"><label>Custom Item</label><input type="text" id="customItemName" placeholder="Item description"/></div>
+          <div class="field-group" style="margin:0;"><label>Total Price $</label><input type="number" id="customItemPrice" placeholder="0.00" class="price-input"/></div>
           <button class="btn btn-outline btn-sm" onclick="addCustomItem()" style="margin-bottom:0;align-self:flex-end;">Add</button>
         </div>
       </div>
@@ -435,10 +379,7 @@ select:focus, input:focus { outline: none; border-color: var(--accent); }
 
     <!-- Notes -->
     <div class="panel" style="margin-bottom:20px;">
-      <div class="panel-header">
-        <div class="badge">5</div>
-        <h2>Notes</h2>
-      </div>
+      <div class="panel-header"><div class="badge">5</div><h2>Notes</h2></div>
       <div class="panel-body">
         <textarea id="estimateNotes" style="width:100%;height:80px;padding:10px;border:1.5px solid var(--border);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:0.88rem;resize:vertical;" placeholder="Internal notes, special instructions, job details..."></textarea>
       </div>
@@ -452,12 +393,8 @@ select:focus, input:focus { outline: none; border-color: var(--accent); }
       <div class="qt-total" id="grandTotal">$0</div>
       <div class="qt-sub">Includes labor & markup</div>
     </div>
-
     <div class="panel">
-      <div class="panel-header">
-        <div class="badge" style="background:var(--text2);">$</div>
-        <h2>Price Breakdown</h2>
-      </div>
+      <div class="panel-header"><div class="badge" style="background:var(--text2);">$</div><h2>Price Breakdown</h2></div>
       <div class="quote-breakdown" id="quoteBreakdown">
         <div style="color:var(--text2);font-size:0.85rem;padding:10px 0;">Select door options to see pricing.</div>
       </div>
@@ -488,14 +425,8 @@ select:focus, input:focus { outline: none; border-color: var(--accent); }
               <div class="tb-label">Full Amount</div><div class="tb-amount" id="fullAmt">$0</div><div class="tb-desc">100% (service & repair)</div>
             </button>
           </div>
-          <div class="field-group" style="margin-bottom:12px;">
-            <label>Amount to Charge</label>
-            <input type="number" id="invoiceAmount" placeholder="0.00" oninput="onInvoiceAmountEdit()"/>
-          </div>
-          <div class="field-group" style="margin-bottom:4px;">
-            <label>Invoice Description</label>
-            <input type="text" id="invoiceDesc" placeholder="e.g. Deposit — 16x7 Raised Panel Install"/>
-          </div>
+          <div class="field-group" style="margin-bottom:12px;"><label>Amount to Charge</label><input type="number" id="invoiceAmount" placeholder="0.00" oninput="onInvoiceAmountEdit()"/></div>
+          <div class="field-group" style="margin-bottom:4px;"><label>Invoice Description</label><input type="text" id="invoiceDesc" placeholder="e.g. Deposit — 16x7 Raised Panel Install"/></div>
           <div class="modal-status" id="modalStatus"></div>
           <div class="modal-actions">
             <button class="btn btn-outline" onclick="closeInvoiceModal()">Cancel</button>
@@ -512,8 +443,6 @@ select:focus, input:focus { outline: none; border-color: var(--accent); }
             <h2 style="font-family:'DM Serif Display',serif;font-size:1.2rem;font-weight:400;color:var(--accent);">Preview & Send Estimate</h2>
             <button onclick="closeSendEstimateModal()" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--text2);">✕</button>
           </div>
-
-          <!-- Mini Preview -->
           <div style="background:#f5f3ef;border-radius:10px;border:1px solid var(--border);overflow:hidden;margin-bottom:16px;">
             <div style="background:var(--accent);color:white;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;">
               <div style="font-size:0.8rem;opacity:0.8;">Estimate Preview</div>
@@ -534,15 +463,8 @@ select:focus, input:focus { outline: none; border-color: var(--accent); }
               <a id="previewLink" href="#" target="_blank" class="btn btn-outline btn-sm" style="flex:1;text-align:center;text-decoration:none;">👁 Open Full Preview</a>
             </div>
           </div>
-
-          <div class="field-group" style="margin-bottom:12px;">
-            <label>Stripe Payment Link (optional)</label>
-            <input type="text" id="semStripeLink" placeholder="https://buy.stripe.com/..."/>
-          </div>
-          <div class="field-group" style="margin-bottom:4px;">
-            <label>Notes for Customer</label>
-            <input type="text" id="semNotes" placeholder="e.g. Includes installation, 1-yr labor warranty"/>
-          </div>
+          <div class="field-group" style="margin-bottom:12px;"><label>Stripe Payment Link (optional)</label><input type="text" id="semStripeLink" placeholder="https://buy.stripe.com/..."/></div>
+          <div class="field-group" style="margin-bottom:4px;"><label>Notes for Customer</label><input type="text" id="semNotes" placeholder="e.g. Includes installation, 1-yr labor warranty"/></div>
           <div class="modal-status" id="semStatus"></div>
           <div class="modal-actions">
             <button class="btn btn-outline" onclick="closeSendEstimateModal()">Cancel</button>
@@ -636,11 +558,11 @@ function onServiceTypeChange(val) {
 let lineItems=[], doorWholesale=0, operatorWholesale=0, itemIdCounter=0;
 
 function calculate() {
-  const ow      = parseFloat(document.getElementById('openingWidth').value);
-  const oh      = parseFloat(document.getElementById('openingHeight').value);
-  const hr      = parseFloat(document.getElementById('headroom').value);
-  const sr      = parseFloat(document.getElementById('sideRoom').value);
-  const br      = parseFloat(document.getElementById('backRoom').value);
+  const ow = parseFloat(document.getElementById('openingWidth').value);
+  const oh = parseFloat(document.getElementById('openingHeight').value);
+  const hr = parseFloat(document.getElementById('headroom').value);
+  const sr = parseFloat(document.getElementById('sideRoom').value);
+  const br = parseFloat(document.getElementById('backRoom').value);
   const pitched = document.getElementById('pitchedCeiling').checked;
   const doorStyle = document.getElementById('doorStyle').value;
   const opSeries  = document.getElementById('operatorSeries').value;
@@ -668,16 +590,10 @@ function calculate() {
     const brHint       = document.getElementById('backRoomHint');
 
     if (brEntered) {
-      if (brOk) {
-        brHint.className='clearance-hint ok';
-        brHint.textContent=`✓ ${br}" — sufficient (min ${minBackRoom}" for this door height).`;
-      } else {
-        brHint.className='clearance-hint danger';
-        brHint.textContent=`✗ ${br}" — insufficient. Need ${minBackRoom}" for door height ${heightRec.display}.`;
-      }
+      if (brOk) { brHint.className='clearance-hint ok'; brHint.textContent=`✓ ${br}" — sufficient (min ${minBackRoom}" for this door height).`; }
+      else       { brHint.className='clearance-hint danger'; brHint.textContent=`✗ ${br}" — insufficient. Need ${minBackRoom}" for door height ${heightRec.display}.`; }
     } else {
-      brHint.className='clearance-hint';
-      brHint.textContent=`Min = door height + 42" (${doorHeightIn}" + 42" = ${minBackRoom}" for this job).`;
+      brHint.className='clearance-hint'; brHint.textContent=`Min = door height + 42" (${doorHeightIn}" + 42" = ${minBackRoom}" for this job).`;
     }
 
     const srOk = !isNaN(sr) && sr >= 8;
@@ -701,9 +617,7 @@ function calculate() {
       ${brEntered ? `<div class="rec-row"><span class="rec-label">Back Room</span><span class="rec-value" style="color:${brOk?'var(--accent2)':'var(--warn)'}">${br}" ${brOk?'✓ OK':'✗ Insufficient (need '+minBackRoom+'")'}</span></div>` : ''}
     </div>`;
 
-    if (trackRec.error) {
-      recHTML += `<div class="rec-danger">⛔ Insufficient headroom. Minimum 3" required. Cannot proceed — consult Dustin.</div>`;
-    }
+    if (trackRec.error) recHTML += `<div class="rec-danger">⛔ Insufficient headroom. Minimum 3" required. Cannot proceed — consult Dustin.</div>`;
     if (jackshaftNeeded && srEntered && !srOk && brEntered && !brOk) {
       recHTML += `<div class="rec-danger">🚨 MANUAL FIELD REVIEW REQUIRED — Side room &lt; 8" blocks jackshaft and back room is insufficient for trolley. No standard operator fits. Dustin must assess on-site.</div>`;
     } else if (jackshaftNeeded && srEntered && !srOk) {
@@ -711,18 +625,10 @@ function calculate() {
     } else if (trolleyNeeded && brEntered && !brOk) {
       recHTML += `<div class="rec-warning">⚠️ Trolley operator requires ${minBackRoom}" back room but only ${br}" available. Consider a shorter rail or review space with customer.</div>`;
     }
-    if (trackRec.isLowHeadroom) {
-      recHTML += `<div class="rec-warning">⚠️ Low Headroom track detected — Jackshaft/Side-Mount operator is NOT compatible with this configuration. Use Standard Trolley only.</div>`;
-    }
-    if (widthRec.type==='frame-in') {
-      recHTML += `<div class="rec-warning">📐 Frame-in required: Opening is ${widthRec.diff.toFixed(1)}" wider than standard door. Add 2x6 or 1x6 lumber to jambs.</div>`;
-    }
-    if (widthRec.type==='custom') {
-      recHTML += `<div class="rec-warning">⚙️ Custom width cut-down required — opening is more than 3" from standard. Confirm with supplier.</div>`;
-    }
-    if (heightRec.frameDown) {
-      recHTML += `<div class="rec-warning">🔧 Header frame-down required: headroom &lt; 3". Door height stepped down to ${heightRec.display}.</div>`;
-    }
+    if (trackRec.isLowHeadroom) recHTML += `<div class="rec-warning">⚠️ Low Headroom track detected — Jackshaft/Side-Mount operator is NOT compatible with this configuration. Use Standard Trolley only.</div>`;
+    if (widthRec.type==='frame-in') recHTML += `<div class="rec-warning">📐 Frame-in required: Opening is ${widthRec.diff.toFixed(1)}" wider than standard door. Add 2x6 or 1x6 lumber to jambs.</div>`;
+    if (widthRec.type==='custom')   recHTML += `<div class="rec-warning">⚙️ Custom width cut-down required — opening is more than 3" from standard. Confirm with supplier.</div>`;
+    if (heightRec.frameDown)        recHTML += `<div class="rec-warning">🔧 Header frame-down required: headroom &lt; 3". Door height stepped down to ${heightRec.display}.</div>`;
 
     if (doorStyle) {
       const wFt=widthRec.doorFt, hFt=Math.floor(heightRec.doorIn/12), key=`${wFt}x${hFt}`;
@@ -734,8 +640,7 @@ function calculate() {
 
   document.getElementById('measurementRec').innerHTML = recHTML;
 
-  let operatorRetail=0;
-  let opRecHTML='';
+  let operatorRetail=0, opRecHTML='';
   if (opSeries && opSeries!=='none' && OPERATOR_RETAIL[opSeries]) {
     operatorRetail = OPERATOR_RETAIL[opSeries].retail;
     const isJackshaftSelected = opSeries.startsWith('jackshaft');
@@ -751,23 +656,16 @@ function calculate() {
       <div class="rec-row"><span class="rec-label">Customer Price</span><span class="rec-value" style="color:var(--accent);">$${operatorRetail.toLocaleString()}</span></div>
     </div>`;
 
-    if (isJackshaftSelected && trackRec2 && trackRec2.isLowHeadroom) {
-      opRecHTML += `<div class="rec-danger">⛔ Jackshaft is NOT compatible with Low Headroom track. Switch to a trolley operator.</div>`;
-    }
-    if (isJackshaftSelected && !isNaN(sr2) && sr2 < 8) {
-      opRecHTML += `<div class="rec-danger">⛔ Jackshaft requires 8" side room — only ${sr2}" available.</div>`;
-    }
+    if (isJackshaftSelected && trackRec2 && trackRec2.isLowHeadroom) opRecHTML += `<div class="rec-danger">⛔ Jackshaft is NOT compatible with Low Headroom track. Switch to a trolley operator.</div>`;
+    if (isJackshaftSelected && !isNaN(sr2) && sr2 < 8) opRecHTML += `<div class="rec-danger">⛔ Jackshaft requires 8" side room — only ${sr2}" available.</div>`;
     if (isTrolleySelected && !isNaN(oh2) && !isNaN(br2)) {
       const minBR = oh2 + 42;
-      if (br2 < minBR) {
-        opRecHTML += `<div class="rec-warning">⚠️ This trolley operator needs ${minBR}" back room but only ${br2}" available. Check rail length or review space.</div>`;
-      }
+      if (br2 < minBR) opRecHTML += `<div class="rec-warning">⚠️ This trolley operator needs ${minBR}" back room but only ${br2}" available. Check rail length or review space.</div>`;
     }
   }
   document.getElementById('operatorRec').innerHTML = opRecHTML;
   operatorWholesale = operatorRetail;
   window._operatorIsRetail = true;
-
   updateQuote();
 }
 
@@ -777,42 +675,55 @@ function updateQuote() {
   let breakdown='', addonWholesaleTotal=0, addonRetailTotal=0;
   const styleNames={'2250':'Raised Panel 25GA','2250pvc':'Raised Panel 25GA Insulated','2240':'Raised Panel 24GA','2240pvc':'Raised Panel 24GA Insulated','2283':'Raised Panel Steelback','5250':'Carriage Stamp','5250pvc':'Carriage Stamp Insulated','5283':'Carriage Stamp Steelback'};
 
-  if (doorWholesale>0) {
-    breakdown+=`<div class="qb-row"><span class="qb-label">${styleNames[doorStyle]||'Door'}</span><span class="qb-value">$${applyMarkup(doorWholesale).toLocaleString()}</span></div>`;
-  }
-  if (operatorWholesale>0&&opSeries!=='none'&&OPERATOR_RETAIL[opSeries]) {
-    breakdown+=`<div class="qb-row"><span class="qb-label">${OPERATOR_RETAIL[opSeries].name}</span><span class="qb-value">$${operatorWholesale.toLocaleString()}</span></div>`;
-  }
+  if (doorWholesale>0) breakdown+=`<div class="qb-row"><span class="qb-label">${styleNames[doorStyle]||'Door'}</span><span class="qb-value">$${applyMarkup(doorWholesale).toLocaleString()}</span></div>`;
+  if (operatorWholesale>0&&opSeries!=='none'&&OPERATOR_RETAIL[opSeries]) breakdown+=`<div class="qb-row"><span class="qb-label">${OPERATOR_RETAIL[opSeries].name}</span><span class="qb-value">$${operatorWholesale.toLocaleString()}</span></div>`;
+
   for (const item of lineItems) {
+    const qty = item.quantity || 1;
+    const displayName = qty > 1 ? `${item.name} ×${qty}` : item.name;
     if(!item.isFree){
       const dp=item.isRetail?item.wholesale:applyMarkup(item.wholesale);
-      breakdown+=`<div class="qb-row"><span class="qb-label">${item.name}</span><span class="qb-value">$${dp.toLocaleString()}</span></div>`;
+      breakdown+=`<div class="qb-row"><span class="qb-label">${displayName}</span><span class="qb-value">$${dp.toLocaleString()}</span></div>`;
       if(item.isRetail) addonRetailTotal+=item.wholesale;
       else addonWholesaleTotal+=item.wholesale;
     } else {
-      breakdown+=`<div class="qb-row" style="opacity:0.5;"><span class="qb-label">${item.name}</span><span class="qb-value" style="color:var(--gold);">$0 ✓</span></div>`;
+      breakdown+=`<div class="qb-row" style="opacity:0.5;"><span class="qb-label">${displayName}</span><span class="qb-value" style="color:var(--gold);">$0 ✓</span></div>`;
     }
   }
+
   const markedUpPart=roundToFive((doorWholesale+addonWholesaleTotal)*1.2+250);
   const retailPart=operatorWholesale+addonRetailTotal;
   const grandTotal=(doorWholesale>0||operatorWholesale>0||addonWholesaleTotal>0||addonRetailTotal>0)?roundToFive(markedUpPart+retailPart):0;
-  if(breakdown){
-    breakdown+=`<div class="qb-row" style="margin-top:8px;padding-top:12px;border-top:2px solid var(--text);"><span class="qb-label" style="font-weight:700;color:var(--text);">Customer Total</span><span class="qb-value" style="font-size:1.05rem;">$${grandTotal.toLocaleString()}</span></div>`;
-  }
+  if(breakdown) breakdown+=`<div class="qb-row" style="margin-top:8px;padding-top:12px;border-top:2px solid var(--text);"><span class="qb-label" style="font-weight:700;color:var(--text);">Customer Total</span><span class="qb-value" style="font-size:1.05rem;">$${grandTotal.toLocaleString()}</span></div>`;
   document.getElementById('quoteBreakdown').innerHTML=breakdown||'<div style="color:var(--text2);font-size:0.85rem;padding:10px 0;">Select door options to see pricing.</div>';
   document.getElementById('grandTotal').textContent=grandTotal>0?`$${grandTotal.toLocaleString()}`:'$0';
 }
 
+// =====================================================
+// LINE ITEMS — with quantity grouping for retail items
+// =====================================================
 function renderLineItems() {
   const container=document.getElementById('lineItemsList');
   if(lineItems.length===0){container.innerHTML='<div class="empty-state"><div class="icon">📋</div>No add-ons yet.</div>';updateQuote();return;}
-  container.innerHTML=lineItems.map(item=>`
+  container.innerHTML=lineItems.map(item=>{
+    const qty = item.quantity || 1;
+    const qtyBadge = qty > 1 ? `<span class="qty-badge">×${qty}</span>` : '';
+    const priceDisplay = item.isFree ? '0' : (item.isRetail ? item.wholesale.toLocaleString() : applyMarkup(item.wholesale).toLocaleString());
+    const subDisplay = item.isFree ? 'Included free'
+      : item.isRetail && qty > 1 ? `$${(item.unitPrice||item.wholesale).toLocaleString()} each · Total $${item.wholesale.toLocaleString()}`
+      : item.isRetail ? `Customer Price: $${item.wholesale.toLocaleString()}`
+      : `Customer Price: $${applyMarkup(item.wholesale).toLocaleString()}`;
+    return `
     <div class="line-item${item.isFree?' free':''}" id="li-${item.id}">
-      <div><div class="li-name">${item.name}</div><div class="li-sub">${item.isFree?'Included free':('Customer Price: $'+(item.isRetail?item.wholesale.toLocaleString():applyMarkup(item.wholesale).toLocaleString()))}</div></div>
-      <div class="li-price${item.isFree?' zero':''}">$${item.isFree?'0':(item.isRetail?item.wholesale.toLocaleString():applyMarkup(item.wholesale).toLocaleString())}</div>
+      <div>
+        <div class="li-name">${item.name}${qtyBadge}</div>
+        <div class="li-sub">${subDisplay}</div>
+      </div>
+      <div class="li-price${item.isFree?' zero':''}">$${priceDisplay}</div>
       <button class="free-btn${item.isFree?' active':''}" onclick="toggleFree(${item.id})">${item.isFree?'✓ Free':'Mark Free'}</button>
       <button class="li-remove" onclick="removeItem(${item.id})">✕</button>
-    </div>`).join('');
+    </div>`;
+  }).join('');
   updateQuote();
 }
 
@@ -823,8 +734,21 @@ function addCustomDoor() {
   setTimeout(() => document.getElementById('customItemPrice').focus(), 400);
 }
 
-function addRetailItem(name,retail){lineItems.push({id:itemIdCounter++,name,wholesale:retail,sku:'RETAIL',isFree:false,isRetail:true});renderLineItems();}
+// UPDATED: groups same retail items by name, increments quantity
+function addRetailItem(name, retail) {
+  const existing = lineItems.find(i => i.name === name && i.isRetail && !i.isFree);
+  if (existing) {
+    existing.quantity = (existing.quantity || 1) + 1;
+    existing.unitPrice = retail;
+    existing.wholesale = retail * existing.quantity;
+  } else {
+    lineItems.push({id:itemIdCounter++, name, wholesale:retail, unitPrice:retail, quantity:1, sku:'RETAIL', isFree:false, isRetail:true});
+  }
+  renderLineItems();
+}
+
 function addQuickItem(name,wholesale,sku){lineItems.push({id:itemIdCounter++,name,wholesale,sku,isFree:false});renderLineItems();}
+
 function addCustomItem(){
   const name=document.getElementById('customItemName').value.trim();
   const price=parseFloat(document.getElementById('customItemPrice').value);
@@ -834,6 +758,7 @@ function addCustomItem(){
   document.getElementById('customItemPrice').value='';
   renderLineItems();
 }
+
 function toggleFree(id){const item=lineItems.find(i=>i.id===id);if(item){item.isFree=!item.isFree;renderLineItems();}}
 function removeItem(id){lineItems=lineItems.filter(i=>i.id!==id);renderLineItems();}
 function updateOperatorModels(){calculate();}
@@ -890,8 +815,10 @@ function openSendEstimateModal() {
   if (doorWholesale > 0 && doorStyle) previewItems.push({ name: styleNames[doorStyle] || 'Garage Door', price: applyMarkup(doorWholesale) });
   if (operatorWholesale > 0 && opSeries && opSeries !== 'none' && OPERATOR_RETAIL[opSeries]) previewItems.push({ name: OPERATOR_RETAIL[opSeries].name, price: operatorWholesale });
   for (const item of lineItems) {
-    if (!item.isFree) previewItems.push({ name: item.name, price: item.isRetail ? item.wholesale : applyMarkup(item.wholesale) });
-    else previewItems.push({ name: item.name, price: 0, free: true });
+    const qty = item.quantity || 1;
+    const displayName = qty > 1 ? `${item.name} (×${qty})` : item.name;
+    if (!item.isFree) previewItems.push({ name: displayName, price: item.isRetail ? item.wholesale : applyMarkup(item.wholesale) });
+    else previewItems.push({ name: displayName, price: 0, free: true });
   }
   document.getElementById('semLineItems').innerHTML = previewItems.map(i =>
     `<div style="display:flex;justify-content:space-between;padding:3px 0;"><span>${i.name}</span><span style="font-weight:500;">${i.free ? '<span style="color:var(--accent2)">Included</span>' : '$'+i.price.toLocaleString()}</span></div>`
@@ -915,9 +842,7 @@ function openSendEstimateModal() {
   inner.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function closeSendEstimateModal() {
-  document.getElementById('sendEstimateModalInner').style.display = 'none';
-}
+function closeSendEstimateModal() { document.getElementById('sendEstimateModalInner').style.display = 'none'; }
 
 function buildEstimatePayload() {
   const total = parseFloat(document.getElementById('grandTotal').textContent.replace(/[$,]/g,'')) || 0;
@@ -930,14 +855,13 @@ function buildEstimatePayload() {
   const opSeries = document.getElementById('operatorSeries').value;
   const styleNames = {'2250':'Raised Panel 25GA','2250pvc':'Raised Panel 25GA Insulated','2240':'Raised Panel 24GA','2240pvc':'Raised Panel 24GA Insulated','2283':'Raised Panel Steelback','5250':'Carriage Stamp','5250pvc':'Carriage Stamp Insulated','5283':'Carriage Stamp Steelback'};
 
-  if (doorWholesale > 0 && doorStyle) {
-    items.push({ name: styleNames[doorStyle] || 'Garage Door', price: applyMarkup(doorWholesale), isFree: false });
-  }
-  if (operatorWholesale > 0 && opSeries && opSeries !== 'none' && OPERATOR_RETAIL[opSeries]) {
-    items.push({ name: OPERATOR_RETAIL[opSeries].name, price: operatorWholesale, isFree: false });
-  }
+  if (doorWholesale > 0 && doorStyle) items.push({ name: styleNames[doorStyle] || 'Garage Door', price: applyMarkup(doorWholesale), isFree: false });
+  if (operatorWholesale > 0 && opSeries && opSeries !== 'none' && OPERATOR_RETAIL[opSeries]) items.push({ name: OPERATOR_RETAIL[opSeries].name, price: operatorWholesale, isFree: false });
+
   for (const item of lineItems) {
-    items.push({ name: item.name, price: item.isRetail ? item.wholesale : applyMarkup(item.wholesale), isFree: item.isFree });
+    const qty = item.quantity || 1;
+    const displayName = qty > 1 ? `${item.name} (×${qty})` : item.name;
+    items.push({ name: displayName, price: item.isRetail ? item.wholesale : applyMarkup(item.wholesale), isFree: item.isFree });
   }
 
   const estNum = document.getElementById('estNumber').value || String(Date.now()).slice(-6);
@@ -974,12 +898,9 @@ async function sendEstimate() {
   try {
     const payload = buildEstimatePayload();
     const estimateLink = buildEstimateLink(payload);
-
     status.className = 'modal-status pending';
     status.textContent = 'Sending via Make.com...';
 
-    // KEY FIX: mode: 'no-cors' allows the request to fire from inside Softr's iframe
-    // Send as form-encoded so Make breaks out individual fields
     const fullPayload = { ...payload, estimate_link: estimateLink, event: 'estimate_sent' };
     const formData = new URLSearchParams();
     for (const key in fullPayload) {
@@ -1045,9 +966,7 @@ function openInvoiceModal() {
   inner.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function closeInvoiceModal() {
-  document.getElementById('invoiceModalInner').style.display = 'none';
-}
+function closeInvoiceModal() { document.getElementById('invoiceModalInner').style.display = 'none'; }
 
 function selectPaymentType(type) {
   currentPaymentType = type;
@@ -1090,13 +1009,9 @@ async function sendInvoice() {
       mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        customer_name: name,
-        customer_email: email,
-        customer_phone: phone,
-        amount_cents: Math.round(amount * 100),
-        amount_dollars: amount,
-        description: desc,
-        payment_type: currentPaymentType,
+        customer_name: name, customer_email: email, customer_phone: phone,
+        amount_cents: Math.round(amount * 100), amount_dollars: amount,
+        description: desc, payment_type: currentPaymentType,
         estimate_total: document.getElementById('grandTotal').textContent,
         timestamp: new Date().toISOString()
       })
