@@ -53,13 +53,14 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 .preview-section.sticky{position:sticky;top:72px;z-index:90;}
 .preview-label{padding:8px 14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--gray);border-bottom:1px solid var(--tan);}
 .preview-window{width:100%;aspect-ratio:16/6;background:#e8e4de;overflow:hidden;display:flex;align-items:center;justify-content:center;}
-.preview-door-img{width:100%;height:100%;object-fit:contain;object-position:center;display:block;}
+/* FIX: cover so images fill the frame — no more tiny 1-car doors with blank sides */
+.preview-door-img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:transform 0.3s ease;}
 .preview-placeholder{color:var(--gray);font-size:13px;text-align:center;padding:20px;}
 .door-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
 .door-option{background:var(--white);border:2px solid var(--tan);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all 0.2s;}
 .door-option:hover{border-color:#a0bcaa;box-shadow:var(--shadow);}
 .door-option.selected{border-color:var(--green);}
-.door-preview-img{width:100%;aspect-ratio:16/9;object-fit:contain;display:block;background:#e2ede4;}
+.door-preview-img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#e2ede4;}
 .door-info{padding:10px 12px;}
 .door-name{font-weight:600;font-size:13px;}
 .door-desc{font-size:11px;color:var(--gray);margin-top:2px;}
@@ -92,8 +93,9 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 .insert-card{background:var(--white);border:2px solid var(--tan);border-radius:10px;overflow:hidden;cursor:pointer;transition:all 0.2s;}
 .insert-card:hover{border-color:#a0bcaa;}
 .insert-card.selected{border-color:var(--green);}
-.insert-thumb{width:100%;background:#f4f8f6;display:flex;align-items:center;justify-content:center;padding:4px;height:80px;overflow:hidden;}
-.insert-thumb img{width:100%;height:100%;object-fit:cover;object-position:top center;border-radius:3px;}
+.insert-thumb{width:100%;background:#d8e4da;display:flex;align-items:center;justify-content:center;padding:4px;height:80px;overflow:hidden;}
+/* FIX: boost contrast on insert thumbnails so they're clearly visible */
+.insert-thumb img{width:100%;height:100%;object-fit:cover;object-position:top center;border-radius:3px;filter:contrast(1.35) brightness(0.82) saturate(1.1);}
 .insert-name{padding:7px 10px;font-size:12px;font-weight:600;text-align:center;}
 .pane-selector{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
 .callout-box{background:#edf4ef;border:1px solid #b8d4be;border-radius:10px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;}
@@ -305,8 +307,6 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
     <div class="step-title">Your estimate is ready!</div>
     <div class="step-sub" style="margin-bottom:0;">We'll be in touch shortly to confirm details.</div>
   </div>
-
-  <!-- Live preview of their door selection -->
   <div class="preview-section" style="margin-bottom:16px;">
     <div class="preview-label">Your Door Selection</div>
     <div class="preview-window">
@@ -314,16 +314,12 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
       <div class="preview-placeholder" id="success-prev-ph">No preview available</div>
     </div>
   </div>
-
-  <!-- Selection summary -->
   <div id="success-summary" style="background:var(--white);border:1px solid var(--tan);border-radius:var(--radius);padding:16px 18px;margin-bottom:16px;font-size:13px;color:var(--charcoal);line-height:1.8;"></div>
-
   <div class="estimate-box">
     <div style="font-size:12px;opacity:0.7;text-transform:uppercase;letter-spacing:1px;">Estimated Range</div>
     <div class="estimate-range" id="est-display">—</div>
     <div class="estimate-note">Final price confirmed after measurement · Installation included</div>
   </div>
-
   <div class="call-box">
     <div style="font-size:14px;color:var(--gray);">Questions? Call us directly</div>
     <a href="tel:+19253168384">(925) 316-8384</a>
@@ -363,7 +359,9 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 <script>
 const B='https://colagomdesignco-source.github.io/garage-door-estimator/';
 const IMG={
+  // ── Base door images (no windows) ───────────────────────────────────────
   'raised-short-white':         B+'Raied%20panel%20short%20no%20windows.png',
+  // FIX: short almond — try correct file, fallback handled in updateDoorPreview
   'raised-short-almond':        B+'Raised%20panel%20short%20almond.png',
   'raised-long-white':          B+'Raised%20panel%20long%20white%20no%20windows.png',
   'raised-long-almond':         B+'Raised%20long%20panel-%20almond.png',
@@ -371,6 +369,7 @@ const IMG={
   'skyline-black':              B+'Skyline%20Flush%20Black.png',
   'carriage-short-white':       B+'Carriage%20house%20short%20panel%20white.png',
   'carriage-long-white':        B+'Carriage%20House%20long%20panel%20white.png',
+  // ── Plain windows (no insert) ────────────────────────────────────────────
   'raised-short-white-plain':   B+'Raised%20panel%20short%20windows%20white.png',
   'raised-short-almond-plain':  B+'Raised%20panel%20short%20windows%20almond.png',
   'raised-long-white-plain':    B+'Raised%20panel%20long%20windows.png',
@@ -381,6 +380,7 @@ const IMG={
   'skyline-black-short-plain':  B+'skyline%20flush%20black%20short%20pane%20windows.png',
   'carriage-short-white-plain': B+'Carriage%20stamp%20short%20panel%20white%20windows%20no%20inserts%20.jpg',
   'carriage-long-white-plain':  B+'Carriage%20stamp%20long%20panel%20windows%20no%20inserts%20white%20.jpg',
+  // ── Glass type photos ────────────────────────────────────────────────────
   'raised-long-almond-obscure': B+'Raised%20Long%20Panel%20Almond%20no%20insert%20Obscure%20glass%20.jpg',
   'raised-long-almond-rain':    B+'Raised%20Long%20Panel%20Almond%20no%20insert%20Rain%20.jpg',
   'raised-long-almond-tinted':  B+'Raised%20long%20panel%20almond%20no%20insert%20tinted%20.jpg',
@@ -400,6 +400,7 @@ const IMG={
   'carriage-long-white-rain':   B+'Carriage_stamp_long_rain.png',
   'carriage-long-white-tinted': B+'Carriage_stamp_long_tinted.png',
   'carriage-long-white-frosted':B+'Carriage_stamp_long_frosted.png',
+  // ── Insert photos (almond long) ──────────────────────────────────────────
   'raised-long-almond-cascade':           B+'Raised%20Long%20Panel%20Almond%20Cascade.jpg',
   'raised-long-almond-prairie':           B+'Raised%20Long%20Panel%20almond%20Praire.jpg',
   'raised-long-almond-sherwood':          B+'Raised%20long%20Panel%20Almond%20Sherwood%20.jpg',
@@ -411,6 +412,7 @@ const IMG={
   'raised-long-almond-2-arched-madison':  B+'Raised%20long%20Panel%20Almond%202%20piece%20arched%20madison.jpg',
   'raised-long-almond-2-sunburst':        B+'Raised%20Long%20Panel%20Almond%202%20piece%20sunburst%20.jpg',
   'raised-long-almond-4-sunburst':        B+'Raised%20long%20panel%20almond%204%20piece%20sunburst%20.jpg',
+  // White long: point to almond photos (filter-white applied)
   'raised-long-white-cascade':            B+'Raised%20Long%20Panel%20Almond%20Cascade.jpg',
   'raised-long-white-prairie':            B+'Raised%20Long%20Panel%20almond%20Praire.jpg',
   'raised-long-white-sherwood':           B+'Raised%20long%20Panel%20Almond%20Sherwood%20.jpg',
@@ -423,6 +425,7 @@ const IMG={
   'raised-long-white-4-arched-madison':   B+'Raised%20Long%20Panel%20Almond%20Madison%20.jpg',
   'raised-long-white-2-sunburst':         B+'Raised%20Long%20Panel%20Almond%202%20piece%20sunburst%20.jpg',
   'raised-long-white-4-sunburst':         B+'Raised%20long%20panel%20almond%204%20piece%20sunburst%20.jpg',
+  // ── Insert photos (almond short) ─────────────────────────────────────────
   'raised-short-almond-cascade':    B+'Raised%20short%20panel%20almond%20cascade%20.jpg',
   'raised-short-almond-prairie':    B+'Raised%20short%20panel%20almond%20praire%20.jpg',
   'raised-short-almond-sherwood':   B+'Raised%20short%20panel%20almond%20sherwood%20.jpg',
@@ -430,6 +433,7 @@ const IMG={
   'raised-short-almond-stockton':   B+'Raised%20short%20panel%20almond%20stockton%20.jpg',
   'raised-short-almond-4-sunburst': B+'Raised%20short%20panel%20almond%204%20piece%20sunburst%20.jpg',
   'raised-short-almond-8-sunburst': B+'raised%20short%20panel%20almond%208%20piece%20sunburst%20.jpg',
+  // White short: point to almond photos (filter-white applied)
   'raised-short-white-cascade':     B+'Raised%20short%20panel%20almond%20cascade%20.jpg',
   'raised-short-white-prairie':     B+'Raised%20short%20panel%20almond%20praire%20.jpg',
   'raised-short-white-sherwood':    B+'Raised%20short%20panel%20almond%20sherwood%20.jpg',
@@ -437,6 +441,7 @@ const IMG={
   'raised-short-white-stockton':    B+'Raised%20short%20panel%20almond%20stockton%20.jpg',
   'raised-short-white-4-sunburst':  B+'Raised%20short%20panel%20almond%204%20piece%20sunburst%20.jpg',
   'raised-short-white-8-sunburst':  B+'raised%20short%20panel%20almond%208%20piece%20sunburst%20.jpg',
+  // ── Skyline inserts ───────────────────────────────────────────────────────
   'skyline-white-cascade':          B+'Skyline%20flush%20white%20cascade%20inserts%20.jpg',
   'skyline-black-cascade':          B+'Skyline%20flush%20black%20windows%20cascade%20.jpg',
   'skyline-black-prairie':          B+'Skyline%20flush%20black%20windows%20praire%20.jpg',
@@ -450,7 +455,7 @@ const IMG={
   'skyline-black-4-arched-madison': B+'Skyline%20flush%20black%20windows%204%20piece%20arched%20madison%20.jpg',
   'skyline-black-2-sunburst':       B+'Skyline%20flush%20black%20windows%202%20piece%20arched%20sunburst%20.jpg',
   'skyline-black-4-sunburst':       B+'Skyline%20flush%20black%20windows%204%20piece%20sunburst%20.jpg',
-  // Carriage inserts (white filter applied via CSS)
+  // ── Carriage inserts (white filter applied) ───────────────────────────────
   'carriage-short-white-cascade':   B+'Raised%20short%20panel%20almond%20cascade%20.jpg',
   'carriage-short-white-prairie':   B+'Raised%20short%20panel%20almond%20praire%20.jpg',
   'carriage-short-white-sherwood':  B+'Raised%20short%20panel%20almond%20sherwood%20.jpg',
@@ -467,22 +472,18 @@ const IMG={
 };
 
 const WHITE_KEYS=new Set([
-  // Raised long white inserts (use almond photos)
   'raised-long-white-cascade','raised-long-white-prairie','raised-long-white-sherwood',
   'raised-long-white-waterton','raised-long-white-stockton','raised-long-white-madison',
   'raised-long-white-2-arched-stockton','raised-long-white-4-arched-stockton',
   'raised-long-white-2-arched-madison','raised-long-white-4-arched-madison',
   'raised-long-white-2-sunburst','raised-long-white-4-sunburst',
-  // Raised short white inserts (use almond photos)
   'raised-short-white-cascade','raised-short-white-prairie','raised-short-white-sherwood',
   'raised-short-white-waterton','raised-short-white-stockton',
   'raised-short-white-4-sunburst','raised-short-white-8-sunburst',
-  // Skyline white inserts (use black photos + white filter, except cascade)
   'skyline-white-prairie','skyline-white-sherwood','skyline-white-waterton',
   'skyline-white-stockton','skyline-white-madison','skyline-white-2-arched-stockton',
   'skyline-white-4-arched-stockton','skyline-white-2-arched-madison','skyline-white-4-arched-madison',
   'skyline-white-2-sunburst','skyline-white-4-sunburst',
-  // Carriage white inserts (use almond photos + white filter)
   'carriage-short-white-cascade','carriage-short-white-prairie','carriage-short-white-sherwood',
   'carriage-short-white-waterton','carriage-short-white-stockton',
   'carriage-long-white-cascade','carriage-long-white-prairie','carriage-long-white-sherwood',
@@ -536,33 +537,17 @@ function getInserts(){return(state.doorStyle==='raised-short'||state.doorStyle==
 function getImgKey(style,color,gt,ins,pane){
   const base=style+'-'+color;
   if(!gt) return base;
-  // Insert selected — show insert photo
   if(ins&&ins!==null){
     const k=base+'-'+ins; if(IMG[k]) return k;
-    // Skyline white: fall back to black insert photo (white filter applied)
-    if(style==='skyline'&&color==='white'){
-      const bk='skyline-black-'+ins; if(IMG[bk]) return bk;
-    }
-    // Carriage white: fall back to almond raised panel insert (white filter applied)
+    if(style==='skyline'&&color==='white'){const bk='skyline-black-'+ins;if(IMG[bk])return bk;}
     if((style==='carriage-short'||style==='carriage-long')&&color==='white'){
       const panel=style==='carriage-short'?'raised-short':'raised-long';
-      const ak=panel+'-almond-'+ins; if(IMG[ak]) return ak;
+      const ak=panel+'-almond-'+ins;if(IMG[ak])return ak;
     }
   }
-  // No insert — show glass type photo
-  if(style==='skyline'){
-    // Skyline: try color-specific glass type, else plain
-    const gtk=base+'-'+gt; if(IMG[gtk]) return gtk;
-    return base+'-'+pane+'-plain';
-  }
-  if(style==='carriage-short'||style==='carriage-long'){
-    // Carriage: try specific glass type photo
-    const gtk=base+'-'+gt; if(IMG[gtk]) return gtk;
-    return base+'-plain';
-  }
-  // Try exact glass type photo
-  const gtk=base+'-'+gt; if(IMG[gtk]) return gtk;
-  // Fall back to plain windows
+  if(style==='skyline'){const gtk=base+'-'+gt;if(IMG[gtk])return gtk;return base+'-'+pane+'-plain';}
+  if(style==='carriage-short'||style==='carriage-long'){const gtk=base+'-'+gt;if(IMG[gtk])return gtk;return base+'-plain';}
+  const gtk=base+'-'+gt;if(IMG[gtk])return gtk;
   return base+'-plain';
 }
 
@@ -573,12 +558,23 @@ function getImg(style,color,gt,ins,pane){
 
 function needsWhiteFilter(key){
   if(WHITE_KEYS.has(key)) return true;
-  // Skyline white using black insert photos
   if(key&&key.startsWith('skyline-black-')&&state.doorColor==='white') return true;
-  // Carriage white using almond insert photos
   if(key&&(key.startsWith('raised-short-almond-')||key.startsWith('raised-long-almond-'))&&
      (state.doorStyle==='carriage-short'||state.doorStyle==='carriage-long')) return true;
   return false;
+}
+
+// ── FIX: single-car CSS crop ─────────────────────────────────────────────────
+// Zooms in on center of door image so single-car looks like a single-car width
+function applyGarageCountStyle(imgEl){
+  if(!imgEl) return;
+  if(state.garageCount==='single'){
+    imgEl.style.transform='scale(1.85)';
+    imgEl.style.transformOrigin='center center';
+  } else {
+    imgEl.style.transform='';
+    imgEl.style.transformOrigin='';
+  }
 }
 
 function renderDoors(){
@@ -611,8 +607,28 @@ function updateDoorPreview(){
   const img=document.getElementById('door-prev-img');
   const ph=document.getElementById('door-prev-ph');
   if(state.doorStyle&&state.doorColor){
-    const src=IMG[state.doorStyle+'-'+state.doorColor]||'';
-    if(src){img.src=src;img.style.display='block';img.style.filter='';ph.style.display='none';return;}
+    let src=IMG[state.doorStyle+'-'+state.doorColor]||'';
+    if(src){
+      img.src=src;
+      img.style.display='block';
+      img.style.filter='';
+      ph.style.display='none';
+      // FIX: fallback if image 404s (e.g. short almond missing) — use white version
+      img.onerror=function(){
+        const fallback=IMG[state.doorStyle+'-white']||'';
+        if(fallback&&this.src!==fallback){
+          this.src=fallback;
+          // Tint white door to approximate almond if needed
+          if(state.doorColor==='almond') this.style.filter='sepia(0.25) saturate(0.9) brightness(1.0)';
+        } else {
+          this.style.display='none';
+          ph.style.display='flex';
+        }
+        this.onerror=null;
+      };
+      applyGarageCountStyle(img);
+      return;
+    }
   }
   img.style.display='none';ph.style.display='flex';
 }
@@ -646,9 +662,7 @@ function renderInserts(){
   document.getElementById('insert-grid').innerHTML=inserts.map(ins=>{
     let src='',imgKey='';
     imgKey=s+'-'+c+'-'+ins.id; src=IMG[imgKey]||'';
-    // Skyline white: fall back to black insert
     if(!src&&s==='skyline'&&c==='white'){imgKey='skyline-black-'+ins.id;src=IMG[imgKey]||'';}
-    // Carriage white: fall back to almond raised panel insert
     if(!src&&(s==='carriage-short'||s==='carriage-long')&&c==='white'){
       const p=s==='carriage-short'?'raised-short':'raised-long';
       imgKey=p+'-almond-'+ins.id; src=IMG[imgKey]||'';
@@ -670,6 +684,7 @@ function updateGlassPreview(){
   if(src){
     img.src=src;img.style.display='block';ph.style.display='none';
     img.style.filter=needsWhiteFilter(key)?'brightness(1.55) saturate(0.08) contrast(0.92)':'';
+    applyGarageCountStyle(img);
   }else{img.style.display='none';ph.style.display='flex';img.style.filter='';}
 }
 
@@ -722,7 +737,7 @@ function selectColor(c){
 }
 function selectGlassType(id){
   state.glassType=id;
-  state.windowInsert=null; // clear insert so glass type photo shows
+  state.windowInsert=null;
   renderGlassTypes(); renderInserts(); updateGlassPreview();
 }
 function selectInsert(id){
@@ -805,23 +820,29 @@ async function submitEst(){
   document.getElementById('sending-overlay').classList.remove('active');
   document.getElementById('est-display').textContent=calcEst();
 
-  // Populate success page preview image
-  const prevImg = document.getElementById('success-prev-img');
+  const prevImg=document.getElementById('success-prev-img');
+  const prevPh=document.getElementById('success-prev-ph');
+  const finalKey=getImgKey(state.doorStyle,state.doorColor,state.glassType,state.windowInsert,state.paneStyle);
+  const finalSrc=IMG[finalKey]||IMG[state.doorStyle+'-'+state.doorColor]||null;
+  if(finalSrc){
+    prevImg.src=finalSrc;prevImg.style.display='block';prevPh.style.display='none';
+    prevImg.style.filter=needsWhiteFilter(finalKey)?'brightness(1.55) saturate(0.08) contrast(0.92)':'';
+    applyGarageCountStyle(prevImg);
+  }
+
   const insLabels={none:'No insulation',pvc:'Steelback (PVC)',steel:'Steel insulated'};
   const glassLabels={plain:'Plain (clear)',rain:'Rain',tinted:'Tinted',frosted:'Frosted'};
   const insertLabels={'cascade':'Cascade','prairie':'Prairie','sherwood':'Sherwood','waterton':'Waterton','stockton':'Stockton','madison':'Madison','2-arched-stockton':'2-Piece Arched Stockton','4-arched-stockton':'4-Piece Arched Stockton','2-arched-madison':'2-Piece Arched Madison','4-arched-madison':'4-Piece Arched Madison','2-sunburst':'2-Piece Sunburst','4-sunburst':'4-Piece Sunburst','8-sunburst':'8-Piece Sunburst'};
-  const colorLabel = state.doorColor ? state.doorColor.charAt(0).toUpperCase()+state.doorColor.slice(1) : '';
-  const rows = [
-    ['Door Style', (sn[state.doorStyle]||'') + (colorLabel ? ' · '+colorLabel : '')],
-    ['Insulation', insLabels[state.insulation]||'—'],
+  const colorLabel=state.doorColor?state.doorColor.charAt(0).toUpperCase()+state.doorColor.slice(1):'';
+  const rows=[
+    ['Door Style',(sn[state.doorStyle]||'')+(colorLabel?' · '+colorLabel:'')],
+    ['Insulation',insLabels[state.insulation]||'—'],
   ];
   if(state.glassAdd){
-    rows.push(['Glass Type', (glassLabels[state.glassType]||'—') + (state.insulatedGlass?' (Insulated)':'')]);
-    if(state.windowInsert) rows.push(['Insert Style', insertLabels[state.windowInsert]||state.windowInsert]);
-  } else {
-    rows.push(['Windows', 'No windows']);
-  }
-  document.getElementById('success-summary').innerHTML = rows.map(([label,val])=>
+    rows.push(['Glass Type',(glassLabels[state.glassType]||'—')+(state.insulatedGlass?' (Insulated)':'')]);
+    if(state.windowInsert)rows.push(['Insert Style',insertLabels[state.windowInsert]||state.windowInsert]);
+  }else{rows.push(['Windows','No windows']);}
+  document.getElementById('success-summary').innerHTML=rows.map(([label,val])=>
     `<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--tan);">
       <span style="color:var(--gray);font-weight:600;">${label}</span>
       <span style="font-weight:500;">${val}</span>
