@@ -52,7 +52,7 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 .preview-section{background:var(--white);border:1px solid var(--tan);border-radius:var(--radius);overflow:hidden;margin-bottom:20px;}
 .preview-section.sticky{position:sticky;top:72px;z-index:90;}
 .preview-label{padding:8px 14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--gray);border-bottom:1px solid var(--tan);}
-.preview-window{width:100%;aspect-ratio:16/8;background:#e8e4de;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.preview-window{width:100%;aspect-ratio:16/10;background:#e8e4de;overflow:hidden;display:flex;align-items:center;justify-content:center;}
 /* FIX: cover so images fill the frame — no more tiny 1-car doors with blank sides */
 .preview-door-img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:transform 0.3s ease;}
 .preview-placeholder{color:var(--gray);font-size:13px;text-align:center;padding:20px;}
@@ -385,16 +385,16 @@ const IMG={
   'skyline-black-long-plain':   B+'Skyline%20flush%20black%20windows%20.jpg',
   'skyline-white-short-plain':  B+'Skyline%20flush%20white%20short%20pane%20windows.png',
   'skyline-black-short-plain':  B+'skyline%20flush%20black%20short%20pane%20windows.png',
-  'carriage-short-white-plain': B+'Carriage%20stamp%20short%20panel%20with%20long%20pane%20windows.png',
-  'carriage-long-white-plain':  B+'Carriage%20stamp%20long%20panel%20windows.png',
+  'carriage-short-white-plain': B+'Carriage%20stamp%20short%20panel%20white%20windows%20no%20inserts%20.jpg',
+  'carriage-long-white-plain':  B+'Carriage%20stamp%20long%20panel%20windows%20no%20inserts%20white%20.jpg',
   // ── Glass type photos ────────────────────────────────────────────────────
   'raised-long-almond-obscure': B+'Raised%20Long%20Panel%20Almond%20no%20insert%20Obscure%20glass%20.jpg',
   'raised-long-almond-rain':    B+'Raised%20Long%20Panel%20Almond%20no%20insert%20Rain%20.jpg',
   'raised-long-almond-tinted':  B+'Raised%20long%20panel%20almond%20no%20insert%20tinted%20.jpg',
   'raised-long-almond-frosted': B+'Raised%20long%20panel%20almond%20no%20insert%20frosted%20.jpg',
-  'raised-long-white-rain':     B+'raised%20long%20panel%20white%20rain%20.jpg',
-  'raised-long-white-tinted':   B+'Raised%20long%20panel%20white%20tinted%20.jpg',
-  'raised-long-white-frosted':  B+'Raised%20long%20panel%20white%20frosted%20.jpg',
+  'raised-long-white-rain':     B+'white%20long%20panel%20window%20no%20inserts%20rain%20.jpg',
+  'raised-long-white-tinted':   B+'white%20long%20panel%20window%20no%20inserts%20tinted%20.jpg',
+  'raised-long-white-frosted':  B+'white%20long%20panel%20window%20no%20inserts%20frosted%20.jpg',
   'raised-short-white-rain':    B+'Raised%20panel%20short%20rain%20white%20.jpg',
   'raised-short-white-tinted':  B+'Raised%20panel%20short%20windows%20tinted%20white.jpg',
   'raised-short-white-frosted': B+'Raised%20panel%20short%20frosted%20white.jpg',
@@ -409,11 +409,11 @@ const IMG={
   'carriage-long-white-frosted':B+'Carriage%20stamp%20long%20frosted.png',
   // ── Insert photos (almond long) ──────────────────────────────────────────
   'raised-long-almond-cascade':B+'almond%20long%20panel%20cascade%20.jpg',
-  'raised-long-almond-prairie':B+'almond%20long%20panel%20prairie%20.jpg',
+  'raised-long-almond-prairie':B+'almond%20long%20panel%20praire%20.jpg',
   'raised-long-almond-sherwood':B+'almond%20long%20panel%20sherwood%20.jpg',
   'raised-long-almond-waterton':B+'almond%20long%20panel%20waterton%20.jpg',
   'raised-long-almond-stockton':B+'almond%20long%20panel%20stockton%20.jpg',
-  'raised-long-almond-madison':B+'almond%20long%20panel%20madison%20.jpg',
+  'raised-long-almond-madison':B+'Almond%20long%20panel%20madison%20.jpg',
   'raised-long-almond-2-arched-stockton':B+'almond%20long%20panel%202%20piece%20arched%20stockton%20.jpg',
   'raised-long-almond-4-arched-stockton':B+'almond%20long%20panel%204%20piece%20arched%20stockton%20.jpg',
   'raised-long-almond-2-arched-madison':B+'almond%20long%20panel%202%20piece%20arched%20madison%20.jpg',
@@ -421,20 +421,20 @@ const IMG={
   'raised-long-almond-4-sunburst':B+'almond%20long%20panel%204%20piece%20sunburst%20.jpg',
   // White long: point to almond photos (filter-white applied)
   'raised-long-white-cascade':B+'White%20long%20panel%20cascade%20.jpg',
-  'raised-long-white-prairie':B+'White%20long%20panel%20prairie%20.jpg',
+  'raised-long-white-prairie':B+'White%20long%20panel%20praire%20.jpg',
   'raised-long-white-sherwood':B+'White%20long%20panel%20sherwood%20.jpg',
   'raised-long-white-waterton':B+'White%20long%20panel%20waterton%20.jpg',
   'raised-long-white-stockton':B+'White%20long%20panel%20stockton%20.jpg',
   'raised-long-white-madison':B+'White%20long%20panel%20madison%20.jpg',
-  'raised-long-white-2-arched-stockton':B+'White%20long%20panel%202%20piece%20arched%20stockton%20.jpg',
-  'raised-long-white-4-arched-stockton':B+'White%20long%20panel%204%20piece%20arched%20stockton%20.jpg',
-  'raised-long-white-2-arched-madison':B+'White%20long%20panel%202%20piece%20arched%20madison%20.jpg',
-  'raised-long-white-4-arched-madison':B+'White%20long%20panel%204%20piece%20arched%20madison%20.jpg',
-  'raised-long-white-2-sunburst':B+'White%20long%20panel%202%20piece%20sunburst%20.jpg',
-  'raised-long-white-4-sunburst':B+'White%20long%20panel%204%20piece%20sunburst%20.jpg',
+  'raised-long-white-2-arched-stockton':B+'Whte%20long%20panel%202%20piece%20arched%20stockton%20.jpg',
+  'raised-long-white-4-arched-stockton':B+'white%20long%20panel%204%20piece%20arched%20stockton%20.jpg',
+  'raised-long-white-2-arched-madison':B+'white%20long%20panel%202%20piece%20arched%20madison%20.jpg',
+  'raised-long-white-4-arched-madison':B+'white%20long%20panel%204%20piece%20arched%20madison%20.jpg',
+  'raised-long-white-2-sunburst':B+'white%20long%20panel%202%20piece%20sunburst%20.jpg',
+  'raised-long-white-4-sunburst':B+'white%20long%20panel%204%20piece%20sunburst%20.jpg',
   // ── Insert photos (almond short) ─────────────────────────────────────────
   'raised-short-almond-cascade':B+'almond%20short%20panel%20cascade%20.jpg',
-  'raised-short-almond-prairie':B+'almond%20short%20panel%20prairie%20.jpg',
+  'raised-short-almond-prairie':B+'almond%20short%20panel%20praire%20.jpg',
   'raised-short-almond-sherwood':B+'almond%20short%20panel%20sherwood%20.jpg',
   'raised-short-almond-waterton':B+'almond%20short%20panel%20waterton%20.jpg',
   'raised-short-almond-stockton':B+'almond%20short%20panel%20stockton%20.jpg',
@@ -442,12 +442,12 @@ const IMG={
   'raised-short-almond-8-sunburst':B+'almond%20short%20panel%208%20piece%20sunburst%20.jpg',
   // White short: point to almond photos (filter-white applied)
   'raised-short-white-cascade':B+'White%20short%20panel%20cascade%20.jpg',
-  'raised-short-white-prairie':B+'White%20short%20panel%20prairie%20.jpg',
+  'raised-short-white-prairie':B+'White%20short%20panel%20praire%20.jpg',
   'raised-short-white-sherwood':B+'White%20short%20panel%20sherwood%20.jpg',
   'raised-short-white-waterton':B+'White%20short%20panel%20waterton%20.jpg',
   'raised-short-white-stockton':B+'White%20short%20panel%20stockton%20.jpg',
-  'raised-short-white-4-sunburst':B+'White%20short%20panel%204%20piece%20sunburst%20.jpg',
-  'raised-short-white-8-sunburst':B+'White%20short%20panel%208%20piece%20sunburst%20.jpg',
+  'raised-short-white-4-sunburst':B+'white%20short%20panel%204%20piece%20sunburst%20.jpg',
+  'raised-short-white-8-sunburst':B+'white%20short%20panel%208%20piece%20sunburst%20.jpg',
   // ── Skyline inserts ───────────────────────────────────────────────────────
   'skyline-white-cascade':          B+'Skyline%20flush%20white%20cascade%20inserts%20.jpg',
   'skyline-black-cascade':          B+'Skyline%20flush%20black%20windows%20cascade%20.jpg',
@@ -668,7 +668,9 @@ function renderInserts(){
       imgKey=p+'-almond-'+ins.id; src=IMG[imgKey]||'';
     }
     const useFilter=needsWhiteFilter(imgKey);
-    const thumb=src?`<img src="${src}" alt="${ins.label}" ${useFilter?'class="filter-white"':''} onerror="this.style.display='none'"/>`:plainSVG();
+    // Skyline black insert photos are full-door height — zoom to show just window row
+    const skyZoom=(s==='skyline'&&c==='black')?'style="transform:scale(2.8);transform-origin:top center;"':'';
+    const thumb=src?`<img src="${src}" alt="${ins.label}" ${useFilter?'class="filter-white"':''} ${skyZoom} onerror="this.style.display='none'"/>`:plainSVG();
     return`<div class="insert-card${state.windowInsert===ins.id?' selected':''}" onclick="selectInsert('${ins.id}')">
       <div class="insert-thumb">${thumb}</div>
       <div class="insert-name">${ins.label}</div>
