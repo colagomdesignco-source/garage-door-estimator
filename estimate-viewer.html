@@ -207,7 +207,7 @@ footer strong { color: var(--text); }
   <div class="header-brand">
     <div>
       <h1>Generational Garage Doors</h1>
-      <p>Licensed · Insured · Bay Area Family Owned</p>
+      <p>Licensed · Insured · Lic. #1113495 · Bay Area Family Owned</p>
     </div>
   </div>
   <div class="est-badge" id="headerEstNum">Your Estimate</div>
@@ -286,7 +286,7 @@ footer strong { color: var(--text); }
 
 <footer>
   <strong>Generational Garage Doors</strong> · Bay Area, CA · (925) 316-8384<br>
-  Licensed & Insured · Family Owned & Operated
+  Licensed & Insured · Lic. #1113495 · Family Owned & Operated
 </footer>
 
 <script>
@@ -298,7 +298,7 @@ const SHEET_ID       = '1rZaXHyOVxJmI_Dp6IhdIwTXX3SsXaWJr3w4hhs0XYYI';
 const ESTIMATES_TAB  = 'Estimates';
 
 // Set up your Make.com "Accept Estimate" scenario and paste the webhook URL here:
-const ACCEPT_WEBHOOK_URL = 'https://hook.us2.make.com/rcu3diuopkhnen1uc7yl7rmwg3xice2q';
+const ACCEPT_WEBHOOK_URL = 'YOUR_ACCEPT_WEBHOOK_URL_HERE';
 
 // =====================================================
 // MAIN — load estimate on page load
@@ -454,7 +454,10 @@ function renderEstimate(est) {
   if (items.length > 0) {
     itemsEl.innerHTML = items.map(item => `
       <div class="line-item">
-        <span class="li-name">${escHtml(item.name)}</span>
+        <div style="flex:1;">
+          <span class="li-name">${escHtml(item.name)}</span>
+          ${item.detail ? `<div style="font-size:0.78rem;color:var(--text2);margin-top:3px;line-height:1.5;">${escHtml(item.detail)}</div>` : ''}
+        </div>
         <span class="li-price ${item.isFree ? 'free' : ''}">
           ${item.isFree ? 'Included' : '$' + formatNum(item.price)}
         </span>
