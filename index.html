@@ -49,13 +49,32 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 .icon-wrap svg{width:26px;height:26px;stroke:var(--charcoal);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
 .icon-card .card-title{font-size:14px;}
 .icon-card .card-sub{font-size:12px;}
+
+/* ── PREVIEW WINDOW: clean, contained, properly proportioned ───────────── */
 .preview-section{background:var(--white);border:1px solid var(--tan);border-radius:var(--radius);overflow:hidden;margin-bottom:20px;}
 .preview-section.sticky{position:sticky;top:72px;z-index:90;}
 .preview-label{padding:8px 14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--gray);border-bottom:1px solid var(--tan);}
-.preview-window{width:100%;aspect-ratio:4/3;background:#e8e4de;overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:320px;}
-/* FIX: cover so images fill the frame — no more tiny 1-car doors with blank sides */
-.preview-door-img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:transform 0.3s ease;}
+.preview-window{
+  width:100%;
+  max-width:520px;
+  margin:0 auto;
+  aspect-ratio:16/9;
+  background:#e8e4de;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.preview-door-img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+  display:block;
+  background:#e8e4de;
+}
 .preview-placeholder{color:var(--gray);font-size:13px;text-align:center;padding:20px;}
+
 .door-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
 .door-option{background:var(--white);border:2px solid var(--tan);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all 0.2s;}
 .door-option:hover{border-color:#a0bcaa;box-shadow:var(--shadow);}
@@ -89,14 +108,32 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 .glass-name{font-size:13px;font-weight:600;}
 .glass-desc{font-size:11px;color:var(--gray);margin-top:2px;}
 .glass-price{font-size:12px;font-weight:700;color:var(--green);margin-top:4px;}
+
+/* ── INSERT THUMBS: better sized, no extreme zoom ──────────────────────── */
 .insert-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;}
 .insert-card{background:var(--white);border:2px solid var(--tan);border-radius:10px;overflow:hidden;cursor:pointer;transition:all 0.2s;}
 .insert-card:hover{border-color:#a0bcaa;}
 .insert-card.selected{border-color:var(--green);}
-.insert-thumb{width:100%;background:#d8e4da;display:flex;align-items:center;justify-content:center;padding:4px;height:80px;overflow:hidden;}
-/* FIX: boost contrast on insert thumbnails so they're clearly visible */
-.insert-thumb img{width:100%;height:100%;object-fit:cover;object-position:top center;border-radius:3px;filter:contrast(1.35) brightness(0.82) saturate(1.1);}
+.insert-thumb{
+  width:100%;
+  background:#d8e4da;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:6px;
+  aspect-ratio:16/5;
+  overflow:hidden;
+}
+.insert-thumb img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+  border-radius:3px;
+  filter:contrast(1.2) brightness(0.9);
+}
 .insert-name{padding:7px 10px;font-size:12px;font-weight:600;text-align:center;}
+
 .pane-selector{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
 .callout-box{background:#edf4ef;border:1px solid #b8d4be;border-radius:10px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;}
 .callout-box svg{width:18px;height:18px;stroke:var(--green);fill:none;flex-shrink:0;margin-top:1px;stroke-width:2;stroke-linecap:round;}
@@ -359,9 +396,7 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 <script>
 const B='https://colagomdesignco-source.github.io/garage-door-estimator/';
 const IMG={
-  // ── Base door images (no windows) ───────────────────────────────────────
   'raised-short-white':         B+'Raied%20panel%20short%20no%20windows.png',
-  // FIX: short almond — try correct file, fallback handled in updateDoorPreview
   'raised-short-almond':        B+'Raised%20short%20panel%20almond%20no%20window.png',
   'raised-long-white':          B+'Raised%20panel%20long%20white%20no%20windows.png',
   'raised-long-almond':         B+'Raised%20long%20panel%20almond%20no%20window.png',
@@ -369,12 +404,10 @@ const IMG={
   'skyline-black':              B+'Skyline%20Flush%20Black.png',
   'carriage-short-white':       B+'Carriage%20house%20short%20panel%20white.png',
   'carriage-long-white':        B+'Carriage%20House%20long%20panel%20white.png',
-  // ── Plain windows (no insert) ────────────────────────────────────────────
   'raised-short-white-plain':   B+'Raised%20panel%20short%20windows%20white.png',
   'raised-short-almond-plain':  B+'Raised%20panel%20short%20almond%20plain%20windows%20.jpg',
   'raised-long-white-plain':    B+'Raised%20panel%20long%20windows.png',
   'raised-long-almond-plain':   B+'Raised%20long%20panel%20windows%20almond.png',
-  // ── Skyline glass types ────────────────────────────────────────────────────
   'skyline-white-frosted': B+'Skyline%20white%20frosted.png',
   'skyline-white-rain':    B+'Skyline%20white%20rain.png',
   'skyline-white-tinted':  B+'Skyline%20white%20tinted.png',
@@ -387,7 +420,6 @@ const IMG={
   'skyline-black-short-plain':  B+'skyline%20flush%20black%20short%20pane%20windows.png',
   'carriage-short-white-plain': B+'Carriage%20stamp%20short%20panel%20white%20windows%20no%20inserts%20.jpg',
   'carriage-long-white-plain':  B+'Carriage%20stamp%20long%20panel%20windows%20no%20inserts%20white%20.jpg',
-  // ── Glass type photos ────────────────────────────────────────────────────
   'raised-long-almond-obscure': B+'Raised%20Long%20Panel%20Almond%20no%20insert%20Obscure%20glass%20.jpg',
   'raised-long-almond-rain':    B+'Raised%20Long%20Panel%20Almond%20no%20insert%20Rain%20.jpg',
   'raised-long-almond-tinted':  B+'Raised%20long%20panel%20almond%20no%20insert%20tinted%20.jpg',
@@ -407,7 +439,6 @@ const IMG={
   'carriage-long-white-rain':   B+'Carriage%20stamp%20long%20rain.png',
   'carriage-long-white-tinted': B+'Carriage%20stamp%20long%20tinted.png',
   'carriage-long-white-frosted':B+'Carriage%20stamp%20long%20frosted.png',
-  // ── Insert photos (almond long) ──────────────────────────────────────────
   'raised-long-almond-cascade':B+'almond%20long%20panel%20cascade%20.jpg',
   'raised-long-almond-prairie':B+'almond%20long%20panel%20praire%20.jpg',
   'raised-long-almond-sherwood':B+'almond%20long%20panel%20sherwood%20.jpg',
@@ -419,7 +450,6 @@ const IMG={
   'raised-long-almond-2-arched-madison':B+'almond%20long%20panel%202%20piece%20arched%20madison%20.jpg',
   'raised-long-almond-2-sunburst':B+'almond%20long%20panel%202%20piece%20sunburst%20.jpg',
   'raised-long-almond-4-sunburst':B+'almond%20long%20panel%204%20piece%20sunburst%20.jpg',
-  // White long: point to almond photos (filter-white applied)
   'raised-long-white-cascade':B+'White%20long%20panel%20cascade%20.jpg',
   'raised-long-white-prairie':B+'White%20long%20panel%20praire%20.jpg',
   'raised-long-white-sherwood':B+'White%20long%20panel%20sherwood%20.jpg',
@@ -432,7 +462,6 @@ const IMG={
   'raised-long-white-4-arched-madison':B+'white%20long%20panel%204%20piece%20arched%20madison%20.jpg',
   'raised-long-white-2-sunburst':B+'white%20long%20panel%202%20piece%20sunburst%20.jpg',
   'raised-long-white-4-sunburst':B+'white%20long%20panel%204%20piece%20sunburst%20.jpg',
-  // ── Insert photos (almond short) ─────────────────────────────────────────
   'raised-short-almond-cascade':B+'almond%20short%20panel%20cascade%20.jpg',
   'raised-short-almond-prairie':B+'almond%20short%20panel%20praire%20.jpg',
   'raised-short-almond-sherwood':B+'almond%20short%20panel%20sherwood%20.jpg',
@@ -440,7 +469,6 @@ const IMG={
   'raised-short-almond-stockton':B+'almond%20short%20panel%20stockton%20.jpg',
   'raised-short-almond-4-sunburst':B+'almond%20short%20panel%204%20piece%20sunburst%20.jpg',
   'raised-short-almond-8-sunburst':B+'almond%20short%20panel%208%20piece%20sunburst%20.jpg',
-  // White short: point to almond photos (filter-white applied)
   'raised-short-white-cascade':B+'White%20short%20panel%20cascade%20.jpg',
   'raised-short-white-prairie':B+'White%20short%20panel%20praire%20.jpg',
   'raised-short-white-sherwood':B+'White%20short%20panel%20sherwood%20.jpg',
@@ -448,7 +476,6 @@ const IMG={
   'raised-short-white-stockton':B+'White%20short%20panel%20stockton%20.jpg',
   'raised-short-white-4-sunburst':B+'white%20short%20panel%204%20piece%20sunburst%20.jpg',
   'raised-short-white-8-sunburst':B+'white%20short%20panel%208%20piece%20sunburst%20.jpg',
-  // ── Skyline inserts ───────────────────────────────────────────────────────
   'skyline-white-cascade':          B+'Skyline%20flush%20white%20cascade%20inserts%20.jpg',
   'skyline-black-cascade':          B+'Skyline%20flush%20black%20windows%20cascade%20.jpg',
   'skyline-black-prairie':          B+'Skyline%20flush%20black%20windows%20praire%20.jpg',
@@ -462,7 +489,6 @@ const IMG={
   'skyline-black-4-arched-madison': B+'Skyline%20flush%20black%20windows%204%20piece%20arched%20madison%20.jpg',
   'skyline-black-2-sunburst':       B+'Skyline%20flush%20black%20windows%202%20piece%20arched%20sunburst%20.jpg',
   'skyline-black-4-sunburst':       B+'Skyline%20flush%20black%20windows%204%20piece%20sunburst%20.jpg',
-  // ── Carriage inserts (white filter applied) ───────────────────────────────
   'carriage-short-white-cascade':   B+'Raised%20short%20panel%20almond%20cascade%20.jpg',
   'carriage-short-white-prairie':   B+'Raised%20short%20panel%20almond%20praire%20.jpg',
   'carriage-short-white-sherwood':  B+'Raised%20short%20panel%20almond%20sherwood%20.jpg',
@@ -563,18 +589,9 @@ function needsWhiteFilter(key){
   return false;
 }
 
-// ── FIX: single-car CSS crop ─────────────────────────────────────────────────
-// Zooms in on center of door image so single-car looks like a single-car width
-function applyGarageCountStyle(imgEl){
-  if(!imgEl) return;
-  if(state.garageCount==='single'){
-imgEl.style.transform='scale(1.35)';
-    imgEl.style.transformOrigin='center center';
-  } else {
-    imgEl.style.transform='';
-    imgEl.style.transformOrigin='';
-  }
-}
+// REMOVED: applyGarageCountStyle function. The preview now shows door at natural
+// aspect ratio with object-fit:contain. Single vs double car distinction will be
+// addressed later with proper images, not CSS scaling.
 
 function renderDoors(){
   document.getElementById('door-grid').innerHTML=DOORS.map(d=>`
@@ -613,12 +630,10 @@ function updateDoorPreview(){
       img.style.filter='';
       img.style.objectPosition='center';
       ph.style.display='none';
-      // FIX: fallback if image 404s (e.g. short almond missing) — use white version
       img.onerror=function(){
         const fallback=IMG[state.doorStyle+'-white']||'';
         if(fallback&&this.src!==fallback){
           this.src=fallback;
-          // Tint white door to approximate almond if needed
           if(state.doorColor==='almond') this.style.filter='sepia(0.25) saturate(0.9) brightness(1.0)';
         } else {
           this.style.display='none';
@@ -626,7 +641,6 @@ function updateDoorPreview(){
         }
         this.onerror=null;
       };
-      applyGarageCountStyle(img);
       return;
     }
   }
@@ -668,9 +682,7 @@ function renderInserts(){
       imgKey=p+'-almond-'+ins.id; src=IMG[imgKey]||'';
     }
     const useFilter=needsWhiteFilter(imgKey);
-    // Skyline black insert photos are full-door height — zoom to show just window row
-    const skyZoom=(s==='skyline'&&c==='black')?'style="transform:scale(2.8);transform-origin:top center;"':'';
-    const thumb=src?`<img src="${src}" alt="${ins.label}" ${useFilter?'class="filter-white"':''} ${skyZoom} onerror="this.style.display='none'"/>`:plainSVG();
+    const thumb=src?`<img src="${src}" alt="${ins.label}" ${useFilter?'class="filter-white"':''} onerror="this.style.display='none';this.parentElement.innerHTML='${plainSVGString()}';"/>`:plainSVG();
     return`<div class="insert-card${state.windowInsert===ins.id?' selected':''}" onclick="selectInsert('${ins.id}')">
       <div class="insert-thumb">${thumb}</div>
       <div class="insert-name">${ins.label}</div>
@@ -686,8 +698,7 @@ function updateGlassPreview(){
   if(src){
     img.src=src;img.style.display='block';ph.style.display='none';
     img.style.filter=needsWhiteFilter(key)?'brightness(1.55) saturate(0.08) contrast(0.92)':'';
-    img.style.objectPosition='top';
-    applyGarageCountStyle(img);
+    img.style.objectPosition='center';
   }else{img.style.display='none';ph.style.display='flex';img.style.filter='';}
 }
 
@@ -709,8 +720,9 @@ function renderInsulation(){
 }
 
 function plainSVG(){
-  return`<svg viewBox="0 0 96 56" xmlns="http://www.w3.org/2000/svg" style="width:88px;height:56px;display:block;background:#eef3f0;border-radius:3px;"><rect x="5" y="8" width="24" height="40" rx="2" fill="#f6fafa" stroke="#b8c6c0" stroke-width="1.2"/><rect x="34" y="8" width="24" height="40" rx="2" fill="#f6fafa" stroke="#b8c6c0" stroke-width="1.2"/><rect x="63" y="8" width="24" height="40" rx="2" fill="#f6fafa" stroke="#b8c6c0" stroke-width="1.2"/></svg>`;
+  return`<svg viewBox="0 0 96 28" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;"><rect x="2" y="2" width="22" height="24" rx="2" fill="#f6fafa" stroke="#a8b8b0" stroke-width="1.5"/><rect x="26" y="2" width="22" height="24" rx="2" fill="#f6fafa" stroke="#a8b8b0" stroke-width="1.5"/><rect x="50" y="2" width="22" height="24" rx="2" fill="#f6fafa" stroke="#a8b8b0" stroke-width="1.5"/><rect x="74" y="2" width="20" height="24" rx="2" fill="#f6fafa" stroke="#a8b8b0" stroke-width="1.5"/></svg>`;
 }
+function plainSVGString(){return plainSVG().replace(/"/g,"&quot;");}
 function glassIcon(t){
   const ic={
     plain:`<svg viewBox="0 0 60 36" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="58" height="34" rx="3" fill="#f0f7f4" stroke="#bdd0c0" stroke-width="1.5"/><rect x="7" y="7" width="46" height="22" rx="2" fill="#e4f0ec"/></svg>`,
@@ -830,7 +842,6 @@ async function submitEst(){
   if(finalSrc){
     prevImg.src=finalSrc;prevImg.style.display='block';prevPh.style.display='none';
     prevImg.style.filter=needsWhiteFilter(finalKey)?'brightness(1.55) saturate(0.08) contrast(0.92)':'';
-    applyGarageCountStyle(prevImg);
   }
 
   const insLabels={none:'No insulation',pvc:'Steelback (PVC)',steel:'Steel insulated'};
