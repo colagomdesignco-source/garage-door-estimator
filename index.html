@@ -50,7 +50,6 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 .icon-card .card-title{font-size:14px;}
 .icon-card .card-sub{font-size:12px;}
 
-/* ── PREVIEW WINDOW: clean, contained, properly proportioned ───────────── */
 .preview-section{background:var(--white);border:1px solid var(--tan);border-radius:var(--radius);overflow:hidden;margin-bottom:20px;}
 .preview-section.sticky{position:sticky;top:72px;z-index:90;}
 .preview-label{padding:8px 14px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--gray);border-bottom:1px solid var(--tan);}
@@ -109,7 +108,6 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 .glass-desc{font-size:11px;color:var(--gray);margin-top:2px;}
 .glass-price{font-size:12px;font-weight:700;color:var(--green);margin-top:4px;}
 
-/* ── INSERT THUMBS: better sized, no extreme zoom ──────────────────────── */
 .insert-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;}
 .insert-card{background:var(--white);border:2px solid var(--tan);border-radius:10px;overflow:hidden;cursor:pointer;transition:all 0.2s;}
 .insert-card:hover{border-color:#a0bcaa;}
@@ -183,7 +181,8 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
   header{padding:12px 16px;}
   .btn{font-size:15px;padding:14px;}
 }
-.filter-white{filter:brightness(1.55) saturate(0.08) contrast(0.92);}
+/* ── STRONGER white filter — bleaches almond/black inserts fully white ── */
+.filter-white{filter:brightness(1.9) saturate(0) contrast(0.85) opacity(0.95);}
 </style>
 </head>
 <body>
@@ -452,10 +451,10 @@ const IMG={
   'raised-long-almond-4-sunburst':B+'almond%20long%20panel%204%20piece%20sunburst%20.jpg',
   'raised-long-white-cascade':B+'White%20long%20panel%20cascade%20.jpg',
   'raised-long-white-prairie':B+'White%20long%20panel%20praire%20.jpg',
-  'raised-long-white-sherwood':B+'White%20long%20panel%20sherwood%20.jpg',
+  'raised-long-white-sherwood':B+'white%20long%20panel%20sherwood%20.jpg',
   'raised-long-white-waterton':B+'White%20long%20panel%20waterton%20.jpg',
   'raised-long-white-stockton':B+'White%20long%20panel%20stockton%20.jpg',
-  'raised-long-white-madison':B+'White%20long%20panel%20madison%20.jpg',
+  'raised-long-white-madison':B+'white%20long%20panel%20madison%20.jpg',
   'raised-long-white-2-arched-stockton':B+'Whte%20long%20panel%202%20piece%20arched%20stockton%20.jpg',
   'raised-long-white-4-arched-stockton':B+'white%20long%20panel%204%20piece%20arched%20stockton%20.jpg',
   'raised-long-white-2-arched-madison':B+'white%20long%20panel%202%20piece%20arched%20madison%20.jpg',
@@ -471,9 +470,9 @@ const IMG={
   'raised-short-almond-8-sunburst':B+'almond%20short%20panel%208%20piece%20sunburst%20.jpg',
   'raised-short-white-cascade':B+'White%20short%20panel%20cascade%20.jpg',
   'raised-short-white-prairie':B+'White%20short%20panel%20praire%20.jpg',
-  'raised-short-white-sherwood':B+'White%20short%20panel%20sherwood%20.jpg',
-  'raised-short-white-waterton':B+'White%20short%20panel%20waterton%20.jpg',
-  'raised-short-white-stockton':B+'White%20short%20panel%20stockton%20.jpg',
+  'raised-short-white-sherwood':B+'white%20short%20panel%20sherwood%20.jpg',
+  'raised-short-white-waterton':B+'white%20short%20panel%20waterton%20.jpg',
+  'raised-short-white-stockton':B+'white%20short%20panel%20stockton%20.jpg',
   'raised-short-white-4-sunburst':B+'white%20short%20panel%204%20piece%20sunburst%20.jpg',
   'raised-short-white-8-sunburst':B+'white%20short%20panel%208%20piece%20sunburst%20.jpg',
   'skyline-white-cascade':          B+'Skyline%20flush%20white%20cascade%20inserts%20.jpg',
@@ -504,8 +503,11 @@ const IMG={
   'carriage-long-white-4-sunburst': B+'Raised%20long%20panel%20almond%204%20piece%20sunburst%20.jpg',
 };
 
+const WHITE_FILTER='brightness(1.9) saturate(0) contrast(0.85) opacity(0.95)';
+
 const WHITE_KEYS=new Set([
-'raised-long-white-prairie','raised-long-white-stockton','raised-short-white-prairie',  'skyline-white-prairie','skyline-white-sherwood','skyline-white-waterton',
+  'raised-long-white-prairie','raised-long-white-stockton','raised-short-white-prairie',
+  'skyline-white-prairie','skyline-white-sherwood','skyline-white-waterton',
   'skyline-white-stockton','skyline-white-madison','skyline-white-2-arched-stockton',
   'skyline-white-4-arched-stockton','skyline-white-2-arched-madison','skyline-white-4-arched-madison',
   'skyline-white-2-sunburst','skyline-white-4-sunburst',
@@ -588,10 +590,6 @@ function needsWhiteFilter(key){
      (state.doorStyle==='carriage-short'||state.doorStyle==='carriage-long')) return true;
   return false;
 }
-
-// REMOVED: applyGarageCountStyle function. The preview now shows door at natural
-// aspect ratio with object-fit:contain. Single vs double car distinction will be
-// addressed later with proper images, not CSS scaling.
 
 function renderDoors(){
   document.getElementById('door-grid').innerHTML=DOORS.map(d=>`
@@ -697,7 +695,7 @@ function updateGlassPreview(){
   const src=IMG[key]||IMG[state.doorStyle+'-'+state.doorColor]||null;
   if(src){
     img.src=src;img.style.display='block';ph.style.display='none';
-    img.style.filter=needsWhiteFilter(key)?'brightness(1.55) saturate(0.08) contrast(0.92)':'';
+    img.style.filter=needsWhiteFilter(key)?WHITE_FILTER:'';
     img.style.objectPosition='center';
   }else{img.style.display='none';ph.style.display='flex';img.style.filter='';}
 }
@@ -841,7 +839,7 @@ async function submitEst(){
   const finalSrc=IMG[finalKey]||IMG[state.doorStyle+'-'+state.doorColor]||null;
   if(finalSrc){
     prevImg.src=finalSrc;prevImg.style.display='block';prevPh.style.display='none';
-    prevImg.style.filter=needsWhiteFilter(finalKey)?'brightness(1.55) saturate(0.08) contrast(0.92)':'';
+    prevImg.style.filter=needsWhiteFilter(finalKey)?WHITE_FILTER:'';
   }
 
   const insLabels={none:'No insulation',pvc:'Steelback (PVC)',steel:'Steel insulated'};
