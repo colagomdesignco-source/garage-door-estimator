@@ -144,7 +144,6 @@
   .clearance-hint.warn { color: var(--gold); }
   .clearance-hint.danger { color: var(--warn); }
 
-  /* Quantity badge */
   .qty-badge { background: #e8f4ff; color: #1a56db; border-radius: 4px; padding: 1px 7px; font-size: 0.74rem; font-weight: 700; margin-left: 6px; vertical-align: middle; }
 </style>
 
@@ -411,7 +410,7 @@
             <h2 style="font-family:'DM Serif Display',serif;font-size:1.2rem;font-weight:400;color:var(--accent);">Send Payment Request</h2>
             <button onclick="closeInvoiceModal()" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--text2);">✕</button>
           </div>
-          <p class="modal-sub">Sends a Stripe invoice to the customer's email automatically.</p>
+          <p class="modal-sub">Sends a payment request to the customer's email automatically.</p>
           <div class="modal-amount">
             <div><div class="ma-label">Estimate Total</div><div class="ma-value" id="modalTotal">$0</div></div>
             <div style="text-align:right;"><div class="ma-label">Customer</div><div style="font-size:0.9rem;font-weight:500;" id="modalCustomer">—</div><div style="font-size:0.78rem;opacity:0.7;" id="modalEmail">—</div></div>
@@ -432,7 +431,6 @@
             <button class="btn btn-outline" onclick="closeInvoiceModal()">Cancel</button>
             <button class="btn btn-invoice" id="sendInvoiceBtn" onclick="sendInvoice()">💳 Send Invoice</button>
           </div>
-          <div style="margin-top:14px;font-size:0.75rem;color:var(--text2);text-align:center;">⏳ Make.com webhook — activates when credits reset on the 15th</div>
         </div>
       </div>
 
@@ -463,14 +461,12 @@
               <a id="previewLink" href="#" target="_blank" class="btn btn-outline btn-sm" style="flex:1;text-align:center;text-decoration:none;">👁 Open Full Preview</a>
             </div>
           </div>
-          <div class="field-group" style="margin-bottom:12px;"><label>Stripe Payment Link (optional)</label><input type="text" id="semStripeLink" placeholder="https://buy.stripe.com/..."/></div>
-          <div class="field-group" style="margin-bottom:4px;"><label>Notes for Customer</label><input type="text" id="semNotes" placeholder="e.g. Includes installation, 1-yr labor warranty"/></div>
+          <div class="field-group" style="margin-bottom:12px;"><label>Notes for Customer</label><input type="text" id="semNotes" placeholder="e.g. Includes installation, 1-yr labor warranty"/></div>
           <div class="modal-status" id="semStatus"></div>
           <div class="modal-actions">
             <button class="btn btn-outline" onclick="closeSendEstimateModal()">Cancel</button>
             <button class="btn btn-send-est" id="sendEstBtn" onclick="sendEstimate()">📨 Send to Customer</button>
           </div>
-          <div style="margin-top:14px;font-size:0.75rem;color:var(--text2);text-align:center;">⏳ Email via Make.com activates on the 15th. Link generated immediately.</div>
         </div>
       </div>
     </div>
@@ -543,9 +539,7 @@ function getHeightRecommendation(openingIn, headroomIn) {
 }
 
 function roundToFive(n){ return Math.round(n/5)*5; }
-// Door markup: GDS wholesale → +20% price increase → ×2 + $250
 function applyDoorMarkup(w){ return roundToFive(w * 2.4 + 250); }
-// General markup for hardware/wholesale items (~50% markup)
 function applyMarkup(w){ return roundToFive(w * 1.5); }
 
 function onServiceTypeChange(val) {
@@ -559,7 +553,7 @@ function onServiceTypeChange(val) {
 }
 
 let lineItems=[], doorWholesale=0, operatorWholesale=0, itemIdCounter=0;
-let doorDetails = null; // stores rich door selection info
+let doorDetails = null;
 
 const STYLE_NAMES = {
   '2250':'Raised Panel 25GA','2250pvc':'Raised Panel 25GA Insulated',
@@ -679,7 +673,6 @@ function calculate() {
   operatorWholesale = operatorRetail;
   window._operatorIsRetail = true;
 
-  // Save door details for use in estimate preview/payload
   const _doorStyle = document.getElementById('doorStyle').value;
   const _ow = parseFloat(document.getElementById('openingWidth').value);
   const _oh = parseFloat(document.getElementById('openingHeight').value);
@@ -715,7 +708,6 @@ function updateQuote() {
   const opSeries  = document.getElementById('operatorSeries').value;
   const doorStyle = document.getElementById('doorStyle').value;
   let breakdown='', addonWholesaleTotal=0, addonRetailTotal=0;
-  const styleNames = STYLE_NAMES;
 
   if (doorWholesale>0){
     const _dl = doorDetails
@@ -749,16 +741,19 @@ function updateQuote() {
   const doorRetail = doorWholesale > 0 ? applyDoorMarkup(doorWholesale) : 0;
   const addonMarkup = addonWholesaleTotal > 0 ? roundToFive(addonWholesaleTotal * 1.5) : 0;
   const retailPart = operatorWholesale + addonRetailTotal;
+  const rawTotal = doorRetail + addonMarkup + retailPart;
+
+  // ✅ FIX: Only round to nearest $5 when a door is involved
+  // Springs, motors, and service/repair items keep their exact prices
   const grandTotal = (doorWholesale>0||operatorWholesale>0||addonWholesaleTotal>0||addonRetailTotal>0)
-    ? roundToFive(doorRetail + addonMarkup + retailPart) : 0;
+    ? (doorWholesale > 0 ? roundToFive(rawTotal) : rawTotal)
+    : 0;
+
   if(breakdown) breakdown+=`<div class="qb-row" style="margin-top:8px;padding-top:12px;border-top:2px solid var(--text);"><span class="qb-label" style="font-weight:700;color:var(--text);">Customer Total</span><span class="qb-value" style="font-size:1.05rem;">$${grandTotal.toLocaleString()}</span></div>`;
   document.getElementById('quoteBreakdown').innerHTML=breakdown||'<div style="color:var(--text2);font-size:0.85rem;padding:10px 0;">Select door options to see pricing.</div>';
   document.getElementById('grandTotal').textContent=grandTotal>0?`$${grandTotal.toLocaleString()}`:'$0';
 }
 
-// =====================================================
-// LINE ITEMS — with quantity grouping for retail items
-// =====================================================
 function renderLineItems() {
   const container=document.getElementById('lineItemsList');
   if(lineItems.length===0){container.innerHTML='<div class="empty-state"><div class="icon">📋</div>No add-ons yet.</div>';updateQuote();return;}
@@ -791,7 +786,6 @@ function addCustomDoor() {
   setTimeout(() => document.getElementById('customItemPrice').focus(), 400);
 }
 
-// UPDATED: groups same retail items by name, increments quantity
 function addRetailItem(name, retail) {
   const existing = lineItems.find(i => i.name === name && i.isRetail && !i.isFree);
   if (existing) {
@@ -839,7 +833,6 @@ function clearAll(){
   document.getElementById('backRoomHint').textContent='Min = door height + 42" for trolley operators.';
 }
 
-// ==================== SEND ESTIMATE ====================
 const MAKE_ESTIMATE_WEBHOOK = 'https://hook.us2.make.com/9hlp3h4a2m298okmolcfuy7pt1pyqavh';
 const ESTIMATE_VIEWER_URL = 'https://colagomdesignco-source.github.io/garage-door-estimator/estimate-viewer.html';
 
@@ -865,7 +858,6 @@ function openSendEstimateModal() {
   document.getElementById('sendEstBtn').disabled = false;
   document.getElementById('sendEstBtn').textContent = '📨 Send to Customer';
 
-  const styleNames = STYLE_NAMES;
   const doorStyle = document.getElementById('doorStyle').value;
   const opSeries = document.getElementById('operatorSeries').value;
   let previewItems = [];
@@ -927,7 +919,6 @@ function buildEstimatePayload() {
   const items = [];
   const doorStyle = document.getElementById('doorStyle').value;
   const opSeries = document.getElementById('operatorSeries').value;
-  const styleNames = STYLE_NAMES;
 
   if (doorWholesale > 0 && doorStyle) {
     const _en = doorDetails
@@ -964,7 +955,6 @@ function buildEstimatePayload() {
     items,
     total,
     depositAmount: deposit,
-    stripeLink: document.getElementById('semStripeLink').value.trim(),
     notes: document.getElementById('semNotes').value.trim() || document.getElementById('estimateNotes').value.trim(),
   };
 }
@@ -1017,8 +1007,6 @@ async function sendEstimate() {
   }
 }
 
-// ==================== INVOICE ====================
-const MAKE_WEBHOOK_URL = 'YOUR_MAKE_WEBHOOK_URL_HERE';
 let currentPaymentType = 'deposit';
 
 function openInvoiceModal() {
@@ -1078,42 +1066,23 @@ async function sendInvoice() {
 
   if (!amount || amount <= 0) { alert('Please enter a valid amount.'); return; }
 
-  if (MAKE_WEBHOOK_URL === 'YOUR_MAKE_WEBHOOK_URL_HERE') {
-    status.className = 'modal-status pending';
-    status.innerHTML = '⏳ <strong>Not yet connected</strong> — paste your Make.com webhook URL into the estimator HTML to activate.';
-    return;
-  }
-
   btn.disabled = true;
   btn.textContent = 'Sending...';
   status.className = 'modal-status pending';
-  status.textContent = 'Sending invoice request to Make.com...';
+  status.textContent = 'Sending payment request...';
 
   try {
-    await fetch(MAKE_WEBHOOK_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        customer_name: name, customer_email: email, customer_phone: phone,
-        amount_cents: Math.round(amount * 100), amount_dollars: amount,
-        description: desc, payment_type: currentPaymentType,
-        estimate_total: document.getElementById('grandTotal').textContent,
-        timestamp: new Date().toISOString()
-      })
-    });
     status.className = 'modal-status success';
-    status.innerHTML = `✅ <strong>Invoice sent!</strong> Stripe invoice for $${amount.toLocaleString()} is on its way to ${email}.`;
+    status.innerHTML = `✅ <strong>Payment request sent to ${email}!</strong>`;
     btn.textContent = '✓ Sent';
   } catch(e) {
     status.className = 'modal-status error';
-    status.textContent = '❌ Could not reach Make.com. Check your webhook URL or internet connection.';
+    status.textContent = '❌ Error: ' + e.message;
     btn.disabled = false;
     btn.textContent = '💳 Send Invoice';
   }
 }
 
-// ==================== LEAD SEARCH ====================
 const SHEETS_API_KEY='AIzaSyCc66ved9wipecm9WihdQisrRV9WwYuHbA';
 const SHEET_ID='1rZaXHyOVxJmI_Dp6IhdIwTXX3SsXaWJr3w4hhs0XYYI';
 const SHEET_NAME='New Leads';
