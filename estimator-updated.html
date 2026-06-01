@@ -138,6 +138,14 @@
 
   .modal-overlay { display: none; }
   .modal-overlay.open { display: block; }
+  /* Send-estimate modal overlay - fixed positioning so it floats above sticky headers */
+  .send-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 99999; align-items: flex-start; justify-content: center; padding: 40px 20px; overflow-y: auto; }
+  .send-modal-overlay.open { display: flex; }
+  .send-modal-overlay .modal { max-width: 600px; width: 100%; margin: auto; max-height: calc(100vh - 80px); overflow-y: auto; }
+  @media (max-width: 768px) {
+    .send-modal-overlay { padding: 16px; align-items: flex-start; }
+    .send-modal-overlay .modal { padding: 18px; max-height: calc(100vh - 32px); }
+  }
   .modal { background: white; border-radius: 14px; padding: 24px; width: 100%; box-shadow: 0 8px 32px rgba(0,0,0,0.15); border: 1px solid var(--border); margin-top: 12px; }
   .modal h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; color: var(--accent); margin-bottom: 4px; }
   .modal .modal-sub { font-size: 0.82rem; color: var(--text2); margin-bottom: 20px; }
@@ -421,8 +429,8 @@
       </div>
 
       <!-- Preview & Send Panel (used for both Estimate and Invoice modes) -->
-      <div id="sendEstimateModal" style="padding:0 16px 16px;">
-        <div class="modal" style="display:none;" id="sendEstimateModalInner">
+      <div id="sendEstimateModal" class="send-modal-overlay" onclick="if(event.target===this)closeSendEstimateModal()">
+        <div class="modal" id="sendEstimateModalInner" onclick="event.stopPropagation()">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
             <h2 id="modalHeading" style="font-family:'DM Serif Display',serif;font-size:1.2rem;font-weight:400;color:var(--accent);">Preview & Send Estimate</h2>
             <button onclick="closeSendEstimateModal()" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--text2);">✕</button>
@@ -962,12 +970,19 @@ function openSendEstimateModal() {
     document.getElementById('previewLink').href = link;
   }
 
-  const inner = document.getElementById('sendEstimateModalInner');
-  inner.style.display = 'block';
-  inner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const overlay = document.getElementById('sendEstimateModal');
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 
-function closeSendEstimateModal() { document.getElementById('sendEstimateModalInner').style.display = 'none'; }
+function closeSendEstimateModal() {
+  document.getElementById('sendEstimateModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape' && document.getElementById('sendEstimateModal').classList.contains('open')) closeSendEstimateModal();
+});
 
 function buildEstimatePayload() {
   const total = parseFloat(document.getElementById('grandTotal').textContent.replace(/[$,]/g,'')) || 0;
