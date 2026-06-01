@@ -139,12 +139,12 @@
   .modal-overlay { display: none; }
   .modal-overlay.open { display: block; }
   /* Send-estimate modal overlay - fixed positioning so it floats above sticky headers */
-  .send-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 99999; align-items: flex-start; justify-content: center; padding: 40px 20px; overflow-y: auto; }
+  .send-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 999999; align-items: center; justify-content: center; padding: 24px 20px; overflow-y: auto; }
   .send-modal-overlay.open { display: flex; }
-  .send-modal-overlay .modal { max-width: 600px; width: 100%; margin: auto; max-height: calc(100vh - 80px); overflow-y: auto; }
+  .send-modal-overlay .modal { max-width: 600px; width: 100%; margin: auto; max-height: calc(100vh - 48px); overflow-y: auto; position: relative; z-index: 1; }
   @media (max-width: 768px) {
-    .send-modal-overlay { padding: 16px; align-items: flex-start; }
-    .send-modal-overlay .modal { padding: 18px; max-height: calc(100vh - 32px); }
+    .send-modal-overlay { padding: 16px; align-items: flex-start; padding-top: 80px; }
+    .send-modal-overlay .modal { padding: 18px; max-height: calc(100vh - 96px); }
   }
   .modal { background: white; border-radius: 14px; padding: 24px; width: 100%; box-shadow: 0 8px 32px rgba(0,0,0,0.15); border: 1px solid var(--border); margin-top: 12px; }
   .modal h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; color: var(--accent); margin-bottom: 4px; }
