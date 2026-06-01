@@ -19,9 +19,30 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-  header { background: var(--accent); color: white; padding: 18px 32px; display: flex; align-items: center; gap: 16px; }
+  header { background: var(--accent); color: white; padding: 18px 32px; display: flex; align-items: center; gap: 16px; transition: background 0.3s; }
+  header.invoice-mode { background: #b8540b; }
   header h1 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; font-weight: 400; }
   header span { font-size: 0.8rem; opacity: 0.7; margin-left: auto; }
+
+  .mode-toggle { display: flex; gap: 4px; background: rgba(0,0,0,0.2); padding: 4px; border-radius: 24px; }
+  .mode-btn { background: transparent; color: rgba(255,255,255,0.7); border: none; padding: 7px 16px; border-radius: 20px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 600; transition: all 0.2s; }
+  .mode-btn.active { background: white; color: var(--accent); }
+  header.invoice-mode .mode-btn.active { color: #b8540b; }
+
+  .mode-banner { background: #f0f7f0; border-bottom: 1.5px solid #b8d9b9; padding: 10px 32px; font-size: 0.85rem; color: var(--accent); transition: all 0.3s; }
+  .mode-banner.invoice-mode { background: #fff4e8; border-bottom-color: #f5c997; color: #8a3d00; }
+  .mode-banner strong { font-weight: 700; letter-spacing: 0.04em; }
+
+  .btn-convert { background: #b8540b; color: white; border: none; }
+  .btn-convert:hover { background: #8a3d00; }
+  .btn-invoice-send { background: #b8540b; color: white; border: none; }
+  .btn-invoice-send:hover { background: #8a3d00; }
+
+  @media (max-width: 768px) {
+    .mode-toggle { order: 3; width: 100%; justify-content: center; }
+    header span { font-size: 0.72rem; }
+    .mode-banner { padding: 8px 16px; font-size: 0.78rem; }
+  }
 
   .container { max-width: 100%; margin: 0 auto; padding: 24px 16px; display: grid; grid-template-columns: 1fr 360px; gap: 20px; }
   @media (max-width: 768px) {
@@ -135,10 +156,18 @@
   .qty-badge { background: #e8f4ff; color: #1a56db; border-radius: 4px; padding: 1px 7px; font-size: 0.74rem; font-weight: 700; margin-left: 6px; vertical-align: middle; }
 </style>
 
-<header>
-  <div><h1>Estimate Builder</h1></div>
+<header id="mainHeader">
+  <div><h1 id="modeTitle">Estimate Builder</h1></div>
+  <div class="mode-toggle">
+    <button class="mode-btn active" id="estimateModeBtn" onclick="setMode('estimate')">📄 Estimate</button>
+    <button class="mode-btn" id="invoiceModeBtn" onclick="setMode('invoice')">💳 Invoice</button>
+  </div>
   <span>Generational Garage Doors · Internal Use Only</span>
 </header>
+
+<div class="mode-banner" id="modeBanner">
+  <strong>📄 ESTIMATE MODE</strong> — Quote with 50% deposit (100% for service/repair)
+</div>
 
 <div class="container">
   <div>
@@ -386,34 +415,35 @@
         <div style="color:var(--text2);font-size:0.85rem;padding:10px 0;">Select door options to see pricing.</div>
       </div>
       <div class="action-btns">
-        <button class="btn btn-send-est" onclick="openPreviewModal()">📄 Preview & Send Estimate</button>
+        <button class="btn btn-send-est" id="sendActionBtn" onclick="openPreviewModal()">📄 Preview & Send Estimate</button>
+        <button class="btn btn-convert" id="convertBtn" onclick="convertToInvoice()">💳 Convert to Invoice</button>
         <button class="btn btn-outline" onclick="clearAll()">🗑 Clear & Start Over</button>
       </div>
 
-      <!-- Preview & Send Estimate Panel -->
+      <!-- Preview & Send Panel (used for both Estimate and Invoice modes) -->
       <div id="sendEstimateModal" style="padding:0 16px 16px;">
         <div class="modal" style="display:none;" id="sendEstimateModalInner">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-            <h2 style="font-family:'DM Serif Display',serif;font-size:1.2rem;font-weight:400;color:var(--accent);">Preview & Send Estimate</h2>
+            <h2 id="modalHeading" style="font-family:'DM Serif Display',serif;font-size:1.2rem;font-weight:400;color:var(--accent);">Preview & Send Estimate</h2>
             <button onclick="closeSendEstimateModal()" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--text2);">✕</button>
           </div>
           <div style="background:#f5f3ef;border-radius:10px;border:1px solid var(--border);overflow:hidden;margin-bottom:16px;">
-            <div style="background:var(--accent);color:white;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;">
-              <div style="font-size:0.8rem;opacity:0.8;">Estimate Preview</div>
+            <div id="modalPreviewHeader" style="background:var(--accent);color:white;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;">
+              <div style="font-size:0.8rem;opacity:0.8;" id="modalPreviewLabel">Estimate Preview</div>
               <div style="text-align:right;"><div style="font-size:0.75rem;opacity:0.7;">Customer</div><div style="font-size:0.9rem;font-weight:600;" id="semCustomer">—</div><div style="font-size:0.72rem;opacity:0.7;" id="semEmail">—</div></div>
             </div>
             <div style="padding:14px 16px;">
               <div style="display:flex;justify-content:space-between;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border);">
-                <span style="font-size:0.78rem;color:var(--text2);">Estimate Total</span>
+                <span style="font-size:0.78rem;color:var(--text2);" id="semTotalLabel">Estimate Total</span>
                 <span style="font-size:1.3rem;font-weight:700;color:var(--accent);" id="semTotal">$0</span>
               </div>
               <div id="semLineItems" style="font-size:0.82rem;color:var(--text2);"></div>
               <div id="semDepositRow" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:0.82rem;">
-                <span style="color:var(--text2);">Deposit Due</span>
+                <span style="color:var(--text2);" id="semDepositLabel">Deposit Due</span>
                 <span style="font-weight:600;" id="semDepositAmt">$0</span>
               </div>
             </div>
-            <div style="padding:10px 16px;border-top:1px solid var(--border);display:flex;gap:8px;">
+            <div style="padding:10px 16px;border-top:1px solid var(--border);display:flex;gap:8px;" id="previewLinkRow">
               <a id="previewLink" href="#" target="_blank" class="btn btn-outline btn-sm" style="flex:1;text-align:center;text-decoration:none;">👁 Open Full Preview</a>
             </div>
           </div>
@@ -787,10 +817,54 @@ function clearAll(){
   document.getElementById('sideRoomHint').textContent='Min 8" required for jackshaft/side-mount operators.';
   document.getElementById('backRoomHint').className='clearance-hint';
   document.getElementById('backRoomHint').textContent='Min = door height + 42" for trolley operators.';
+  setMode('estimate');
 }
 
 const MAKE_ESTIMATE_WEBHOOK = 'https://hook.us2.make.com/9hlp3h4a2m298okmolcfuy7pt1pyqavh';
+const MAKE_INVOICE_WEBHOOK = 'REPLACE_WITH_INVOICE_WEBHOOK_URL';
 const ESTIMATE_VIEWER_URL = 'https://colagomdesignco-source.github.io/garage-door-estimator/estimate-viewer.html';
+
+let invoiceMode = false;
+
+function setMode(mode) {
+  invoiceMode = (mode === 'invoice');
+  const header = document.getElementById('mainHeader');
+  const banner = document.getElementById('modeBanner');
+  const title = document.getElementById('modeTitle');
+  const estBtn = document.getElementById('estimateModeBtn');
+  const invBtn = document.getElementById('invoiceModeBtn');
+  const sendBtn = document.getElementById('sendActionBtn');
+  const convertBtn = document.getElementById('convertBtn');
+
+  if (invoiceMode) {
+    header.classList.add('invoice-mode');
+    banner.classList.add('invoice-mode');
+    banner.innerHTML = '<strong>💳 INVOICE MODE</strong> — Full payment due on send';
+    title.textContent = 'Invoice Builder';
+    estBtn.classList.remove('active');
+    invBtn.classList.add('active');
+    sendBtn.textContent = '💳 Send Invoice + Payment Link';
+    sendBtn.classList.remove('btn-send-est');
+    sendBtn.classList.add('btn-invoice-send');
+    convertBtn.style.display = 'none';
+  } else {
+    header.classList.remove('invoice-mode');
+    banner.classList.remove('invoice-mode');
+    banner.innerHTML = '<strong>📄 ESTIMATE MODE</strong> — Quote with 50% deposit (100% for service/repair)';
+    title.textContent = 'Estimate Builder';
+    estBtn.classList.add('active');
+    invBtn.classList.remove('active');
+    sendBtn.textContent = '📄 Preview & Send Estimate';
+    sendBtn.classList.remove('btn-invoice-send');
+    sendBtn.classList.add('btn-send-est');
+    convertBtn.style.display = '';
+  }
+}
+
+function convertToInvoice() {
+  setMode('invoice');
+  setTimeout(() => openPreviewModal(), 200);
+}
 
 function openPreviewModal() { openSendEstimateModal(); }
 
@@ -801,10 +875,38 @@ function openSendEstimateModal() {
   const email = document.getElementById('custEmail').value || '';
   const serviceType = document.getElementById('serviceType').value || '';
   const isService = serviceType.toLowerCase().includes('service') || serviceType.toLowerCase().includes('repair') || serviceType.toLowerCase().includes('spring');
-  const deposit = isService ? totalNum : Math.round(totalNum * 0.5);
+  // Invoice Mode = always 100% due. Estimate Mode = service (100%) or install (50%).
+  const deposit = invoiceMode ? totalNum : (isService ? totalNum : Math.round(totalNum * 0.5));
 
-  if (totalNum === 0) { alert('Please complete the estimate before previewing.'); return; }
+  if (totalNum === 0) { alert(invoiceMode ? 'Please add line items before sending an invoice.' : 'Please complete the estimate before previewing.'); return; }
   if (!email) { alert('Please enter the customer\'s email address first.'); return; }
+
+  // Mode-specific modal copy
+  if (invoiceMode) {
+    document.getElementById('modalHeading').textContent = 'Send Invoice + Payment Link';
+    document.getElementById('modalHeading').style.color = '#b8540b';
+    document.getElementById('modalPreviewHeader').style.background = '#b8540b';
+    document.getElementById('modalPreviewLabel').textContent = 'Invoice Preview';
+    document.getElementById('semTotalLabel').textContent = 'Amount Due Now';
+    document.getElementById('semTotal').style.color = '#b8540b';
+    document.getElementById('semDepositLabel').textContent = 'Payment Due';
+    document.getElementById('previewLinkRow').style.display = 'none';
+    document.getElementById('sendEstBtn').textContent = '💳 Send Invoice + Pay Link';
+    document.getElementById('sendEstBtn').classList.remove('btn-send-est');
+    document.getElementById('sendEstBtn').classList.add('btn-invoice-send');
+  } else {
+    document.getElementById('modalHeading').textContent = 'Preview & Send Estimate';
+    document.getElementById('modalHeading').style.color = 'var(--accent)';
+    document.getElementById('modalPreviewHeader').style.background = 'var(--accent)';
+    document.getElementById('modalPreviewLabel').textContent = 'Estimate Preview';
+    document.getElementById('semTotalLabel').textContent = 'Estimate Total';
+    document.getElementById('semTotal').style.color = 'var(--accent)';
+    document.getElementById('semDepositLabel').textContent = 'Deposit Due';
+    document.getElementById('previewLinkRow').style.display = 'flex';
+    document.getElementById('sendEstBtn').textContent = '📨 Send to Customer';
+    document.getElementById('sendEstBtn').classList.remove('btn-invoice-send');
+    document.getElementById('sendEstBtn').classList.add('btn-send-est');
+  }
 
   document.getElementById('semTotal').textContent = '$' + totalNum.toLocaleString();
   document.getElementById('semCustomer').textContent = name;
@@ -812,7 +914,6 @@ function openSendEstimateModal() {
   document.getElementById('semStatus').className = 'modal-status';
   document.getElementById('semStatus').textContent = '';
   document.getElementById('sendEstBtn').disabled = false;
-  document.getElementById('sendEstBtn').textContent = '📨 Send to Customer';
 
   const doorStyle = document.getElementById('doorStyle').value;
   const opSeries = document.getElementById('operatorSeries').value;
@@ -847,7 +948,8 @@ function openSendEstimateModal() {
   ).join('');
 
   const depRow = document.getElementById('semDepositRow');
-  if (deposit > 0) {
+  // Hide deposit row in invoice mode (since deposit = total, redundant)
+  if (deposit > 0 && !invoiceMode) {
     depRow.style.display = 'flex';
     document.getElementById('semDepositAmt').textContent = '$' + deposit.toLocaleString();
   } else {
@@ -855,8 +957,10 @@ function openSendEstimateModal() {
   }
 
   const payload = buildEstimatePayload();
-  const link = buildEstimateLink(payload);
-  document.getElementById('previewLink').href = link;
+  if (!invoiceMode) {
+    const link = buildEstimateLink(payload);
+    document.getElementById('previewLink').href = link;
+  }
 
   const inner = document.getElementById('sendEstimateModalInner');
   inner.style.display = 'block';
@@ -869,7 +973,8 @@ function buildEstimatePayload() {
   const total = parseFloat(document.getElementById('grandTotal').textContent.replace(/[$,]/g,'')) || 0;
   const serviceType = document.getElementById('serviceType').value || '';
   const isService = serviceType.toLowerCase().includes('service') || serviceType.toLowerCase().includes('repair') || serviceType.toLowerCase().includes('spring');
-  const deposit = isService ? total : Math.round(total * 0.5);
+  // In Invoice Mode, always 100% due. In Estimate Mode, isService=100%, else 50%.
+  const deposit = invoiceMode ? total : (isService ? total : Math.round(total * 0.5));
 
   const items = [];
   const workLines = [];
@@ -919,6 +1024,8 @@ function buildEstimatePayload() {
     workDescription,
     total,
     depositAmount: deposit,
+    invoiceMode,
+    paymentMethod: invoiceMode ? 'invoice' : 'estimate',
     notes: document.getElementById('semNotes').value.trim() || document.getElementById('estimateNotes').value.trim(),
   };
 }
@@ -939,9 +1046,16 @@ async function sendEstimate() {
     const payload = buildEstimatePayload();
     const estimateLink = buildEstimateLink(payload);
     status.className = 'modal-status pending';
-    status.textContent = 'Sending via Make.com...';
+    status.textContent = invoiceMode ? 'Sending invoice...' : 'Sending via Make.com...';
 
-    const fullPayload = { ...payload, estimate_link: estimateLink, event: 'estimate_sent' };
+    const webhookUrl = invoiceMode ? MAKE_INVOICE_WEBHOOK : MAKE_ESTIMATE_WEBHOOK;
+    const eventLabel = invoiceMode ? 'invoice_sent' : 'estimate_sent';
+
+    if (invoiceMode && webhookUrl === 'REPLACE_WITH_INVOICE_WEBHOOK_URL') {
+      throw new Error('Invoice webhook not yet configured. Build the Send Invoice Make scenario, then paste the webhook URL into MAKE_INVOICE_WEBHOOK in this code.');
+    }
+
+    const fullPayload = { ...payload, estimate_link: estimateLink, event: eventLabel };
     const formData = new URLSearchParams();
     for (const key in fullPayload) {
       const value = fullPayload[key];
@@ -949,7 +1063,7 @@ async function sendEstimate() {
         formData.append(key, typeof value === 'object' ? JSON.stringify(value) : value);
       }
     }
-    await fetch(MAKE_ESTIMATE_WEBHOOK, {
+    await fetch(webhookUrl, {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -957,17 +1071,22 @@ async function sendEstimate() {
     });
 
     status.className = 'modal-status success';
-    status.innerHTML = `✅ <strong>Estimate sent to ${payload.customerEmail}!</strong> Redirecting...`;
-    btn.textContent = '✓ Sent';
-    setTimeout(() => {
-      window.location.href = 'https://gengaragedoorsportal.preview.softr.app/estimates-details?autoUser=true&show-toolbar=true';
-    }, 1500);
+    if (invoiceMode) {
+      status.innerHTML = `✅ <strong>Invoice + payment link sent to ${payload.customerEmail}!</strong>`;
+      btn.textContent = '✓ Sent';
+    } else {
+      status.innerHTML = `✅ <strong>Estimate sent to ${payload.customerEmail}!</strong> Redirecting...`;
+      btn.textContent = '✓ Sent';
+      setTimeout(() => {
+        window.location.href = 'https://gengaragedoorsportal.preview.softr.app/estimates-details?autoUser=true&show-toolbar=true';
+      }, 1500);
+    }
 
   } catch(e) {
     status.className = 'modal-status error';
     status.textContent = '❌ Error: ' + e.message;
     btn.disabled = false;
-    btn.textContent = '📨 Send to Customer';
+    btn.textContent = invoiceMode ? '💳 Send Invoice + Pay Link' : '📨 Send to Customer';
   }
 }
 
