@@ -872,6 +872,7 @@ function buildEstimatePayload() {
   const deposit = isService ? total : Math.round(total * 0.5);
 
   const items = [];
+  const workLines = [];
   const doorStyle = document.getElementById('doorStyle').value;
   const opSeries = document.getElementById('operatorSeries').value;
 
@@ -887,14 +888,21 @@ function buildEstimatePayload() {
         + (doorDetails.isLowHeadroom ? ' · Low Headroom Track' : '')
       : '';
     items.push({ name: _en, detail: _ed, price: applyDoorMarkup(doorWholesale), isFree: false });
+    workLines.push(_en);
   }
-  if (operatorWholesale > 0 && opSeries && opSeries !== 'none' && OPERATOR_RETAIL[opSeries]) items.push({ name: OPERATOR_RETAIL[opSeries].name, price: operatorWholesale, isFree: false });
+  if (operatorWholesale > 0 && opSeries && opSeries !== 'none' && OPERATOR_RETAIL[opSeries]) {
+    items.push({ name: OPERATOR_RETAIL[opSeries].name, price: operatorWholesale, isFree: false });
+    workLines.push(OPERATOR_RETAIL[opSeries].name);
+  }
 
   for (const item of lineItems) {
     const qty = item.quantity || 1;
     const displayName = qty > 1 ? `${item.name} (×${qty})` : item.name;
     items.push({ name: displayName, price: item.isRetail ? item.wholesale : applyMarkup(item.wholesale), isFree: item.isFree });
+    workLines.push(item.isFree ? `${displayName} (Included)` : displayName);
   }
+
+  const workDescription = workLines.map(line => `• ${line}`).join('\n');
 
   const estNum = document.getElementById('estNumber').value || String(Date.now()).slice(-6);
 
@@ -908,6 +916,7 @@ function buildEstimatePayload() {
     estNumber: estNum,
     date: new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'}),
     items,
+    workDescription,
     total,
     depositAmount: deposit,
     notes: document.getElementById('semNotes').value.trim() || document.getElementById('estimateNotes').value.trim(),
