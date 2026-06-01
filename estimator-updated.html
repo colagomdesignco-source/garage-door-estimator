@@ -112,8 +112,6 @@
   .pitched-toggle input { width: auto; accent-color: var(--accent); width: 16px; height: 16px; }
   .pitched-toggle span { font-size: 0.88rem; font-weight: 500; }
 
-  .btn-invoice { background: #1a4fa0; color: white; border: none; }
-  .btn-invoice:hover { background: #163d7a; }
   .btn-send-est { background: #5c3d8f; color: white; border: none; }
   .btn-send-est:hover { background: #4a2f73; }
 
@@ -122,16 +120,6 @@
   .modal { background: white; border-radius: 14px; padding: 24px; width: 100%; box-shadow: 0 8px 32px rgba(0,0,0,0.15); border: 1px solid var(--border); margin-top: 12px; }
   .modal h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; color: var(--accent); margin-bottom: 4px; }
   .modal .modal-sub { font-size: 0.82rem; color: var(--text2); margin-bottom: 20px; }
-  .modal-amount { background: var(--accent); color: white; border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-  .modal-amount .ma-label { font-size: 0.75rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.06em; }
-  .modal-amount .ma-value { font-family: 'DM Serif Display', serif; font-size: 1.8rem; }
-  .modal-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-  .type-btn { padding: 12px; border: 2px solid var(--border); border-radius: 8px; cursor: pointer; background: white; text-align: left; transition: all 0.2s; }
-  .type-btn:hover { border-color: var(--accent); }
-  .type-btn.selected { border-color: var(--accent); background: #f0f7f0; }
-  .type-btn .tb-label { font-size: 0.75rem; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px; }
-  .type-btn .tb-amount { font-size: 1rem; font-weight: 600; color: var(--text); }
-  .type-btn .tb-desc { font-size: 0.72rem; color: var(--text2); margin-top: 2px; }
   .modal-status { border-radius: 8px; padding: 12px 14px; font-size: 0.82rem; margin-top: 12px; display: none; }
   .modal-status.pending { background: #fff8e1; border: 1px solid #ffe082; color: #7b5800; display: block; }
   .modal-status.success { background: #f0f7f0; border: 1px solid #b8d9b9; color: #2c5f2e; display: block; }
@@ -398,40 +386,8 @@
         <div style="color:var(--text2);font-size:0.85rem;padding:10px 0;">Select door options to see pricing.</div>
       </div>
       <div class="action-btns">
-        <button class="btn btn-invoice" onclick="openInvoiceModal()">💳 Send Payment Request</button>
         <button class="btn btn-send-est" onclick="openPreviewModal()">📄 Preview & Send Estimate</button>
         <button class="btn btn-outline" onclick="clearAll()">🗑 Clear & Start Over</button>
-      </div>
-
-      <!-- Invoice Panel -->
-      <div id="invoiceModal" style="padding:0 16px 16px;">
-        <div class="modal" style="display:none;" id="invoiceModalInner">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-            <h2 style="font-family:'DM Serif Display',serif;font-size:1.2rem;font-weight:400;color:var(--accent);">Send Payment Request</h2>
-            <button onclick="closeInvoiceModal()" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--text2);">✕</button>
-          </div>
-          <p class="modal-sub">Sends a payment request to the customer's email automatically.</p>
-          <div class="modal-amount">
-            <div><div class="ma-label">Estimate Total</div><div class="ma-value" id="modalTotal">$0</div></div>
-            <div style="text-align:right;"><div class="ma-label">Customer</div><div style="font-size:0.9rem;font-weight:500;" id="modalCustomer">—</div><div style="font-size:0.78rem;opacity:0.7;" id="modalEmail">—</div></div>
-          </div>
-          <div style="font-size:0.8rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;">Payment Type</div>
-          <div class="modal-type-grid">
-            <button class="type-btn selected" id="typeDeposit" onclick="selectPaymentType('deposit')">
-              <div class="tb-label">Deposit</div><div class="tb-amount" id="depositAmt">$0</div><div class="tb-desc">50% of total (door installs)</div>
-            </button>
-            <button class="type-btn" id="typeFull" onclick="selectPaymentType('full')">
-              <div class="tb-label">Full Amount</div><div class="tb-amount" id="fullAmt">$0</div><div class="tb-desc">100% (service & repair)</div>
-            </button>
-          </div>
-          <div class="field-group" style="margin-bottom:12px;"><label>Amount to Charge</label><input type="number" id="invoiceAmount" placeholder="0.00" oninput="onInvoiceAmountEdit()"/></div>
-          <div class="field-group" style="margin-bottom:4px;"><label>Invoice Description</label><input type="text" id="invoiceDesc" placeholder="e.g. Deposit — 16x7 Raised Panel Install"/></div>
-          <div class="modal-status" id="modalStatus"></div>
-          <div class="modal-actions">
-            <button class="btn btn-outline" onclick="closeInvoiceModal()">Cancel</button>
-            <button class="btn btn-invoice" id="sendInvoiceBtn" onclick="sendInvoice()">💳 Send Invoice</button>
-          </div>
-        </div>
       </div>
 
       <!-- Preview & Send Estimate Panel -->
@@ -902,7 +858,6 @@ function openSendEstimateModal() {
   const link = buildEstimateLink(payload);
   document.getElementById('previewLink').href = link;
 
-  document.getElementById('invoiceModalInner').style.display = 'none';
   const inner = document.getElementById('sendEstimateModalInner');
   inner.style.display = 'block';
   inner.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1004,82 +959,6 @@ async function sendEstimate() {
     status.textContent = '❌ Error: ' + e.message;
     btn.disabled = false;
     btn.textContent = '📨 Send to Customer';
-  }
-}
-
-let currentPaymentType = 'deposit';
-
-function openInvoiceModal() {
-  const total = document.getElementById('grandTotal').textContent.replace(/[$,]/g,'');
-  const totalNum = parseFloat(total) || 0;
-  const name = document.getElementById('custName').value || '—';
-  const email = document.getElementById('custEmail').value || '—';
-  const serviceType = document.getElementById('serviceType').value || '';
-  const deposit = Math.round(totalNum * 0.5);
-
-  if (totalNum === 0) { alert('Please complete the estimate before sending a payment request.'); return; }
-  if (!document.getElementById('custEmail').value) { alert('Please enter the customer\'s email address first.'); return; }
-
-  document.getElementById('modalTotal').textContent = '$' + totalNum.toLocaleString();
-  document.getElementById('modalCustomer').textContent = name;
-  document.getElementById('modalEmail').textContent = email;
-  document.getElementById('depositAmt').textContent = '$' + deposit.toLocaleString();
-  document.getElementById('fullAmt').textContent = '$' + totalNum.toLocaleString();
-  document.getElementById('invoiceDesc').value = serviceType ? `${serviceType} — Generational Garage Doors` : 'Generational Garage Doors';
-  document.getElementById('modalStatus').className = 'modal-status';
-  document.getElementById('modalStatus').textContent = '';
-  document.getElementById('sendInvoiceBtn').disabled = false;
-  document.getElementById('sendInvoiceBtn').textContent = '💳 Send Invoice';
-
-  const isService = serviceType.toLowerCase().includes('service') || serviceType.toLowerCase().includes('repair') || serviceType.toLowerCase().includes('spring');
-  selectPaymentType(isService ? 'full' : 'deposit');
-
-  document.getElementById('sendEstimateModalInner').style.display = 'none';
-  const inner = document.getElementById('invoiceModalInner');
-  inner.style.display = 'block';
-  inner.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function closeInvoiceModal() { document.getElementById('invoiceModalInner').style.display = 'none'; }
-
-function selectPaymentType(type) {
-  currentPaymentType = type;
-  document.getElementById('typeDeposit').classList.toggle('selected', type === 'deposit');
-  document.getElementById('typeFull').classList.toggle('selected', type === 'full');
-  const total = parseFloat(document.getElementById('grandTotal').textContent.replace(/[$,]/g,'')) || 0;
-  document.getElementById('invoiceAmount').value = type === 'deposit' ? Math.round(total * 0.5) : total;
-}
-
-function onInvoiceAmountEdit() {
-  document.getElementById('typeDeposit').classList.remove('selected');
-  document.getElementById('typeFull').classList.remove('selected');
-}
-
-async function sendInvoice() {
-  const amount = parseFloat(document.getElementById('invoiceAmount').value);
-  const email = document.getElementById('custEmail').value;
-  const name = document.getElementById('custName').value;
-  const phone = document.getElementById('custPhone').value;
-  const desc = document.getElementById('invoiceDesc').value;
-  const status = document.getElementById('modalStatus');
-  const btn = document.getElementById('sendInvoiceBtn');
-
-  if (!amount || amount <= 0) { alert('Please enter a valid amount.'); return; }
-
-  btn.disabled = true;
-  btn.textContent = 'Sending...';
-  status.className = 'modal-status pending';
-  status.textContent = 'Sending payment request...';
-
-  try {
-    status.className = 'modal-status success';
-    status.innerHTML = `✅ <strong>Payment request sent to ${email}!</strong>`;
-    btn.textContent = '✓ Sent';
-  } catch(e) {
-    status.className = 'modal-status error';
-    status.textContent = '❌ Error: ' + e.message;
-    btn.disabled = false;
-    btn.textContent = '💳 Send Invoice';
   }
 }
 
