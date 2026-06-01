@@ -1092,7 +1092,7 @@ async function sendEstimate() {
 
 const SHEETS_API_KEY='AIzaSyCc66ved9wipecm9WihdQisrRV9WwYuHbA';
 const SHEET_ID='1rZaXHyOVxJmI_Dp6IhdIwTXX3SsXaWJr3w4hhs0XYYI';
-const SHEET_NAME='New Leads';
+const SHEET_NAME='Jobs';
 let allLeads=[],leadsLoaded=false,leadsLoading=false,searchTimeout=null;
 
 async function loadLeads(){
@@ -1117,10 +1117,23 @@ function searchLeads(query){
   searchTimeout=setTimeout(async function(){
     if(!leadsLoaded)await loadLeads();
     const q=query.toLowerCase();
-    const matches=allLeads.filter(l=>(l['Full Name']||'').toLowerCase().includes(q)||(l['Phone']||'').includes(q)||(l['Email']||'').toLowerCase().includes(q)).slice(0,8);
+    const matches=allLeads.filter(l=>(l['Full Name']||'').toLowerCase().includes(q)||(l['Phone']||'').includes(q)||(l['Email']||'').toLowerCase().includes(q)||(l['Street Address']||'').toLowerCase().includes(q)||(l['Estimate Number']||'').toLowerCase().includes(q)).slice(0,8);
     if(matches.length===0){box.style.display='block';box.innerHTML='<div style="padding:12px;color:var(--text2);font-size:0.85rem;">No leads found</div>';return;}
     box.style.display='block';
-    box.innerHTML=matches.map(l=>`<div onclick="selectLead(${JSON.stringify(l).replace(/"/g,'&quot;')})" style="padding:12px 14px;cursor:pointer;border-bottom:1px solid var(--border);transition:background 0.15s;" onmouseover="this.style.background='#f5f3ef'" onmouseout="this.style.background='white'"><div style="font-weight:600;font-size:0.88rem;">${l['Full Name']||'Unknown'}</div><div style="font-size:0.78rem;color:var(--text2);">${l['Phone']||''} ${l['City']?'· '+l['City']:''} ${l['Status']?'· '+l['Status']:''}</div></div>`).join('');
+    box.innerHTML=matches.map(l=>{
+      const estNum = l['Estimate Number'] || '';
+      const addr = (l['Street Address']||'') + (l['City']?', '+l['City']:'');
+      const phone = l['Phone'] || '';
+      const status = l['Status'] || '';
+      return `<div onclick="selectLead(${JSON.stringify(l).replace(/"/g,'&quot;')})" style="padding:12px 14px;cursor:pointer;border-bottom:1px solid var(--border);transition:background 0.15s;" onmouseover="this.style.background='#f5f3ef'" onmouseout="this.style.background='white'">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <div style="font-weight:600;font-size:0.88rem;">${l['Full Name']||'Unknown'}</div>
+          ${estNum?`<div style="font-size:0.72rem;background:var(--accent);color:white;padding:2px 8px;border-radius:10px;font-weight:600;white-space:nowrap;">${estNum}</div>`:''}
+        </div>
+        ${addr?`<div style="font-size:0.76rem;color:var(--text);margin-top:3px;">${addr}</div>`:''}
+        <div style="font-size:0.74rem;color:var(--text2);margin-top:2px;">${phone} ${status?'· '+status:''}</div>
+      </div>`;
+    }).join('');
   },400);
 }
 
@@ -1129,11 +1142,14 @@ function selectLead(lead){
   document.getElementById('custPhone').value=lead['Phone']||'';
   document.getElementById('custEmail').value=lead['Email']||'';
   document.getElementById('custAddress').value=(lead['Street Address']||'')+(lead['City']?', '+lead['City']:'');
+  document.getElementById('estNumber').value=lead['Estimate Number']||'';
   document.getElementById('leadSearch').value=lead['Full Name']||'';
   document.getElementById('leadResults').style.display='none';
   document.getElementById('leadLoadedBadge').style.display='block';
-  document.getElementById('leadLoadedName').textContent=lead['Full Name']||'';
-  if(lead['Service Needed']){const sel=document.getElementById('serviceType');for(let opt of sel.options){if(opt.value.toLowerCase().includes(lead['Service Needed'].toLowerCase())){sel.value=opt.value;break;}}}
+  document.getElementById('leadLoadedName').textContent=(lead['Full Name']||'') + (lead['Estimate Number']?' · '+lead['Estimate Number']:'');
+  // Try Service Type (Jobs column M) first, fall back to Service Needed (legacy)
+  const svc = lead['Service Type'] || lead['Service Needed'] || '';
+  if(svc){const sel=document.getElementById('serviceType');for(let opt of sel.options){if(opt.value.toLowerCase().includes(svc.toLowerCase())){sel.value=opt.value;break;}}}
 }
 
 function clearCustomer(){
