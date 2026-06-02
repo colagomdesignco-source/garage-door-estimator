@@ -434,7 +434,7 @@ async function acceptEstimate() {
     btn.disabled = true;
     btn.textContent = '✅ Estimate Accepted';
     status.className = 'status-msg success';
-    status.textContent = "✅ Thank you! Dustin will be in touch shortly to schedule.";
+    status.textContent = "✅ Thank you! We'll be in touch shortly to schedule.";
     return;
   }
 
@@ -465,7 +465,7 @@ async function acceptEstimate() {
     showAcceptedBanner();
     btn.textContent = '✅ Estimate Accepted';
     status.className = 'status-msg success';
-    status.textContent = "✅ Thank you! Dustin will be in touch shortly to schedule.";
+    status.textContent = "✅ Thank you! We'll be in touch shortly to schedule.";
 
   } catch (e) {
     btn.disabled = false;
@@ -485,7 +485,7 @@ function showAcceptedBanner() {
   banner.innerHTML = `
     <div class="checkmark">✅</div>
     <h3>Estimate Accepted!</h3>
-    <p>Thank you — Dustin will follow up within 24 hours to confirm your appointment.</p>
+    <p>Thank you — we'll follow up within 24 hours to confirm your appointment.</p>
   `;
   actionArea.insertBefore(banner, actionArea.firstChild);
 
