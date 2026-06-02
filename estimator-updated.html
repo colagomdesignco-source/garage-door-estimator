@@ -139,12 +139,12 @@
   .modal-overlay { display: none; }
   .modal-overlay.open { display: block; }
   /* Send-estimate modal overlay - fixed positioning so it floats above sticky headers */
-  .send-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 999999; align-items: center; justify-content: center; padding: 24px 20px; overflow-y: auto; }
-  .send-modal-overlay.open { display: flex; }
-  .send-modal-overlay .modal { max-width: 600px; width: 100%; margin: auto; max-height: calc(100vh - 48px); overflow-y: auto; position: relative; z-index: 1; }
+  .send-modal-overlay { display: none; position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important; background: rgba(0,0,0,0.6); z-index: 999999 !important; align-items: center; justify-content: center; padding: 24px 20px; overflow-y: auto; }
+  .send-modal-overlay.open { display: flex !important; }
+  .send-modal-overlay .gd-modal { background: white !important; border-radius: 14px; padding: 24px; max-width: 600px; width: 100%; margin: auto; max-height: calc(100vh - 48px); overflow-y: auto; position: relative; z-index: 1000000 !important; box-shadow: 0 8px 32px rgba(0,0,0,0.3); display: block !important; visibility: visible !important; opacity: 1 !important; }
   @media (max-width: 768px) {
     .send-modal-overlay { padding: 16px; align-items: flex-start; padding-top: 80px; }
-    .send-modal-overlay .modal { padding: 18px; max-height: calc(100vh - 96px); }
+    .send-modal-overlay .gd-modal { padding: 18px; max-height: calc(100vh - 96px); }
   }
   .modal { background: white; border-radius: 14px; padding: 24px; width: 100%; box-shadow: 0 8px 32px rgba(0,0,0,0.15); border: 1px solid var(--border); margin-top: 12px; }
   .modal h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-weight: 400; color: var(--accent); margin-bottom: 4px; }
@@ -430,7 +430,7 @@
 
       <!-- Preview & Send Panel (used for both Estimate and Invoice modes) -->
       <div id="sendEstimateModal" class="send-modal-overlay" onclick="if(event.target===this)closeSendEstimateModal()">
-        <div class="modal" id="sendEstimateModalInner" onclick="event.stopPropagation()">
+        <div class="modal gd-modal" id="sendEstimateModalInner" onclick="event.stopPropagation()">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
             <h2 id="modalHeading" style="font-family:'DM Serif Display',serif;font-size:1.2rem;font-weight:400;color:var(--accent);">Preview & Send Estimate</h2>
             <button onclick="closeSendEstimateModal()" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--text2);">✕</button>
@@ -971,8 +971,11 @@ function openSendEstimateModal() {
   }
 
   const overlay = document.getElementById('sendEstimateModal');
+  // Ensure overlay is a direct child of body so no parent can clip it
+  if (overlay.parentElement !== document.body) document.body.appendChild(overlay);
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
+  console.log('[Modal] Opened. Inner visible?', document.getElementById('sendEstimateModalInner').offsetHeight > 0);
 }
 
 function closeSendEstimateModal() {
