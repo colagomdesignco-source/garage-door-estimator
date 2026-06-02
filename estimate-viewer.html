@@ -291,30 +291,19 @@ footer strong { color: var(--text); }
 
 <script>
 // =====================================================
-// CONFIG — keep in sync with estimate-builder.html
+// CONFIG
 // =====================================================
-const SHEETS_API_KEY = 'AIzaSyCc66ved9wipecm9WihdQisrRV9WwYuHbA';
-const SHEET_ID       = '1rZaXHyOVxJmI_Dp6IhdIwTXX3SsXaWJr3w4hhs0XYYI';
-const ESTIMATES_TAB  = 'Estimates';
-
 // Set up your Make.com "Accept Estimate" scenario and paste the webhook URL here:
 const ACCEPT_WEBHOOK_URL = 'YOUR_ACCEPT_WEBHOOK_URL_HERE';
 
 // =====================================================
-// MAIN — load estimate on page load
+// MAIN — decode estimate from URL on page load
 // =====================================================
-window.addEventListener('DOMContentLoaded', async () => {
+window.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
-  const id     = params.get('id');   // new: ?id=351690
-  const d      = params.get('d');    // legacy: ?d=base64...
+  const d      = params.get('d');
 
-  let estimate = null;
-
-  if (id) {
-    estimate = await fetchEstimateById(id);
-  } else if (d) {
-    estimate = decodeEstimateFromUrl(d);
-  }
+  const estimate = d ? decodeEstimateFromUrl(d) : null;
 
   if (estimate) {
     renderEstimate(estimate);
@@ -324,80 +313,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 });
 
 // =====================================================
-// FETCH — Google Sheets lookup by estNumber
-// =====================================================
-async function fetchEstimateById(id) {
-  try {
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(ESTIMATES_TAB)}?key=${SHEETS_API_KEY}`;
-    const res  = await fetch(url);
-    if (!res.ok) return null;
-    const data = await res.json();
-    if (!data.values || data.values.length < 2) return null;
-
-    const headers = data.values[0];
-    const rows    = data.values.slice(1);
-
-    // Find row where Estimate ID (col A) matches — handles various formats
-    const row = rows.find(r => {
-      const cellId = String(r[0] || '').trim();
-      return cellId === id ||
-             cellId === 'EST-' + id ||
-             cellId === 'WEB-' + id ||
-             cellId.includes(id);
-    });
-    if (!row) return null;
-
-    // Map headers → object
-    const obj = {};
-    headers.forEach((h, j) => { obj[h] = row[j] || ''; });
-    return sheetsRowToEstimate(obj);
-
-  } catch (e) {
-    console.error('Sheets fetch error:', e);
-    return null;
-  }
-}
-
-function sheetsRowToEstimate(row) {
-  const total      = parseFloat(String(row['Amount'] || '0').replace(/[$,]/g, '')) || 0;
-  const depositReq = (row['Deposit Required'] || '').toLowerCase() === 'yes';
-  const deposit    = depositReq ? Math.round(total * 0.5) : total;
-
-  // Try to parse items from Notes column (JSON array)
-  let items = [];
-  const notesRaw = row['Notes'] || '';
-  try {
-    if (notesRaw.trim().startsWith('[')) {
-      const parsed = JSON.parse(notesRaw);
-      if (Array.isArray(parsed)) items = parsed;
-    }
-  } catch (e) { /* fall through */ }
-
-  // Fallback: single line item from service type + total
-  if (items.length === 0 && total > 0) {
-    items = [{ name: row['Service Type'] || 'Garage Door Service', price: total, isFree: false }];
-  }
-
-  return {
-    customerName:    row['Customer Name']   || '',
-    customerEmail:   row['Email']           || '',
-    customerPhone:   row['Phone']           || '',
-    customerAddress: (row['Street Address'] || '') + (row['City'] ? ', ' + row['City'] : ''),
-    serviceType:     row['Service Type']    || '',
-    estNumber:       row['Estimate ID']     || '',
-    date:            row['Date Created']    || '',
-    status:          row['Status']          || 'Pending',
-    expirationDate:  row['Expiration Date'] || '',
-    items,
-    total,
-    depositAmount:   deposit,
-    stripeLink:      row['Stripe Link']     || '',
-    notes:           '',
-  };
-}
-
-// =====================================================
-// DECODE — legacy base64 ?d= URL
+// DECODE — base64 ?d= URL
 // =====================================================
 function decodeEstimateFromUrl(encoded) {
   try {
