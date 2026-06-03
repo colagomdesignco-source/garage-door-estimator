@@ -113,7 +113,6 @@ main { max-width: 600px; margin: 0 auto; padding: 28px 16px 48px; }
 .total-label { font-size: 0.8rem; opacity: 0.75; }
 .total-amount { font-family: 'DM Serif Display', serif; font-size: 2.2rem; font-weight: 400; }
 
-/* ── DEPOSIT ROW — fixed verbiage ── */
 .deposit-row {
   display: flex;
   justify-content: space-between;
@@ -126,7 +125,6 @@ main { max-width: 600px; margin: 0 auto; padding: 28px 16px 48px; }
 .deposit-label { color: var(--accent); font-weight: 600; }
 .deposit-amount { font-weight: 700; color: var(--accent); }
 
-/* Balance due row */
 .balance-row {
   display: flex;
   justify-content: space-between;
@@ -260,13 +258,11 @@ footer strong { color: var(--text); }
         </div>
       </div>
 
-      <!-- Deposit Due Now -->
       <div class="deposit-row" id="depositRow" style="display:none;">
         <span class="deposit-label">💳 Deposit Due Now</span>
         <span class="deposit-amount" id="depositAmount">$0</span>
       </div>
 
-      <!-- Balance Due at Install -->
       <div class="balance-row" id="balanceRow" style="display:none;">
         <div>
           <div class="balance-label">Balance Due at Install</div>
@@ -322,7 +318,8 @@ function decodeEstimateFromUrl(encoded) {
 
 function renderEstimate(est) {
   const estId = est.estNumber || est.estId || '';
-  document.getElementById('headerEstNum').textContent = estId ? 'Est. #' + estId : 'Your Estimate';
+  // estId already contains the # so don't add another one
+  document.getElementById('headerEstNum').textContent = estId ? 'Est. ' + estId : 'Your Estimate';
 
   const pill   = document.getElementById('statusPill');
   const status = (est.status || 'Pending').toLowerCase();
@@ -369,7 +366,6 @@ function renderEstimate(est) {
 
   document.getElementById('totalAmount').textContent = '$' + formatNum(est.total || 0);
 
-  // Deposit Due Now
   const dep = est.depositAmount || 0;
   const bal = est.balanceDue || 0;
 
@@ -377,20 +373,17 @@ function renderEstimate(est) {
     document.getElementById('depositRow').style.display = 'flex';
     document.getElementById('depositAmount').textContent = '$' + formatNum(dep);
   } else if (dep > 0 && dep >= (est.total || 0)) {
-    // Full payment
     document.getElementById('depositRow').style.display = 'flex';
     document.getElementById('depositRow').querySelector('.deposit-label').textContent = '💳 Full Payment Due Now';
     document.getElementById('depositAmount').textContent = '$' + formatNum(dep);
   }
 
-  // Balance Due at Install
   if (bal > 0) {
     document.getElementById('balanceRow').style.display = 'flex';
     document.getElementById('balanceAmount').textContent = '$' + formatNum(bal);
     const dateNote = est.balanceDueDate || '';
     document.getElementById('balanceDateNote').textContent = dateNote;
   } else if (est.balanceDueDate && bal === 0 && dep < (est.total || 0)) {
-    // Has a date note but balance baked elsewhere — still show note
     document.getElementById('balanceRow').style.display = 'flex';
     document.getElementById('balanceAmount').textContent = 'TBD';
     document.getElementById('balanceDateNote').textContent = est.balanceDueDate;
