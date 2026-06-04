@@ -300,12 +300,19 @@ footer strong { color: var(--text); }
 
 <script>
 const ACCEPT_WEBHOOK_URL = 'https://hook.us2.make.com/rcu3diuopkhnen1uc7yl7rmwg3xice2q';
+const SHEETS_API_KEY = 'AIzaSyCc66ved9wipecm9WihdQisrRV9WwYuHbA';
+const SHEET_ID = '15YOkue1MWFr5XzzDDCmJWNbxMTitmdDG__a9FRgB_D0';
+const SHEET_NAME = 'Jobs';
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
   const params = new URLSearchParams(window.location.search);
   const d      = params.get('d');
   const estimate = d ? decodeEstimateFromUrl(d) : null;
-  if (estimate) renderEstimate(estimate);
+  if (estimate) {
+    renderEstimate(estimate);
+    // Check live status from sheet to lock accept button if already accepted
+    await checkLiveStatus(estimate.estNumber || estimate.estId || '');
+  }
   else showError();
 });
 
@@ -473,6 +480,34 @@ function showAcceptedBanner() {
   const statusPill = document.getElementById('statusPill');
   statusPill.className = 'status-pill status-accepted';
   statusPill.textContent = '✅ Accepted';
+}
+
+async function checkLiveStatus(estNumber) {
+  if (!estNumber) return;
+  try {
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(SHEET_NAME)}?key=${SHEETS_API_KEY}`;
+    const res = await fetch(url);
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!data.values || data.values.length < 2) return;
+    const headers = data.values[0];
+    const estNumCol = headers.findIndex(h => h.toLowerCase().includes('estimate number') || h.toLowerCase().includes('est'));
+    const statusCol = headers.findIndex(h => h.toLowerCase() === 'status');
+    if (estNumCol === -1 || statusCol === -1) return;
+    const row = data.values.slice(1).find(r => (r[estNumCol] || '').trim() === estNumber.trim());
+    if (!row) return;
+    const status = (row[statusCol] || '').toLowerCase();
+    if (status.includes('accept')) {
+      // Already accepted — show accepted state
+      showAcceptedBanner();
+      const btn = document.getElementById('acceptBtn');
+      if (btn) { btn.disabled = true; btn.textContent = '✅ Estimate Accepted'; }
+      const pill = document.getElementById('statusPill');
+      if (pill) { pill.className = 'status-pill status-accepted'; pill.textContent = '✅ Accepted'; }
+    }
+  } catch(e) {
+    console.log('Status check failed:', e);
+  }
 }
 
 function showError() {
