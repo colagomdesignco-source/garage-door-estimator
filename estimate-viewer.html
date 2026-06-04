@@ -428,14 +428,15 @@ async function acceptEstimate() {
 
   try {
     const payload = new URLSearchParams({
-      event:         'estimate_accepted',
-      estNumber:     est.estNumber || est.estId || '',
-      customerName:  est.customerName || '',
-      customerEmail: est.customerEmail || '',
-      customerPhone: est.customerPhone || '',
-      total:         String(est.total || 0),
-      serviceType:   est.serviceType || '',
-      acceptedAt:    new Date().toISOString(),
+      event:           'estimate_accepted',
+      estNumber:       est.estNumber || est.estId || '',
+      customerName:    est.customerName || '',
+      customerEmail:   est.customerEmail || '',
+      customerPhone:   est.customerPhone || '',
+      customerAddress: est.customerAddress || '',
+      total:           String(est.total || 0),
+      serviceType:     est.serviceType || '',
+      acceptedAt:      new Date().toISOString(),
     });
 
     await fetch(ACCEPT_WEBHOOK_URL, {
