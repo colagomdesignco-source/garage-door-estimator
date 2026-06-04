@@ -280,6 +280,7 @@ footer strong { color: var(--text); }
       <div class="action-card">
         <button class="btn btn-accept" id="acceptBtn" onclick="acceptEstimate()">✅ Accept This Estimate</button>
         <a class="btn btn-pay" id="payBtn" href="#" target="_blank" style="display:none;">💳 Make a Payment</a>
+        <a class="btn btn-outline" id="requestEditsBtn" href="#" onclick="requestEdits(event)">✏️ Request Edits</a>
         <div class="status-msg" id="acceptStatus"></div>
       </div>
     </div>
@@ -508,6 +509,19 @@ async function checkLiveStatus(estNumber) {
   } catch(e) {
     console.log('Status check failed:', e);
   }
+}
+
+function requestEdits(e) {
+  e.preventDefault();
+  const params = new URLSearchParams(window.location.search);
+  const d = params.get('d');
+  const est = d ? decodeEstimateFromUrl(d) : null;
+  const estId = est ? (est.estNumber || est.estId || '') : '';
+  const subject = encodeURIComponent('Edit Request — Estimate ' + estId);
+  const body = encodeURIComponent(
+    'Hi Dustin,\n\nI'd like to request a few changes to my estimate' + (estId ? ' (' + estId + ')' : '') + ':\n\n[Please describe the changes you need here]\n\nThank you!'
+  );
+  window.location.href = 'mailto:dustin@gengaragedoors.com?subject=' + subject + '&body=' + body;
 }
 
 function showError() {
