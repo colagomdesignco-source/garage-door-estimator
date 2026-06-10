@@ -22,21 +22,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:16px;}
 .card-header{padding:14px 20px;background:#fafaf7;border-bottom:1px solid var(--border);font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text2);}
 .card-body{padding:20px;}
-
-/* Customer info grid */
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 .info-item .info-label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#aaa;margin-bottom:2px;}
 .info-item .info-value{font-size:0.88rem;color:var(--text);}
-
-/* Line items */
 .line-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f5f4f0;font-size:0.88rem;}
 .line-item:last-child{border-bottom:none;}
 .li-name{color:var(--text);flex:1;}
 .li-free{font-size:0.7rem;background:rgba(74,158,78,0.1);color:#2d7d32;padding:2px 8px;border-radius:20px;font-weight:600;}
 .li-price{font-weight:700;color:var(--text);margin-left:12px;white-space:nowrap;}
 .items-total{display:flex;justify-content:space-between;padding:12px 0 0;font-weight:700;font-size:0.95rem;border-top:2px solid var(--border);margin-top:4px;}
-
-/* Payment summary */
 .payment-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;font-size:0.9rem;border-bottom:1px solid #f5f4f0;}
 .payment-row:last-child{border-bottom:none;}
 .payment-row.total-row{font-weight:700;font-size:1rem;border-top:2px solid var(--border);margin-top:4px;padding-top:12px;border-bottom:none;}
@@ -45,36 +39,24 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .payment-row.paid-row .pr-value{color:#2d7d32;}
 .pr-label{color:var(--text2);}
 .pr-value{font-weight:600;}
-
-/* Pay button */
 .pay-section{margin-bottom:16px;}
 .pay-btn{display:block;width:100%;padding:18px;background:var(--orange);color:#fff;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;transition:background 0.2s;margin-bottom:10px;}
 .pay-btn:hover{background:#8a3d00;}
-.pay-btn.disabled{background:#ccc;cursor:not-allowed;pointer-events:none;}
 .paid-banner{background:#f0f7f0;border:2px solid #b8d9b9;border-radius:12px;padding:16px;text-align:center;margin-bottom:10px;}
 .paid-banner .pb-icon{font-size:1.4rem;margin-bottom:4px;}
 .paid-banner .pb-label{font-weight:700;color:#2d7d32;font-size:1rem;}
 .paid-banner .pb-sub{font-size:0.82rem;color:#6a6a5e;margin-top:2px;}
 .secondary-btn{display:block;width:100%;padding:12px;background:#fff;color:var(--text2);border:1px solid var(--border);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;text-align:center;text-decoration:none;margin-bottom:8px;transition:border-color 0.15s;}
 .secondary-btn:hover{border-color:var(--orange);color:var(--orange);}
-
-/* Notes */
 .notes-box{background:#fafaf7;border-radius:10px;padding:14px 16px;font-size:0.85rem;color:var(--text2);line-height:1.6;}
-
-/* Footer */
 .footer{text-align:center;padding:20px 16px 40px;font-size:0.78rem;color:var(--text2);}
 .contact-row{display:flex;gap:12px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;}
 .contact-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;background:#fff;border:1px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:600;color:var(--green);text-decoration:none;transition:border-color 0.15s;}
 .contact-btn:hover{border-color:var(--green);}
-
 .loading{text-align:center;padding:60px 24px;color:var(--text2);}
 .error-state{text-align:center;padding:60px 24px;}
 .error-icon{font-size:2rem;margin-bottom:12px;opacity:0.3;}
-
-@media(max-width:480px){
-  .hero-amount{font-size:2.4rem;}
-  .info-grid{grid-template-columns:1fr;}
-}
+@media(max-width:480px){.hero-amount{font-size:2.4rem;}.info-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -85,6 +67,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
 <script>
 (function(){
+
+  var INVOICE_VIEWED_WEBHOOK = 'https://hook.us2.make.com/1fjanfvslps96dekbzjmqqjd9cqa6274';
 
   function fmtMoney(n){
     return '$'+(Number(n)||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -117,6 +101,25 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     return;
   }
 
+  // INVOICE VIEWED TRACKING — fires silently on page load
+  (function trackViewed(){
+    try{
+      var formData = new URLSearchParams();
+      formData.append('event', 'invoice_viewed');
+      formData.append('estNumber', p.estNumber || '');
+      formData.append('customerName', p.customerName || '');
+      formData.append('customerEmail', p.customerEmail || '');
+      formData.append('customerPhone', p.customerPhone || '');
+      formData.append('viewedAt', new Date().toISOString());
+      fetch(INVOICE_VIEWED_WEBHOOK, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: formData.toString()
+      });
+    }catch(e){}
+  })();
+
   var isPaid = p.isFullPay || p.paymentStatus === 'paid' || p.balanceDue === 0;
   var depositAmount = Number(p.depositAmount) || Number(p.depositCharged) || 0;
   var total = Number(p.total) || 0;
@@ -127,7 +130,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   var items = p.items || [];
   var firstName = (p.customerName || '').split(' ')[0] || 'there';
 
-  // Build line items HTML
   var itemsHtml = '';
   if(items.length){
     var runTotal = 0;
@@ -143,7 +145,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     itemsHtml += '<div class="items-total"><span>Subtotal</span><span>'+fmtMoney(runTotal)+'</span></div>';
   }
 
-  // Payment summary
   var paymentHtml = '';
   if(isPaid){
     paymentHtml = '<div class="payment-row paid-row"><span class="pr-label">&#10003; Paid in Full</span><span class="pr-value">'+fmtMoney(total)+'</span></div>';
@@ -157,7 +158,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     paymentHtml = '<div class="payment-row total-row"><span class="pr-label">Amount Due</span><span class="pr-value">'+fmtMoney(total)+'</span></div>';
   }
 
-  // Pay section
   var paySection = '';
   if(isPaid){
     paySection =
@@ -180,7 +180,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     '<a href="tel:9253168384" class="secondary-btn">&#128222; Call to Pay: (925) 316-8384</a>'+
     '<a href="mailto:dustin@gengaragedoors.com?subject=Invoice%20'+encodeURIComponent(p.estNumber||'')+'%20Question" class="secondary-btn">&#9993; Questions? Email Us</a>';
 
-  // Full render
   document.getElementById('app').innerHTML =
     '<div class="header">'+
       '<div>'+
@@ -197,8 +196,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     '</div>'+
 
     '<div class="container">'+
-
-      // Pay section (most important - first)
       '<div class="card">'+
         '<div class="card-header">'+(isPaid ? 'Payment Status' : 'Payment')+'</div>'+
         '<div class="card-body">'+
@@ -207,7 +204,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         '</div>'+
       '</div>'+
 
-      // Customer info
       '<div class="card">'+
         '<div class="card-header">Bill To</div>'+
         '<div class="card-body">'+
@@ -220,7 +216,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         '</div>'+
       '</div>'+
 
-      // Line items
       (items.length ?
         '<div class="card">'+
           '<div class="card-header">Work Summary</div>'+
@@ -228,7 +223,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         '</div>'
       : '')+
 
-      // Notes
       (notes ?
         '<div class="card">'+
           '<div class="card-header">Notes</div>'+
@@ -236,7 +230,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         '</div>'
       : '')+
 
-      // Footer
       '<div class="footer">'+
         '<div class="contact-row">'+
           '<a href="tel:9253168384" class="contact-btn">&#128222; (925) 316-8384</a>'+
@@ -245,7 +238,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         '<div>Serving the Bay Area &middot; Same-week installs available</div>'+
         '<div style="margin-top:8px;"><strong>Generational Garage Doors</strong> &middot; Bay Area, CA<br>Licensed &amp; Insured &middot; Lic. #1113495 &middot; Family Owned &amp; Operated</div>'+
       '</div>'+
-
     '</div>';
 
 })();
