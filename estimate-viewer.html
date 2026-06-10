@@ -98,7 +98,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
 <script>
 (function(){
-  var ACCEPT_WEBHOOK = 'https://hook.us2.make.com/atzqj5bv986n0pfus4g4pdiqynn7rv85';
+  var ACCEPT_WEBHOOK = 'https://hook.us2.make.com/heml0ar60f9pztjs0hrmguhfjiavbs9h';
 
   function fmtMoney(n){
     return '$'+(Number(n)||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -116,6 +116,27 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   }
 
   var p=getPayload();
+
+  // ESTIMATE VIEWED TRACKING — fires silently on page load
+  if(p){
+    (function trackViewed(){
+      try{
+        var formData = new URLSearchParams();
+        formData.append('event', 'estimate_viewed');
+        formData.append('estNumber', p.estNumber || '');
+        formData.append('customerName', p.customerName || '');
+        formData.append('customerEmail', p.customerEmail || '');
+        formData.append('customerPhone', p.customerPhone || '');
+        formData.append('viewedAt', new Date().toISOString());
+        fetch(ACCEPT_WEBHOOK, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: formData.toString()
+        });
+      }catch(e){}
+    })();
+  }
 
   if(!p){
     document.getElementById('app').innerHTML='<div class="error-state"><div class="error-icon">&#128269;</div><h2 style="font-family:\'DM Serif Display\',serif;margin-bottom:8px;">Estimate not found</h2><p style="color:#8a8a7a;font-size:0.88rem;">This link may be invalid or expired.<br>Please contact Generational Garage Doors for a new estimate.</p><div class="contact-row" style="margin-top:20px;"><a href="tel:9253168384" class="contact-btn">&#128222; (925) 316-8384</a><a href="mailto:dustin@gengaragedoors.com" class="contact-btn">&#9993; Email Us</a></div></div>';
