@@ -98,7 +98,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
 <script>
 (function(){
-  var ACCEPT_WEBHOOK = '';
+  var ACCEPT_WEBHOOK = 'https://hook.us2.make.com/heml0ar60f9pztjs0hrmguhfjiavbs9h';
 
   function fmtMoney(n){
     return '$'+(Number(n)||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -242,7 +242,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   // Select option (multi-option)
   window.selectOption = function(idx){
     selectedOptionIdx = idx;
-    // Update UI
     for(var i=0;i<(p.options||[]).length;i++){
       var btn=document.getElementById('selBtn'+i);
       var badge=document.getElementById('selBadge'+i);
@@ -251,7 +250,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       if(badge) badge.style.display = i===idx?'block':'none';
       if(card) card.style.borderWidth = i===idx?'2.5px':'2px';
     }
-    // Scroll to accept
     var aw=document.getElementById('acceptWrapper');
     if(aw) aw.scrollIntoView({behavior:'smooth',block:'center'});
   };
@@ -276,6 +274,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         formData.append('estNumber',p.estNumber||'');
         formData.append('customerName',p.customerName||'');
         formData.append('customerEmail',p.customerEmail||'');
+        formData.append('customerPhone',p.customerPhone||'');
         formData.append('selectedOption',selectedLabel);
         formData.append('selectedTotal',String(selectedTotal));
         formData.append('acceptedAt',new Date().toISOString());
