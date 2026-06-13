@@ -1,246 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Your Invoice - Generational Garage Doors</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-<style>
-:root{--green:#1e3323;--gold:#c9a84c;--orange:#b8540b;--bg:#f4f3ee;--surface:#fff;--border:#e2e0d8;--text:#1a1a17;--text2:#6a6a5e;--radius:14px;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
-.header{background:var(--orange);color:#fff;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
-.header-logo{font-family:'DM Serif Display',serif;font-size:1.1rem;font-weight:400;color:#fff;}
-.header-sub{font-size:0.72rem;opacity:0.7;margin-top:2px;}
-.header-badge{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:4px 14px;font-size:0.78rem;font-weight:700;color:#fff;white-space:nowrap;}
-.hero{background:var(--orange);color:#fff;padding:28px 24px 36px;text-align:center;position:relative;}
-.hero::after{content:'';display:block;position:absolute;bottom:-1px;left:0;right:0;height:24px;background:var(--bg);border-radius:24px 24px 0 0;}
-.hero-label{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;opacity:0.7;margin-bottom:6px;}
-.hero-amount{font-family:'DM Serif Display',serif;font-size:3.2rem;line-height:1;margin-bottom:6px;}
-.hero-sub{font-size:0.85rem;opacity:0.75;}
-.container{max-width:640px;margin:0 auto;padding:24px 16px 40px;}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:16px;}
-.card-header{padding:14px 20px;background:#fafaf7;border-bottom:1px solid var(--border);font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text2);}
-.card-body{padding:20px;}
-.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.info-item .info-label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#aaa;margin-bottom:2px;}
-.info-item .info-value{font-size:0.88rem;color:var(--text);}
-.line-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f5f4f0;font-size:0.88rem;}
-.line-item:last-child{border-bottom:none;}
-.li-name{color:var(--text);flex:1;}
-.li-free{font-size:0.7rem;background:rgba(74,158,78,0.1);color:#2d7d32;padding:2px 8px;border-radius:20px;font-weight:600;}
-.li-price{font-weight:700;color:var(--text);margin-left:12px;white-space:nowrap;}
-.items-total{display:flex;justify-content:space-between;padding:12px 0 0;font-weight:700;font-size:0.95rem;border-top:2px solid var(--border);margin-top:4px;}
-.payment-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;font-size:0.9rem;border-bottom:1px solid #f5f4f0;}
-.payment-row:last-child{border-bottom:none;}
-.payment-row.total-row{font-weight:700;font-size:1rem;border-top:2px solid var(--border);margin-top:4px;padding-top:12px;border-bottom:none;}
-.payment-row.total-row .pr-label{color:var(--text);}
-.payment-row.total-row .pr-value{color:var(--orange);font-family:'DM Serif Display',serif;font-size:1.4rem;}
-.payment-row.paid-row .pr-value{color:#2d7d32;}
-.pr-label{color:var(--text2);}
-.pr-value{font-weight:600;}
-.pay-section{margin-bottom:16px;}
-.pay-btn{display:block;width:100%;padding:18px;background:var(--orange);color:#fff;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;transition:background 0.2s;margin-bottom:10px;}
-.pay-btn:hover{background:#8a3d00;}
-.paid-banner{background:#f0f7f0;border:2px solid #b8d9b9;border-radius:12px;padding:16px;text-align:center;margin-bottom:10px;}
-.paid-banner .pb-icon{font-size:1.4rem;margin-bottom:4px;}
-.paid-banner .pb-label{font-weight:700;color:#2d7d32;font-size:1rem;}
-.paid-banner .pb-sub{font-size:0.82rem;color:#6a6a5e;margin-top:2px;}
-.secondary-btn{display:block;width:100%;padding:12px;background:#fff;color:var(--text2);border:1px solid var(--border);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;text-align:center;text-decoration:none;margin-bottom:8px;transition:border-color 0.15s;}
-.secondary-btn:hover{border-color:var(--orange);color:var(--orange);}
-.notes-box{background:#fafaf7;border-radius:10px;padding:14px 16px;font-size:0.85rem;color:var(--text2);line-height:1.6;}
-.footer{text-align:center;padding:20px 16px 40px;font-size:0.78rem;color:var(--text2);}
-.contact-row{display:flex;gap:12px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;}
-.contact-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;background:#fff;border:1px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:600;color:var(--green);text-decoration:none;transition:border-color 0.15s;}
-.contact-btn:hover{border-color:var(--green);}
-.loading{text-align:center;padding:60px 24px;color:var(--text2);}
-.error-state{text-align:center;padding:60px 24px;}
-.error-icon{font-size:2rem;margin-bottom:12px;opacity:0.3;}
-@media(max-width:480px){.hero-amount{font-size:2.4rem;}.info-grid{grid-template-columns:1fr;}}
-</style>
-</head>
-<body>
+<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#f5f3ef;padding:24px;">
+  <div style="background:#2c5f2e;border-radius:10px 10px 0 0;padding:24px;">
+    <h1 style="color:white;font-size:1.3rem;margin:0;font-weight:600;">Generational Garage Doors</h1>
+    <p style="color:rgba(255,255,255,0.75);font-size:0.85rem;margin:6px 0 0;">Licensed &middot; Insured &middot; Bay Area Family Owned</p>
+  </div>
+  <div style="background:white;padding:28px;border-radius:0 0 10px 10px;border:1px solid #e0dbd2;border-top:none;">
+    <h2 style="font-size:1.1rem;color:#1a1714;margin:0 0 8px;">Hi {{1.customerName}},</h2>
+    <p style="font-size:0.9rem;color:#6b6560;line-height:1.6;margin:0 0 24px;">Here's your invoice from Generational Garage Doors. Please review and click below to submit your payment securely.</p>
 
-<div id="app">
-  <div class="loading"><div style="font-size:1.4rem;margin-bottom:8px;">&#9203;</div><div>Loading your invoice...</div></div>
+    <div style="background:#f5f3ef;border-radius:8px;padding:12px 16px;margin-bottom:16px;border:1px solid #e0dbd2;">
+      <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#8a8a7a;">Invoice &middot; {{1.estNumber}} &middot; {{1.serviceType}}</div>
+    </div>
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:16px;border-collapse:collapse;">
+      <tr>
+        <td style="padding:8px 0;font-size:0.85rem;color:#6b6560;border-bottom:1px solid #f0ede8;">Service</td>
+        <td style="padding:8px 0;font-size:0.85rem;font-weight:700;text-align:right;border-bottom:1px solid #f0ede8;">{{1.serviceType}}</td>
+      </tr>
+      <tr>
+        <td style="padding:8px 0;font-size:0.85rem;color:#6b6560;border-bottom:1px solid #f0ede8;">Job Total</td>
+        <td style="padding:8px 0;font-size:0.85rem;font-weight:700;text-align:right;border-bottom:1px solid #f0ede8;">${{1.total}}</td>
+      </tr>
+      <tr>
+        <td style="padding:10px 0;font-size:1rem;font-weight:700;color:#2c5f2e;">Amount Due Now</td>
+        <td style="padding:10px 0;font-size:1.2rem;font-weight:700;color:#2c5f2e;text-align:right;">${{1.depositAmount}}</td>
+      </tr>
+      {{if(1.balanceDue > 0)}}
+      <tr>
+        <td style="padding:8px 0;font-size:0.85rem;color:#8a3d00;border-top:1px solid #f0ede8;">Balance Due at Install</td>
+        <td style="padding:8px 0;font-size:0.85rem;font-weight:700;color:#8a3d00;text-align:right;border-top:1px solid #f0ede8;">${{1.balanceDue}}</td>
+      </tr>
+      {{end}}
+    </table>
+
+    <a href="{{2.data.payment_link.url}}" style="display:block;background:#2c5f2e;color:white;text-decoration:none;text-align:center;padding:18px 20px;border-radius:8px;font-weight:700;font-size:1rem;margin-bottom:12px;">
+      &#128179; Pay Now &mdash; ${{1.depositAmount}}
+    </a>
+
+    <p style="font-size:0.75rem;color:#8a8a7a;text-align:center;margin:0 0 20px;">Secure payment powered by Square</p>
+
+    {{if(1.includeContract == "true")}}
+    <div style="background:#fff8e1;border:1.5px solid #ffe082;border-radius:8px;padding:16px;margin-bottom:20px;">
+      <div style="font-size:0.82rem;font-weight:700;color:#7b5800;margin-bottom:8px;">&#128221; Contract Required Before Work Begins</div>
+      <p style="font-size:0.82rem;color:#7b5800;line-height:1.5;margin:0 0 12px;">Please review and sign the service contract. This protects both you and our team.</p>
+      <a href="https://form.jotform.com/261465951529062" style="display:block;background:#b8860b;color:white;text-decoration:none;text-align:center;padding:14px 20px;border-radius:8px;font-weight:700;font-size:0.9rem;">
+        &#9998; Review &amp; Sign Contract
+      </a>
+    </div>
+    {{end}}
+
+    <div style="background:#f0f7f0;border:1px solid #b8d9b9;border-radius:8px;padding:14px 16px;margin-bottom:16px;">
+      <div style="font-size:0.78rem;color:#2c5f2e;line-height:1.6;">
+        <strong>What happens next:</strong><br>
+        {{if(1.includeContract == "true")}}1. Sign the contract above<br>2. Submit your payment<br>3. We'll call to schedule your appointment{{end}}
+        {{if(1.includeContract != "true")}}1. Submit your payment<br>2. We'll call to schedule your appointment{{end}}
+      </div>
+    </div>
+
+    <div style="background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:14px 16px;text-align:center;">
+      <p style="font-size:0.82rem;color:#7b5800;margin:0;">Questions? Text or call anytime at (925) 316-8384 &middot; Lic. #1113495</p>
+    </div>
+  </div>
 </div>
-
-<script>
-(function(){
-
-  var INVOICE_VIEWED_WEBHOOK = 'https://hook.us2.make.com/1fjanfvslps96dekbzjmqqjd9cqa6274';
-
-  function fmtMoney(n){
-    return '$'+(Number(n)||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-  }
-
-  function esc(s){if(!s)return '';var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
-
-  function getPayload(){
-    try{
-      var params=new URLSearchParams(window.location.search);
-      var d=params.get('d');
-      if(!d) return null;
-      return JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(d)))));
-    }catch(e){return null;}
-  }
-
-  var p=getPayload();
-
-  if(!p){
-    document.getElementById('app').innerHTML=
-      '<div class="error-state">'+
-        '<div class="error-icon">&#128269;</div>'+
-        '<h2 style="font-family:\'DM Serif Display\',serif;margin-bottom:8px;">Invoice not found</h2>'+
-        '<p style="color:#8a8a7a;font-size:0.88rem;">This link may be invalid or expired.<br>Please contact Generational Garage Doors.</p>'+
-        '<div class="contact-row" style="margin-top:20px;">'+
-          '<a href="tel:9253168384" class="contact-btn">&#128222; (925) 316-8384</a>'+
-          '<a href="mailto:dustin@gengaragedoors.com" class="contact-btn">&#9993; Email Us</a>'+
-        '</div>'+
-      '</div>';
-    return;
-  }
-
-  // INVOICE VIEWED TRACKING — fires silently on page load
-  (function trackViewed(){
-    try{
-      var formData = new URLSearchParams();
-      formData.append('event', 'invoice_viewed');
-      formData.append('estNumber', p.estNumber || '');
-      formData.append('customerName', p.customerName || '');
-      formData.append('customerEmail', p.customerEmail || '');
-      formData.append('customerPhone', p.customerPhone || '');
-      formData.append('viewedAt', new Date().toISOString());
-      fetch(INVOICE_VIEWED_WEBHOOK, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: formData.toString()
-      });
-    }catch(e){}
-  })();
-
-  var isPaid = p.isFullPay || p.paymentStatus === 'paid' || p.balanceDue === 0;
-  var depositAmount = Number(p.depositAmount) || Number(p.depositCharged) || 0;
-  var total = Number(p.total) || 0;
-  var balanceDue = Number(p.balanceDue) || (isPaid ? 0 : total - depositAmount);
-  var amountDue = isPaid ? total : depositAmount || total;
-  var squareLink = p.squareLink || p.paymentLink || '';
-  var notes = p.notes || '';
-  var items = p.items || [];
-  var firstName = (p.customerName || '').split(' ')[0] || 'there';
-
-  var itemsHtml = '';
-  if(items.length){
-    var runTotal = 0;
-    items.forEach(function(item){
-      var price = Number(item.price) || 0;
-      var isFree = item.isFree === true;
-      if(!isFree) runTotal += price;
-      itemsHtml += '<div class="line-item">'+
-        '<span class="li-name">'+esc(item.name)+'</span>'+
-        (isFree ? '<span class="li-free">Included</span>' : '<span class="li-price">'+fmtMoney(price)+'</span>')+
-      '</div>';
-    });
-    itemsHtml += '<div class="items-total"><span>Subtotal</span><span>'+fmtMoney(runTotal)+'</span></div>';
-  }
-
-  var paymentHtml = '';
-  if(isPaid){
-    paymentHtml = '<div class="payment-row paid-row"><span class="pr-label">&#10003; Paid in Full</span><span class="pr-value">'+fmtMoney(total)+'</span></div>';
-  } else if(depositAmount > 0 && depositAmount < total){
-    paymentHtml =
-      '<div class="payment-row"><span class="pr-label">Invoice Total</span><span class="pr-value">'+fmtMoney(total)+'</span></div>'+
-      '<div class="payment-row total-row"><span class="pr-label">Deposit Due Now</span><span class="pr-value">'+fmtMoney(depositAmount)+'</span></div>'+
-      (balanceDue > 0 ? '<div class="payment-row" style="margin-top:8px;"><span class="pr-label">Balance Due at Install</span><span class="pr-value">'+fmtMoney(balanceDue)+'</span></div>' : '')+
-      (p.balanceDueDate ? '<div style="font-size:0.78rem;color:#8a8a7a;padding-top:4px;">Due: '+esc(p.balanceDueDate)+'</div>' : '');
-  } else {
-    paymentHtml = '<div class="payment-row total-row"><span class="pr-label">Amount Due</span><span class="pr-value">'+fmtMoney(total)+'</span></div>';
-  }
-
-  var paySection = '';
-  if(isPaid){
-    paySection =
-      '<div class="paid-banner">'+
-        '<div class="pb-icon">&#10003;</div>'+
-        '<div class="pb-label">Payment Received</div>'+
-        '<div class="pb-sub">Thank you! We\'ll be in touch to confirm your appointment.</div>'+
-      '</div>';
-  } else if(squareLink){
-    paySection =
-      '<a href="'+esc(squareLink)+'" target="_blank" class="pay-btn">&#128179; Pay Now - '+fmtMoney(amountDue)+'</a>';
-  } else {
-    paySection =
-      '<div style="background:#fff8e1;border:1px solid #ffe082;border-radius:10px;padding:14px;text-align:center;margin-bottom:10px;font-size:0.85rem;color:#7b5800;">'+
-        'Payment link coming soon. Call us to pay by phone.'+
-      '</div>';
-  }
-
-  paySection +=
-    '<a href="tel:9253168384" class="secondary-btn">&#128222; Call to Pay: (925) 316-8384</a>'+
-    '<a href="mailto:dustin@gengaragedoors.com?subject=Invoice%20'+encodeURIComponent(p.estNumber||'')+'%20Question" class="secondary-btn">&#9993; Questions? Email Us</a>';
-
-  document.getElementById('app').innerHTML =
-    '<div class="header">'+
-      '<div>'+
-        '<div class="header-logo">Generational Garage Doors</div>'+
-        '<div class="header-sub">Licensed &middot; Insured &middot; Lic. #1113495 &middot; Bay Area Family Owned</div>'+
-      '</div>'+
-      '<div class="header-badge">&#128176; Invoice</div>'+
-    '</div>'+
-
-    '<div class="hero">'+
-      '<div class="hero-label">'+(isPaid ? 'Total Paid' : (depositAmount > 0 && depositAmount < total ? 'Deposit Due Now' : 'Amount Due'))+'</div>'+
-      '<div class="hero-amount">'+fmtMoney(isPaid ? total : amountDue)+'</div>'+
-      '<div class="hero-sub">Invoice #'+esc(p.estNumber||'')+(p.date ? ' &middot; '+esc(p.date) : '')+'</div>'+
-    '</div>'+
-
-    '<div class="container">'+
-      '<div class="card">'+
-        '<div class="card-header">'+(isPaid ? 'Payment Status' : 'Payment')+'</div>'+
-        '<div class="card-body">'+
-          '<div style="margin-bottom:16px;">'+paymentHtml+'</div>'+
-          '<div class="pay-section">'+paySection+'</div>'+
-        '</div>'+
-      '</div>'+
-
-      '<div class="card">'+
-        '<div class="card-header">Bill To</div>'+
-        '<div class="card-body">'+
-          '<div class="info-grid">'+
-            '<div class="info-item"><div class="info-label">Name</div><div class="info-value">'+esc(p.customerName||'-')+'</div></div>'+
-            '<div class="info-item"><div class="info-label">Phone</div><div class="info-value"><a href="tel:'+esc(p.customerPhone||'')+'" style="color:var(--green);font-weight:600;text-decoration:none;">'+esc(p.customerPhone||'-')+'</a></div></div>'+
-            '<div class="info-item"><div class="info-label">Address</div><div class="info-value">'+esc(p.customerAddress||'-')+'</div></div>'+
-            '<div class="info-item"><div class="info-label">Service</div><div class="info-value">'+esc(p.serviceType||'-')+'</div></div>'+
-          '</div>'+
-        '</div>'+
-      '</div>'+
-
-      (items.length ?
-        '<div class="card">'+
-          '<div class="card-header">Work Summary</div>'+
-          '<div class="card-body">'+itemsHtml+'</div>'+
-        '</div>'
-      : '')+
-
-      (notes ?
-        '<div class="card">'+
-          '<div class="card-header">Notes</div>'+
-          '<div class="card-body"><div class="notes-box">'+esc(notes)+'</div></div>'+
-        '</div>'
-      : '')+
-
-      '<div class="footer">'+
-        '<div class="contact-row">'+
-          '<a href="tel:9253168384" class="contact-btn">&#128222; (925) 316-8384</a>'+
-          '<a href="mailto:dustin@gengaragedoors.com" class="contact-btn">&#9993; dustin@gengaragedoors.com</a>'+
-        '</div>'+
-        '<div>Serving the Bay Area &middot; Same-week installs available</div>'+
-        '<div style="margin-top:8px;"><strong>Generational Garage Doors</strong> &middot; Bay Area, CA<br>Licensed &amp; Insured &middot; Lic. #1113495 &middot; Family Owned &amp; Operated</div>'+
-      '</div>'+
-    '</div>';
-
-})();
-</script>
-</body>
-</html>
