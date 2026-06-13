@@ -20,8 +20,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:16px;}
 .card-header{padding:16px 20px;background:#fafaf7;border-bottom:1px solid var(--border);font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text2);}
 .card-body{padding:20px;}
-
-/* Single option */
 .single-total{font-family:'DM Serif Display',serif;font-size:2.8rem;color:var(--green);margin-bottom:4px;}
 .single-sub{font-size:0.82rem;color:var(--text2);}
 .line-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f0efea;font-size:0.88rem;}
@@ -32,8 +30,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .deposit-row{display:flex;justify-content:space-between;padding:10px 0;font-size:0.9rem;border-top:2px solid var(--border);margin-top:8px;}
 .deposit-label{color:var(--text2);}
 .deposit-val{font-weight:700;}
-
-/* Multi-option cards */
 .options-grid{display:flex;flex-direction:column;gap:14px;}
 .option-card{border:2px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color 0.2s;}
 .option-card.best{border-color:var(--gold);}
@@ -59,8 +55,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .option-card.best .option-select-btn{background:var(--gold);color:var(--green);}
 .option-card.best .option-select-btn:hover{background:#b8952f;}
 .option-selected-badge{display:none;margin:0 18px 18px;padding:12px;background:#f0f7f0;border:2px solid #b8d9b9;border-radius:10px;font-size:0.88rem;font-weight:700;color:#2d7d32;text-align:center;}
-
-/* Accept + actions */
 .accept-section{text-align:center;padding:24px 20px;}
 .accept-btn{display:block;width:100%;padding:16px;background:var(--green);color:var(--gold);border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:10px;transition:background 0.2s;}
 .accept-btn:hover{background:#2a4a32;}
@@ -70,14 +64,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .status-banner{border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:0.88rem;font-weight:600;text-align:center;display:none;}
 .status-banner.pending{background:#fff8e1;border:1.5px solid #ffe082;color:#7b5800;display:block;}
 .status-banner.accepted{background:#f0f7f0;border:1.5px solid #b8d9b9;color:#2c5f2e;display:block;}
-
-/* Footer */
 .footer{text-align:center;padding:24px 16px 40px;font-size:0.78rem;color:var(--text2);}
 .footer a{color:var(--green);text-decoration:none;font-weight:600;}
 .contact-row{display:flex;gap:12px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;}
 .contact-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;background:#fff;border:1px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:600;color:var(--green);text-decoration:none;transition:border-color 0.15s;}
 .contact-btn:hover{border-color:var(--green);}
-
 .error-state{text-align:center;padding:60px 24px;}
 .error-icon{font-size:2rem;margin-bottom:12px;opacity:0.3;}
 .loading{text-align:center;padding:60px 24px;color:var(--text2);}
@@ -115,25 +106,27 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     }catch(e){return null;}
   }
 
+  function isServiceJob(serviceType){
+    if(!serviceType) return false;
+    var s=serviceType.toLowerCase();
+    return (s.includes('spring')||s.includes('motor')||s.includes('service')||s.includes('warranty')||s.includes('repair'))&&!s.includes('new door');
+  }
+
   var p=getPayload();
 
-  // ESTIMATE VIEWED TRACKING — fires silently on page load
+  // ESTIMATE VIEWED TRACKING
   if(p){
     (function trackViewed(){
       try{
-        var formData = new URLSearchParams();
-        formData.append('event', 'estimate_viewed');
-        formData.append('estNumber', p.estNumber || '');
-        formData.append('customerName', p.customerName || '');
-        formData.append('customerEmail', p.customerEmail || '');
-        formData.append('customerPhone', p.customerPhone || '');
-        formData.append('viewedAt', new Date().toISOString());
-        fetch(ACCEPT_WEBHOOK, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: formData.toString()
-        });
+        var formData=new URLSearchParams();
+        formData.append('event','estimate_viewed');
+        formData.append('estNumber',p.estNumber||'');
+        formData.append('jobRecordId',p.jobRecordId||'');
+        formData.append('customerName',p.customerName||'');
+        formData.append('customerEmail',p.customerEmail||'');
+        formData.append('customerPhone',p.customerPhone||'');
+        formData.append('viewedAt',new Date().toISOString());
+        fetch(ACCEPT_WEBHOOK,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:formData.toString()});
       }catch(e){}
     })();
   }
@@ -143,19 +136,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     return;
   }
 
-  var selectedOptionIdx = null;
+  var selectedOptionIdx=null;
 
-  function getOptionClass(label, idx, total){
+  function getOptionClass(label,idx,total){
     if(total===1) return 'best';
     if(total===2) return idx===0?'good':'best';
     return ['good','better','best'][idx]||'good';
   }
 
-  function renderSingleOption(opt, estNum, depositAmount, balanceDue, balanceDueDate, isFullPay, notes){
+  function renderSingleOption(opt,estNum,depositAmount,balanceDue,balanceDueDate,isFullPay,notes){
     var itemsHtml=opt.items.map(function(item){
       return '<div class="line-item"><span class="li-name">'+esc(item.name)+'</span>'+(item.isFree?'<span class="li-free">Included</span>':'<span class="li-price">'+fmtMoney(item.price)+'</span>')+'</div>';
     }).join('');
-
     var depositHtml='';
     if(depositAmount>0&&depositAmount<opt.total&&!isFullPay){
       depositHtml='<div class="deposit-row"><span class="deposit-label">Deposit Due Now</span><span class="deposit-val">'+fmtMoney(depositAmount)+'</span></div>';
@@ -164,122 +156,65 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     } else if(isFullPay||depositAmount>=opt.total){
       depositHtml='<div class="deposit-row"><span class="deposit-label" style="color:#2d7d32;">&#10003; Paid in Full</span><span class="deposit-val" style="color:#2d7d32;">'+fmtMoney(opt.total)+'</span></div>';
     }
-
-    return '<div class="hero" style="text-align:left;padding-bottom:0;">' +
-      '<div class="hero-est">Estimate #'+esc(estNum)+'</div>' +
-      '<div class="hero-name" style="font-size:1.2rem;">Hi '+esc((p.customerName||'').split(' ')[0]||'there')+',</div>' +
-      '<div style="font-size:0.85rem;opacity:0.75;margin-top:4px;">Your estimate is ready to review.</div>' +
-    '</div>' +
-    '<div class="container">' +
-      '<div class="card">' +
-        '<div class="card-header">Estimate Total</div>' +
-        '<div class="card-body">' +
-          '<div class="single-total">'+fmtMoney(opt.total)+'</div>' +
-          (notes?'<div class="single-sub" style="margin-top:4px;margin-bottom:16px;">'+esc(notes)+'</div>':'<div style="margin-bottom:16px;"></div>') +
-          itemsHtml +
-          depositHtml +
-        '</div>' +
-      '</div>' +
-      renderAcceptSection(false, null) +
-      renderFooter() +
-    '</div>';
+    return '<div class="hero" style="text-align:left;padding-bottom:0;"><div class="hero-est">Estimate #'+esc(estNum)+'</div><div class="hero-name" style="font-size:1.2rem;">Hi '+esc((p.customerName||'').split(' ')[0]||'there')+',</div><div style="font-size:0.85rem;opacity:0.75;margin-top:4px;">Your estimate is ready to review.</div></div>'+
+    '<div class="container"><div class="card"><div class="card-header">Estimate Total</div><div class="card-body"><div class="single-total">'+fmtMoney(opt.total)+'</div>'+(notes?'<div class="single-sub" style="margin-top:4px;margin-bottom:16px;">'+esc(notes)+'</div>':'<div style="margin-bottom:16px;"></div>')+itemsHtml+depositHtml+'</div></div>'+renderAcceptSection(false,null)+renderFooter()+'</div>';
   }
 
-  function renderMultiOptions(options, estNum, notes){
+  function renderMultiOptions(options,estNum,notes){
     var total=options.length;
     var optCards=options.map(function(opt,idx){
       var cls=getOptionClass(opt.label,idx,total);
-      var isBest=cls==='best';
       var itemsHtml=opt.items.filter(function(i){return !i.isFree;}).map(function(item){
         return '<div class="option-item"><span>'+esc(item.name)+'</span><span style="font-weight:600;">'+fmtMoney(item.price)+'</span></div>';
       }).join('');
       var freeItems=opt.items.filter(function(i){return i.isFree;});
       if(freeItems.length) itemsHtml+='<div class="option-item" style="opacity:0.6;"><span>'+freeItems.map(function(i){return esc(i.name);}).join(', ')+'</span><span style="color:#2d7d32;font-size:0.78rem;">Included</span></div>';
-
-      return '<div class="option-card '+cls+'" id="optCard'+idx+'">' +
-        '<div class="option-header">' +
-          '<span class="option-label">'+esc(opt.label||'Option '+(idx+1))+'</span>' +
-          '<span class="option-badge">'+esc(opt.label||'Option '+(idx+1))+'</span>' +
-        '</div>' +
-        '<div class="option-price">'+fmtMoney(opt.total)+'</div>' +
-        (opt.note?'<div class="option-note">'+esc(opt.note)+'</div>':'') +
-        '<div class="option-items">'+itemsHtml+'</div>' +
-        '<button class="option-select-btn" id="selBtn'+idx+'" onclick="selectOption('+idx+')">I want this one</button>' +
-        '<div class="option-selected-badge" id="selBadge'+idx+'">&#10003; Selected</div>' +
-      '</div>';
+      return '<div class="option-card '+cls+'" id="optCard'+idx+'"><div class="option-header"><span class="option-label">'+esc(opt.label||'Option '+(idx+1))+'</span><span class="option-badge">'+esc(opt.label||'Option '+(idx+1))+'</span></div><div class="option-price">'+fmtMoney(opt.total)+'</div>'+(opt.note?'<div class="option-note">'+esc(opt.note)+'</div>':'')+'<div class="option-items">'+itemsHtml+'</div><button class="option-select-btn" id="selBtn'+idx+'" onclick="selectOption('+idx+')">I want this one</button><div class="option-selected-badge" id="selBadge'+idx+'">&#10003; Selected</div></div>';
     }).join('');
-
-    return '<div class="hero" style="text-align:left;padding-bottom:0;">' +
-      '<div class="hero-est">Estimate #'+esc(estNum)+'</div>' +
-      '<div class="hero-name" style="font-size:1.2rem;">Hi '+esc((p.customerName||'').split(' ')[0]||'there')+',</div>' +
-      '<div style="font-size:0.85rem;opacity:0.75;margin-top:4px;">Here are your options - pick the one that fits best.</div>' +
-    '</div>' +
-    '<div class="container">' +
-      (notes?'<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:16px;font-size:0.88rem;color:var(--text2);">'+esc(notes)+'</div>':'') +
-      '<div class="options-grid">'+optCards+'</div>' +
-      '<div id="acceptWrapper" style="margin-top:16px;">' +
-        renderAcceptSection(false, null) +
-      '</div>' +
-      renderFooter() +
-    '</div>';
+    return '<div class="hero" style="text-align:left;padding-bottom:0;"><div class="hero-est">Estimate #'+esc(estNum)+'</div><div class="hero-name" style="font-size:1.2rem;">Hi '+esc((p.customerName||'').split(' ')[0]||'there')+',</div><div style="font-size:0.85rem;opacity:0.75;margin-top:4px;">Here are your options - pick the one that fits best.</div></div>'+
+    '<div class="container">'+(notes?'<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:16px;font-size:0.88rem;color:var(--text2);">'+esc(notes)+'</div>':'')+
+    '<div class="options-grid">'+optCards+'</div><div id="acceptWrapper" style="margin-top:16px;">'+renderAcceptSection(false,null)+'</div>'+renderFooter()+'</div>';
   }
 
-  function renderAcceptSection(accepted, selectedLabel){
+  function renderAcceptSection(accepted,selectedLabel){
     if(accepted){
       return '<div class="accept-section"><div class="status-banner accepted">&#10003; Estimate Accepted'+(selectedLabel?' - '+esc(selectedLabel):'')+' &mdash; We\'ll be in touch to schedule!</div></div>';
     }
-    return '<div class="accept-section">' +
-      '<div id="acceptStatus" class="status-banner"></div>' +
-      '<button class="accept-btn" id="acceptBtn" onclick="acceptEstimate()">&#10003; Accept This Estimate</button>' +
-      '<a href="tel:9253168384" class="secondary-btn">&#128222; Call to Discuss: (925) 316-8384</a>' +
-      '<a href="mailto:dustin@gengaragedoors.com" class="secondary-btn">&#9993; Request Edits via Email</a>' +
-    '</div>';
+    return '<div class="accept-section"><div id="acceptStatus" class="status-banner"></div><button class="accept-btn" id="acceptBtn" onclick="acceptEstimate()">&#10003; Accept This Estimate</button><a href="tel:9253168384" class="secondary-btn">&#128222; Call to Discuss: (925) 316-8384</a><a href="mailto:dustin@gengaragedoors.com" class="secondary-btn">&#9993; Request Edits via Email</a></div>';
   }
 
   function renderFooter(){
-    return '<div class="footer">' +
-      '<div class="contact-row">' +
-        '<a href="tel:9253168384" class="contact-btn">&#128222; (925) 316-8384</a>' +
-        '<a href="mailto:dustin@gengaragedoors.com" class="contact-btn">&#9993; dustin@gengaragedoors.com</a>' +
-      '</div>' +
-      '<div>Serving the Bay Area &middot; Same-week installs available</div>' +
-      '<div style="margin-top:8px;"><strong>Generational Garage Doors</strong> &middot; Bay Area, CA<br>Licensed &amp; Insured &middot; Lic. #1113495 &middot; Family Owned</div>' +
-    '</div>';
+    return '<div class="footer"><div class="contact-row"><a href="tel:9253168384" class="contact-btn">&#128222; (925) 316-8384</a><a href="mailto:dustin@gengaragedoors.com" class="contact-btn">&#9993; dustin@gengaragedoors.com</a></div><div>Serving the Bay Area &middot; Same-week installs available</div><div style="margin-top:8px;"><strong>Generational Garage Doors</strong> &middot; Bay Area, CA<br>Licensed &amp; Insured &middot; Lic. #1113495 &middot; Family Owned</div></div>';
   }
 
-  // Render
-  var isMulti = p.isMultiOption && p.options && p.options.length > 1;
-  var estNum = p.estNumber || '';
-  var notes = p.notes || '';
+  var isMulti=p.isMultiOption&&p.options&&p.options.length>1;
+  var estNum=p.estNumber||'';
+  var notes=p.notes||'';
 
   if(isMulti){
-    document.getElementById('app').innerHTML = renderMultiOptions(p.options, estNum, notes);
+    document.getElementById('app').innerHTML=renderMultiOptions(p.options,estNum,notes);
   } else {
-    var singleOpt = (p.options && p.options.length>0) ? p.options[0] : {items: p.items||[], total: p.total||0};
+    var singleOpt=(p.options&&p.options.length>0)?p.options[0]:{items:p.items||[],total:p.total||0};
     if(!singleOpt.label) singleOpt.label='Best Match';
-    document.getElementById('app').innerHTML = renderSingleOption(singleOpt, estNum, p.depositAmount||0, p.balanceDue||0, p.balanceDueDate||'', p.isFullPay, notes);
+    document.getElementById('app').innerHTML=renderSingleOption(singleOpt,estNum,p.depositAmount||0,p.balanceDue||0,p.balanceDueDate||'',p.isFullPay,notes);
   }
 
-  // Select option (multi-option)
-  window.selectOption = function(idx){
-    selectedOptionIdx = idx;
+  window.selectOption=function(idx){
+    selectedOptionIdx=idx;
     for(var i=0;i<(p.options||[]).length;i++){
       var btn=document.getElementById('selBtn'+i);
       var badge=document.getElementById('selBadge'+i);
       var card=document.getElementById('optCard'+i);
-      if(btn) btn.style.display = i===idx?'none':'block';
-      if(badge) badge.style.display = i===idx?'block':'none';
-      if(card) card.style.borderWidth = i===idx?'2.5px':'2px';
+      if(btn) btn.style.display=i===idx?'none':'block';
+      if(badge) badge.style.display=i===idx?'block':'none';
+      if(card) card.style.borderWidth=i===idx?'2.5px':'2px';
     }
     var aw=document.getElementById('acceptWrapper');
     if(aw) aw.scrollIntoView({behavior:'smooth',block:'center'});
   };
 
-  window.acceptEstimate = async function(){
-    if(isMulti && selectedOptionIdx===null){
-      alert('Please select an option first.');
-      return;
-    }
+  window.acceptEstimate=async function(){
+    if(isMulti&&selectedOptionIdx===null){alert('Please select an option first.');return;}
     var btn=document.getElementById('acceptBtn');
     var status=document.getElementById('acceptStatus');
     if(btn) btn.disabled=true;
@@ -287,17 +222,24 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
     var selectedLabel=isMulti&&p.options?p.options[selectedOptionIdx].label:'Best Match';
     var selectedTotal=isMulti&&p.options?p.options[selectedOptionIdx].total:p.total;
+    var selectedItems=isMulti&&p.options?p.options[selectedOptionIdx].items:(p.items||[]);
 
     try{
       if(ACCEPT_WEBHOOK){
         var formData=new URLSearchParams();
         formData.append('event','estimate_accepted');
         formData.append('estNumber',p.estNumber||'');
+        formData.append('jobRecordId',p.jobRecordId||'');
         formData.append('customerName',p.customerName||'');
         formData.append('customerEmail',p.customerEmail||'');
         formData.append('customerPhone',p.customerPhone||'');
+        formData.append('customerAddress',p.customerAddress||'');
+        formData.append('serviceType',p.serviceType||'');
         formData.append('selectedOption',selectedLabel);
         formData.append('selectedTotal',String(selectedTotal));
+        formData.append('selectedItems',JSON.stringify(selectedItems));
+        formData.append('depositAmount',String(p.depositAmount||Math.round(selectedTotal*0.5)));
+        formData.append('isService',String(isServiceJob(p.serviceType||'')));
         formData.append('acceptedAt',new Date().toISOString());
         await fetch(ACCEPT_WEBHOOK,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:formData.toString()});
       }
