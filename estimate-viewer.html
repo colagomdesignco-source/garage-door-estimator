@@ -191,13 +191,49 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   var estNum=p.estNumber||'';
   var notes=p.notes||'';
 
-  if(isMulti){
-    document.getElementById('app').innerHTML=renderMultiOptions(p.options,estNum,notes);
-  } else {
-    var singleOpt=(p.options&&p.options.length>0)?p.options[0]:{items:p.items||[],total:p.total||0};
-    if(!singleOpt.label) singleOpt.label='Best Match';
-    document.getElementById('app').innerHTML=renderSingleOption(singleOpt,estNum,p.depositAmount||0,p.balanceDue||0,p.balanceDueDate||'',p.isFullPay,notes);
+  // CHECK IF ALREADY ACCEPTED — routed through Make, no token in public repo
+  var CHECK_WEBHOOK='https://hook.us2.make.com/atzqj5bv986n0pfus4g4pdiqynn7rv85';
+
+  async function checkIfAlreadyAccepted(){
+    if(!p.jobRecordId) return false;
+    try{
+      var formData=new URLSearchParams();
+      formData.append('event','check_status');
+      formData.append('jobRecordId',p.jobRecordId);
+      var r=await fetch(CHECK_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:formData.toString()});
+      if(!r.ok) return false;
+      var d=await r.json();
+      return d.status==='Estimate Accepted';
+    }catch(e){return false;}
   }
+
+  async function renderApp(){
+    var alreadyAccepted=await checkIfAlreadyAccepted();
+    if(alreadyAccepted){
+      var firstName=esc((p.customerName||'').split(' ')[0]||'there');
+      document.getElementById('app').innerHTML=
+        '<div class="hero" style="text-align:left;padding-bottom:0;"><div class="hero-est">Estimate #'+esc(estNum)+'</div><div class="hero-name" style="font-size:1.2rem;">Hi '+firstName+',</div><div style="font-size:0.85rem;opacity:0.75;margin-top:4px;">Thanks for accepting your estimate.</div></div>'+
+        '<div class="container"><div class="card"><div class="card-body" style="text-align:center;padding:32px 20px;">'+
+        '<div style="font-size:2.5rem;margin-bottom:12px;">&#10003;</div>'+
+        '<div style="font-family:\'DM Serif Display\',serif;font-size:1.4rem;color:var(--green);margin-bottom:8px;">Estimate Already Accepted</div>'+
+        '<div style="font-size:0.88rem;color:var(--text2);line-height:1.6;">You\'ve already accepted this estimate.<br>Dustin will be in touch to schedule your appointment.</div>'+
+        '<div class="contact-row" style="margin-top:20px;justify-content:center;">'+
+        '<a href="tel:9253168384" class="contact-btn">&#128222; (925) 316-8384</a>'+
+        '<a href="mailto:dustin@gengaragedoors.com" class="contact-btn">&#9993; Email Us</a>'+
+        '</div></div></div>'+renderFooter()+'</div>';
+      return;
+    }
+
+    if(isMulti){
+      document.getElementById('app').innerHTML=renderMultiOptions(p.options,estNum,notes);
+    } else {
+      var singleOpt=(p.options&&p.options.length>0)?p.options[0]:{items:p.items||[],total:p.total||0};
+      if(!singleOpt.label) singleOpt.label='Best Match';
+      document.getElementById('app').innerHTML=renderSingleOption(singleOpt,estNum,p.depositAmount||0,p.balanceDue||0,p.balanceDueDate||'',p.isFullPay,notes);
+    }
+  }
+
+  renderApp();
 
   window.selectOption=function(idx){
     selectedOptionIdx=idx;
