@@ -89,7 +89,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
 <script>
 (function(){
-  var ACCEPT_WEBHOOK = 'https://hook.us2.make.com/atzqj5bv986n0pfus4g4pdiqynn7rv85';
+  var VIEWED_WEBHOOK = 'https://hook.us2.make.com/atzqj5bv986n0pfus4g4pdiqynn7rv85';
+  var ACCEPT_WEBHOOK = 'PASTE_NEW_ACCEPT_WEBHOOK_URL_HERE';
+  var STATUS_CHECK_WEBHOOK = 'PASTE_NEW_ACCEPT_WEBHOOK_URL_HERE';
 
   function fmtMoney(n){
     return '$'+(Number(n)||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -126,7 +128,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         formData.append('customerEmail',p.customerEmail||'');
         formData.append('customerPhone',p.customerPhone||'');
         formData.append('viewedAt',new Date().toISOString());
-        fetch(ACCEPT_WEBHOOK,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:formData.toString()});
+        fetch(VIEWED_WEBHOOK,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:formData.toString()});
       }catch(e){}
     })();
   }
@@ -192,7 +194,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   var notes=p.notes||'';
 
   // CHECK IF ALREADY ACCEPTED — routed through Make, no token in public repo
-  var CHECK_WEBHOOK='https://hook.us2.make.com/atzqj5bv986n0pfus4g4pdiqynn7rv85';
+  var CHECK_WEBHOOK=STATUS_CHECK_WEBHOOK;
 
   async function checkIfAlreadyAccepted(){
     if(!p.jobRecordId) return false;
