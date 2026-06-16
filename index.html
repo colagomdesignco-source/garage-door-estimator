@@ -697,9 +697,9 @@ function renderInserts(){
     const src=getInsertImgSrc(c,ins.id);
     console.log('Insert key:',imgKey,'src:',src);
     const useFilter=needsWhiteFilter(imgKey);
-    const thumb=src?`<img src="${src}" alt="${ins.label}" ${useFilter?'class="filter-white"':''} onerror="this.style.display='none';this.parentElement.innerHTML='${plainSVGString()}';"/>`:plainSVG();
+    const thumb=src?`<img src="${src}" alt="${ins.label}" style="width:100%;height:100%;object-fit:cover;object-position:center;border-radius:3px;filter:contrast(1.2) brightness(0.9);" ${useFilter?'class="filter-white"':''} onerror="this.style.display='none';this.parentElement.innerHTML='${plainSVGString()}';"/>`:plainSVG();
     return`<div class="insert-card${state.windowInsert===ins.id?' selected':''}" onclick="selectInsert('${ins.id}')">
-      <div class="insert-thumb">${thumb}</div>
+      <div class="insert-thumb" style="width:100%;background:#d8e4da;display:flex;align-items:center;justify-content:center;overflow:hidden;height:80px;">${thumb}</div>
       <div class="insert-name">${ins.label}</div>
     </div>`;
   }).join('');
