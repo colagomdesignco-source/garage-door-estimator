@@ -574,6 +574,7 @@ function getInsertImgSrc(color,insertId){
   var panel=isShort?'short':'long';
   if(color==='black') return IMG['skyline-black-'+insertId]||null;
   if(color==='almond') return IMG['raised-'+panel+'-almond-'+insertId]||IMG['raised-long-almond-'+insertId]||null;
+  if(color==='white'&&insertId==='2-arched-madison'&&!isShort) return IMG['raised-long-almond-2-arched-madison']||IMG['raised-long-white-2-arched-madison']||null;
   return IMG['raised-'+panel+'-white-'+insertId]||IMG['raised-long-white-'+insertId]||null;
 }
 
@@ -690,9 +691,11 @@ function renderInserts(){
     const src=getInsertImgSrc(c,ins.id);
     console.log('Insert key:',imgKey,'src:',src);
     const useFilter=needsWhiteFilter(imgKey);
-    const thumb=src?`<img src="${src}" alt="${ins.label}" style="width:100%;height:100%;object-fit:cover;object-position:center;border-radius:3px;filter:contrast(1.2) brightness(0.9);" ${useFilter?'class="filter-white"':''} onerror="this.style.display='none';this.parentElement.innerHTML='${plainSVGString()}';"/>`:plainSVG();
+    const imgFilter=c==='black'?'filter:none;':'filter:contrast(1.2) brightness(0.9);';
+    const thumbBg=c==='black'?'#e8e8e8':'#d8e4da';
+    const thumb=src?`<img src="${src}" alt="${ins.label}" style="width:100%;height:100%;object-fit:cover;object-position:center;border-radius:3px;${imgFilter}" ${useFilter?'class="filter-white"':''} onerror="this.style.display='none';this.parentElement.innerHTML='${plainSVGString()}';"/>`:plainSVG();
     return`<div class="insert-card${state.windowInsert===ins.id?' selected':''}" onclick="selectInsert('${ins.id}')">
-      <div class="insert-thumb" style="width:100%;background:${c==='black'?'#2a2a2a':'#d8e4da'};display:flex;align-items:center;justify-content:center;overflow:hidden;aspect-ratio:16/4;">${thumb}</div>
+      <div class="insert-thumb" style="width:100%;background:${thumbBg};display:flex;align-items:center;justify-content:center;overflow:hidden;aspect-ratio:16/4;">${thumb}</div>
       <div class="insert-name">${ins.label}</div>
     </div>`;
   }).join('');
