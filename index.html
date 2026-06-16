@@ -573,6 +573,7 @@ function getInsertImgSrc(color,insertId){
   var isShort=state.doorStyle==='raised-short'||state.doorStyle==='carriage-short';
   var panel=isShort?'short':'long';
   if(color==='black') return IMG['skyline-black-'+insertId]||null;
+  if(color==='almond'&&insertId==='2-arched-madison') return IMG['raised-long-almond-2-arched-stockton']||IMG['raised-long-almond-2-arched-madison']||null;
   if(color==='almond') return IMG['raised-'+panel+'-almond-'+insertId]||IMG['raised-long-almond-'+insertId]||null;
   if(color==='white'&&insertId==='2-arched-madison'&&!isShort) return IMG['raised-long-almond-2-arched-madison']||IMG['raised-long-white-2-arched-madison']||null;
   console.log('Preview src for white:',IMG['raised-'+panel+'-white-'+insertId]);
@@ -881,15 +882,4 @@ async function submitEst(){
   }else{rows.push(['Windows','No windows']);}
   document.getElementById('success-summary').innerHTML=rows.map(([label,val])=>
     `<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--tan);">
-      <span style="color:var(--gray);font-weight:600;">${label}</span>
-      <span style="font-weight:500;">${val}</span>
-    </div>`
-  ).join('');
-
-  go('s-success');
-}
-
-renderDoors();
-</script>
-</body>
-</html>
+      <span style="color:var(--gray);font-weight:600;">
