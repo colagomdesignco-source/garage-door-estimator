@@ -698,7 +698,7 @@ function renderInserts(){
     const useFilter=needsWhiteFilter(imgKey);
     const thumb=src?`<img src="${src}" alt="${ins.label}" style="width:100%;height:100%;object-fit:cover;object-position:center;border-radius:3px;filter:contrast(1.2) brightness(0.9);" ${useFilter?'class="filter-white"':''} onerror="this.style.display='none';this.parentElement.innerHTML='${plainSVGString()}';"/>`:plainSVG();
     return`<div class="insert-card${state.windowInsert===ins.id?' selected':''}" onclick="selectInsert('${ins.id}')">
-      <div class="insert-thumb" style="width:100%;background:#d8e4da;display:flex;align-items:center;justify-content:center;overflow:hidden;height:80px;">${thumb}</div>
+      <div class="insert-thumb" style="width:100%;background:#d8e4da;display:flex;align-items:center;justify-content:center;overflow:hidden;aspect-ratio:16/4;">${thumb}</div>
       <div class="insert-name">${ins.label}</div>
     </div>`;
   }).join('');
@@ -707,8 +707,15 @@ function renderInserts(){
 function updateGlassPreview(){
   const img=document.getElementById('glass-prev-img');
   const ph=document.getElementById('glass-prev-ph');
-  const key=getImgKey(state.doorStyle,state.doorColor,state.glassType,state.windowInsert,state.paneStyle);
-  const src=IMG[key]||IMG[state.doorStyle+'-'+state.doorColor]||null;
+  var src=null,key=null;
+  if(state.windowInsert){
+    key=getInsertImgKey(state.doorColor,state.windowInsert);
+    src=getInsertImgSrc(state.doorColor,state.windowInsert);
+  }
+  if(!src){
+    key=getImgKey(state.doorStyle,state.doorColor,state.glassType,null,state.paneStyle);
+    src=IMG[key]||IMG[state.doorStyle+'-'+state.doorColor]||null;
+  }
   if(src){
     img.src=src;img.style.display='block';ph.style.display='none';
     img.style.filter=needsWhiteFilter(key)?WHITE_FILTER:'';
