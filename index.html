@@ -482,6 +482,7 @@ const IMG={
   'raised-long-almond-2-arched-stockton':B+'almond%20long%20panel%202%20piece%20arched%20stockton%20.jpg',
   'raised-long-almond-4-arched-stockton':B+'almond%20long%20panel%204%20piece%20arched%20stockton%20.jpg',
   'raised-long-almond-2-arched-madison': B+'Raised%20long%20Panel%20Almond%202%20piece%20arched%20madison.jpg',
+  'raised-long-almond-2-arched-madison-thumb': B+'almond%20long%202%20piece%20arched%20madison.jpg',
   'raised-long-almond-2-sunburst':B+'almond%20long%20panel%202%20piece%20sunburst%20.jpg',
   'raised-long-almond-4-sunburst':B+'almond%20long%20panel%204%20piece%20sunburst.jpg',
 
@@ -573,7 +574,7 @@ function getInsertImgSrc(color,insertId){
   var isShort=state.doorStyle==='raised-short'||state.doorStyle==='carriage-short';
   var panel=isShort?'short':'long';
   if(color==='black') return IMG['skyline-black-'+insertId]||null;
-  if(color==='almond'&&insertId==='2-arched-madison') return IMG['raised-long-almond-2-arched-stockton']||IMG['raised-long-almond-2-arched-madison']||null;
+  if(color==='almond'&&insertId==='2-arched-madison') return IMG['raised-long-almond-2-arched-madison-thumb']||IMG['raised-long-almond-2-arched-madison']||null;
   if(color==='almond') return IMG['raised-'+panel+'-almond-'+insertId]||IMG['raised-long-almond-'+insertId]||null;
   if(color==='white'&&insertId==='2-arched-madison'&&!isShort) return IMG['raised-long-almond-2-arched-madison']||IMG['raised-long-white-2-arched-madison']||null;
   console.log('Preview src for white:',IMG['raised-'+panel+'-white-'+insertId]);
@@ -881,5 +882,4 @@ async function submitEst(){
     if(state.windowInsert)rows.push(['Insert Style',insertLabels[state.windowInsert]||state.windowInsert]);
   }else{rows.push(['Windows','No windows']);}
   document.getElementById('success-summary').innerHTML=rows.map(([label,val])=>
-    `<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--tan);">
-      <span style="color:var(--gray);font-weight:600;">
+    `<div style="display:flex;justify-content:space-between;p
