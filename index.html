@@ -519,10 +519,6 @@ const IMG={
 const WHITE_FILTER='brightness(1.9) saturate(0) contrast(0.85) opacity(0.95)';
 
 const WHITE_KEYS=new Set([
-  'skyline-white-prairie','skyline-white-sherwood','skyline-white-waterton',
-  'skyline-white-stockton','skyline-white-madison','skyline-white-2-arched-stockton',
-  'skyline-white-4-arched-stockton','skyline-white-2-arched-madison','skyline-white-4-arched-madison',
-  'skyline-white-2-sunburst','skyline-white-4-sunburst',
   'carriage-short-white-cascade','carriage-short-white-prairie','carriage-short-white-sherwood',
   'carriage-short-white-waterton','carriage-short-white-stockton',
   'carriage-long-white-cascade','carriage-long-white-prairie','carriage-long-white-sherwood',
@@ -606,8 +602,6 @@ function getImg(style,color,gt,ins,pane){
 
 function needsWhiteFilter(key){
   if(WHITE_KEYS.has(key)) return true;
-  if(key&&key.startsWith('skyline-black-')&&state.doorColor==='white') return true;
-  if(key&&key.startsWith('raised-long-almond-')&&state.doorColor==='white') return true;
   return false;
 }
 
@@ -698,7 +692,7 @@ function renderInserts(){
     const useFilter=needsWhiteFilter(imgKey);
     const thumb=src?`<img src="${src}" alt="${ins.label}" style="width:100%;height:100%;object-fit:cover;object-position:center;border-radius:3px;filter:contrast(1.2) brightness(0.9);" ${useFilter?'class="filter-white"':''} onerror="this.style.display='none';this.parentElement.innerHTML='${plainSVGString()}';"/>`:plainSVG();
     return`<div class="insert-card${state.windowInsert===ins.id?' selected':''}" onclick="selectInsert('${ins.id}')">
-      <div class="insert-thumb" style="width:100%;background:#d8e4da;display:flex;align-items:center;justify-content:center;overflow:hidden;aspect-ratio:16/4;">${thumb}</div>
+      <div class="insert-thumb" style="width:100%;background:${c==='black'?'#2a2a2a':'#d8e4da'};display:flex;align-items:center;justify-content:center;overflow:hidden;aspect-ratio:16/4;">${thumb}</div>
       <div class="insert-name">${ins.label}</div>
     </div>`;
   }).join('');
@@ -711,6 +705,7 @@ function updateGlassPreview(){
   if(state.windowInsert){
     key=getInsertImgKey(state.doorColor,state.windowInsert);
     src=getInsertImgSrc(state.doorColor,state.windowInsert);
+    console.log('Preview insert key:',key,'src:',src,'color:',state.doorColor,'insert:',state.windowInsert);
   }
   if(!src){
     key=getImgKey(state.doorStyle,state.doorColor,state.glassType,null,state.paneStyle);
