@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Your Invoice - Generational Garage Doors</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--green:#1e3323;--gold:#c9a84c;--bg:#f4f3ee;--surface:#fff;--border:#e2e0d8;--text:#1a1a17;--text2:#6a6a5e;--radius:14px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.header{background:var(--green);color:#fff;padding:20px 24px;}
+.header-logo{font-family:'DM Serif Display',serif;font-size:1.1rem;font-weight:400;color:var(--gold);}
+.header-sub{font-size:0.72rem;opacity:0.6;margin-top:2px;}
+.container{max-width:600px;margin:0 auto;padding:24px 16px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:16px;}
+.card-header{padding:16px 20px;background:#fafaf7;border-bottom:1px solid var(--border);font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text2);}
+.card-body{padding:24px;}
+.greeting{font-size:1.1rem;font-weight:600;color:var(--text);margin-bottom:6px;}
+.subtitle{font-size:0.88rem;color:var(--text2);line-height:1.6;margin-bottom:24px;}
+.inv-label{background:#f5f3ef;border-radius:8px;padding:12px 16px;margin-bottom:20px;border:1px solid var(--border);font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text2);}
+.line-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #f0ede8;font-size:0.86rem;}
+.line-row:last-child{border-bottom:none;}
+.line-label{color:var(--text2);}
+.line-val{font-weight:700;}
+.amount-due-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;font-size:1rem;font-weight:700;color:var(--green);border-top:2px solid var(--border);margin-top:4px;}
+.amount-due-val{font-family:'DM Serif Display',serif;font-size:1.4rem;color:var(--green);}
+.balance-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-size:0.85rem;color:#8a3d00;border-top:1px solid #f0ede8;}
+.balance-val{font-weight:700;}
+.pay-btn{display:block;background:var(--green);color:var(--gold);text-decoration:none;text-align:center;padding:18px 20px;border-radius:10px;font-weight:700;font-size:1rem;margin-bottom:10px;transition:background 0.2s;}
+.pay-btn:hover{background:#2a4a32;}
+.pay-sub{font-size:0.75rem;color:var(--text2);text-align:center;margin-bottom:20px;}
+.contract-box{background:#fff8e1;border:1.5px solid #ffe082;border-radius:10px;padding:16px;margin-bottom:16px;}
+.contract-title{font-size:0.82rem;font-weight:700;color:#7b5800;margin-bottom:8px;}
+.contract-desc{font-size:0.82rem;color:#7b5800;line-height:1.5;margin-bottom:12px;}
+.contract-btn{display:block;background:#b8860b;color:#fff;text-decoration:none;text-align:center;padding:14px 20px;border-radius:8px;font-weight:700;font-size:0.9rem;transition:background 0.2s;}
+.contract-btn:hover{background:#9a7520;}
+.next-steps{background:#f0f7f0;border:1px solid #b8d9b9;border-radius:10px;padding:14px 16px;margin-bottom:16px;}
+.next-steps-inner{font-size:0.82rem;color:#2c5f2e;line-height:1.8;}
+.contact-box{background:#fff8e1;border:1px solid #ffe082;border-radius:10px;padding:14px 16px;text-align:center;}
+.contact-box p{font-size:0.82rem;color:#7b5800;}
+.error-state{text-align:center;padding:60px 24px;}
+.error-icon{font-size:2rem;margin-bottom:12px;opacity:0.3;}
+.contact-row{display:flex;gap:12px;justify-content:center;margin-top:20px;flex-wrap:wrap;}
+.contact-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;background:#fff;border:1px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:600;color:var(--green);text-decoration:none;}
+.contact-btn:hover{border-color:var(--green);}
+.loading{text-align:center;padding:60px 24px;color:var(--text2);}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">Generational Garage Doors</div>
+  <div class="header-sub">Licensed &middot; Insured &middot; Lic. #1113495 &middot; Bay Area Family Owned</div>
+</div>
+
+<div id="app">
+  <div class="loading"><div style="font-size:1.4rem;margin-bottom:8px;">&#9203;</div><div>Loading your invoice...</div></div>
+</div>
+
+<script>
+(function(){
+
+  function fmtMoney(n){
+    return '$'+(Number(n)||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  }
+
+  function esc(s){
+    if(!s) return '';
+    var d=document.createElement('div');
+    d.textContent=s;
+    return d.innerHTML;
+  }
+
+  function getPayload(){
+    try{
+      var params=new URLSearchParams(window.location.search);
+      var d=params.get('d');
+      if(!d) return null;
+      return JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(d)))));
+    }catch(e){ return null; }
+  }
+
+  var p=getPayload();
+
+  if(!p){
+    document.getElementById('app').innerHTML=
+      '<div class="container"><div class="error-state">'+
+      '<div class="error-icon">&#128269;</div>'+
+      '<h2 style="font-family:\'DM Serif Display\',serif;margin-bottom:8px;">Invoice not found</h2>'+
+      '<p style="color:#8a8a7a;font-size:0.88rem;">This link may be invalid or expired.<br>Please contact Generational Garage Doors.</p>'+
+      '<div class="contact-row">'+
+      '<a href="tel:9253168384" class="contact-btn">&#128222; (925) 316-8384</a>'+
+      '<a href="mailto:dustin@gengaragedoors.com" class="contact-btn">&#9993; Email Us</a>'+
+      '</div></div></div>';
+    return;
+  }
+
+  var customerName   = p.customerName   || '';
+  var estNumber      = p.estNumber      || '';
+  var serviceType    = p.serviceType    || '';
+  var total          = Number(p.total)  || 0;
+  var depositCharged = Number(p.depositCharged) || 0;
+  var balanceDue     = Number(p.balanceDue)     || 0;
+  var isFullPay      = !!p.isFullPay;
+  var includeContract= p.includeContract === true || p.includeContract === 'true';
+  var squareLink     = p.squareLink     || '';
+  var contractLink   = p.contractLink   || '';
+  var workDescription= p.workDescription|| '';
+  var firstName      = esc(customerName.split(' ')[0] || 'there');
+
+  // Build contract URL — if contractLink already set use it, else fall back to Jotform prefill
+  var jotformBase = 'https://form.jotform.com/261465951529062';
+  var contractUrl = contractLink || (jotformBase +
+    '?name[first]=' + encodeURIComponent(customerName) +
+    '&email=' + encodeURIComponent(p.customerEmail || '') +
+    '&phoneNumber=' + encodeURIComponent(p.customerPhone || '') +
+    '&address[addr_line1]=' + encodeURIComponent(p.customerAddress || '') +
+    '&estimateNumber=' + encodeURIComponent(estNumber) +
+    '&scopeOf=' + encodeURIComponent(workDescription.replace(/\n/g, ', ')) +
+    '&squareLink=' + encodeURIComponent(squareLink));
+
+  // Balance row — only show if there's a balance and not full pay
+  var balanceHtml = '';
+  if(balanceDue > 0 && !isFullPay){
+    balanceHtml = '<div class="balance-row"><span>Balance Due at Install</span><span class="balance-val">'+fmtMoney(balanceDue)+'</span></div>';
+  }
+
+  // Next steps vary by contract
+  var nextStepsHtml = includeContract
+    ? '1. Sign the contract above<br>2. Pay your deposit (you\'ll be redirected automatically)<br>3. We\'ll call to schedule your appointment'
+    : '1. Submit your payment<br>2. We\'ll call to schedule your appointment';
+
+  // Contract section — only shown when includeContract = true
+  var contractHtml = '';
+  if(includeContract){
+    contractHtml =
+      '<div class="contract-box">'+
+      '<div class="contract-title">&#128221; Step 1 &mdash; Sign Your Contract</div>'+
+      '<div class="contract-desc">Please review and sign the service contract first. Your deposit payment link is included &mdash; you\'ll be taken there automatically after signing.</div>'+
+      '<a href="'+esc(contractUrl)+'" class="contract-btn">&#9998; Review &amp; Sign Contract</a>'+
+      '</div>';
+  }
+
+  // Pay button — only shown when no contract required
+  var payHtml = '';
+  if(!includeContract && squareLink){
+    payHtml =
+      '<a href="'+esc(squareLink)+'" class="pay-btn">&#128179; Pay Now &mdash; '+fmtMoney(depositCharged)+'</a>'+
+      '<div class="pay-sub">Secure payment powered by Square</div>';
+  }
+
+  var html =
+    '<div class="container">'+
+    '<div class="card">'+
+    '<div class="card-body">'+
+    '<div class="greeting">Hi '+firstName+',</div>'+
+    '<div class="subtitle">Here\'s your invoice from Generational Garage Doors. Please review and click below to submit your payment securely.</div>'+
+    '<div class="inv-label">Invoice &middot; '+esc(estNumber)+' &middot; '+esc(serviceType)+'</div>'+
+    '<div class="line-row"><span class="line-label">Service</span><span class="line-val">'+esc(serviceType)+'</span></div>'+
+    '<div class="line-row"><span class="line-label">Job Total</span><span class="line-val">'+fmtMoney(total)+'</span></div>'+
+    '<div class="amount-due-row"><span>Amount Due Now</span><span class="amount-due-val">'+fmtMoney(depositCharged)+'</span></div>'+
+    balanceHtml+
+    '</div></div>'+
+    contractHtml+
+    payHtml+
+    '<div class="next-steps"><div class="next-steps-inner"><strong>What happens next:</strong><br>'+nextStepsHtml+'</div></div>'+
+    '<div class="contact-box"><p>Questions? Text or call anytime at (925) 316-8384 &middot; Lic. #1113495</p></div>'+
+    '</div>';
+
+  document.getElementById('app').innerHTML = html;
+
+})();
+</script>
+</body>
+</html>
