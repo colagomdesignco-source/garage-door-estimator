@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Your Estimate - Generational Garage Doors</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--green:#1e3323;--gold:#c9a84c;--bg:#f4f3ee;--surface:#fff;--border:#e2e0d8;--text:#1a1a17;--text2:#6a6a5e;--radius:14px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.header{background:var(--green);color:#fff;padding:20px 24px;display:flex;align-items:center;gap:16px;}
+.header-logo{font-family:'DM Serif Display',serif;font-size:1.1rem;font-weight:400;color:var(--gold);}
+.header-sub{font-size:0.72rem;opacity:0.6;margin-top:2px;}
+.hero{background:var(--green);color:#fff;padding:28px 24px 32px;text-align:center;}
+.hero-est{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;opacity:0.6;margin-bottom:6px;}
+.hero-name{font-family:'DM Serif Display',serif;font-size:1.6rem;margin-bottom:4px;}
+.hero-date{font-size:0.8rem;opacity:0.6;}
+.container{max-width:640px;margin:0 auto;padding:24px 16px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:16px;}
+.card-header{padding:16px 20px;background:#fafaf7;border-bottom:1px solid var(--border);font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text2);}
+.card-body{padding:20px;}
+.single-total{font-family:'DM Serif Display',serif;font-size:2.8rem;color:var(--green);margin-bottom:4px;}
+.single-sub{font-size:0.82rem;color:var(--text2);}
+.line-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f0efea;font-size:0.88rem;}
+.line-item:last-child{border-bottom:none;}
+.li-name{color:var(--text);}
+.li-price{font-weight:700;color:var(--green);}
+.li-free{font-size:0.72rem;background:rgba(74,158,78,0.1);color:#2d7d32;padding:2px 8px;border-radius:20px;font-weight:600;}
+.deposit-row{display:flex;justify-content:space-between;padding:10px 0;font-size:0.9rem;border-top:2px solid var(--border);margin-top:8px;}
+.deposit-label{color:var(--text2);}
+.deposit-val{font-weight:700;}
+.options-grid{display:flex;flex-direction:column;gap:14px;}
+.option-card{border:2px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color 0.2s;}
+.option-card.best{border-color:var(--gold);}
+.option-header{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;}
+.option-card.good .option-header{background:#f9f9f6;}
+.option-card.better .option-header{background:#f5f7fe;}
+.option-card.best .option-header{background:rgba(201,168,76,0.08);}
+.option-label{font-weight:700;font-size:0.88rem;}
+.option-card.good .option-label{color:#555;}
+.option-card.better .option-label{color:#2a4a8a;}
+.option-card.best .option-label{color:#9a7520;}
+.option-badge{font-size:0.68rem;font-weight:700;padding:2px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:0.06em;}
+.option-card.good .option-badge{background:#eee;color:#666;}
+.option-card.better .option-badge{background:rgba(42,74,138,0.1);color:#2a4a8a;}
+.option-card.best .option-badge{background:rgba(201,168,76,0.2);color:#9a7520;}
+.option-price{font-family:'DM Serif Display',serif;font-size:1.8rem;color:var(--green);padding:0 18px 4px;}
+.option-note{font-size:0.82rem;color:var(--text2);padding:0 18px 12px;line-height:1.5;}
+.option-items{padding:0 18px 14px;}
+.option-item{display:flex;justify-content:space-between;font-size:0.82rem;padding:5px 0;border-bottom:1px solid #f5f4f0;}
+.option-item:last-child{border-bottom:none;}
+.option-select-btn{display:block;margin:0 18px 18px;padding:12px;background:var(--green);color:var(--gold);border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;text-align:center;width:calc(100% - 36px);transition:background 0.2s;}
+.option-select-btn:hover{background:#2a4a32;}
+.option-card.best .option-select-btn{background:var(--gold);color:var(--green);}
+.option-card.best .option-select-btn:hover{background:#b8952f;}
+.option-selected-badge{display:none;margin:0 18px 18px;padding:12px;background:#f0f7f0;border:2px solid #b8d9b9;border-radius:10px;font-size:0.88rem;font-weight:700;color:#2d7d32;text-align:center;}
+.accept-section{text-align:center;padding:24px 20px;}
+.accept-btn{display:block;width:100%;padding:16px;background:var(--green);color:var(--gold);border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:10px;transition:background 0.2s;}
+.accept-btn:hover{background:#2a4a32;}
+.accept-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.secondary-btn{display:block;width:100%;padding:13px;background:#fff;color:var(--text2);border:1px solid var(--border);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;margin-bottom:8px;text-decoration:none;text-align:center;}
+.secondary-btn:hover{border-color:var(--green);color:var(--green);}
+.status-banner{border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:0.88rem;font-weight:600;text-align:center;display:none;}
+.status-banner.pending{background:#fff8e1;border:1.5px solid #ffe082;color:#7b5800;display:block;}
+.status-banner.accepted{background:#f0f7f0;border:1.5px solid #b8d9b9;color:#2c5f2e;display:block;}
+.footer{text-align:center;padding:24px 16px 40px;font-size:0.78rem;color:var(--text2);}
+.footer a{color:var(--green);text-decoration:none;font-weight:600;}
+.contact-row{display:flex;gap:12px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;}
+.contact-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;background:#fff;border:1px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:600;color:var(--green);text-decoration:none;transition:border-color 0.15s;}
+.contact-btn:hover{border-color:var(--green);}
+.error-state{text-align:center;padding:60px 24px;}
+.error-icon{font-size:2rem;margin-bottom:12px;opacity:0.3;}
+.loading{text-align:center;padding:60px 24px;color:var(--text2);}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-logo">Generational Garage Doors</div>
+    <div class="header-sub">Licensed &middot; Insured &middot; Lic. #1113495 &middot; Bay Area Family Owned</div>
+  </div>
+</div>
+
+<div id="app">
+  <div class="loading"><div style="font-size:1.4rem;margin-bottom:8px;">&#9203;</div><div>Loading your estimate...</div></div>
+</div>
+
+<script>
+(function(){
+  var VIEWED_WEBHOOK = 'https://automations.lagomdesignco.com/webhook/GGDViewEstimatesb';
+  var ACCEPT_WEBHOOK = 'https://automations.lagomdesignco.com/webhook/GGDAcceptEstimatesb';
+  var STATUS_CHECK_WEBHOOK = 'https://automations.lagomdesignco.com/webhook/GGDCheckEstimateStatussb';
+
+  function fmtMoney(n){
+    return '$'+(Number(n)||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  }
+
+  function esc(s){if(!s)return '';var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+  function getPayload(){
+    try{
+      var params=new URLSearchParams(window.location.search);
+      var d=params.get('d');
+      if(!d) return null;
+      return JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(d)))));
+    }catch(e){return null;}
+  }
+
+  function isServiceJob(serviceType){
+    if(!serviceType) return false;
+    var s=serviceType.toLowerCase();
+    return (s.includes('spring')||s.includes('motor')||s.includes('service')||s.includes('warranty')||s.includes('repair'))&&!s.includes('new door');
+  }
+
+  var p=getPayload();
+
+  // ESTIMATE VIEWED TRACKING
+  if(p){
+    (function trackViewed(){
+      try{
+        var formData=new URLSearchParams();
+        formData.append('event','estimate_viewed');
+        formData.append('estNumber',p.estNumber||'');
+        formData.append('jobRecordId',p.jobRecordId||'');
+        formData.append('customerName',p.customerName||'');
+        formData.append('customerEmail',p.customerEmail||'');
+        formData.append('customerPhone',p.customerPhone||'');
+        formData.append('viewedAt',new Date().toISOString());
+        fetch(VIEWED_WEBHOOK,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:formData.toString()});
+      }catch(e){}
+    })();
+  }
+
+  if(!p){
+    document.getElementById('app').innerHTML='<div class="error-state"><div class="error-icon">&#128269;</div><h2 style="font-family:\'DM Serif Display\',serif;margin-bottom:8px;">Estimate not found</h2><p style="color:#8a8a7a;font-size:0.88rem;">This link may be invalid or expired.<br>Please contact Generational Garage Doors for a new estimate.</p><div class="contact-row" style="margin-top:20px;"><a href="tel:9253168384" class="contact-btn">&#128222; (925) 316-8384</a><a href="mailto:dustin@gengaragedoors.com" class="contact-btn">&#9993; Email Us</a></div></div>';
+    return;
+  }
+
+  var selectedOptionIdx=null;
+
+  function getOptionClass(label,idx,total){
+    if(total===1) return 'best';
+    if(total===2) return idx===0?'good':'best';
+    return ['good','better','best'][idx]||'good';
+  }
+
+  function renderSingleOption(opt,estNum,depositAmount,balanceDue,balanceDueDate,isFullPay,notes){
+    var itemsHtml=opt.items.map(function(item){
+      return '<div class="line-item"><span class="li-name">'+esc(item.name)+'</span>'+(item.isFree?'<span class="li-free">Included</span>':'<span class="li-price">'+fmtMoney(item.price)+'</span>')+'</div>';
+    }).join('');
+    var depositHtml='';
+    if(depositAmount>0&&depositAmount<opt.total&&!isFullPay){
+      depositHtml='<div class="deposit-row"><span class="deposit-label">Deposit Due Now</span><span class="deposit-val">'+fmtMoney(depositAmount)+'</span></div>';
+      depositHtml+='<div class="deposit-row"><span class="deposit-label">Balance Due</span><span class="deposit-val">'+fmtMoney(balanceDue)+'</span></div>';
+      if(balanceDueDate) depositHtml+='<div style="font-size:0.78rem;color:var(--text2);margin-top:4px;">Due: '+esc(balanceDueDate)+'</div>';
+    } else if(isFullPay||depositAmount>=opt.total){
+      depositHtml='<div class="deposit-row"><span class="deposit-label" style="color:#2d7d32;">&#10003; Paid in Full</span><span class="deposit-val" style="color:#2d7d32;">'+fmtMoney(opt.total)+'</span></div>';
+    }
+    return '<div class="hero" style="text-align:left;padding-bottom:0;"><div class="hero-est">Estimate #'+esc(estNum)+'</div><div class="hero-name" style="font-size:1.2rem;">Hi '+esc((p.customerName||'').split(' ')[0]||'there')+',</div><div style="font-size:0.85rem;opacity:0.75;margin-top:4px;">Your estimate is ready to review.</div></div>'+
+    '<div class="container"><div class="card"><div class="card-header">Estimate Total</div><div class="card-body"><div class="single-total">'+fmtMoney(opt.total)+'</div>'+(notes?'<div class="single-sub" style="margin-top:4px;margin-bottom:16px;">'+esc(notes)+'</div>':'<div style="margin-bottom:16px;"></div>')+itemsHtml+depositHtml+'</div></div>'+renderAcceptSection(false,null)+renderFooter()+'</div>';
+  }
+
+  function renderMultiOptions(options,estNum,notes){
+    var total=options.length;
+    var optCards=options.map(function(opt,idx){
+      var cls=getOptionClass(opt.label,idx,total);
+      var itemsHtml=opt.items.filter(function(i){return !i.isFree;}).map(function(item){
+        return '<div class="option-item"><span>'+esc(item.name)+'</span><span style="font-weight:600;">'+fmtMoney(item.price)+'</span></div>';
+      }).join('');
+      var freeItems=opt.items.filter(function(i){return i.isFree;});
+      if(freeItems.length) itemsHtml+='<div class="option-item" style="opacity:0.6;"><span>'+freeItems.map(function(i){return esc(i.name);}).join(', ')+'</span><span style="color:#2d7d32;font-size:0.78rem;">Included</span></div>';
+      return '<div class="option-card '+cls+'" id="optCard'+idx+'"><div class="option-header"><span class="option-label">'+esc(opt.label||'Option '+(idx+1))+'</span><span class="option-badge">'+esc(opt.label||'Option '+(idx+1))+'</span></div><div class="option-price">'+fmtMoney(opt.total)+'</div>'+(opt.note?'<div class="option-note">'+esc(opt.note)+'</div>':'')+'<div class="option-items">'+itemsHtml+'</div><button class="option-select-btn" id="selBtn'+idx+'" onclick="selectOption('+idx+')">I want this one</button><div class="option-selected-badge" id="selBadge'+idx+'">&#10003; Selected</div></div>';
+    }).join('');
+    return '<div class="hero" style="text-align:left;padding-bottom:0;"><div class="hero-est">Estimate #'+esc(estNum)+'</div><div class="hero-name" style="font-size:1.2rem;">Hi '+esc((p.customerName||'').split(' ')[0]||'there')+',</div><div style="font-size:0.85rem;opacity:0.75;margin-top:4px;">Here are your options - pick the one that fits best.</div></div>'+
+    '<div class="container">'+(notes?'<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:16px;font-size:0.88rem;color:var(--text2);">'+esc(notes)+'</div>':'')+
+    '<div class="options-grid">'+optCards+'</div><div id="acceptWrapper" style="margin-top:16px;">'+renderAcceptSection(false,null)+'</div>'+renderFooter()+'</div>';
+  }
+
+  function renderAcceptSection(accepted,selectedLabel){
+    if(accepted){
+      return '<div class="accept-section"><div class="status-banner accepted">&#10003; Estimate Accepted'+(selectedLabel?' - '+esc(selectedLabel):'')+' &mdash; We\'ll be in touch to schedule!</div></div>';
+    }
+    return '<div class="accept-section"><div id="acceptStatus" class="status-banner"></div><button class="accept-btn" id="acceptBtn" onclick="acceptEstimate()">&#10003; Accept This Estimate</button><a href="tel:9253168384" class="secondary-btn">&#128222; Call to Discuss: (925) 316-8384</a><a href="mailto:dustin@gengaragedoors.com" class="secondary-btn">&#9993; Request Edits via Email</a></div>';
+  }
+
+  function renderFooter(){
+    return '<div class="footer"><div class="contact-row"><a href="tel:9253168384" class="contact-btn">&#128222; (925) 316-8384</a><a href="mailto:dustin@gengaragedoors.com" class="contact-btn">&#9993; dustin@gengaragedoors.com</a></div><div>Serving the Bay Area &middot; Same-week installs available</div><div style="margin-top:8px;"><strong>Generational Garage Doors</strong> &middot; Bay Area, CA<br>Licensed &amp; Insured &middot; Lic. #1113495 &middot; Family Owned</div></div>';
+  }
+
+  var isMulti=p.isMultiOption&&p.options&&p.options.length>1;
+  var estNum=p.estNumber||'';
+  var notes=p.notes||'';
+
+  var CHECK_WEBHOOK=STATUS_CHECK_WEBHOOK;
+
+  async function checkIfAlreadyAccepted(){
+    if(!p.jobRecordId) return false;
+    try{
+      var formData=new URLSearchParams();
+      formData.append('event','check_status');
+      formData.append('jobRecordId',p.jobRecordId);
+      var r=await fetch(CHECK_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:formData.toString()});
+      if(!r.ok) return false;
+      var d=await r.json();
+      return d.status==='Estimate Accepted';
+    }catch(e){return false;}
+  }
+
+  async function renderApp(){
+    var alreadyAccepted=await checkIfAlreadyAccepted();
+    if(alreadyAccepted){
+      var firstName=esc((p.customerName||'').split(' ')[0]||'there');
+      document.getElementById('app').innerHTML=
+        '<div class="hero" style="text-align:left;padding-bottom:0;"><div class="hero-est">Estimate #'+esc(estNum)+'</div><div class="hero-name" style="font-size:1.2rem;">Hi '+firstName+',</div><div style="font-size:0.85rem;opacity:0.75;margin-top:4px;">Thanks for accepting your estimate.</div></div>'+
+        '<div class="container"><div class="card"><div class="card-body" style="text-align:center;padding:32px 20px;">'+
+        '<div style="font-size:2.5rem;margin-bottom:12px;">&#10003;</div>'+
+        '<div style="font-family:\'DM Serif Display\',serif;font-size:1.4rem;color:var(--green);margin-bottom:8px;">Estimate Already Accepted</div>'+
+        '<div style="font-size:0.88rem;color:var(--text2);line-height:1.6;">You\'ve already accepted this estimate.<br>Dustin will be in touch to schedule your appointment.</div>'+
+        '<div class="contact-row" style="margin-top:20px;justify-content:center;">'+
+        '<a href="tel:9253168384" class="contact-btn">&#128222; (925) 316-8384</a>'+
+        '<a href="mailto:dustin@gengaragedoors.com" class="contact-btn">&#9993; Email Us</a>'+
+        '</div></div></div>'+renderFooter()+'</div>';
+      return;
+    }
+
+    if(isMulti){
+      document.getElementById('app').innerHTML=renderMultiOptions(p.options,estNum,notes);
+    } else {
+      var singleOpt=(p.options&&p.options.length>0)?p.options[0]:{items:p.items||[],total:p.total||0};
+      if(!singleOpt.label) singleOpt.label='Best Match';
+      document.getElementById('app').innerHTML=renderSingleOption(singleOpt,estNum,p.depositAmount||0,p.balanceDue||0,p.balanceDueDate||'',p.isFullPay,notes);
+    }
+  }
+
+  renderApp();
+
+  window.selectOption=function(idx){
+    selectedOptionIdx=idx;
+    for(var i=0;i<(p.options||[]).length;i++){
+      var btn=document.getElementById('selBtn'+i);
+      var badge=document.getElementById('selBadge'+i);
+      var card=document.getElementById('optCard'+i);
+      if(btn) btn.style.display=i===idx?'none':'block';
+      if(badge) badge.style.display=i===idx?'block':'none';
+      if(card) card.style.borderWidth=i===idx?'2.5px':'2px';
+    }
+    var aw=document.getElementById('acceptWrapper');
+    if(aw) aw.scrollIntoView({behavior:'smooth',block:'center'});
+  };
+
+  window.acceptEstimate=async function(){
+    if(isMulti&&selectedOptionIdx===null){alert('Please select an option first.');return;}
+    var btn=document.getElementById('acceptBtn');
+    var status=document.getElementById('acceptStatus');
+    if(btn) btn.disabled=true;
+    if(status){status.className='status-banner pending';status.textContent='Submitting...';}
+
+    var selectedLabel=isMulti&&p.options?p.options[selectedOptionIdx].label:'Best Match';
+    var selectedTotal=isMulti&&p.options?p.options[selectedOptionIdx].total:p.total;
+    var selectedItems=isMulti&&p.options?p.options[selectedOptionIdx].items:(p.items||[]);
+
+    try{
+      if(ACCEPT_WEBHOOK){
+        var formData=new URLSearchParams();
+        formData.append('event','estimate_accepted');
+        formData.append('estNumber',p.estNumber||'');
+        formData.append('jobRecordId',p.jobRecordId||'');
+        formData.append('customerName',p.customerName||'');
+        formData.append('customerEmail',p.customerEmail||'');
+        formData.append('customerPhone',p.customerPhone||'');
+        formData.append('customerAddress',p.customerAddress||'');
+        formData.append('serviceType',p.serviceType||'');
+        formData.append('selectedOption',selectedLabel);
+        formData.append('selectedTotal',String(selectedTotal));
+        formData.append('selectedItems',JSON.stringify(selectedItems));
+        formData.append('depositAmount',String(p.depositAmount||Math.round(selectedTotal*0.5)));
+        formData.append('isService',String(isServiceJob(p.serviceType||'')));
+        formData.append('acceptedAt',new Date().toISOString());
+        await fetch(ACCEPT_WEBHOOK,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:formData.toString()});
+      }
+      if(status){status.className='status-banner accepted';status.textContent='\u2713 Accepted'+(selectedLabel?' - '+selectedLabel:'')+' - We\'ll be in touch to schedule!';}
+      if(btn) btn.style.display='none';
+    }catch(e){
+      if(status){status.className='status-banner pending';status.textContent='Something went wrong. Please call us at (925) 316-8384.';}
+      if(btn) btn.disabled=false;
+    }
+  };
+})();
+</script>
+</body>
+</html>
