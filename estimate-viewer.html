@@ -89,9 +89,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
 <script>
 (function(){
-  var VIEWED_WEBHOOK = 'https://automations.lagomdesignco.com/webhook/GGDViewEstimate';
-  var ACCEPT_WEBHOOK = 'https://automations.lagomdesignco.com/webhook/GGDAcceptEstimate';
-  var STATUS_CHECK_WEBHOOK = 'https://automations.lagomdesignco.com/webhook/GGDCheckEstimateStatus';
+  var VIEWED_WEBHOOK = 'https://n8n.lagomops.co/webhook/GGDViewEstimatesb';
+  var ACCEPT_WEBHOOK = 'https://n8n.lagomops.co/webhook/GGDAcceptEstimatesb';
+  var STATUS_CHECK_WEBHOOK = 'https://n8n.lagomops.co/webhook/GGDCheckEstimateStatussb';
 
   function fmtMoney(n){
     return '$'+(Number(n)||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -200,11 +200,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     try{
       var formData=new URLSearchParams();
       formData.append('event','check_status');
-      formData.append('jobRecordId',p.jobRecordId);
+      formData.append('estNumber',p.estNumber||'');
+      formData.append('jobRecordId',p.jobRecordId||'');
       var r=await fetch(CHECK_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:formData.toString()});
       if(!r.ok) return false;
       var d=await r.json();
-      return d.status==='Estimate Accepted';
+      return d.status==='Estimate Accepted'||d.status==='est_accepted';
     }catch(e){return false;}
   }
 
