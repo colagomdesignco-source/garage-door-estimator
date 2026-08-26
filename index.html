@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Get a Free Estimate — Generational Garage Doors</title>
+<title>Demo Estimator — Lagom Ops Co.</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -187,11 +187,12 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 </style>
 </head>
 <body>
-<div id="sending-overlay"><div class="spinner"></div><p style="color:var(--gray);font-size:14px;">Sending your request...</p></div>
+<div id="sending-overlay"><div class="spinner"></div><p style="color:var(--gray);font-size:14px;">Calculating...</p></div>
 <header>
-  <div class="logo">Generational <span>Garage Doors</span></div>
+  <div class="logo">Lagom Ops Co. <span>Demo Estimator</span></div>
   <button class="restart-btn" onclick="restart()">↺ Start over</button>
 </header>
+<div style="background:#f0b41c;color:#1d1f18;text-align:center;padding:6px 12px;font-size:12px;font-weight:600;letter-spacing:.04em;">DEMO — sample pricing, not a real quote</div>
 <div class="progress-wrap">
   <div class="progress-bar"><div class="progress-fill" id="pfill" style="width:10%"></div></div>
   <div class="progress-label" id="plabel">Step 1 of 6</div>
@@ -302,7 +303,7 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
   <div class="insert-grid" id="insert-grid"></div>
   <div class="callout-box">
     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-    <p>Want additional glass rows, long pane on a short panel door, or other custom configurations? <a href="tel:+19253168384">Give us a call</a> or book a <strong>free design consultation</strong> — we'd love to help!</p>
+    <p>Want additional glass rows, long pane on a short panel door, or other custom configurations? This demo shows how the estimator works with sample pricing.</p>
   </div>
   <div class="btn-row"><button class="btn-back" onclick="go('s4-glass')">← Back</button><button class="btn btn-primary" onclick="go('s6-insulation')">Continue</button></div>
 </div>
@@ -314,35 +315,32 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
 </div>
 <div class="step" id="s7-contact">
   <div class="step-title">Almost there!</div>
-  <div class="step-sub">Enter your info to unlock your personalized price range.</div>
+  <div class="step-sub">See your sample price range.</div>
   <div class="locked-box">
     <div class="locked-icon">🔒</div>
-    <div class="locked-title">Your estimate is ready to unlock</div>
-    <div class="locked-sub">Submit your info to instantly see your price range.</div>
+    <div class="locked-title">Your sample estimate</div>
+    <div class="locked-sub">Click below to see the sample estimate.</div>
     <div style="margin-top:14px;font-size:22px;font-weight:700;filter:blur(6px);user-select:none;">$X,XXX – $X,XXX</div>
     <div style="font-size:12px;color:var(--gray);margin-top:4px;">Installation included</div>
   </div>
-  <p style="font-size:13px;font-weight:600;margin-bottom:12px;">Please enter your name and phone number.</p>
-  <div class="form-row">
-    <div class="form-group"><label class="form-label">First name *</label><input class="form-input" type="text" id="fname" placeholder="Callie" required/></div>
-    <div class="form-group"><label class="form-label">Last name *</label><input class="form-input" type="text" id="lname" placeholder="Smith" required/></div>
+  <div style="text-align:center;padding:20px 0;">
+    <p style="font-size:15px;font-weight:600;color:var(--charcoal);margin-bottom:8px;">This is a demo</p>
+    <p style="font-size:13px;color:var(--gray);line-height:1.6;">The real estimator sends you the quote here.<br/>Sample pricing is shown below.</p>
   </div>
-  <div class="form-group"><label class="form-label">Phone number *</label><input class="form-input" type="tel" id="phone" placeholder="(555) 000-0000" required/></div>
-  <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" id="email" placeholder="callie@email.com"/></div>
-  <div class="form-group"><label class="form-label">Address</label><input class="form-input" type="text" id="address" placeholder="123 Main St, City, State"/></div>
+  <input type="hidden" id="fname" value="Demo"/><input type="hidden" id="lname" value="User"/><input type="hidden" id="phone" value="0000000000"/><input type="hidden" id="email" value=""/><input type="hidden" id="address" value=""/>
   <div class="form-row">
     <div class="form-group"><label class="form-label">Door size</label>
       <select class="form-select" id="doorsize"><option value="">Select size</option><option>8x7</option><option>9x7</option><option>10x7</option><option>12x7</option><option>16x7</option><option>18x7</option><option>8x8</option><option>9x8</option><option>16x8</option><option>Other / Not sure</option></select>
     </div>
   </div>
   <div class="form-group"><label class="form-label">Notes</label><textarea class="form-input" id="notes" rows="3" placeholder="Any details about your project..."></textarea></div>
-  <div class="btn-row"><button class="btn-back" onclick="go('s6-insulation')">← Back</button><button class="btn btn-primary" onclick="submitEst()">See My Estimate →</button></div>
+  <div class="btn-row"><button class="btn-back" onclick="go('s6-insulation')">← Back</button><button class="btn btn-primary" onclick="demoReveal()">See Sample Estimate →</button></div>
 </div>
 <div class="step" id="s-success">
   <div style="text-align:center;padding:32px 0 24px;">
     <div class="success-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
     <div class="step-title">Your estimate is ready!</div>
-    <div class="step-sub" style="margin-bottom:0;">We'll be in touch shortly to confirm details.</div>
+    <div class="step-sub" style="margin-bottom:0;">This is a demo with sample pricing.</div>
   </div>
   <div class="preview-section" style="margin-bottom:16px;">
     <div class="preview-label">Your Door Selection</div>
@@ -355,12 +353,9 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
   <div class="estimate-box">
     <div style="font-size:12px;opacity:0.7;text-transform:uppercase;letter-spacing:1px;">Estimated Range</div>
     <div class="estimate-range" id="est-display">—</div>
-    <div class="estimate-note">Final price confirmed after measurement · Installation included</div>
+    <div class="estimate-note">Sample pricing · Not a real quote</div>
   </div>
-  <div class="call-box">
-    <div style="font-size:14px;color:var(--gray);">Questions? Call us directly</div>
-    <a href="tel:+19253168384">(925) 316-8384</a>
-  </div>
+
   <button class="btn btn-primary" style="margin-top:8px;" onclick="restart()">Start a new estimate</button>
 </div>
 <div class="step" id="s2-repair">
@@ -376,20 +371,20 @@ main{max-width:680px;margin:0 auto;padding:32px 20px 80px;}
   <div class="step-title">Opener / Motor</div>
   <div class="step-sub">Select your opener type</div>
   <div class="price-list">
-    <div class="card" onclick="pick(this,'opener','chain7')"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Chain drive (7' ceiling)</div><div class="card-price">$800 installed</div></div>
-    <div class="card" onclick="pick(this,'opener','chain8')"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Chain drive (8' ceiling)</div><div class="card-price">$875 installed</div></div>
-    <div class="card" onclick="pick(this,'opener','belt7')"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Belt drive (7' ceiling)</div><div class="card-price">$850 installed</div></div>
-    <div class="card" onclick="pick(this,'opener','belt8')"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Belt drive (8' ceiling)</div><div class="card-price">$925 installed</div></div>
-    <div class="card" onclick="pick(this,'opener','belt-hi')"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Belt drive high-lift</div><div class="card-price">$950 installed</div></div>
-    <div class="card" onclick="pick(this,'opener','ibeam')"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">I-beam jack shaft</div><div class="card-price">$1,610 installed</div></div>
-    <div class="card" onclick="pick(this,'opener','jackshaft')"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Wall mount jack shaft</div><div class="card-price">$1,500 installed</div></div>
+    <div class="card" onclick="pick(this,'opener','chain7')"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Chain drive (7' ceiling)</div><div class="card-price">$700 installed</div></div>
+    <div class="card" onclick="pick(this,'opener','chain8')"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Chain drive (8' ceiling)</div><div class="card-price">$750 installed</div></div>
+    <div class="card" onclick="pick(this,'opener','belt7')"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Belt drive (7' ceiling)</div><div class="card-price">$750 installed</div></div>
+    <div class="card" onclick="pick(this,'opener','belt8')"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Belt drive (8' ceiling)</div><div class="card-price">$800 installed</div></div>
+    <div class="card" onclick="pick(this,'opener','belt-hi')"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Belt drive high-lift</div><div class="card-price">$850 installed</div></div>
+    <div class="card" onclick="pick(this,'opener','ibeam')"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">I-beam jack shaft</div><div class="card-price">$1,400 installed</div></div>
+    <div class="card" onclick="pick(this,'opener','jackshaft')"><div class="card-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="card-title">Wall mount jack shaft</div><div class="card-price">$1,300 installed</div></div>
   </div>
   <div class="btn-row"><button class="btn-back" onclick="go('s2-repair')">← Back</button><button class="btn btn-primary" onclick="go('s7-contact')">Get estimate</button></div>
 </div>
 <div class="step" id="s-other">
   <div class="step-title">Repair or service</div>
   <div class="step-sub">We'll diagnose and fix the issue.</div>
-  <div class="estimate-box"><div class="estimate-range">$200 – $500</div><div class="estimate-note">Final quote after inspection</div></div>
+  <div class="estimate-box"><div class="estimate-range">$200 – $400</div><div class="estimate-note">Final quote after inspection</div></div>
   <div class="btn-row"><button class="btn-back" onclick="go('s2-repair')">← Back</button><button class="btn btn-primary" onclick="go('s7-contact')">Get estimate</button></div>
 </div>
 </main>
@@ -730,8 +725,8 @@ function renderInsulation(){
   const sky=state.doorStyle==='skyline';
   const cards=[
     {id:'none', icon:'🚪',name:'No insulation',  tag:'Included',desc:'Standard steel. Great for detached garages.',hide:sky,rec:false},
-    {id:'pvc',  icon:'🧱',name:'Steelback (PVC)', tag:'+$300',  desc:'Our most popular upgrade. Reduces noise and adds light insulation.'+(sky?' Required for Skyline.':''),hide:false,rec:true},
-    {id:'steel',icon:'❄️',name:'Steel insulated', tag:'+$600',  desc:'Premium foam-core. Best for attached or heated garages.',hide:sky,rec:false},
+    {id:'pvc',  icon:'🧱',name:'Steelback (PVC)', tag:'+$250',  desc:'Our most popular upgrade. Reduces noise and adds light insulation.'+(sky?' Required for Skyline.':''),hide:false,rec:true},
+    {id:'steel',icon:'❄️',name:'Steel insulated', tag:'+$500',  desc:'Premium foam-core. Best for attached or heated garages.',hide:sky,rec:false},
   ];
   document.getElementById('ins-cards').innerHTML=cards.filter(c=>!c.hide).map(c=>`
     <div class="ins-card${c.rec?' recommended':''}${state.insulation===c.id?' selected':''}" onclick="selectIns('${c.id}',this)">
@@ -836,27 +831,27 @@ function restart(){state={service:null,garageCount:null,doorStyle:null,doorColor
 function calcEst(){
   const s=state;
   if(s.service==='replace'||s.service==='new'){
-    const base={single:[1800,2800],double:[2400,3600],two:[3400,5200]}[s.garageCount]||[2000,3200];
-    const ins={none:0,pvc:300,steel:600}[s.insulation]||0;
+    const base={single:[1500,2500],double:[2000,3000],two:[3000,4500]}[s.garageCount]||[1500,2500];
+    const ins={none:0,pvc:250,steel:500}[s.insulation]||0;
     const gl=glassCost();
     return '$'+(base[0]+ins+gl).toLocaleString()+' – $'+(base[1]+ins+gl).toLocaleString();
   }
   if(s.repairType==='opener'){
-    const p={chain7:800,chain8:875,belt7:850,belt8:925,'belt-hi':950,ibeam:1610,jackshaft:1500}[s.opener]||900;
+    const p={chain7:700,chain8:750,belt7:750,belt8:800,'belt-hi':850,ibeam:1400,jackshaft:1300}[s.opener]||750;
     return '$'+p.toLocaleString()+' installed';
   }
-  return '$200 – $500';
+  return '$200 – $400';
 }
 
-async function submitEst(){
+async function demoReveal(){
   const fn=document.getElementById('fname').value.trim();
   const ln=document.getElementById('lname').value.trim();
   const ph=document.getElementById('phone').value.trim();
-  if(!fn||!ln||!ph){alert('Please fill in your name and phone number.');return;}
+  // validation removed for demo — hidden fields have defaults
   document.getElementById('sending-overlay').classList.add('active');
   const sn={'raised-short':'Raised Short Panel','raised-long':'Raised Long Panel','skyline':'Skyline Flush','carriage-short':'Carriage Stamp Short','carriage-long':'Carriage Stamp Long'};
   const body={fname:fn,lname:ln,phone:ph,email:document.getElementById('email').value.trim(),address:document.getElementById('address').value.trim(),doorsize:document.getElementById('doorsize').value,notes:document.getElementById('notes').value.trim(),service:state.service,garageCount:state.garageCount,doorStyle:sn[state.doorStyle]||state.doorStyle||'',doorColor:state.doorColor,insulation:state.insulation,glassAdd:state.glassAdd,glassType:state.glassType,insulatedGlass:state.insulatedGlass,paneStyle:state.paneStyle,insertStyle:state.windowInsert,repairType:state.repairType,estimate:calcEst()};
-  try{await fetch('https://hook.us2.make.com/egj41lnwxxb31x5dvilchpt8dr2qjxau',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});}catch(e){console.warn(e);}
+  // POST disabled for demo (was: Make.com webhook egj41lnwxxb31x5dvilchpt8dr2qjxau)
   document.getElementById('sending-overlay').classList.remove('active');
   document.getElementById('est-display').textContent=calcEst();
 
